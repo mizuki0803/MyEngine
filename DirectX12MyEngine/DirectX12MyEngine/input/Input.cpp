@@ -488,6 +488,206 @@ bool Input::TiltGamePadRStickY(const float incline)
 	return false;
 }
 
+bool Input::TriggerGamePadLStickX(const float incline)
+{
+	//右に倒した時の判定
+	if (incline > 0)
+	{
+		//スティックの傾斜が指定した数値より大きい瞬間ならtrueを返す
+		if (pad.lX >= incline && !(padPre.lX >= incline))
+		{
+			return true;
+		}
+	}
+	//左に倒した時の判定
+	else if (incline < 0)
+	{
+		//スティックの傾斜が指定した数値より小さい瞬間ならtrueを返す
+		if (pad.lX <= incline && !(padPre.lX <= incline))
+		{
+			return true;
+		}
+	}
+
+	//どちらでもtrueがなければfalseを返す
+	return false;
+}
+
+bool Input::TriggerGamePadLStickY(const float incline)
+{
+	//下に倒した時の判定
+	if (incline > 0)
+	{
+		//スティックの傾斜が指定した数値より大きい瞬間ならtrueを返す
+		if (pad.lY >= incline && !(padPre.lY >= incline))
+		{
+			return true;
+		}
+	}
+	//上に倒した時の判定
+	else if (incline < 0)
+	{
+		//スティックの傾斜が指定した数値より小さい瞬間ならtrueを返す
+		if (pad.lY <= incline && !(padPre.lY <= incline))
+		{
+			return true;
+		}
+	}
+
+	//どちらでもtrueがなければfalseを返す
+	return false;
+}
+
+bool Input::TriggerGamePadRStickX(const float incline)
+{
+	//右に倒した時の判定
+	if (incline > 0)
+	{
+		//スティックの傾斜が指定した数値より大きい瞬間ならtrueを返す
+		if (pad.lRx >= incline && !(padPre.lRx >= incline))
+		{
+			return true;
+		}
+	}
+	//左に倒した時の判定
+	else if (incline < 0)
+	{
+		//スティックの傾斜が指定した数値より小さい瞬間ならtrueを返す
+		if (pad.lRx <= incline && !(padPre.lRx <= incline))
+		{
+			return true;
+		}
+	}
+
+	//どちらでもtrueがなければfalseを返す
+	return false;
+}
+
+bool Input::TriggerGamePadRStickY(const float incline)
+{
+	//下に倒した時の判定
+	if (incline > 0)
+	{
+		//スティックの傾斜が指定した数値より大きい瞬間ならtrueを返す
+		if (pad.lRy >= incline && !(padPre.lRy >= incline))
+		{
+			return true;
+		}
+	}
+	//上に倒した時の判定
+	else if (incline < 0)
+	{
+		//スティックの傾斜が指定した数値より小さい瞬間ならtrueを返す
+		if (pad.lRy <= incline && !(padPre.lRy <= incline))
+		{
+			return true;
+		}
+	}
+
+	//どちらでもtrueがなければfalseを返す
+	return false;
+}
+
+bool Input::ReleaseGamePadLStickX(const float incline)
+{
+	//右に倒した時の判定
+	if (incline > 0)
+	{
+		//スティックの傾斜が指定した数値より大きかったならtrueを返す
+		if (!(pad.lX >= incline) && padPre.lX >= incline)
+		{
+			return true;
+		}
+	}
+	//左に倒した時の判定
+	else if (incline < 0)
+	{
+		//スティックの傾斜が指定した数値より小さかったならtrueを返す
+		if (!(pad.lX <= incline) && padPre.lX <= incline)
+		{
+			return true;
+		}
+	}
+
+	//どちらでもtrueがなければfalseを返す
+	return false;
+}
+
+bool Input::ReleaseGamePadLStickY(const float incline)
+{
+	//下に倒した時の判定
+	if (incline > 0)
+	{
+		//スティックの傾斜が指定した数値より大きかったならtrueを返す
+		if (!(pad.lY >= incline) && padPre.lY >= incline)
+		{
+			return true;
+		}
+	}
+	//上に倒した時の判定
+	else if (incline < 0)
+	{
+		//スティックの傾斜が指定した数値より小さかったならtrueを返す
+		if (!(pad.lY <= incline) && padPre.lY <= incline)
+		{
+			return true;
+		}
+	}
+
+	//どちらでもtrueがなければfalseを返す
+	return false;
+}
+
+bool Input::ReleaseGamePadRStickX(const float incline)
+{
+	//右に倒した時の判定
+	if (incline > 0)
+	{
+		//スティックの傾斜が指定した数値より大きかったならtrueを返す
+		if (!(pad.lRx >= incline) && padPre.lRx >= incline)
+		{
+			return true;
+		}
+	}
+	//左に倒した時の判定
+	else if (incline < 0)
+	{
+		//スティックの傾斜が指定した数値より小さかったならtrueを返す
+		if (!(pad.lRx <= incline) && padPre.lRx <= incline)
+		{
+			return true;
+		}
+	}
+
+	//どちらでもtrueがなければfalseを返す
+	return false;
+}
+
+bool Input::ReleaseGamePadRStickY(const float incline)
+{
+	//下に倒した時の判定
+	if (incline > 0)
+	{
+		//スティックの傾斜が指定した数値より大きかったならtrueを返す
+		if (!(pad.lRy >= incline) && padPre.lRy >= incline)
+		{
+			return true;
+		}
+	}
+	//上に倒した時の判定
+	else if (incline < 0)
+	{
+		//スティックの傾斜が指定した数値より小さかったならtrueを返す
+		if (!(pad.lRy <= incline) && padPre.lRy <= incline)
+		{
+			return true;
+		}
+	}
+
+	//どちらでもtrueがなければfalseを返す
+	return false;
+}
+
 DirectX::XMFLOAT2 Input::GetPadLStickIncline()
 {
 	return DirectX::XMFLOAT2((float)pad.lX, (float)pad.lY);

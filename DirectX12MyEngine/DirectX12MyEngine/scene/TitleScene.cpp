@@ -181,16 +181,16 @@ void TitleScene::Update()
 		Audio::GetInstance()->StopWave("BGM.wav");
 	}
 
-	if (input->TiltGamePadLStickY(250))
+	if (input->TiltGamePadRStickX(500))
 	{
 		XMFLOAT3 pos = objMan->GetPosition();
-		pos.x += 0.05f * (input->GetPadLStickIncline().y / 250);
+		pos.x += 0.1f;
 		objMan->SetPosition(pos);
 	}
-	if (input->TiltGamePadLStickY(-250))
+	if (input->TiltGamePadRStickX(-500))
 	{
 		XMFLOAT3 pos = objMan->GetPosition();
-		pos.x -= 0.05f * (input->GetPadLStickIncline().y / -250);
+		pos.x -= 0.1f;
 		objMan->SetPosition(pos);
 	}
 

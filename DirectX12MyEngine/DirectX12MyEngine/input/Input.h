@@ -181,6 +181,62 @@ public: //メンバ関数
 	bool TiltGamePadRStickY(const float incline);
 
 	/// <summary>
+	/// ゲームパッドの左スティックをX方向に傾けた瞬間かチェック
+	/// </summary>
+	/// <param name="incline">どこまで傾けたら判定を取るか(-1000～1000)</param>
+	/// <returns>スティックをX方向に傾けた瞬間か</returns>
+	bool TriggerGamePadLStickX(const float incline);
+
+	/// <summary>
+	/// ゲームパッドの左スティックをY方向に傾けた瞬間かチェック
+	/// </summary>
+	/// <param name="incline">どこまで傾けたら判定を取るか(-1000～1000)</param>
+	/// <returns>スティックをY方向に傾けた瞬間か</returns>
+	bool TriggerGamePadLStickY(const float incline);
+
+	/// <summary>
+	/// ゲームパッドの右スティックをX方向に傾けた瞬間かチェック
+	/// </summary>
+	/// <param name="incline">どこまで傾けたら判定を取るか(-1000～1000)</param>
+	/// <returns>スティックをX方向に傾けた瞬間か</returns>
+	bool TriggerGamePadRStickX(const float incline);
+
+	/// <summary>
+	/// ゲームパッドの右スティックをY方向に傾けた瞬間かチェック
+	/// </summary>
+	/// <param name="incline">どこまで傾けたら判定を取るか(-1000～1000)</param>
+	/// <returns>スティックをY方向に傾けた瞬間か</returns>
+	bool TriggerGamePadRStickY(const float incline);
+
+	/// <summary>
+	/// ゲームパッドの左スティックをX方向から離したかチェック
+	/// </summary>
+	/// <param name="incline">どこまで傾けたら判定を取るか(-1000～1000)</param>
+	/// <returns>スティックをX方向から離したか</returns>
+	bool ReleaseGamePadLStickX(const float incline);
+
+	/// <summary>
+	/// ゲームパッドの左スティックをY方向から離したかチェック
+	/// </summary>
+	/// <param name="incline">どこまで傾けたら判定を取るか(-1000～1000)</param>
+	/// <returns>スティックをY方向から離したか</returns>
+	bool ReleaseGamePadLStickY(const float incline);
+
+	/// <summary>
+	/// ゲームパッドの右スティックをX方向から離したかチェック
+	/// </summary>
+	/// <param name="incline">どこまで傾けたら判定を取るか(-1000～1000)</param>
+	/// <returns>スティックをX方向から離したか</returns>
+	bool ReleaseGamePadRStickX(const float incline);
+
+	/// <summary>
+	/// ゲームパッドの右スティックをY方向から離したかチェック
+	/// </summary>
+	/// <param name="incline">どこまで傾けたら判定を取るか(-1000～1000)</param>
+	/// <returns>スティックをY方向から離したか</returns>
+	bool ReleaseGamePadRStickY(const float incline);
+
+	/// <summary>
 	/// ゲームパッドの左スティックの傾きを取得
 	/// </summary>
 	/// <returns>ゲームパッドの左スティックの傾き</returns>
