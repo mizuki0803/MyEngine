@@ -54,7 +54,7 @@ void Input::Initialize(WindowApp *win)
 	///----------------パッド入力初期化----------------///
 	//デバイスの列挙
 	result = dinput->EnumDevices(
-		DI8DEVTYPE_JOYSTICK, DeviceFindCallBack, &parameter, DIEDFL_ATTACHEDONLY);
+		DI8DEVTYPE_JOYSTICK, DeviceFindCallBack, &parameter, DIEDFL_FORCEFEEDBACK | DIEDFL_ATTACHEDONLY);
 	//ゲームパッドデバイスの設定
 	result = dinput->CreateDevice(GUID_Joystick, &devgamepad, NULL);
 
@@ -65,6 +65,10 @@ void Input::Initialize(WindowApp *win)
 	}
 	//入力データ形式のセット
 	result = devgamepad->SetDataFormat(&c_dfDIJoystick);	//標準形式
+	//排他制御レベルのセット
+	result = devgamepad->SetCooperativeLevel(
+		win->GetHwnd(), DISCL_FOREGROUND | DISCL_EXCLUSIVE);
+
 
 	//軸モードを絶対値モードとして設定
 	DIPROPDWORD diprop;
@@ -95,13 +99,9 @@ void Input::Initialize(WindowApp *win)
 	//RY軸の値の範囲設定
 	diprg.diph.dwObj = DIJOFS_RY;
 	result = devgamepad->SetProperty(DIPROP_RANGE, &diprg.diph);
-	//LT軸の値の範囲設定
-	diprg.diph.dwObj = DIJOFS_RY;
+	//Z軸の値の範囲設定
+	diprg.diph.dwObj = DIJOFS_Z;
 	result = devgamepad->SetProperty(DIPROP_RANGE, &diprg.diph);
-
-	//排他制御レベルのセット
-	result = devgamepad->SetCooperativeLevel(
-		win->GetHwnd(), DISCL_FOREGROUND | DISCL_EXCLUSIVE);
 }
 
 void Input::Update()
@@ -488,6 +488,32 @@ bool Input::TiltGamePadRStickY(const float incline)
 	return false;
 }
 
+bool Input::PushGamePadTrigger(const float incline)
+{
+
+	//下に倒した時の判定
+	if (incline > 0)
+	{
+		//スティックの傾斜が指定した数値より大きければtrueを返す
+		if (pad.lZ >= incline)
+		{
+			return true;
+		}
+	}
+	//上に倒した時の判定
+	else if (incline < 0)
+	{
+		//スティックの傾斜が指定した数値より小さければtrueを返す
+		if (pad.lZ <= incline)
+		{
+			return true;
+		}
+	}
+
+	//どちらでもtrueがなければfalseを返す
+	return false;
+}
+
 bool Input::TriggerGamePadLStickX(const float incline)
 {
 	//右に倒した時の判定
@@ -690,10 +716,40 @@ bool Input::ReleaseGamePadRStickY(const float incline)
 
 DirectX::XMFLOAT2 Input::GetPadLStickIncline()
 {
-	return DirectX::XMFLOAT2((float)pad.lX, (float)pad.lY);
+	return DirectX::XMFLOAT2((float)pad.lX / 1000, (float)pad.lY / 1000);
 }
 
 DirectX::XMFLOAT2 Input::GetPadRStickIncline()
 {
-	return DirectX::XMFLOAT2((float)pad.lRx, (float)pad.lRy);
+	return DirectX::XMFLOAT2((float)pad.lRx / 1000, (float)pad.lRy / 1000);
+}
+
+float Input::GetPadLStickAngle()
+{
+	DirectX::XMFLOAT2 pad = GetPadLStickIncline();
+	float h = pad.x;
+	float v = pad.y;
+
+	float radian = atan2f(v, h) * 360 / (3.141592f * 2);
+
+	if (radian < 0) {
+		radian += 360;
+	}
+
+	return radian;
+}
+
+float Input::GetPadRStickAngle()
+{
+	DirectX::XMFLOAT2 pad = GetPadRStickIncline();
+	float h = pad.x;
+	float v = pad.y;
+
+	float radian = atan2f(v, h) * 360 / (3.141592f * 2);
+
+	if (radian < 0) {
+		radian += 360;
+	}
+
+	return radian;
 }

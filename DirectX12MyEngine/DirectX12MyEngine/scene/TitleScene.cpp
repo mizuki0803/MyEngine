@@ -62,7 +62,7 @@ void TitleScene::Initialize()
 	sprite2 = Sprite::Create(1);
 
 	//スプライト座標移動
-	sprite->SetPosition({ 100, 100 });
+	sprite->SetPosition({ 700, 300 });
 	sprite2->SetPosition({ 800, 300 });
 	//スプライト回転
 	sprite2->SetRotation(90);
@@ -73,7 +73,8 @@ void TitleScene::Initialize()
 	sprite->SetTexSize({ 64, 478 });
 	sprite2->SetTexSize({ 428, 150 });
 	//スプライト色変更
-	sprite2->SetColor({ 1, 0, 0, 0.8f });
+	sprite->SetColor({ 1, 1, 1, 0.5f });
+	sprite2->SetColor({ 1, 0, 0, 0.5f });
 
 
 	//objからモデルデータを読み込む
@@ -181,18 +182,18 @@ void TitleScene::Update()
 		Audio::GetInstance()->StopWave("BGM.wav");
 	}
 
-	if (input->TiltGamePadRStickX(500))
+	if (input->PushGamePadTrigger(500))
 	{
 		XMFLOAT3 pos = objMan->GetPosition();
 		pos.x += 0.1f;
 		objMan->SetPosition(pos);
 	}
-	if (input->TiltGamePadRStickX(-500))
+	/*if (input->PushGamePadTrigger(-500))
 	{
 		XMFLOAT3 pos = objMan->GetPosition();
 		pos.x -= 0.1f;
 		objMan->SetPosition(pos);
-	}
+	}*/
 
 	if (input->GetMouseWheelVelocity() != 0.0f)
 	{
@@ -506,8 +507,8 @@ void TitleScene::Update()
 	debugText->Print("TITLE SCENE", 1000, 50);
 
 	//デバッグ出力
-	//sprintf_s(str, "%f, %f\n", input->GetPadRStickIncline().x, input->GetPadRStickIncline().y);
-	//OutputDebugStringA(str);
+	sprintf_s(str, "%f, %f\n", input->GetPadLStickAngle(), input->GetPadRStickAngle());
+	OutputDebugStringA(str);
 
 	if (input->TriggerKey(DIK_RETURN))
 	{
