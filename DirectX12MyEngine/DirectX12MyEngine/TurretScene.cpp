@@ -1,4 +1,4 @@
-#include "GameScene.h"
+#include "TurretScene.h"
 #include "SceneManager.h"
 #include "Input.h"
 #include "Audio.h"
@@ -12,7 +12,7 @@
 using namespace DirectX;
 
 
-void GameScene::Initialize()
+void TurretScene::Initialize()
 {
 	//オーディオのインスタンスを取得
 	Audio* audio = Audio::GetInstance();
@@ -80,11 +80,12 @@ void GameScene::Initialize()
 	modelSkydome = Model::LoadFromOBJ("skydome");
 	modelGround = Model::LoadFromOBJ("ground");
 	modelSphere = Model::LoadFromOBJ("sphere", true);
+	modelFighter = Model::LoadFromOBJ("fighter", true);
 
 	// 3Dオブジェクト生成
 	objGround = Object3d::Create(modelGround);
 	objSkydome = Object3d::Create(modelSkydome);
-	objFallSphere = FallSphere::Create(modelSphere);
+	objTurret = Turret::Create(modelFighter, modelSphere);
 
 	//初期座標
 	objGround->SetPosition({ 0, -1, 0 });
@@ -118,7 +119,7 @@ void GameScene::Initialize()
 	ray.dir = XMVectorSet(0, -1, 0, 0);		//下向き
 }
 
-void GameScene::Finalize()
+void TurretScene::Finalize()
 {
 	//カメラ解放
 	delete camera;
@@ -137,14 +138,15 @@ void GameScene::Finalize()
 	delete modelSkydome;
 	delete modelGround;
 	delete modelSphere;
+	delete modelFighter;
 
 	//3Dオブジェクト解放
 	delete objGround;
 	delete objSkydome;
-	delete objFallSphere;
+	delete objTurret;
 }
 
-void GameScene::Update()
+void TurretScene::Update()
 {
 	//入力のインスタンスを取得
 	Input* input = Input::GetInstance();
@@ -169,7 +171,7 @@ void GameScene::Update()
 	//	lightGroup->SetSpotLightAtten(0, XMFLOAT3(spotLightAtten));
 	//	lightGroup->SetSpotLightFactorAngleCos(0, XMFLOAT2(spotLightfactorAngleCos));
 		lightGroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-		lightGroup->SetCircleShadowCasterPos(0, objFallSphere->GetPosition());
+		lightGroup->SetCircleShadowCasterPos(0, objTurret->GetBulletPosition());
 		lightGroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 		lightGroup->SetCircleShadowFactorAngleCos(0, XMFLOAT2(circleShadowFactorAngle));
 	}
@@ -181,33 +183,32 @@ void GameScene::Update()
 	//Object3d更新
 	objGround->Update();
 	objSkydome->Update();
-	objFallSphere->Update();
+	objTurret->Update();
 
-	XMFLOAT3 eye = objFallSphere->GetPosition();
+	XMFLOAT3 eye = objTurret->GetBulletPosition();
 	eye.z -= 200;
 	camera->SetEye(eye);
-	camera->SetTarget(objFallSphere->GetPosition());
+	camera->SetTarget(objTurret->GetBulletPosition());
 
 	//カメラ更新
 	camera->Update();
 
-
 	//デバックテキスト
 	//X座標,Y座標,縮尺を指定して表示
-	debugText->Print("FallSphere", 100, 50);
+	debugText->Print("TurretShot", 100, 50);
 	debugText->Print("R key Reset", 100, 100);
-	debugText->Print("ENTER TurretScene", 100, 130);
+	debugText->Print("ENTER FallSphereScene", 100, 130);
 
 
-	//エンターキーで砲台発射シーンへ
+	//エンターキーで重力落下シーンへ
 	if(input->TriggerKey(DIK_RETURN))
 	{
 		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("TURRET");
+		SceneManager::GetInstance()->ChangeScene("GAME");
 	}
 }
 
-void GameScene::Draw()
+void TurretScene::Draw()
 {
 	//Object3d共通コマンド
 	Object3d::DrawPrev();
@@ -216,7 +217,7 @@ void GameScene::Draw()
 
 	objGround->Draw();
 	objSkydome->Draw();
-	objFallSphere->Draw();
+	objTurret->Draw();
 
 
 	///-------Object3d描画ここまで-------///

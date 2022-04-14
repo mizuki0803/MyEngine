@@ -8,12 +8,12 @@
 #include "CollisionPrimitive.h"
 #include "Collision.h"
 
-#include "FallSphere.h"
+#include "Turret.h"
 
 /// <summary>
-/// ゲームシーン
+/// 砲台シーン
 /// </summary>
-class GameScene :public BaseScene
+class TurretScene :public BaseScene
 {
 private: // エイリアス
 // Microsoft::WRL::を省略
@@ -48,10 +48,10 @@ public: //メンバ関数
 
 private: //メンバ変数
 	//カメラ
-	Camera *camera = nullptr;
+	Camera* camera = nullptr;
 
 	//ライト
-	LightGroup *lightGroup = nullptr;
+	LightGroup* lightGroup = nullptr;
 	float ambientColor0[3] = { 1,1,1 };
 	// 光線方向初期値
 	float lightDir0[3] = { 0,0,1 };
@@ -78,21 +78,22 @@ private: //メンバ変数
 	float circleShadowFactorAngle[2] = { 0.0f, 0.5f };
 
 	//パーティクル
-	ParticleManager *particleMan = nullptr;
+	ParticleManager* particleMan = nullptr;
 
 	//スプライト
-	Sprite *sprite = nullptr;
-	Sprite *sprite2 = nullptr;
+	Sprite* sprite = nullptr;
+	Sprite* sprite2 = nullptr;
 
 	//モデルデータ
-	Model *modelSkydome = nullptr;
-	Model *modelGround = nullptr;
-	Model *modelSphere = nullptr;
+	Model* modelSkydome = nullptr;
+	Model* modelGround = nullptr;
+	Model* modelSphere = nullptr;
+	Model* modelFighter = nullptr;
 
 	//3Dオブジェクト
-	Object3d *objGround = nullptr;
-	Object3d *objSkydome = nullptr;
-	FallSphere *objFallSphere = nullptr;
+	Object3d* objGround = nullptr;
+	Object3d* objSkydome = nullptr;
+	Turret* objTurret = nullptr;
 
 	//当たり判定 球
 	Sphere sphere;

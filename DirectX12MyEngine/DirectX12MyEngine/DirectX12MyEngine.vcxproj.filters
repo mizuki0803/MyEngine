@@ -66,6 +66,9 @@
     <Filter Include="ソース ファイル\effect\easing">
       <UniqueIdentifier>{c6e660ba-54dc-4d48-97bc-b082ef65c107}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject">
+      <UniqueIdentifier>{2446effd-cc42-4f04-a00a-993ce13d302a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -133,6 +136,15 @@
     </ClCompile>
     <ClCompile Include="effect\Easing.cpp">
       <Filter>ソース ファイル\effect\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="FallSphere.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TurretScene.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Turret.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +274,15 @@
     </ClInclude>
     <ClInclude Include="scene\BaseScene.h">
       <Filter>ソース ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FallSphere.h">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TurretScene.h">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Turret.h">
+      <Filter>ソース ファイル\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
