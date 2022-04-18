@@ -134,6 +134,9 @@
     <ClCompile Include="effect\Easing.cpp">
       <Filter>ソース ファイル\effect\easing</Filter>
     </ClCompile>
+    <ClCompile Include="3d\FbxLoader.cpp">
+      <Filter>ソース ファイル\3d\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="scene\BaseScene.h">
       <Filter>ソース ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="3d\FbxLoader.h">
+      <Filter>ソース ファイル\3d\object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

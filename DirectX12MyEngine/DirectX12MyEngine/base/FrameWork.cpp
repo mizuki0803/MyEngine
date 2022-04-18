@@ -2,6 +2,7 @@
 #include "Object3d.h"
 #include "ParticleManager.h"
 #include "LightGroup.h"
+#include "FbxLoader.h"
 
 void FrameWork::Run()
 {
@@ -60,6 +61,9 @@ void FrameWork::Initialize()
 	//Object3d共通初期化処理
 	Object3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 
+	//FBXLoader初期化
+	FbxLoader::GetInstance()->Initialize(dxbase->GetDevice());
+
 	//ライト共通初期化処理
 	LightGroup::StaticInitialize(dxbase->GetDevice());
 
@@ -71,6 +75,9 @@ void FrameWork::Finalize()
 {
 	//シーン工場解放
 	delete sceneFactory;
+
+	//FBXLoader解放
+	FbxLoader::GetInstance()->Finalize();
 
 	//audio解放
 	audio->Finalize();

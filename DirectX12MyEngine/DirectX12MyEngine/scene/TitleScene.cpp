@@ -5,6 +5,7 @@
 #include "SpriteCommon.h"
 #include "DebugText.h"
 #include "Easing.h"
+#include "FbxLoader.h"
 #include <cassert>
 #include <sstream>
 #include <iomanip>
@@ -127,6 +128,9 @@ void TitleScene::Initialize()
 	//当たり判定 レイ の初期値を設定
 	ray.start = XMVectorSet(0, 5, 0, 1);	//原点やや上
 	ray.dir = XMVectorSet(0, -1, 0, 0);		//下向き
+
+	//モデル名を指定してファイル読み込み
+	FbxLoader::GetInstance()->LoadModelFromFile("cube");
 }
 
 void TitleScene::Finalize()
