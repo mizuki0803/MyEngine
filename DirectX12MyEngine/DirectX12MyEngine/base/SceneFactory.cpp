@@ -1,6 +1,8 @@
 #include "SceneFactory.h"
 #include "TitleScene.h"
 #include "GameScene.h"
+#include "FrictionScene.h"
+#include "AirResistanceScene.h"
 
 BaseScene *SceneFactory::CreateScene(const std::string &sceneName)
 {
@@ -14,6 +16,14 @@ BaseScene *SceneFactory::CreateScene(const std::string &sceneName)
 	else if(sceneName == "GAME")
 	{
 		newScene = new GameScene();
+	}
+	else if (sceneName == "FRICTION")
+	{
+		newScene = new FrictionScene();
+	}
+	else if (sceneName == "AIR_RESISTANCE")
+	{
+		newScene = new AirResistanceScene();
 	}
 
 	return newScene;

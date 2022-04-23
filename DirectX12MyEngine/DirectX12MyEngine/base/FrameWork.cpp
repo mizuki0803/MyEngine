@@ -32,7 +32,7 @@ void FrameWork::Initialize()
 {
 	//ウインドウ作成
 	win = new WindowApp();
-	win->WindowCreate(L"クラス化って難しいよねぇ...");
+	win->WindowCreate(L"摩擦・空気抵抗");
 
 	//DirectX初期化
 	dxbase = new DirectXBase();
