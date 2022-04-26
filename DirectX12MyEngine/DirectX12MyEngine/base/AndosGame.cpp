@@ -12,7 +12,7 @@ void AndosGame::Initialize()
 	SceneManager::GetInstance()->SetSceneFactory(sceneFactory);
 
 	//シーンマネージャーに最初のシーンをセット
-	SceneManager::GetInstance()->ChangeScene("FRICTION");
+	SceneManager::GetInstance()->ChangeScene("AIR_RESISTANCE");
 }
 
 void AndosGame::Finalize()

@@ -72,13 +72,14 @@ void AirResistance::Turret()
 {
 	XMFLOAT3 pos = sphereObject->GetPosition();
 	const float gravity = 9.8f / 60;
+	const float gPower = gravity * mass;
 
 	//空気抵抗を計算
 	float resistance = vel.y;
 	float resiAccel = resistance / mass / 60;
 
 	//重力-空気抵抗で加速度を算出する
-	accel.y = -gravity - resiAccel;
+	accel.y = -gPower - resiAccel;
 
 	//速度に加速度を加算
 	vel.y += accel.y;
