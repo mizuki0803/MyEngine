@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 #include "Sprite.h"
 #include "Object3d.h"
+#include "FbxObject3d.h"
 #include "ParticleManager.h"
 #include "LightGroup.h"
 #include "Camera.h"
@@ -94,6 +95,10 @@ private: //ƒƒ“ƒo•Ï”
 	Object3d *objGround = nullptr;
 	Object3d *objSkydome = nullptr;
 	Object3d *objSphere = nullptr;
+
+	//FBXƒ‚ƒfƒ‹
+	FbxModel* fbxModel1 = nullptr;
+	FbxObject3d* fbxObject1 = nullptr;
 
 	//“–‚½‚è”»’è ‹…
 	Sphere sphere;

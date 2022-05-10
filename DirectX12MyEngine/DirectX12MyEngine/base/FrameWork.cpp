@@ -3,6 +3,7 @@
 #include "ParticleManager.h"
 #include "LightGroup.h"
 #include "FbxLoader.h"
+#include "FbxObject3d.h"
 
 void FrameWork::Run()
 {
@@ -63,6 +64,12 @@ void FrameWork::Initialize()
 
 	//FBXLoader初期化
 	FbxLoader::GetInstance()->Initialize(dxbase->GetDevice());
+
+	//FBXオブジェクト3d共通
+	FbxObject3d::SetDevice(dxbase->GetDevice());
+	FbxObject3d::SetCommandList(dxbase->GetCmdList());
+	//グラフィックスパイプライン生成
+	FbxObject3d::CreateGraphicsPipeline();
 
 	//ライト共通初期化処理
 	LightGroup::StaticInitialize(dxbase->GetDevice());

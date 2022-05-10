@@ -140,6 +140,9 @@
     <ClCompile Include="3d\FbxModel.cpp">
       <Filter>ソース ファイル\3d\object</Filter>
     </ClCompile>
+    <ClCompile Include="3d\FbxObject3d.cpp">
+      <Filter>ソース ファイル\3d\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -152,6 +155,9 @@
       <Filter>リソース ファイル</Filter>
     </None>
     <None Include="Resources\shaders\Obj.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\FBX.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>
@@ -181,6 +187,12 @@
       <Filter>リソース ファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ObjVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\FBXVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\FBXPS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>
@@ -273,6 +285,9 @@
       <Filter>ソース ファイル\3d\object</Filter>
     </ClInclude>
     <ClInclude Include="3d\FbxModel.h">
+      <Filter>ソース ファイル\3d\object</Filter>
+    </ClInclude>
+    <ClInclude Include="3d\FbxObject3d.h">
       <Filter>ソース ファイル\3d\object</Filter>
     </ClInclude>
   </ItemGroup>

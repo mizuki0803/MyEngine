@@ -26,11 +26,11 @@ void TitleScene::Initialize()
 	audio->ChangeVolume(soundVol);
 	//audio->PlayWave("BGM.wav", true);
 
-
 	//カメラ初期化
 	camera = new Camera();
 	camera->Initialize();
-
+	camera->SetTarget({ 0, 20, 0 });
+	camera->SetDistance(100.0f);
 
 	//ライト生成
 	lightGroup = LightGroup::Create();
@@ -91,12 +91,6 @@ void TitleScene::Initialize()
 	objSkydome = Object3d::Create(modelSkydome);
 	objSphere = Object3d::Create(modelSphere);
 
-	//モデル割り当て
-	/*objMan->SetModel(modelMan);
-	objGround->SetModel(modelGround);
-	objSkydome->SetModel(modelSkydome);
-	objSphere->SetModel(modelSphere);*/
-
 	//初期座標
 	objMan->SetPosition({ 0, 1, 0 });
 	objGround->SetPosition({ 0, -1, 0 });
@@ -109,6 +103,19 @@ void TitleScene::Initialize()
 	Object3d::SetCamera(camera);
 	//3Dオブジェクトにライトをセット
 	Object3d::SetLightGroup(lightGroup);
+
+
+	//FBXオブジェクトのカメラをセット
+	FbxObject3d::SetCamera(camera);
+
+	//モデル名を指定してファイル読み込み
+	//FbxLoader::GetInstance()->LoadModelFromFile("cube");
+	fbxModel1 = FbxLoader::GetInstance()->LoadModelFromFile("cube");
+
+	//3Dオブジェクト生成とFBXモデルのセット
+	fbxObject1 = new FbxObject3d;
+	fbxObject1->Initialize();
+	fbxObject1->SetFbxModel(fbxModel1);
 
 
 	//当たり判定 球 の初期値を設定
@@ -128,9 +135,6 @@ void TitleScene::Initialize()
 	//当たり判定 レイ の初期値を設定
 	ray.start = XMVectorSet(0, 5, 0, 1);	//原点やや上
 	ray.dir = XMVectorSet(0, -1, 0, 0);		//下向き
-
-	//モデル名を指定してファイル読み込み
-	FbxLoader::GetInstance()->LoadModelFromFile("cube");
 }
 
 void TitleScene::Finalize()
@@ -160,6 +164,10 @@ void TitleScene::Finalize()
 	delete objGround;
 	delete objSkydome;
 	delete objSphere;
+
+	//FBXオブジェクト解放
+	delete fbxModel1;
+	delete fbxObject1;
 }
 
 void TitleScene::Update()
@@ -498,6 +506,8 @@ void TitleScene::Update()
 	objSkydome->Update();
 	objSphere->Update();
 
+	fbxObject1->Update();
+
 
 	//スプライト更新
 	sprite->Update();
@@ -533,6 +543,8 @@ void TitleScene::Draw()
 	objGround->Draw();
 	objSkydome->Draw();
 	objSphere->Draw();
+
+	fbxObject1->Draw();
 
 
 	///-------Object3d描画ここまで-------///
