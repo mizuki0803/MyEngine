@@ -31,19 +31,19 @@ public://サブクラス
 public://メンバ関数
 
 	//getter
-	inline const XMVECTOR &GetDir() { return dir; }
-	inline const XMFLOAT3 &GetCasterPos() { return casterPos; }
+	inline const XMVECTOR& GetDir() { return dir; }
+	inline const XMFLOAT3& GetCasterPos() { return casterPos; }
 	inline const float GetDistanceCasterLight() { return distanceCasterLight; }
-	inline const XMFLOAT3 &GetAtten() { return atten; }
-	inline const XMFLOAT2 &GetFactorAngleCos() { return factorAngleCos; }
+	inline const XMFLOAT3& GetAtten() { return atten; }
+	inline const XMFLOAT2& GetFactorAngleCos() { return factorAngleCos; }
 	inline const bool GetActive() { return active; }
 
 	//setter
-	inline void SetDir(const XMVECTOR &dir) { this->dir = DirectX::XMVector3Normalize(dir); }
-	inline void SetCasterPos(const XMFLOAT3 &casterPos) { this->casterPos = casterPos; }
+	inline void SetDir(const XMVECTOR& dir) { this->dir = DirectX::XMVector3Normalize(dir); }
+	inline void SetCasterPos(const XMFLOAT3& casterPos) { this->casterPos = casterPos; }
 	inline void SetDistanceCasterLight(float distanceCasterLight) { this->distanceCasterLight = distanceCasterLight; }
-	inline void SetAtten(const XMFLOAT3 &atten) { this->atten = atten; }
-	inline void SetFactorAngleCos(const XMFLOAT2 &factorAngleCos) { 
+	inline void SetAtten(const XMFLOAT3& atten) { this->atten = atten; }
+	inline void SetFactorAngleCos(const XMFLOAT2& factorAngleCos) {
 		this->factorAngleCos.x = cosf(DirectX::XMConvertToRadians(factorAngleCos.x));
 		this->factorAngleCos.y = cosf(DirectX::XMConvertToRadians(factorAngleCos.y));
 	}

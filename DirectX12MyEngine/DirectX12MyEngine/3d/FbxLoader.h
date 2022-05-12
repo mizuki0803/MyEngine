@@ -88,7 +88,7 @@ private:
 
 private:
 	//デバイス
-	ID3D12Device* device =  nullptr;
+	ID3D12Device* device = nullptr;
 	//FBXマネージャー
 	FbxManager* fbxManager = nullptr;
 	//FBXインポーター

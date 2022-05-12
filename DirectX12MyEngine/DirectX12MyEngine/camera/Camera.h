@@ -46,29 +46,29 @@ public:
 	/// ベクトルによる移動
 	/// </summary>
 	/// <param name="move">移動量</param>
-	void MoveVector(XMFLOAT3 move);
+	void MoveVector(const XMFLOAT3& move);
 
 	/// <summary>
 	/// ベクトルによる視点移動
 	/// </summary>
 	/// <param name="move">移動量</param>
-	void MoveEyeVector(XMFLOAT3 move);
+	void MoveEyeVector(const XMFLOAT3& move);
 
 
 	//getter
-	const XMFLOAT3 &GetEye() { return eye; }
-	const XMFLOAT3 &GetTarget() { return target; }
-	const XMMATRIX &GetMatView() { return matView; }
-	const XMMATRIX &GetMatProjection() { return matProjection; }
-	const XMMATRIX &GetMatBillboard() { return matBillboard; }
-	const XMMATRIX &GetMatBillboardY() { return matBillboardY; }
-	const XMFLOAT3 &GetAngle() { return angle; }
+	const XMFLOAT3& GetEye() { return eye; }
+	const XMFLOAT3& GetTarget() { return target; }
+	const XMMATRIX& GetMatView() { return matView; }
+	const XMMATRIX& GetMatProjection() { return matProjection; }
+	const XMMATRIX& GetMatBillboard() { return matBillboard; }
+	const XMMATRIX& GetMatBillboardY() { return matBillboardY; }
+	const XMFLOAT3& GetAngle() { return angle; }
 	const float GetDistance() { return distance; }
 
 	//setter
-	void SetEye(const XMFLOAT3 &eye) { this->eye = eye; dirtyView = true; }
-	void SetTarget(const XMFLOAT3 &target) { this->target = target; dirtyView = true; }
-	void SetAngle(const XMFLOAT3 &angle) { this->angle = angle; dirtyAngle = true; }
+	void SetEye(const XMFLOAT3& eye) { this->eye = eye; dirtyView = true; }
+	void SetTarget(const XMFLOAT3& target) { this->target = target; dirtyView = true; }
+	void SetAngle(const XMFLOAT3& angle) { this->angle = angle; dirtyAngle = true; }
 	void SetDistance(const float distance) { this->distance = distance; dirtyAngle = true; }
 
 private:

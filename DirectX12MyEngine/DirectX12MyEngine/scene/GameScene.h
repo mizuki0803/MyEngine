@@ -46,10 +46,10 @@ public: //メンバ関数
 
 private: //メンバ変数
 	//カメラ
-	Camera *camera = nullptr;
+	Camera* camera = nullptr;
 
 	//ライト
-	LightGroup *lightGroup = nullptr;
+	LightGroup* lightGroup = nullptr;
 	float ambientColor0[3] = { 1,1,1 };
 	// 光線方向初期値
 	float lightDir0[3] = { 0,0,1 };
@@ -76,24 +76,24 @@ private: //メンバ変数
 	float circleShadowFactorAngle[2] = { 0.0f, 0.5f };
 
 	//パーティクル
-	ParticleManager *particleMan = nullptr;
+	ParticleManager* particleMan = nullptr;
 
 	//スプライト
-	Sprite *sprite = nullptr;
-	Sprite *sprite2 = nullptr;
+	Sprite* sprite = nullptr;
+	Sprite* sprite2 = nullptr;
 
 	//モデルデータ
-	Model *modelMan = nullptr;
-	Model *modelSkydome = nullptr;
-	Model *modelGround = nullptr;
-	Model *modelSphere = nullptr;
-	Model *modelFighter = nullptr;
+	Model* modelMan = nullptr;
+	Model* modelSkydome = nullptr;
+	Model* modelGround = nullptr;
+	Model* modelSphere = nullptr;
+	Model* modelFighter = nullptr;
 
 	//3Dオブジェクト
-	Object3d *objMan = nullptr;
-	Object3d *objGround = nullptr;
-	Object3d *objSkydome = nullptr;
-	Object3d *objSphere = nullptr;
+	Object3d* objMan = nullptr;
+	Object3d* objGround = nullptr;
+	Object3d* objSkydome = nullptr;
+	Object3d* objSphere = nullptr;
 
 	//当たり判定 球
 	Sphere sphere;

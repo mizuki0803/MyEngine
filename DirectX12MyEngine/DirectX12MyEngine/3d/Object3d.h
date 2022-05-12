@@ -37,7 +37,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="dev">デバイス</param>
 	/// <param name="cmdList">コマンドリスト</param>
-	static void Object3dCommon(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList);
+	static void Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 
 	/// <summary>
 	/// パイプライン生成
@@ -54,7 +54,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>object3d</returns>
-	static Object3d *Create(Model *model);
+	static Object3d* Create(Model* model);
 
 
 public: //メンバ関数
@@ -75,29 +75,29 @@ public: //メンバ関数
 	void Draw();
 
 	//getter
-	const XMFLOAT3 &GetPosition() { return position; }
-	const XMFLOAT3 &GetRotation() { return rotation; }
-	const XMFLOAT3 &GetScale() { return scale; }
+	const XMFLOAT3& GetPosition() { return position; }
+	const XMFLOAT3& GetRotation() { return rotation; }
+	const XMFLOAT3& GetScale() { return scale; }
 
 	//setter
-	void SetPosition(const XMFLOAT3 &position) { this->position = position; }
-	void SetRotation(const XMFLOAT3 &rotation) { this->rotation = rotation; }
-	void SetScale(const XMFLOAT3 &scale) { this->scale = scale; }
-	void SetModel(Model *model) { this->model = model; }
-	static void SetLightGroup(LightGroup *lightGroup) { Object3d::lightGroup = lightGroup; }
-	static void SetCamera(Camera *camera) { Object3d::camera = camera; }
+	void SetPosition(const XMFLOAT3& position) { this->position = position; }
+	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
+	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
+	void SetModel(Model* model) { this->model = model; }
+	static void SetLightGroup(LightGroup* lightGroup) { Object3d::lightGroup = lightGroup; }
+	static void SetCamera(Camera* camera) { Object3d::camera = camera; }
 
 private: //静的メンバ変数
 	//デバイス
-	static ID3D12Device *dev;
+	static ID3D12Device* dev;
 	//コマンドリスト
-	static ID3D12GraphicsCommandList *cmdList;
+	static ID3D12GraphicsCommandList* cmdList;
 	//パイプラインセット
 	static PipelineSet pipelineSet;
 	//ライト
-	static LightGroup *lightGroup;
+	static LightGroup* lightGroup;
 	//カメラ
-	static Camera *camera;
+	static Camera* camera;
 
 private: //メンバ変数
 	//定数バッファ
@@ -110,7 +110,7 @@ private: //メンバ変数
 	//ワールド変換行列
 	XMMATRIX matWorld;
 	//親子構造
-	Object3d *parent = nullptr;
+	Object3d* parent = nullptr;
 	//モデル
-	Model *model = nullptr;
+	Model* model = nullptr;
 };

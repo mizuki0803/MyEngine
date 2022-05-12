@@ -18,6 +18,6 @@ public:
 	/// </summary>
 	/// <param name="sceneName">シーン名</param>
 	/// <returns>生成したシーン</returns>
-	virtual BaseScene *CreateScene(const std::string &sceneName) = 0;
+	virtual BaseScene* CreateScene(const std::string& sceneName) = 0;
 };
 

@@ -6,7 +6,7 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-void DirectXBase::Initialize(WindowApp *win)
+void DirectXBase::Initialize(WindowApp* win)
 {
 	assert(win);
 
@@ -81,7 +81,7 @@ void DirectXBase::GraphicsCommandRear()
 	cmdList->Close();
 
 	//コマンドリストの実行
-	ID3D12CommandList *cmdLists[] = { cmdList.Get() };	//コマンドリストの配列
+	ID3D12CommandList* cmdLists[] = { cmdList.Get() };	//コマンドリストの配列
 	cmdQueue->ExecuteCommandLists(1, cmdLists);
 
 	//バッファをフリップ（裏表の入れ替え）

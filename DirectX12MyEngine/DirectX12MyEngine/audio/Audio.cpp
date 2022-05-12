@@ -3,14 +3,14 @@
 #include <fstream>
 
 
-Audio *Audio::GetInstance()
+Audio* Audio::GetInstance()
 {
 	static Audio instance;
 
 	return &instance;
 }
 
-void Audio::Initialize(const std::string &directoryPath)
+void Audio::Initialize(const std::string& directoryPath)
 {
 	this->directoryPath = directoryPath;
 
@@ -41,7 +41,7 @@ void Audio::Finalize()
 
 }
 
-void Audio::LoadWave(const std::string &filename)
+void Audio::LoadWave(const std::string& filename)
 {
 	//重複読み込みの場合何もせずに抜ける
 	if (soundDatas.find(filename) != soundDatas.end())
@@ -61,7 +61,7 @@ void Audio::LoadWave(const std::string &filename)
 
 	//RIFFヘッダーの読み込み
 	RiffHeader riff;
-	file.read((char *)&riff, sizeof(riff));
+	file.read((char*)&riff, sizeof(riff));
 	//ファイルがRIFFかチェック
 	if (strncmp(riff.chunk.id, "RIFF", 4) != 0)
 	{
@@ -76,7 +76,7 @@ void Audio::LoadWave(const std::string &filename)
 	//Formatチャンクの読み込み
 	FormatChunk format = {};
 	//チャンクヘッダーの確認
-	file.read((char *)&format, sizeof(ChunkHeader));
+	file.read((char*)&format, sizeof(ChunkHeader));
 	if (strncmp(format.chunk.id, "fmt ", 4) != 0)
 	{
 		assert(0);
@@ -84,18 +84,18 @@ void Audio::LoadWave(const std::string &filename)
 
 	//チャンク本体の読み込み
 	assert(format.chunk.size <= sizeof(format.fmt));
-	file.read((char *)&format.fmt, format.chunk.size);
+	file.read((char*)&format.fmt, format.chunk.size);
 
 	//Dataチャンクの読み込み
 	ChunkHeader data;
-	file.read((char *)&data, sizeof(data));
+	file.read((char*)&data, sizeof(data));
 	//JUNKチャンクを検出した場合
 	if (strncmp(data.id, "JUNK", 4) == 0 || strncmp(data.id, "LIST", 4) == 0)
 	{
 		//読み取り位置をJUNKチャンクの終わりまで進める
 		file.seekg(data.size, std::ios_base::cur);
 		//再読み込み
-		file.read((char *)&data, sizeof(data));
+		file.read((char*)&data, sizeof(data));
 	}
 
 	//,wavデータの読み込み
@@ -105,7 +105,7 @@ void Audio::LoadWave(const std::string &filename)
 	}
 
 	//Dataチャンクのデータ部（波形データ）の読み込み
-	char *pBuffer = new char[data.size];
+	char* pBuffer = new char[data.size];
 	file.read(pBuffer, data.size);
 
 	//Waveファイルを閉じる
@@ -115,14 +115,14 @@ void Audio::LoadWave(const std::string &filename)
 	SoundData soundData = {};
 
 	soundData.wfex = format.fmt;
-	soundData.pBuffer = reinterpret_cast<BYTE *>(pBuffer);
+	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
 	soundData.bufferSize = data.size;
 
 	//サウンドデータを連想配列に格納
 	soundDatas.insert(std::make_pair(filename, soundData));
 }
 
-void Audio::SoundDataUnload(SoundData *soundData)
+void Audio::SoundDataUnload(SoundData* soundData)
 {
 	//バッファのメモリを解放
 	delete[] soundData->pBuffer;
@@ -132,7 +132,7 @@ void Audio::SoundDataUnload(SoundData *soundData)
 	soundData->wfex = {};
 }
 
-void Audio::PlayWave(std::string filename, bool isLoop)
+void Audio::PlayWave(const std::string& filename, const bool isLoop)
 {
 	HRESULT result;
 
@@ -140,7 +140,7 @@ void Audio::PlayWave(std::string filename, bool isLoop)
 	//未読み込みの検出
 	assert(it != soundDatas.end());
 	//サウンドデータの参照を取得
-	SoundData &soundData = it->second;
+	SoundData& soundData = it->second;
 
 	//波形フォーマットを元にSourceVoiceの生成
 	result = xAudio2->CreateSourceVoice(&soundData.pSourceVoice, &soundData.wfex);
@@ -170,7 +170,7 @@ void Audio::PlayWave(std::string filename, bool isLoop)
 	result = soundData.pSourceVoice->Start();
 }
 
-void Audio::StopWave(std::string filename)
+void Audio::StopWave(const std::string& filename)
 {
 	HRESULT result;
 
@@ -178,7 +178,7 @@ void Audio::StopWave(std::string filename)
 	//未読み込みの検出
 	assert(it != soundDatas.end());
 	//サウンドデータの参照を取得
-	SoundData &soundData = it->second;
+	SoundData& soundData = it->second;
 
 	//soundVoiceがnullptrの場合何もせずに抜ける
 	if (soundData.pSourceVoice == nullptr)
@@ -200,7 +200,7 @@ void Audio::StopWave(std::string filename)
 	assert(SUCCEEDED(result));
 }
 
-void Audio::ChangeVolume(float volume)
+void Audio::ChangeVolume(const float volume)
 {
 	masterVoice->SetVolume(volume);
 }

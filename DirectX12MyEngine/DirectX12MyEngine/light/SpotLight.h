@@ -33,19 +33,19 @@ public://サブクラス
 public://メンバ関数
 
 	//getter
-	inline const XMVECTOR &GetLightDir() { return lightdir; }
-	inline const XMFLOAT3 &GetLightPos() { return lightpos; }
-	inline const XMFLOAT3 &GetLightColor() { return lightcolor; }
-	inline const XMFLOAT3 &GetLightAtten() { return lightatten; }
-	inline const XMFLOAT2 &GetLightFactorAngleCos() { return lightFactorAngleCos; }
+	inline const XMVECTOR& GetLightDir() { return lightdir; }
+	inline const XMFLOAT3& GetLightPos() { return lightpos; }
+	inline const XMFLOAT3& GetLightColor() { return lightcolor; }
+	inline const XMFLOAT3& GetLightAtten() { return lightatten; }
+	inline const XMFLOAT2& GetLightFactorAngleCos() { return lightFactorAngleCos; }
 	inline const bool GetActive() { return active; }
 
 	//setter
-	inline void SetLightDir(const XMVECTOR &lightdir) { this->lightdir = DirectX::XMVector3Normalize(lightdir); }
-	inline void SetLightPos(const XMFLOAT3 &lightpos) { this->lightpos = lightpos; }
-	inline void SetLightColor(const XMFLOAT3 &lightcolor) { this->lightcolor = lightcolor; }
-	inline void SetLightAtten(const XMFLOAT3 &lightatten) { this->lightatten = lightatten; }
-	inline void SetLightFactorAngleCos(const XMFLOAT2 &lightFactorAngleCos) { 
+	inline void SetLightDir(const XMVECTOR& lightdir) { this->lightdir = DirectX::XMVector3Normalize(lightdir); }
+	inline void SetLightPos(const XMFLOAT3& lightpos) { this->lightpos = lightpos; }
+	inline void SetLightColor(const XMFLOAT3& lightcolor) { this->lightcolor = lightcolor; }
+	inline void SetLightAtten(const XMFLOAT3& lightatten) { this->lightatten = lightatten; }
+	inline void SetLightFactorAngleCos(const XMFLOAT2& lightFactorAngleCos) {
 		this->lightFactorAngleCos.x = cosf(DirectX::XMConvertToRadians(lightFactorAngleCos.x));
 		this->lightFactorAngleCos.y = cosf(DirectX::XMConvertToRadians(lightFactorAngleCos.y));
 	}

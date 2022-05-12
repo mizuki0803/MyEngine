@@ -27,13 +27,13 @@ public: // サブクラス
 public: //メンバ関数
 
 	//getter
-	inline const XMVECTOR &GetLightDir() { return lightdir; }
-	inline const XMFLOAT3 &GetLightColor() { return lightcolor; }
+	inline const XMVECTOR& GetLightDir() { return lightdir; }
+	inline const XMFLOAT3& GetLightColor() { return lightcolor; }
 	inline const bool GetActive() { return active; }
 
 	//setter
-	inline void SetLightDir(const XMVECTOR &lightdir) { this->lightdir = DirectX::XMVector3Normalize(lightdir); }
-	inline void SetLightColor(const XMFLOAT3 &lightcolor) { this->lightcolor = lightcolor; }
+	inline void SetLightDir(const XMVECTOR& lightdir) { this->lightdir = DirectX::XMVector3Normalize(lightdir); }
+	inline void SetLightColor(const XMFLOAT3& lightcolor) { this->lightcolor = lightcolor; }
 	inline void SetActive(bool active) { this->active = active; }
 
 private: // メンバ変数

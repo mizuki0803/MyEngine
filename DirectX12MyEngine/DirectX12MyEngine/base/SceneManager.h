@@ -14,9 +14,9 @@ private: //シングルトン化
 	~SceneManager();
 public:
 	//コピーコンストラクタを無効化
-	SceneManager(const SceneManager &sceneManager) = delete;
+	SceneManager(const SceneManager& sceneManager) = delete;
 	//代入演算子を無効化
-	void operator = (const SceneManager &sceneManager) = delete;
+	void operator = (const SceneManager& sceneManager) = delete;
 
 
 public: //メンバ関数
@@ -24,7 +24,7 @@ public: //メンバ関数
 	/// インスタンスを取得
 	/// </summary>
 	/// <returns>シーンマネージャー</returns>
-	static SceneManager *GetInstance();
+	static SceneManager* GetInstance();
 
 	/// <summary>
 	/// 更新
@@ -40,20 +40,20 @@ public: //メンバ関数
 	/// 次のシーンをセット
 	/// </summary>
 	/// <param name="sceneName">次のシーン</param>
-	void ChangeScene(const std::string &sceneName);
+	void ChangeScene(const std::string& sceneName);
 
 	/// <summary>
 	/// シーン工場をセット
 	/// </summary>
 	/// <param name="sceneFactory">シーン工場</param>
-	void SetSceneFactory(AbstractSceneFactory *sceneFactory) { this->sceneFactory = sceneFactory; }
+	void SetSceneFactory(AbstractSceneFactory* sceneFactory) { this->sceneFactory = sceneFactory; }
 
 private: //メンバ変数
 	//今のシーン
-	BaseScene *scene = nullptr;
+	BaseScene* scene = nullptr;
 	//次のシーン
-	BaseScene *nextScene = nullptr;
+	BaseScene* nextScene = nullptr;
 	//シーン工場
-	AbstractSceneFactory *sceneFactory = nullptr;
+	AbstractSceneFactory* sceneFactory = nullptr;
 };
 

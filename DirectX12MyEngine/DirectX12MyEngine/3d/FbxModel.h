@@ -47,7 +47,7 @@ public: //フレンドクラス
 
 public: //サブクラス
 	//頂点データ構造体
-	struct VertexPosNormalUv 
+	struct VertexPosNormalUv
 	{
 		DirectX::XMFLOAT3 pos;		//xyz座標
 		DirectX::XMFLOAT3 normal;	//法線ベクトル

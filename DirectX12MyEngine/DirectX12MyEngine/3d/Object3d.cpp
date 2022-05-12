@@ -13,14 +13,14 @@ using namespace Microsoft::WRL;
 
 using namespace std;
 
-ID3D12Device *Object3d::dev = nullptr;
-ID3D12GraphicsCommandList *Object3d::cmdList = nullptr;
+ID3D12Device* Object3d::dev = nullptr;
+ID3D12GraphicsCommandList* Object3d::cmdList = nullptr;
 PipelineSet Object3d::pipelineSet;
 LightGroup* Object3d::lightGroup = nullptr;
 Camera* Object3d::camera = nullptr;
 
 
-void Object3d::Object3dCommon(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList)
+void Object3d::Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 {
 	//nullptrチェック
 	assert(dev);
@@ -60,7 +60,7 @@ void Object3d::CreatePipeline()
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char *)errorBlob->GetBufferPointer(),
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -86,7 +86,7 @@ void Object3d::CreatePipeline()
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char *)errorBlob->GetBufferPointer(),
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -130,7 +130,7 @@ void Object3d::CreatePipeline()
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
 	//レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC &blenddesc = gpipeline.BlendState.RenderTarget[0];
+	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = gpipeline.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	//環境設定
 
 	//共通設定
@@ -224,10 +224,10 @@ void Object3d::DrawPrev()
 	cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
 }
 
-Object3d *Object3d::Create(Model *model)
+Object3d* Object3d::Create(Model* model)
 {
 	// 3Dオブジェクトのインスタンスを生成
-	Object3d *object3d = new Object3d();
+	Object3d* object3d = new Object3d();
 	if (object3d == nullptr) {
 		return nullptr;
 	}
@@ -303,8 +303,8 @@ void Object3d::Update()
 	const XMFLOAT3& cameraPos = camera->GetEye();
 
 	//定数バッファへのデータ転送
-	ConstBufferDataB0 *constMap = nullptr;
-	if (SUCCEEDED(constBuffB0->Map(0, nullptr, (void **)&constMap)))
+	ConstBufferDataB0* constMap = nullptr;
+	if (SUCCEEDED(constBuffB0->Map(0, nullptr, (void**)&constMap)))
 	{
 		constMap->viewproj = matViewProjection;
 		constMap->world = matWorld;
@@ -316,11 +316,11 @@ void Object3d::Update()
 void Object3d::Draw()
 {
 	//モデルがセットされていなければ描画をスキップ
-	if(model == nullptr) return;
+	if (model == nullptr) return;
 
 	//定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
-	
+
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);
 

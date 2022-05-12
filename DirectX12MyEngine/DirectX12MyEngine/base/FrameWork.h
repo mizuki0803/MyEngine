@@ -50,17 +50,17 @@ protected: //メンバ変数
 	//ゲームループ終了リクエスト
 	bool isEndRequest = false;
 	//ウィンドウアプリケーション
-	WindowApp *win = nullptr;
+	WindowApp* win = nullptr;
 	//DirectX基盤
-	DirectXBase *dxbase = nullptr;
+	DirectXBase* dxbase = nullptr;
 	//入力
-	Input *input = nullptr;
+	Input* input = nullptr;
 	//音
-	Audio *audio = nullptr;
+	Audio* audio = nullptr;
 	//スプライトの共通部分
-	SpriteCommon *spriteCommon = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
 	//デバッグテキスト
-	DebugText *debugText = nullptr;
+	DebugText* debugText = nullptr;
 	//シーン工場
-	AbstractSceneFactory *sceneFactory = nullptr;
+	AbstractSceneFactory* sceneFactory = nullptr;
 };

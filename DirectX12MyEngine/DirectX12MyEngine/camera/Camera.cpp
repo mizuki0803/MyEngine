@@ -153,7 +153,7 @@ void Camera::UpdateMatProjection()
 	);
 }
 
-void Camera::MoveVector(XMFLOAT3 move)
+void Camera::MoveVector(const XMFLOAT3& move)
 {
 	XMFLOAT3 eye_moved = GetEye();
 	XMFLOAT3 target_moved = GetTarget();
@@ -170,7 +170,7 @@ void Camera::MoveVector(XMFLOAT3 move)
 	SetTarget(target_moved);
 }
 
-void Camera::MoveEyeVector(XMFLOAT3 move)
+void Camera::MoveEyeVector(const XMFLOAT3& move)
 {
 	XMFLOAT3 eye_moved = GetEye();
 

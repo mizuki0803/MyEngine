@@ -4,7 +4,7 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
-Input *Input::GetInstance()
+Input* Input::GetInstance()
 {
 	static Input instance;
 
@@ -17,7 +17,7 @@ BOOL CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE ipddi, LPVOID pvRef)
 	return DIENUM_CONTINUE;
 }
 
-void Input::Initialize(WindowApp *win)
+void Input::Initialize(WindowApp* win)
 {
 	//借りてきたWindowAppのインスタンスを記録
 	this->win = win;
@@ -26,7 +26,7 @@ void Input::Initialize(WindowApp *win)
 
 	//DirectInputのインスタンス生成
 	result = DirectInput8Create(
-		win->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void **)&dinput, nullptr);
+		win->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&dinput, nullptr);
 
 
 	///-----------------キー入力初期化-----------------///
@@ -147,7 +147,7 @@ void Input::Update()
 	result = devgamepad->GetDeviceState(sizeof(pad), &pad);
 }
 
-bool Input::PushKey(BYTE keyNumber)
+bool Input::PushKey(const BYTE keyNumber)
 {
 	//指定のキーを押していればtrueを返す
 	if (key[keyNumber]) {
@@ -157,7 +157,7 @@ bool Input::PushKey(BYTE keyNumber)
 	return false;
 }
 
-bool Input::TriggerKey(BYTE keyNumber)
+bool Input::TriggerKey(const BYTE keyNumber)
 {
 	//指定のキーを押した瞬間ならtrueを返す
 	if (key[keyNumber] && !keyPre[keyNumber]) {
@@ -167,7 +167,7 @@ bool Input::TriggerKey(BYTE keyNumber)
 	return false;
 }
 
-bool Input::ReleaseKey(BYTE keyNumber)
+bool Input::ReleaseKey(const BYTE keyNumber)
 {
 	//指定のキーを離した瞬間ならtrueを返す
 	if (!key[keyNumber] && keyPre[keyNumber]) {

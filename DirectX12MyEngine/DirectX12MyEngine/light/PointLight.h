@@ -29,15 +29,15 @@ public://サブクラス
 public://メンバ関数
 
 	//getter
-	inline const XMFLOAT3 &GetLightPos() { return lightpos; }
-	inline const XMFLOAT3 &GetLightColor() { return lightcolor; }
-	inline const XMFLOAT3 &GetLightAtten() { return lightatten; }
+	inline const XMFLOAT3& GetLightPos() { return lightpos; }
+	inline const XMFLOAT3& GetLightColor() { return lightcolor; }
+	inline const XMFLOAT3& GetLightAtten() { return lightatten; }
 	inline const bool GetActive() { return active; }
 
 	//setter
-	inline void SetLightPos(const XMFLOAT3 &lightpos) { this->lightpos = lightpos; }
-	inline void SetLightColor(const XMFLOAT3 &lightcolor) { this->lightcolor = lightcolor; }
-	inline void SetLightAtten(const XMFLOAT3 &lightatten) { this->lightatten = lightatten; }
+	inline void SetLightPos(const XMFLOAT3& lightpos) { this->lightpos = lightpos; }
+	inline void SetLightColor(const XMFLOAT3& lightcolor) { this->lightcolor = lightcolor; }
+	inline void SetLightAtten(const XMFLOAT3& lightatten) { this->lightatten = lightatten; }
 	inline void SetActive(bool active) { this->active = active; }
 
 private://メンバ変数

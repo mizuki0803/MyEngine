@@ -3,9 +3,9 @@
 
 using namespace DirectX;
 
-ID3D12Device *LightGroup::device = nullptr;
+ID3D12Device* LightGroup::device = nullptr;
 
-void LightGroup::StaticInitialize(ID3D12Device *device)
+void LightGroup::StaticInitialize(ID3D12Device* device)
 {
 	//再初期化チェック
 	assert(!LightGroup::device);
@@ -15,10 +15,10 @@ void LightGroup::StaticInitialize(ID3D12Device *device)
 	LightGroup::device = device;
 }
 
-LightGroup *LightGroup::Create()
+LightGroup* LightGroup::Create()
 {
 	//3Dオブジェクトのインスタンスを生成
-	LightGroup *instance = new LightGroup();
+	LightGroup* instance = new LightGroup();
 	//初期化
 	instance->Initialize();
 	//生成したインスタンスを返す
@@ -49,8 +49,8 @@ void LightGroup::TransferConstBuffer()
 {
 	HRESULT result;
 	//定数バッファへデータ転送
-	ConstBufferData *constMap = nullptr;
-	result = constBuff->Map(0, nullptr, (void **)&constMap);
+	ConstBufferData* constMap = nullptr;
+	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
 		constMap->ambientColor = ambientColor;
 		//平行光源
@@ -131,7 +131,7 @@ void LightGroup::DefaultLightSetting()
 	dirLights[2].SetLightDir({ -0.5f, +0.1f, -0.2f, 0 });
 }
 
-void LightGroup::SetAmbientColor(const XMFLOAT3 &color)
+void LightGroup::SetAmbientColor(const XMFLOAT3& color)
 {
 	ambientColor = color;
 	dirty = true;
@@ -144,7 +144,7 @@ void LightGroup::SetDirLightActive(int index, bool active)
 	dirLights[index].SetActive(active);
 }
 
-void LightGroup::SetDirLightDir(int index, const XMVECTOR &lightdir)
+void LightGroup::SetDirLightDir(int index, const XMVECTOR& lightdir)
 {
 	assert(0 <= index && index < DirLightNum);
 
@@ -152,7 +152,7 @@ void LightGroup::SetDirLightDir(int index, const XMVECTOR &lightdir)
 	dirty = true;
 }
 
-void LightGroup::SetDirLightColor(int index, const XMFLOAT3 &lightcolor)
+void LightGroup::SetDirLightColor(int index, const XMFLOAT3& lightcolor)
 {
 	assert(0 <= index && index < DirLightNum);
 
@@ -167,7 +167,7 @@ void LightGroup::SetPointLightActive(int index, bool active)
 	pointLights[index].SetActive(active);
 }
 
-void LightGroup::SetPointLightPos(int index, const XMFLOAT3 &lightpos)
+void LightGroup::SetPointLightPos(int index, const XMFLOAT3& lightpos)
 {
 	assert(0 <= index && index < PointLightNum);
 
@@ -175,7 +175,7 @@ void LightGroup::SetPointLightPos(int index, const XMFLOAT3 &lightpos)
 	dirty = true;
 }
 
-void LightGroup::SetPointLightColor(int index, const XMFLOAT3 &lightcolor)
+void LightGroup::SetPointLightColor(int index, const XMFLOAT3& lightcolor)
 {
 	assert(0 <= index && index < PointLightNum);
 
@@ -183,7 +183,7 @@ void LightGroup::SetPointLightColor(int index, const XMFLOAT3 &lightcolor)
 	dirty = true;
 }
 
-void LightGroup::SetPointLightAtten(int index, const XMFLOAT3 &lightAtten)
+void LightGroup::SetPointLightAtten(int index, const XMFLOAT3& lightAtten)
 {
 	assert(0 <= index && index < PointLightNum);
 
@@ -198,7 +198,7 @@ void LightGroup::SetSpotLightActive(int index, bool active)
 	spotLights[index].SetActive(active);
 }
 
-void LightGroup::SetSpotLightDir(int index, const XMVECTOR &lightdir)
+void LightGroup::SetSpotLightDir(int index, const XMVECTOR& lightdir)
 {
 	assert(0 <= index && index < SpotLightNum);
 
@@ -206,7 +206,7 @@ void LightGroup::SetSpotLightDir(int index, const XMVECTOR &lightdir)
 	dirty = true;
 }
 
-void LightGroup::SetSpotLightPos(int index, const XMFLOAT3 &lightpos)
+void LightGroup::SetSpotLightPos(int index, const XMFLOAT3& lightpos)
 {
 	assert(0 <= index && index < SpotLightNum);
 
@@ -214,7 +214,7 @@ void LightGroup::SetSpotLightPos(int index, const XMFLOAT3 &lightpos)
 	dirty = true;
 }
 
-void LightGroup::SetSpotLightColor(int index, const XMFLOAT3 &lightcolor)
+void LightGroup::SetSpotLightColor(int index, const XMFLOAT3& lightcolor)
 {
 	assert(0 <= index && index < SpotLightNum);
 
@@ -222,7 +222,7 @@ void LightGroup::SetSpotLightColor(int index, const XMFLOAT3 &lightcolor)
 	dirty = true;
 }
 
-void LightGroup::SetSpotLightAtten(int index, const XMFLOAT3 &lightAtten)
+void LightGroup::SetSpotLightAtten(int index, const XMFLOAT3& lightAtten)
 {
 	assert(0 <= index && index < SpotLightNum);
 
@@ -230,7 +230,7 @@ void LightGroup::SetSpotLightAtten(int index, const XMFLOAT3 &lightAtten)
 	dirty = true;
 }
 
-void LightGroup::SetSpotLightFactorAngleCos(int index, const XMFLOAT2 &lightFactorAngleCos)
+void LightGroup::SetSpotLightFactorAngleCos(int index, const XMFLOAT2& lightFactorAngleCos)
 {
 	assert(0 <= index && index < SpotLightNum);
 
@@ -245,7 +245,7 @@ void LightGroup::SetCircleShadowActive(int index, bool active)
 	circleShadows[index].SetActive(active);
 }
 
-void LightGroup::SetCircleShadowCasterPos(int index, const XMFLOAT3 &casterPos)
+void LightGroup::SetCircleShadowCasterPos(int index, const XMFLOAT3& casterPos)
 {
 	assert(0 <= index && index < CircleShadowNum);
 
@@ -253,7 +253,7 @@ void LightGroup::SetCircleShadowCasterPos(int index, const XMFLOAT3 &casterPos)
 	dirty = true;
 }
 
-void LightGroup::SetCircleShadowDir(int index, const XMVECTOR &shadowDir)
+void LightGroup::SetCircleShadowDir(int index, const XMVECTOR& shadowDir)
 {
 	assert(0 <= index && index < CircleShadowNum);
 
@@ -269,7 +269,7 @@ void LightGroup::SetCircleShadowDistanceCasterLight(int index, float distanceCas
 	dirty = true;
 }
 
-void LightGroup::SetCircleShadowAtten(int index, const XMFLOAT3 &shadowAtten)
+void LightGroup::SetCircleShadowAtten(int index, const XMFLOAT3& shadowAtten)
 {
 	assert(0 <= index && index < CircleShadowNum);
 
@@ -277,7 +277,7 @@ void LightGroup::SetCircleShadowAtten(int index, const XMFLOAT3 &shadowAtten)
 	dirty = true;
 }
 
-void LightGroup::SetCircleShadowFactorAngleCos(int index, const XMFLOAT2 &shadowFactorAngleCos)
+void LightGroup::SetCircleShadowFactorAngleCos(int index, const XMFLOAT2& shadowFactorAngleCos)
 {
 	assert(0 <= index && index < CircleShadowNum);
 
@@ -294,7 +294,7 @@ void LightGroup::Update()
 	}
 }
 
-void LightGroup::Draw(ID3D12GraphicsCommandList *cmdList, UINT rootParameterIndex)
+void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParameterIndex)
 {
 	//定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(rootParameterIndex, constBuff->GetGPUVirtualAddress());

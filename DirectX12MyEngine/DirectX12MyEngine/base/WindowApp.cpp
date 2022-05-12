@@ -5,15 +5,15 @@ LRESULT WindowApp::windowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	//メッセージを分岐
 	switch (msg)
 	{
-		case WM_DESTROY:		//ウインドウが破棄された
-			PostQuitMessage(0);	//OSに対して、アプリの終了を伝える
-			return 0;
+	case WM_DESTROY:		//ウインドウが破棄された
+		PostQuitMessage(0);	//OSに対して、アプリの終了を伝える
+		return 0;
 	}
 
 	return DefWindowProc(hwnd, msg, wParam, lParam);	//標準の処理を行う
 }
 
-void WindowApp::WindowCreate(const wchar_t *titlename)
+void WindowApp::WindowCreate(const wchar_t* titlename)
 {
 	wndclass.cbSize = sizeof(WNDCLASSEX);
 	wndclass.lpfnWndProc = (WNDPROC)windowProc;			//ウインドウブロージャを設定

@@ -16,7 +16,7 @@ using namespace DirectX;
 void TitleScene::Initialize()
 {
 	//オーディオのインスタンスを取得
-	Audio *audio = Audio::GetInstance();
+	Audio* audio = Audio::GetInstance();
 	//サウンドデータ読み込み
 	audio->LoadWave("BGM.wav");
 	audio->LoadWave("BossDamage.wav");
@@ -53,7 +53,7 @@ void TitleScene::Initialize()
 	particleMan = ParticleManager::Create();
 
 	//スプライト共通部分のインスタンスを取得
-	SpriteCommon *spriteCommon = SpriteCommon::GetInstance();
+	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 	//スプライト用テクスチャ読み込み
 	spriteCommon->LoadTexture(1, "pad1.png");
 	spriteCommon->LoadTexture(2, "mario.jpg");
@@ -173,9 +173,9 @@ void TitleScene::Finalize()
 void TitleScene::Update()
 {
 	//入力のインスタンスを取得
-	Input *input = Input::GetInstance();
+	Input* input = Input::GetInstance();
 	//デバッグテキストのインスタンスを取得
-	DebugText *debugText = DebugText::GetInstance();
+	DebugText* debugText = DebugText::GetInstance();
 
 	if (input->TriggerKey(DIK_I))
 	{

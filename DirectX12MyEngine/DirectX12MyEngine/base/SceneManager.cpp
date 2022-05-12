@@ -8,7 +8,7 @@ SceneManager::~SceneManager()
 	delete scene;
 }
 
-SceneManager *SceneManager::GetInstance()
+SceneManager* SceneManager::GetInstance()
 {
 	static SceneManager instance;
 
@@ -18,10 +18,10 @@ SceneManager *SceneManager::GetInstance()
 void SceneManager::Update()
 {
 	//シーン切り替えがあるなら
-	if(nextScene)
+	if (nextScene)
 	{
 		//旧シーンがあるなら
-		if(scene)
+		if (scene)
 		{
 			//旧シーンの終了
 			scene->Finalize();
@@ -46,7 +46,7 @@ void SceneManager::Draw()
 	scene->Draw();
 }
 
-void SceneManager::ChangeScene(const std::string &sceneName)
+void SceneManager::ChangeScene(const std::string& sceneName)
 {
 	assert(sceneFactory);
 	assert(nextScene == nullptr);

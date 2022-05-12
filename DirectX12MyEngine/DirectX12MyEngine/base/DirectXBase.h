@@ -22,13 +22,13 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="win">ウインドウアプリケーション</param>
-	void Initialize(WindowApp *win);
-	
+	void Initialize(WindowApp* win);
+
 	/// <summary>
 	/// 描画前設定
 	/// </summary>
 	void GraphicsCommandPrev();
-	
+
 	/// <summary>
 	/// 描画後設定
 	/// </summary>
@@ -43,27 +43,27 @@ private:
 	/// デバイス初期化
 	/// </summary>
 	void InitializeDevice();
-	
+
 	/// <summary>
 	/// コマンド初期化
 	/// </summary>
 	void InitializeCommand();
-	
+
 	/// <summary>
 	/// スワップチェーン初期化
 	/// </summary>
 	void InitializeSwapchain();
-	
+
 	/// <summary>
 	/// レンダーターゲットビュー初期化
 	/// </summary>
 	void InitializeRenderTargetView();
-	
+
 	/// <summary>
 	/// 深度バッファ初期化
 	/// </summary>
 	void InitializeDepthBuffer();
-	
+
 	/// <summary>
 	/// フェンス初期化
 	/// </summary>
@@ -93,7 +93,7 @@ private:
 	//フェンス
 	ComPtr<ID3D12Fence> fence;
 	UINT64 fenceVal = 0;
-	
+
 	//WindowApp
 	WindowApp* win = nullptr;
 };

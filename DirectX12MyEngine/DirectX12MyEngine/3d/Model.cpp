@@ -15,13 +15,13 @@ using namespace std;
 
 
 //静的メンバ変数の実体
-ID3D12Device *Model::dev = nullptr;
+ID3D12Device* Model::dev = nullptr;
 
 
-Model *Model::LoadFromOBJ(const std::string& modelname, bool smoothing)
+Model* Model::LoadFromOBJ(const std::string& modelname, const bool smoothing)
 {
 	//新たなModel型のインスタンスのメモリを確保
-	Model *model = new Model();
+	Model* model = new Model();
 
 	//デスクリプタヒープの生成
 	model->InitializeDescHeap();
@@ -35,7 +35,7 @@ Model *Model::LoadFromOBJ(const std::string& modelname, bool smoothing)
 	return model;
 }
 
-void Model::LoadFromOBJInternal(const std::string& modelname, bool smoothing)
+void Model::LoadFromOBJInternal(const std::string& modelname, const bool smoothing)
 {
 	//objファイルからデータを読み込む
 	//const string modelname = "man";
@@ -136,7 +136,7 @@ void Model::LoadFromOBJInternal(const std::string& modelname, bool smoothing)
 				vertex.normal = normals[indexNormal - 1];
 				vertex.uv = texcoords[indexTexcoord - 1];
 				vertices.emplace_back(vertex);
-				
+
 				//エッジ平滑化用のデータを追加
 				if (smoothing) {
 					//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
@@ -170,7 +170,7 @@ void Model::LoadFromOBJInternal(const std::string& modelname, bool smoothing)
 		auto itr = smoothData.begin();
 		for (; itr != smoothData.end(); ++itr) {
 			//各面用の共通頂点コレクション
-			std::vector<unsigned short> &v = itr->second;
+			std::vector<unsigned short>& v = itr->second;
 			//全頂点の法線を平均する
 			XMVECTOR normal = {};
 			for (unsigned short index : v) {
@@ -185,7 +185,7 @@ void Model::LoadFromOBJInternal(const std::string& modelname, bool smoothing)
 	}
 }
 
-void Model::LoadMaterial(const std::string &directoryPath, const std::string &filename)
+void Model::LoadMaterial(const std::string& directoryPath, const std::string& filename)
 {
 	//ファイルストリーム
 	std::ifstream file;
@@ -250,7 +250,7 @@ void Model::LoadMaterial(const std::string &directoryPath, const std::string &fi
 	file.close();
 }
 
-void Model::LoadTexture(const std::string &directoryPath, const std::string &filename)
+void Model::LoadTexture(const std::string& directoryPath, const std::string& filename)
 {
 	HRESULT result;
 
@@ -271,7 +271,7 @@ void Model::LoadTexture(const std::string &directoryPath, const std::string &fil
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
-	const Image *img = scratchImg.GetImage(0, 0, 0);	//生データ抽出
+	const Image* img = scratchImg.GetImage(0, 0, 0);	//生データ抽出
 
 	//リソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -367,8 +367,8 @@ void Model::CreateBuffers()
 
 
 	//頂点バッファへのデータ転送
-	VertexPosNormalUv *vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void **)&vertMap);
+	VertexPosNormalUv* vertMap = nullptr;
+	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
 		//memcpy(vertMap, vertices, sizeof(vertices));
 		std::copy(vertices.begin(), vertices.end(), vertMap);
@@ -377,8 +377,8 @@ void Model::CreateBuffers()
 
 
 	//インデックスバッファへのデータ転送
-	unsigned short *indexMap = nullptr;
-	result = indexBuff->Map(0, nullptr, (void **)&indexMap);
+	unsigned short* indexMap = nullptr;
+	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
 	if (SUCCEEDED(result)) {
 		std::copy(indices.begin(), indices.end(), indexMap);
 
@@ -406,8 +406,8 @@ void Model::CreateBuffers()
 		IID_PPV_ARGS(&constBuffB1));
 
 	//定数バッファへのデータ転送
-	ConstBufferDataB1 *constMap1 = nullptr;
-	result = constBuffB1->Map(0, nullptr, (void **)&constMap1);
+	ConstBufferDataB1* constMap1 = nullptr;
+	result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
 	if (SUCCEEDED(result)) {
 		constMap1->ambient = material.ambient;
 		constMap1->diffuse = material.diffuse;
@@ -417,7 +417,7 @@ void Model::CreateBuffers()
 	}
 }
 
-void Model::AddSmootgData(unsigned short indexPosition, unsigned short indexVertex)
+void Model::AddSmootgData(const unsigned short indexPosition, const unsigned short indexVertex)
 {
 	smoothData[indexPosition].emplace_back(indexVertex);
 }
@@ -427,7 +427,7 @@ void Model::CalculateSmoothedVertexNormals()
 	auto itr = smoothData.begin();
 	for (; itr != smoothData.end(); ++itr) {
 		//各面用の共通頂点コレクション
-		std::vector<unsigned short> &v = itr->second;
+		std::vector<unsigned short>& v = itr->second;
 		//全頂点の法線を平均する
 		XMVECTOR normal = {};
 		for (unsigned short index : v) {
@@ -442,7 +442,7 @@ void Model::CalculateSmoothedVertexNormals()
 }
 
 
-void Model::Draw(ID3D12GraphicsCommandList *cmdList, UINT rootParamIndexMaterial)
+void Model::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial)
 {
 	//頂点バッファビューの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
@@ -453,7 +453,7 @@ void Model::Draw(ID3D12GraphicsCommandList *cmdList, UINT rootParamIndexMaterial
 	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1->GetGPUVirtualAddress());
 
 	//デスクリプタヒープの配列
-	ID3D12DescriptorHeap *ppHeaps[] = { descHeap.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	if (material.textureFilename.size() > 0)

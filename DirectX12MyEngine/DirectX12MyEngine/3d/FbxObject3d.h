@@ -10,7 +10,7 @@
 #include <DirectXMath.h>
 #include <string>
 
-class FbxObject3d 
+class FbxObject3d
 {
 protected: //エイリアス
 	//MIcrosoft::WRL::を省略
@@ -23,7 +23,7 @@ protected: //エイリアス
 
 public: //サブクラス
 	//定数バッファ用データ構造体(座標変換行列用)
-	struct ConstBufferDataTransform 
+	struct ConstBufferDataTransform
 	{
 		XMMATRIX viewproj;	//ビュープロジェクション行列
 		XMMATRIX world;		//ワールド行列

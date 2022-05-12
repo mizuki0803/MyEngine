@@ -59,11 +59,11 @@ public:
 		//最終値
 		float e_scale = 0.0f;
 		//色
-		XMFLOAT4 color = {1.0f, 1.0f, 1.0f, 1.0f};
+		XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		//色初期値
-		XMFLOAT4 s_color = {1.0f, 1.0f, 1.0f, 1.0f};
+		XMFLOAT4 s_color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		//色終了値
-		XMFLOAT4 e_color = {0.0f, 0.0f, 0.0f, 0.0f};
+		XMFLOAT4 e_color = { 0.0f, 0.0f, 0.0f, 0.0f };
 	};
 
 public:
@@ -72,7 +72,7 @@ public:
 	/// </summary>
 	/// <param name="dev">デバイス</param>
 	/// <param name="cmdList">コマンドリスト</param>
-	static void ParticleManagerCommon(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList);
+	static void ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 
 	/// <summary>
 	/// パイプライン生成
@@ -93,7 +93,7 @@ public:
 	/// 生成処理
 	/// </summary>
 	/// <returns>ParticleManager</returns>
-	static ParticleManager *Create();
+	static ParticleManager* Create();
 
 	/// <summary>
 	/// パーティクルの形生成
@@ -105,7 +105,7 @@ public:
 	/// </summary>
 	/// <returns>成否</returns>
 	static bool LoadTexture();
-	
+
 	/// <summary>
 	/// パーティクルの情報をセット
 	/// </summary>
@@ -117,8 +117,8 @@ public:
 	/// <param name="end_scale">スケール終了値</param>
 	/// <param name="start_color">色初期値</param>
 	/// <param name="end_color">色終了値</param>
-	void Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel,
-		float start_scale, float end_scale, XMFLOAT4 start_color, XMFLOAT4 end_color);
+	void Add(const int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel,
+		const float start_scale, const float end_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color);
 
 	/// <summary>
 	/// 初期化
@@ -137,15 +137,15 @@ public:
 	void Draw();
 
 	//setter
-	static void SetCamera(Camera *camera) { ParticleManager::camera = camera; }
+	static void SetCamera(Camera* camera) { ParticleManager::camera = camera; }
 
 private:
 	//デバイス
-	static ID3D12Device *dev;
+	static ID3D12Device* dev;
 	//デスクリプタ1つ分のサイズ
 	static UINT descHandleIncrementSize;
 	//コマンドリスト
-	static ID3D12GraphicsCommandList *cmdList;
+	static ID3D12GraphicsCommandList* cmdList;
 	//パイプラインセット
 	static PipelineSet pipelineSet;
 	//テクスチャ用デスクリプタヒープの生成
@@ -160,7 +160,7 @@ private:
 	//頂点データ配列
 	static VertexPos vertices[vertexCount];
 	//カメラ
-	static Camera *camera;
+	static Camera* camera;
 
 private:
 	////頂点バッファの生成

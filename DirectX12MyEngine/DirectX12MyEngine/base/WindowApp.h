@@ -20,7 +20,7 @@ public:
 	/// ウインドウ作成
 	/// </summary>
 	/// <param name="titlename">タイトルバー名</param>
-	void WindowCreate(const wchar_t *titlename = L"DirectXGame");
+	void WindowCreate(const wchar_t* titlename = L"DirectXGame");
 
 	/// <summary>
 	/// ウインドウ解放

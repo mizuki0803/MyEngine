@@ -63,14 +63,14 @@ public: //静的メンバ関数
 	/// <param name="modelname">モデル名</param>
 	/// <param name="smoothing">スムージングをかけるか</param>
 	/// <returns></returns>
-	static Model *LoadFromOBJ(const std::string &modelname, bool smoothing = false);
+	static Model* LoadFromOBJ(const std::string& modelname, const bool smoothing = false);
 
 	//setter
-	static void SetDevice(ID3D12Device *device) { Model::dev = device; };
+	static void SetDevice(ID3D12Device* device) { Model::dev = device; };
 
 private: //静的メンバ変数
 	//デバイス
-	static ID3D12Device *dev;
+	static ID3D12Device* dev;
 
 
 private: //非公開のメンバ関数
@@ -81,21 +81,21 @@ private: //非公開のメンバ関数
 	/// </summary>
 	/// <param name="modelname">モデル名</param>
 	/// <param name="smoothing">スムージングをかけるか</param>
-	void LoadFromOBJInternal(const std::string &modelname, bool smoothing);
+	void LoadFromOBJInternal(const std::string& modelname, const bool smoothing);
 
 	/// <summary>
 	/// マテリアル読み込み
 	/// </summary>
 	/// <param name="directoryPath">パス</param>
 	/// <param name="filename">ファイル名</param>
-	void LoadMaterial(const std::string &directoryPath, const std::string &filename);
+	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 
 	/// <summary>
 	/// テクスチャ読み込み
 	/// </summary>
 	/// <param name="directoryPath">パス</param>
 	/// <param name="filename">ファイル名</param>
-	void LoadTexture(const std::string &directoryPath, const std::string &filename);
+	void LoadTexture(const std::string& directoryPath, const std::string& filename);
 
 	/// <summary>
 	/// デスクリプタヒープの初期化
@@ -118,7 +118,7 @@ private: //非公開のメンバ関数
 	/// </summary>
 	/// <param name="indexPosition">座標インデックス</param>
 	/// <param name="indexVertex">頂点インデックス</param>
-	void AddSmootgData(unsigned short indexPosition, unsigned short indexVertex);
+	void AddSmootgData(const unsigned short indexPosition, const unsigned short indexVertex);
 
 	/// <summary>
 	/// 平滑化された頂点法線の計算
@@ -133,7 +133,7 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="cmdList">コマンドリスト</param>
 	/// <param name="rootOaramIndexMaterial">ルートパラメータの数字</param>
-	void Draw(ID3D12GraphicsCommandList *cmdList, UINT rootParamIndexMaterial);
+	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
 
 private: //メンバ変数
 	//テクスチャ用デスクリプタヒープの生成

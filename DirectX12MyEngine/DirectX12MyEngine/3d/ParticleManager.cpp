@@ -15,9 +15,9 @@ using namespace Microsoft::WRL;
 using namespace std;
 
 
-ID3D12Device *ParticleManager::dev = nullptr;
+ID3D12Device* ParticleManager::dev = nullptr;
 UINT ParticleManager::descHandleIncrementSize = 0;
-ID3D12GraphicsCommandList *ParticleManager::cmdList = nullptr;
+ID3D12GraphicsCommandList* ParticleManager::cmdList = nullptr;
 PipelineSet ParticleManager::pipelineSet;
 ComPtr<ID3D12DescriptorHeap> ParticleManager::descHeap;
 ComPtr<ID3D12Resource> ParticleManager::vertBuff;
@@ -47,7 +47,7 @@ ParticleManager::VertexPos ParticleManager::vertices[vertexCount];
 
 
 //XMFLOAT3同士の加算処理
-const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 rhs)
+const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const DirectX::XMFLOAT3 rhs)
 {
 	XMFLOAT3 result;
 	result.x = lhs.x + rhs.x;
@@ -57,7 +57,7 @@ const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::X
 	return result;
 }
 
-void ParticleManager::ParticleManagerCommon(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList)
+void ParticleManager::ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 {
 	//nullptrチェック
 	assert(dev);
@@ -107,7 +107,7 @@ void ParticleManager::CreatePipeline()
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char *)errorBlob->GetBufferPointer(),
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -133,7 +133,7 @@ void ParticleManager::CreatePipeline()
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char *)errorBlob->GetBufferPointer(),
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -159,7 +159,7 @@ void ParticleManager::CreatePipeline()
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char *)errorBlob->GetBufferPointer(),
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -206,7 +206,7 @@ void ParticleManager::CreatePipeline()
 	gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 
 	//レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC &blenddesc = gpipeline.BlendState.RenderTarget[0];
+	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = gpipeline.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	//環境設定
 
 	//共通設定
@@ -315,10 +315,10 @@ void ParticleManager::DrawPrev()
 	cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
 }
 
-ParticleManager *ParticleManager::Create()
+ParticleManager* ParticleManager::Create()
 {
 	// 3Dオブジェクトのインスタンスを生成
-	ParticleManager *object3d = new ParticleManager();
+	ParticleManager* object3d = new ParticleManager();
 	if (object3d == nullptr) {
 		return nullptr;
 	}
@@ -351,8 +351,8 @@ void ParticleManager::CreateModel()
 	}
 
 	// 頂点バッファへのデータ転送
-	VertexPos *vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void **)&vertMap);
+	VertexPos* vertMap = nullptr;
+	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
 		memcpy(vertMap, vertices, sizeof(vertices));
 		vertBuff->Unmap(0, nullptr);
@@ -378,7 +378,7 @@ bool ParticleManager::LoadTexture()
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
-	const Image *img = scratchImg.GetImage(0, 0, 0);	//生データ抽出
+	const Image* img = scratchImg.GetImage(0, 0, 0);	//生データ抽出
 
 	//リソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -427,12 +427,13 @@ bool ParticleManager::LoadTexture()
 	return true;
 }
 
-void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float end_scale, XMFLOAT4 start_color, XMFLOAT4 end_color)
+void ParticleManager::Add(const int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel,
+	const float start_scale, const float end_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color)
 {
 	//リストに要素を追加
 	particles.emplace_front();
 	//追加した要素の参照
-	Particle &p = particles.front();
+	Particle& p = particles.front();
 	//値のセット
 	p.position = position;
 	p.velocity = velocity;
@@ -480,7 +481,7 @@ void ParticleManager::Update()
 
 	//寿命が尽きたパーティクルを全削除
 	particles.remove_if(
-		[](Particle &x) {
+		[](Particle& x) {
 			return x.frame >= x.num_frame;
 		}
 	);
@@ -520,10 +521,10 @@ void ParticleManager::Update()
 	//頂点バッファへデータ転送
 	VertexPos* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	if(SUCCEEDED(result)){
+	if (SUCCEEDED(result)) {
 		//パーティクルの情報を1つずつ反映
-		for(std::forward_list<Particle>::iterator it = particles.begin();
-			it != particles.end(); it++){
+		for (std::forward_list<Particle>::iterator it = particles.begin();
+			it != particles.end(); it++) {
 			//座標
 			vertMap->pos = it->position;
 			//スケール
@@ -537,8 +538,8 @@ void ParticleManager::Update()
 	}
 
 	//定数バッファへのデータ転送
-	ConstBufferData *constMap = nullptr;
-	if (SUCCEEDED(constBuff->Map(0, nullptr, (void **)&constMap)))
+	ConstBufferData* constMap = nullptr;
+	if (SUCCEEDED(constBuff->Map(0, nullptr, (void**)&constMap)))
 	{
 		constMap->mat = camera->GetMatView() * camera->GetMatProjection();
 		constMap->matBillboad = camera->GetMatBillboard();
@@ -551,7 +552,7 @@ void ParticleManager::Draw()
 	//頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	//デスクリプタヒープの配列
-	ID3D12DescriptorHeap *ppHeaps[] = { descHeap.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	//定数バッファビューをセット

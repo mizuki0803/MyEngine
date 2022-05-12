@@ -49,22 +49,22 @@ private: //シングルトン化
 	~Input() = default;
 public:
 	//コピーコンストラクタを無効化
-	Input(const Input &input) = delete;
+	Input(const Input& input) = delete;
 	//代入演算子を無効化
-	void operator = (const Input &input) = delete;
+	void operator = (const Input& input) = delete;
 
 public: //メンバ関数
 	/// <summary>
 	/// インスタンス取得
 	/// </summary>
 	/// <returns>入力</returns>
-	static Input *GetInstance();
+	static Input* GetInstance();
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="win">ウインドウアプリケーション</param>
-	void Initialize(WindowApp *win);
+	void Initialize(WindowApp* win);
 
 	/// <summary>
 	/// 更新
@@ -76,21 +76,21 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name = "keyNumber">キー番号( DIK_0 等)</param>
 	/// <returns>押されているか</returns>
-	bool PushKey(BYTE keyNumber);
+	bool PushKey(const BYTE keyNumber);
 
 	/// <summary>
 	/// キーのトリガーをチェック
 	/// </summary>
 	/// <param name = "keyNumber">キー番号( DIK_0 等)</param>
 	/// <returns>トリガーか</returns>
-	bool TriggerKey(BYTE keyNumber);
+	bool TriggerKey(const BYTE keyNumber);
 
 	/// <summary>
 	/// キーを離したかチェック
 	/// </summary>
 	/// <param name = "keyNumber">キー番号( DIK_0 等)</param>
 	/// <returns>離したか</returns>
-	bool ReleaseKey(BYTE keyNumber);
+	bool ReleaseKey(const BYTE keyNumber);
 
 	/// <summary>
 	/// マウスボタンの押下をチェック
@@ -289,5 +289,5 @@ private: //メンバ変数
 	//パラメータ
 	LPVOID parameter;
 	//WindowApp
-	WindowApp *win = nullptr;
+	WindowApp* win = nullptr;
 };

@@ -44,11 +44,11 @@ public: //サブクラス
 		//波形フォーマット
 		WAVEFORMATEX wfex;
 		//バッファの先頭アドレス
-		BYTE *pBuffer;
+		BYTE* pBuffer;
 		//バッファのサイズ
 		unsigned int bufferSize;
 		//SourceVoice
-		IXAudio2SourceVoice *pSourceVoice;
+		IXAudio2SourceVoice* pSourceVoice;
 	};
 
 private: //シングルトン化
@@ -58,22 +58,22 @@ private: //シングルトン化
 	~Audio() = default;
 public:
 	//コピーコンストラクタを無効化
-	Audio(const Audio &audio) = delete;
+	Audio(const Audio& audio) = delete;
 	//代入演算子を無効化
-	void operator = (const Audio &audio) = delete;
+	void operator = (const Audio& audio) = delete;
 
 public: //メンバ関数
 	/// <summary>
 	/// インスタンス取得
 	/// </summary>
 	/// <returns>オーディオ</returns>
-	static Audio *GetInstance();
+	static Audio* GetInstance();
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="directoryPath">ディレクトリパス</param>
-	void Initialize(const std::string &directoryPath = "Resources/sound/");
+	void Initialize(const std::string& directoryPath = "Resources/sound/");
 
 	/// <summary>
 	/// 終了処理
@@ -84,38 +84,38 @@ public: //メンバ関数
 	/// WAVデータ読み込み
 	/// </summary>
 	/// <param name="filename">ファイル名</param>
-	void LoadWave(const std::string &filename);
+	void LoadWave(const std::string& filename);
 
 	/// <summary>
 	/// サウンドデータ解放
 	/// </summary>
 	/// <param name="soundData">サウンドデータ</param>
-	void SoundDataUnload(SoundData *soundData);
+	void SoundDataUnload(SoundData* soundData);
 
 	/// <summary>
 	/// 音声再生
 	/// </summary>
 	/// <param name="soundData">サウンドデータ</param>
 	/// <param name="isLoop">ループ再生か</param>
-	void PlayWave(std::string filename, bool isLoop);
+	void PlayWave(const std::string& filename, const bool isLoop);
 
 	/// <summary>
 	/// 音声停止	
 	/// </summary>
 	/// <param name="filename">サウンドデータ</param>
-	void StopWave(std::string filename);
+	void StopWave(const std::string& filename);
 
 	/// <summary>
 	/// 音量変更
 	/// </summary>
 	/// <param name="volume">音量</param>
-	void ChangeVolume(float volume);
+	void ChangeVolume(const float volume);
 
 private: //メンバ変数
 	//xAudio
 	ComPtr<IXAudio2> xAudio2;
 	//マスターボイス
-	IXAudio2MasteringVoice *masterVoice;
+	IXAudio2MasteringVoice* masterVoice;
 	//サウンドデータの連想配列
 	std::map<std::string, SoundData> soundDatas;
 	//サウンド格納ディレクトリ
