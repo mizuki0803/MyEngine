@@ -29,8 +29,8 @@ void TitleScene::Initialize()
 	//カメラ初期化
 	camera = new Camera();
 	camera->Initialize();
-	camera->SetTarget({ 0, 20, 0 });
-	camera->SetDistance(100.0f);
+	//camera->SetTarget({ 0, 20, 0 });
+	//camera->SetDistance(100.0f);
 
 	//ライト生成
 	lightGroup = LightGroup::Create();
@@ -110,7 +110,8 @@ void TitleScene::Initialize()
 
 	//モデル名を指定してファイル読み込み
 	//FbxLoader::GetInstance()->LoadModelFromFile("cube");
-	fbxModel1 = FbxLoader::GetInstance()->LoadModelFromFile("cube");
+	//fbxModel1 = FbxLoader::GetInstance()->LoadModelFromFile("cube");
+	fbxModel1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
 
 	//3Dオブジェクト生成とFBXモデルのセット
 	fbxObject1 = new FbxObject3d;

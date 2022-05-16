@@ -7,6 +7,7 @@
 #include <wrl.h>
 #include <d3d12.h>
 #include <d3dx12.h>
+#include <fbxsdk.h>
 
 struct Node
 {
@@ -45,16 +46,42 @@ private: //エイリアス
 public: //フレンドクラス
 	friend class FbxLoader;
 
+public: //定数
+	//ボーンインデックスの最大数
+	static const int MAX_BONE_INDICES = 4;
+
 public: //サブクラス
 	//頂点データ構造体
-	struct VertexPosNormalUv
+	struct VertexPosNormalUvSkin
 	{
 		DirectX::XMFLOAT3 pos;		//xyz座標
 		DirectX::XMFLOAT3 normal;	//法線ベクトル
 		DirectX::XMFLOAT3 uv;		//uv座標
+		UINT boneIndex[MAX_BONE_INDICES];	//ボーン　番号
+		float boneWeight[MAX_BONE_INDICES];	//ボーン重み
 	};
 
-public://メンバ関数
+	//ボーン構造体
+	struct Bone 
+	{
+		//名前
+		std::string name;
+		//初期姿勢の逆行列
+		DirectX::XMMATRIX invInitialPose;
+		//クラスター(FBX側のボーン情報)
+		FbxCluster* fbxCluster;
+		//コンストラクタ
+		Bone(const std::string& name) {
+			this->name = name;
+		}
+	};
+
+public://メンバ関数	
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~FbxModel();
+
 	/// <summary>
 	/// バッファ生成
 	/// </summary>
@@ -69,6 +96,8 @@ public://メンバ関数
 
 	//getter
 	const XMMATRIX& GetModelTrasform() { return meshNode->glabalTransform; }
+	std::vector<Bone>& GetBones() { return bones; }
+	FbxScene* GetFbxScene() { return fbxScene; }
 
 private: //メンバ変数
 	//モデル名
@@ -78,7 +107,7 @@ private: //メンバ変数
 	//メッシュを持つノード
 	Node* meshNode = nullptr;
 	//頂点データ配列
-	std::vector<VertexPosNormalUv> vertices;
+	std::vector<VertexPosNormalUvSkin> vertices;
 	//頂点インデックス配列
 	std::vector<unsigned short> indices;
 	//頂点バッファ
@@ -101,4 +130,8 @@ private: //メンバ変数
 	DirectX::TexMetadata metadata = {};
 	//スクラッチイメージ
 	DirectX::ScratchImage scratchImg = {};
+	//ボーン配列
+	std::vector<Bone> bones;
+	//FBXシーン
+	FbxScene* fbxScene = nullptr;
 };
