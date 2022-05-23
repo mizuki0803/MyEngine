@@ -117,6 +117,7 @@ void TitleScene::Initialize()
 	fbxObject1 = new FbxObject3d;
 	fbxObject1->Initialize();
 	fbxObject1->SetFbxModel(fbxModel1);
+	fbxObject1->PlayAnimation();
 
 
 	//当たり判定 球 の初期値を設定
@@ -540,7 +541,7 @@ void TitleScene::Draw()
 	///-------Object3d描画ここから-------///
 
 
-	objMan->Draw();
+	//objMan->Draw();
 	objGround->Draw();
 	objSkydome->Draw();
 	objSphere->Draw();
@@ -569,7 +570,7 @@ void TitleScene::Draw()
 
 
 	//パーティクル描画
-	particleMan->Draw();
+	//particleMan->Draw();
 
 
 	///-------パーティクル描画ここまで-------///

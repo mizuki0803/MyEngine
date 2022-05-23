@@ -68,6 +68,11 @@ public: //メンバ関数
 	void Draw();
 
 	/// <summary>
+	/// アニメーション開始
+	/// </summary>
+	void PlayAnimation();
+
+	/// <summary>
 	/// モデルのセット
 	/// </summary>
 	/// <param name="fbxModel">FBXモデル</param>
@@ -100,4 +105,14 @@ protected: //メンバ変数
 	FbxModel* fbxModel = nullptr;
 	//定数バッファ(スキン)
 	ComPtr<ID3D12Resource> constBufferSkin;
+	//1フレームの時間
+	FbxTime frameTime;
+	//アニメーション開始時間
+	FbxTime startTime;
+	//アニメーション終了時間
+	FbxTime endTime;
+	//現在時間(アニメーション)
+	FbxTime currentTime;
+	//アニメーション再生中
+	bool isPlay = false;
 };
