@@ -10,7 +10,7 @@
 /// </summary>
 class Sprite
 {
-private: // エイリアス
+protected: // エイリアス
 // Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
@@ -94,7 +94,7 @@ public: //メンバ関数
 	void SetIsFlipY(bool isFlipY) { this->isFlipY = isFlipY; };
 
 
-private: //メンバ変数
+protected: //メンバ変数
 	//頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;
 	//頂点バッファビュー

@@ -66,6 +66,9 @@
     <Filter Include="ソース ファイル\effect\easing">
       <UniqueIdentifier>{c6e660ba-54dc-4d48-97bc-b082ef65c107}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\2d\PostEffect">
+      <UniqueIdentifier>{7183a348-bdc4-41c0-a69a-bc59cfd2ea30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -142,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="3d\FbxObject3d.cpp">
       <Filter>ソース ファイル\3d\object</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\PostEffect.cpp">
+      <Filter>ソース ファイル\2d\PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="3d\FbxObject3d.h">
       <Filter>ソース ファイル\3d\object</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\PostEffect.h">
+      <Filter>ソース ファイル\2d\PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

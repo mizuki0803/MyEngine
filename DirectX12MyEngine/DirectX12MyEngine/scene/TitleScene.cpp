@@ -29,8 +29,8 @@ void TitleScene::Initialize()
 	//カメラ初期化
 	camera = new Camera();
 	camera->Initialize();
-	//camera->SetTarget({ 0, 20, 0 });
-	//camera->SetDistance(100.0f);
+	camera->SetTarget({ 0, 2.5f, 0 });
+	camera->SetDistance(8.0f);
 
 	//ライト生成
 	lightGroup = LightGroup::Create();
@@ -118,6 +118,7 @@ void TitleScene::Initialize()
 	fbxObject1->Initialize();
 	fbxObject1->SetFbxModel(fbxModel1);
 	fbxObject1->PlayAnimation();
+	fbxObject1->SetRotation({ 0, 90, 0 });
 
 
 	//当たり判定 球 の初期値を設定

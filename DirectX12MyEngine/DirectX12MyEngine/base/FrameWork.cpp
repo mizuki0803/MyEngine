@@ -53,11 +53,18 @@ void FrameWork::Initialize()
 
 	//デバッグテキスト用のテクスチャ番号を指定
 	const int debugTextNumber = 0;
+	//デバッグテキスト用のテクスチャ読み込み
+	spriteCommon->LoadTexture(debugTextNumber, "debugFont.png");
 	//デバッグテキスト初期化
 	debugText = DebugText::GetInstance();
 	debugText->Initialize(debugTextNumber);
-	//デバッグテキスト用のテクスチャ読み込み
-	spriteCommon->LoadTexture(debugTextNumber, "debugFont.png");
+
+	//ポストエフェクト用のテクスチャ番号を指定
+	const int postEffectTexNumber = 100;
+	//ポストエフェクト用のテクスチャ読み込み
+	spriteCommon->LoadTexture(postEffectTexNumber, "white1x1.png");
+	//ポストエフェクトの初期化
+	postEffect = PostEffect::Create(postEffectTexNumber, { 0, 0 });
 
 	//Object3d共通初期化処理
 	Object3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
@@ -82,6 +89,9 @@ void FrameWork::Finalize()
 {
 	//シーン工場解放
 	delete sceneFactory;
+
+	//ポストエフェクトの解放
+	delete postEffect;
 
 	//FBXLoader解放
 	FbxLoader::GetInstance()->Finalize();
@@ -126,8 +136,11 @@ void FrameWork::Draw()
 	//グラフィックスコマンド(前)
 	dxbase->GraphicsCommandPrev();
 
+	//ポストエフェクトの描画
+	postEffect->Draw();
+
 	//シーン描画
-	SceneManager::GetInstance()->Draw();
+	//SceneManager::GetInstance()->Draw();
 
 	//スプライト共通コマンド
 	spriteCommon->DrawPrev();

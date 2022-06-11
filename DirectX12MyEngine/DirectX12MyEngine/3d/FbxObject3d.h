@@ -78,6 +78,17 @@ public: //メンバ関数
 	/// <param name="fbxModel">FBXモデル</param>
 	void SetFbxModel(FbxModel* fbxModel) { this->fbxModel = fbxModel; }
 
+	//getter
+	const XMFLOAT3& GetPosition() { return position; }
+	const XMFLOAT3& GetRotation() { return rotation; }
+	const XMFLOAT3& GetScale() { return scale; }
+
+	//setter
+	void SetPosition(const XMFLOAT3& position) { this->position = position; }
+	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
+	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
+	void SetModel(FbxModel* fbxModel) { this->fbxModel = fbxModel; }
+
 private: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* device;

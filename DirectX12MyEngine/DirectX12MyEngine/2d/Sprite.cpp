@@ -9,10 +9,10 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 
-Sprite *Sprite::Create(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+Sprite* Sprite::Create(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
 	// 3Dオブジェクトのインスタンスを生成
-	Sprite *instance = new Sprite();
+	Sprite* instance = new Sprite();
 	if (instance == nullptr) {
 		return nullptr;
 	}
@@ -34,7 +34,7 @@ bool Sprite::Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool
 	this->isFlipX = isFlipX;
 	this->isFlipY = isFlipY;
 
-	SpriteCommon *spriteCommon = SpriteCommon::GetInstance();
+	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 
 	HRESULT result;
 
@@ -45,7 +45,7 @@ bool Sprite::Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool
 		{{100.0f, 100.0f, 0.0f}, {1.0f, 1.0f}},	//右下
 		{{100.0f,   0.0f, 0.0f}, {1.0f, 0.0f}},	//右上
 	};
-	
+
 	//指定番号の画像が読み込み済みなら
 	if (spriteCommon->GetTexBuff(texNumber))
 	{
@@ -65,8 +65,8 @@ bool Sprite::Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool
 	//頂点バッファへのデータ転送
 	TransferVertexBuffer();
 
-	VertexPosUv *vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void **)&vertMap);
+	VertexPosUv* vertMap = nullptr;
+	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	memcpy(vertMap, vertices, sizeof(vertices));
 	vertBuff->Unmap(0, nullptr);
 
@@ -84,8 +84,8 @@ bool Sprite::Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool
 		IID_PPV_ARGS(&constBuff));
 
 	//定数バッファにデータ転送
-	ConstBufferData *constMap = nullptr;
-	result = constBuff->Map(0, nullptr, (void **)&constMap);
+	ConstBufferData* constMap = nullptr;
+	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->color = XMFLOAT4(1, 1, 1, 1);	//色指定(RGBA)
 	//平行投影行列
 	constMap->mat = spriteCommon->GetMatProjection();
@@ -97,7 +97,7 @@ bool Sprite::Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool
 
 void Sprite::TransferVertexBuffer()
 {
-	SpriteCommon *spriteCommon = SpriteCommon::GetInstance();
+	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 
 	HRESULT result;
 
@@ -153,15 +153,15 @@ void Sprite::TransferVertexBuffer()
 	}
 
 	//頂点バッファへのデータ転送
-	VertexPosUv *vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void **)&vertMap);
+	VertexPosUv* vertMap = nullptr;
+	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	memcpy(vertMap, vertices, sizeof(vertices));
 	vertBuff->Unmap(0, nullptr);
 }
 
 void Sprite::Update()
 {
-	SpriteCommon *spriteCommon = SpriteCommon::GetInstance();
+	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 
 	//ワールド行列の更新
 	matWorld = XMMatrixIdentity();
@@ -174,8 +174,8 @@ void Sprite::Update()
 	TransferVertexBuffer();
 
 	//定数バッファの転送
-	ConstBufferData *constMap = nullptr;
-	HRESULT result = constBuff->Map(0, nullptr, (void **)&constMap);
+	ConstBufferData* constMap = nullptr;
+	HRESULT result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = matWorld * spriteCommon->GetMatProjection();
 	constMap->color = color;
 	constBuff->Unmap(0, nullptr);
@@ -183,9 +183,8 @@ void Sprite::Update()
 
 void Sprite::Draw()
 {
-	SpriteCommon *spriteCommon = SpriteCommon::GetInstance();
-
-	ID3D12GraphicsCommandList *cmdList = spriteCommon->GetCmdList();
+	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+	ID3D12GraphicsCommandList* cmdList = spriteCommon->GetCmdList();
 
 	//頂点バッファをセット
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
