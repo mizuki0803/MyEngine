@@ -14,11 +14,22 @@ public:
 	/// <returns>Sprite</returns>
 	static PostEffect* Create(UINT texNumber, XMFLOAT2 anchorpoint = { 0.5f, 0.5f }, bool isFlipX = false, bool isFlipY = false);
 
+public:
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	bool Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="cmdList">コマンドリスト</param>
 	void Draw();
+
+private:
+	//テクスチャバッファ
+	ComPtr<ID3D12Resource> texBuff;
+	//SRV用デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 };
 

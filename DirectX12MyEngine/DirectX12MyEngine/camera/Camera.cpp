@@ -155,19 +155,9 @@ void Camera::UpdateMatProjection()
 
 void Camera::MoveVector(const XMFLOAT3& move)
 {
-	XMFLOAT3 eye_moved = GetEye();
-	XMFLOAT3 target_moved = GetTarget();
-
-	eye_moved.x += move.x;
-	eye_moved.y += move.y;
-	eye_moved.z += move.z;
-
-	target_moved.x += move.x;
-	target_moved.y += move.y;
-	target_moved.z += move.z;
-
-	SetEye(eye_moved);
-	SetTarget(target_moved);
+	//éãì_Ç∆íçéãì_ÇìØÇ∂ó ìÆÇ©Ç∑
+	MoveEyeVector(move);
+	MoveTargetVector(move);
 }
 
 void Camera::MoveEyeVector(const XMFLOAT3& move)
@@ -179,4 +169,15 @@ void Camera::MoveEyeVector(const XMFLOAT3& move)
 	eye_moved.z += move.z;
 
 	SetEye(eye_moved);
+}
+
+void Camera::MoveTargetVector(const XMFLOAT3& move)
+{
+	XMFLOAT3 target_moved = GetTarget();
+
+	target_moved.x += move.x;
+	target_moved.y += move.y;
+	target_moved.z += move.z;
+
+	SetTarget(target_moved);
 }

@@ -54,6 +54,12 @@ public:
 	/// <param name="move">移動量</param>
 	void MoveEyeVector(const XMFLOAT3& move);
 
+	/// <summary>
+	/// ベクトルによる注視点移動
+	/// </summary>
+	/// <param name="move">移動量</param>
+	void MoveTargetVector(const XMFLOAT3& move);
+
 
 	//getter
 	const XMFLOAT3& GetEye() { return eye; }
