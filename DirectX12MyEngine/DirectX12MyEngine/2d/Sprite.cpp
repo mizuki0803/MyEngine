@@ -53,6 +53,7 @@ bool Sprite::Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool
 		D3D12_RESOURCE_DESC resDesc = spriteCommon->GetTexBuff(texNumber)->GetDesc();
 		//スプライトの大きさを画像の解像度に合わせる
 		size = { (float)resDesc.Width, (float)resDesc.Height };
+		texSize = { (float)resDesc.Width, (float)resDesc.Height };
 	}
 
 	//頂点バッファ生成

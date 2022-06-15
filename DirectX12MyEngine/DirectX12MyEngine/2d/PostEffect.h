@@ -26,10 +26,32 @@ public:
 	/// <param name="cmdList">コマンドリスト</param>
 	void Draw();
 
+	/// <summary>
+	/// シーン描画前処理
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	void DrawScenePrev();
+
+	/// <summary>
+	/// シーン描画後処理
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	void DrawSceneRear();
+
+private:
+	//画面クリアカラー
+	static const float clearColor[4];
+
 private:
 	//テクスチャバッファ
 	ComPtr<ID3D12Resource> texBuff;
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
+	//深度バッファ
+	ComPtr<ID3D12Resource> depthBuff;
+	//RTV用デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> descHeapRTV;
+	//DSV用デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> descHeapDSV;
 };
 

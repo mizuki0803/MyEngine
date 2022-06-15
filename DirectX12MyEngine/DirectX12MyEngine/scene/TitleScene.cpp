@@ -55,27 +55,20 @@ void TitleScene::Initialize()
 	//スプライト共通部分のインスタンスを取得
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 	//スプライト用テクスチャ読み込み
-	spriteCommon->LoadTexture(1, "pad1.png");
-	spriteCommon->LoadTexture(2, "mario.jpg");
+	spriteCommon->LoadTexture(1, "background.png");
+	//spriteCommon->LoadTexture(2, "mario.jpg");
 
 	//スプライト生成
-	sprite = Sprite::Create(2, { 0, 0 });
-	sprite2 = Sprite::Create(1);
+	sprite = Sprite::Create(1, {0, 0});
 
 	//スプライト座標移動
-	sprite->SetPosition({ 700, 300 });
-	sprite2->SetPosition({ 800, 300 });
-	//スプライト回転
-	sprite2->SetRotation(90);
+	//sprite->SetPosition({ 0, 0 });
 	//スプライトサイズ変更
-	sprite->SetSize({ 100, 100 });
-	sprite2->SetSize({ 428, 150 });
+	//sprite->SetSize({ 1280, 720 });
 	//スプライトテクスチャサイズ変更
-	sprite->SetTexSize({ 64, 478 });
-	sprite2->SetTexSize({ 428, 150 });
+	//sprite->SetTexSize({ 1280, 720 });
 	//スプライト色変更
-	sprite->SetColor({ 1, 1, 1, 0.5f });
-	sprite2->SetColor({ 1, 0, 0, 0.5f });
+	//sprite->SetColor({ 1, 1, 1, 0.5f });
 
 
 	//objからモデルデータを読み込む
@@ -153,7 +146,6 @@ void TitleScene::Finalize()
 
 	//スプライト解放
 	delete sprite;
-	delete sprite2;
 
 	//モデル解放
 	delete modelMan;
@@ -253,17 +245,9 @@ void TitleScene::Update()
 	//モデル変更とスプライト変化
 	if (input->PushKey(DIK_SPACE))
 	{
-		objMan->SetModel(modelFighter);
-
-		sprite2->SetTexNumber(2);
-		sprite->SetIsFlipX(false);
-	}
-	else
-	{
-		objMan->SetModel(modelMan);
-
-		sprite2->SetTexNumber(1);
-		sprite->SetIsFlipX(true);
+		float rot = sprite->GetRotation();
+		rot++;
+		sprite->SetRotation(rot);
 	}
 
 	//キー入力でプレイヤーの位置を変更
@@ -514,7 +498,6 @@ void TitleScene::Update()
 
 	//スプライト更新
 	sprite->Update();
-	sprite2->Update();
 
 	//パーティクル更新
 	particleMan->Update();
@@ -543,9 +526,9 @@ void TitleScene::Draw()
 
 
 	//objMan->Draw();
-	objGround->Draw();
-	objSkydome->Draw();
-	objSphere->Draw();
+	//objGround->Draw();
+	//objSkydome->Draw();
+	//objSphere->Draw();
 
 	fbxObject1->Draw();
 
@@ -559,7 +542,6 @@ void TitleScene::Draw()
 
 
 	sprite->Draw();
-	sprite2->Draw();
 
 
 	///-------スプライト描画ここまで-------///

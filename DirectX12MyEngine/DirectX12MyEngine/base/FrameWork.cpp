@@ -133,6 +133,11 @@ void FrameWork::Update()
 
 void FrameWork::Draw()
 {
+	//レンダーテクスチャへの描画
+	postEffect->DrawScenePrev();
+	SceneManager::GetInstance()->Draw();
+	postEffect->DrawSceneRear();
+
 	//グラフィックスコマンド(前)
 	dxbase->GraphicsCommandPrev();
 

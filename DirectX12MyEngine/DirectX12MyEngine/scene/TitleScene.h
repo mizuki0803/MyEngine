@@ -81,7 +81,6 @@ private: //メンバ変数
 
 	//スプライト
 	Sprite* sprite = nullptr;
-	Sprite* sprite2 = nullptr;
 
 	//モデルデータ
 	Model* modelMan = nullptr;
