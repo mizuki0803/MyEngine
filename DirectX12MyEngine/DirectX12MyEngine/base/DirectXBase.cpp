@@ -103,6 +103,13 @@ void DirectXBase::GraphicsCommandRear()
 	//DirectX–ˆƒtƒŒ[ƒ€ˆ—@‚±‚±‚Ü‚Å
 }
 
+void DirectXBase::ClearDepthBuffer()
+{
+	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH =
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(dsvHeap->GetCPUDescriptorHandleForHeapStart());
+	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+}
+
 void DirectXBase::InitializeDevice()
 {
 	HRESULT result;

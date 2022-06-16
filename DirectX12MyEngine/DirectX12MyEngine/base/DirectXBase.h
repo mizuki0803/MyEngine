@@ -34,6 +34,11 @@ public:
 	/// </summary>
 	void GraphicsCommandRear();
 
+	/// <summary>
+	/// 深度バッファクリア
+	/// </summary>
+	void ClearDepthBuffer();
+
 	//getter
 	ID3D12Device* GetDevice() { return dev.Get(); };
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); };

@@ -1,24 +1,51 @@
 #pragma once
-#include "Sprite.h"
+#include <DirectXMath.h>
+#include "PipelineSet.h"
 
-class PostEffect :public Sprite
+class PostEffect
 {
+private: // エイリアス
+// Microsoft::WRL::を省略
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	// DirectX::を省略
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMMATRIX = DirectX::XMMATRIX;
+
+public: //サブクラス
+	struct VertexPosUv
+	{
+		XMFLOAT3 pos;	//xyz座標
+		XMFLOAT2 uv;	//uv座標
+	};
+
+	//定数バッファ用データ構造体
+	struct ConstBufferData
+	{
+		XMFLOAT4 color;	//色(RGBA)
+		XMMATRIX mat;	//3変換行列
+	};
+
 public:
 	/// <summary>
-	/// スプライト生成
+	/// ポストエフェクト生成
 	/// </summary>
-	/// <param name="texNumber">テクスチャ番号</param>
-	/// <param name="anchorpoint">アンカーポイント</param>
-	/// <param name="isFlipX">左右反転するか</param>
-	/// <param name="isFlipY">上下反転するか</param>
 	/// <returns>Sprite</returns>
-	static PostEffect* Create(UINT texNumber, XMFLOAT2 anchorpoint = { 0.5f, 0.5f }, bool isFlipX = false, bool isFlipY = false);
+	static PostEffect* Create();
+
+	/// <summary>
+	/// ポストエフェクト共通部分の初期化
+	/// </summary>
+	/// <param name="dev">デバイス</param>
+	/// <param name="cmdList">コマンドリスト</param>
+	static void PostEffectCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	bool Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
+	bool Initialize();
 
 	/// <summary>
 	/// 描画
@@ -38,11 +65,27 @@ public:
 	/// <param name="cmdList">コマンドリスト</param>
 	void DrawSceneRear();
 
+	/// <summary>
+	/// パイプライン生成
+	/// </summary>
+	void CreateGraphicsPipelineState();
+
 private:
 	//画面クリアカラー
 	static const float clearColor[4];
-
+	//デバイス
+	static ID3D12Device* dev;
+	//コマンドリスト
+	static ID3D12GraphicsCommandList* cmdList;
+	//パイプラインセット
+	static PipelineSet pipelineSet;
 private:
+	//頂点バッファ
+	ComPtr<ID3D12Resource> vertBuff;
+	//頂点バッファビュー
+	D3D12_VERTEX_BUFFER_VIEW vbView{};
+	//定数バッファ
+	ComPtr<ID3D12Resource> constBuff;
 	//テクスチャバッファ
 	ComPtr<ID3D12Resource> texBuff;
 	//SRV用デスクリプタヒープ
@@ -53,5 +96,7 @@ private:
 	ComPtr<ID3D12DescriptorHeap> descHeapRTV;
 	//DSV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapDSV;
+	//色(RGBA)
+	XMFLOAT4 color = { 1, 1, 1, 1 };
 };
 

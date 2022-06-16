@@ -1,4 +1,5 @@
 #pragma once
+#include <DirectXBase.h>
 
 class SceneManager;
 
@@ -32,5 +33,11 @@ public:
 	/// •`‰æ
 	/// </summary>
 	virtual void Draw() = 0;
+
+	//setter
+	static void SetDirectXbase(DirectXBase* dxbase) { BaseScene::dxbase = dxbase; }
+
+protected:
+	static DirectXBase* dxbase;
 };
 

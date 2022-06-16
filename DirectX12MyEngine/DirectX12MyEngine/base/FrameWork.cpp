@@ -59,12 +59,10 @@ void FrameWork::Initialize()
 	debugText = DebugText::GetInstance();
 	debugText->Initialize(debugTextNumber);
 
-	//ポストエフェクト用のテクスチャ番号を指定
-	const int postEffectTexNumber = 100;
-	//ポストエフェクト用のテクスチャ読み込み
-	spriteCommon->LoadTexture(postEffectTexNumber, "white1x1.png");
+	//Object3d共通初期化処理
+	PostEffect::PostEffectCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	//ポストエフェクトの初期化
-	postEffect = PostEffect::Create(postEffectTexNumber, { 0, 0 });
+	postEffect = PostEffect::Create();
 
 	//Object3d共通初期化処理
 	Object3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());

@@ -270,27 +270,27 @@ void TitleScene::Update()
 		camera->MoveVector(move);
 	}
 
-	//スプライトの座標や読み込み位置をキー入力でずらす
-	if (input->PushKey(DIK_LEFT) || input->PushKey(DIK_RIGHT))
-	{
-		XMFLOAT2 pos = sprite->GetPosition();
-		XMFLOAT2 leftTop = sprite->GetTexLeftTop();
+	////スプライトの座標や読み込み位置をキー入力でずらす
+	//if (input->PushKey(DIK_LEFT) || input->PushKey(DIK_RIGHT))
+	//{
+	//	XMFLOAT2 pos = sprite->GetPosition();
+	//	XMFLOAT2 leftTop = sprite->GetTexLeftTop();
 
-		if (input->PushKey(DIK_RIGHT))
-		{
-			pos.x += 1.0f;
-			leftTop.x += 1.0f;
-		}
+	//	if (input->PushKey(DIK_RIGHT))
+	//	{
+	//		pos.x += 1.0f;
+	//		leftTop.x += 1.0f;
+	//	}
 
-		if (input->PushKey(DIK_LEFT))
-		{
-			pos.x -= 1.0f;
-			leftTop.x -= 1.0f;
-		}
+	//	if (input->PushKey(DIK_LEFT))
+	//	{
+	//		pos.x -= 1.0f;
+	//		leftTop.x -= 1.0f;
+	//	}
 
-		sprite->SetPosition(pos);
-		sprite->SetTexLeftTop(leftTop);
-	}
+	//	sprite->SetPosition(pos);
+	//	sprite->SetTexLeftTop(leftTop);
+	//}
 
 
 	//レイ移動
@@ -520,6 +520,18 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
+	//背景スプライト共通コマンド
+	SpriteCommon::GetInstance()->DrawPrev();
+	///-------背景スプライト描画ここから-------///
+
+
+	sprite->Draw();
+	
+	dxbase->ClearDepthBuffer();
+	
+	///-------背景スプライト描画ここまで-------///
+
+
 	//Object3d共通コマンド
 	Object3d::DrawPrev();
 	///-------Object3d描画ここから-------///
@@ -541,7 +553,7 @@ void TitleScene::Draw()
 	///-------スプライト描画ここから-------///
 
 
-	sprite->Draw();
+	//sprite->Draw();
 
 
 	///-------スプライト描画ここまで-------///
