@@ -5,9 +5,9 @@
 #include <unordered_map>
 
 /// <summary>
-/// 3Dモデル
+/// objモデル
 /// </summary>
-class Model
+class ObjModel
 {
 private: // エイリアス
 // Microsoft::WRL::を省略
@@ -63,10 +63,10 @@ public: //静的メンバ関数
 	/// <param name="modelname">モデル名</param>
 	/// <param name="smoothing">スムージングをかけるか</param>
 	/// <returns></returns>
-	static Model* LoadFromOBJ(const std::string& modelname, const bool smoothing = false);
+	static ObjModel* LoadFromOBJ(const std::string& modelname, const bool smoothing = false);
 
 	//setter
-	static void SetDevice(ID3D12Device* device) { Model::dev = device; };
+	static void SetDevice(ID3D12Device* device) { ObjModel::dev = device; };
 
 private: //静的メンバ変数
 	//デバイス
@@ -74,8 +74,6 @@ private: //静的メンバ変数
 
 
 private: //非公開のメンバ関数
-	//objファイルから3Dモデルを読み込む(非公開)
-
 	/// <summary>
 	/// OBJファイル読み込み
 	/// </summary>
@@ -127,7 +125,6 @@ private: //非公開のメンバ関数
 
 
 public: //メンバ関数
-
 	/// <summary>
 	/// 描画
 	/// </summary>

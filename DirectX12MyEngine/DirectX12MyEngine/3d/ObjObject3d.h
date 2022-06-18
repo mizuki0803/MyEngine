@@ -3,14 +3,14 @@
 #include "DirectXBase.h"
 #include <DirectXMath.h>
 #include "PipelineSet.h"
-#include "Model.h"
+#include "ObjModel.h"
 #include "LightGroup.h"
 #include "Camera.h"
 
 /// <summary>
-/// 3Dオブジェクト
+/// obj3Dオブジェクト
 /// </summary>
-class Object3d
+class ObjObject3d
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
@@ -54,7 +54,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>object3d</returns>
-	static Object3d* Create(Model* model);
+	static ObjObject3d* Create(ObjModel* model);
 
 
 public: //メンバ関数
@@ -83,9 +83,9 @@ public: //メンバ関数
 	void SetPosition(const XMFLOAT3& position) { this->position = position; }
 	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
 	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
-	void SetModel(Model* model) { this->model = model; }
-	static void SetLightGroup(LightGroup* lightGroup) { Object3d::lightGroup = lightGroup; }
-	static void SetCamera(Camera* camera) { Object3d::camera = camera; }
+	void SetModel(ObjModel* model) { this->model = model; }
+	static void SetLightGroup(LightGroup* lightGroup) { ObjObject3d::lightGroup = lightGroup; }
+	static void SetCamera(Camera* camera) { ObjObject3d::camera = camera; }
 
 private: //静的メンバ変数
 	//デバイス
@@ -110,7 +110,7 @@ private: //メンバ変数
 	//ワールド変換行列
 	XMMATRIX matWorld;
 	//親子構造
-	Object3d* parent = nullptr;
+	ObjObject3d* parent = nullptr;
 	//モデル
-	Model* model = nullptr;
+	ObjModel* model = nullptr;
 };

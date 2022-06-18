@@ -3,7 +3,7 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-DebugText *DebugText::GetInstance()
+DebugText* DebugText::GetInstance()
 {
 	static DebugText instance;
 
@@ -29,7 +29,7 @@ void DebugText::Initialize(UINT texnumber)
 	}
 }
 
-void DebugText::Print(const std::string &text, float x, float y, float scale)
+void DebugText::Print(const std::string& text, float x, float y, float scale)
 {
 	//全ての文字について
 	for (int i = 0; i < text.size(); i++)
@@ -41,7 +41,7 @@ void DebugText::Print(const std::string &text, float x, float y, float scale)
 		}
 
 		//1文字取り出す(※ASCIIコードでしか成り立たない)
-		const unsigned char &character = text[i];
+		const unsigned char& character = text[i];
 
 		//ASCIIコードの1段分飛ばした番号を計算
 		int fontIndex = character - 32;
@@ -58,8 +58,6 @@ void DebugText::Print(const std::string &text, float x, float y, float scale)
 		sprites[spriteIndex]->SetTexLeftTop({ (float)fontIndexX * fontWidth, (float)fontIndexY * fontHeight });
 		sprites[spriteIndex]->SetTexSize({ (float)fontWidth, (float)fontHeight });
 		sprites[spriteIndex]->SetSize({ fontWidth * scale, fontHeight * scale });
-		//頂点バッファ転送
-		//sprites[spriteIndex].TransferVertexBuffer();
 		//更新
 		sprites[spriteIndex]->Update();
 		//文字を1つ進める

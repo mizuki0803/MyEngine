@@ -80,7 +80,7 @@
     <ClCompile Include="collision\Collision.cpp">
       <Filter>ソース ファイル\collision</Filter>
     </ClCompile>
-    <ClCompile Include="collision\CollisionPrimitive.cpp">
+    <ClCompile Include="collision\CollisionShape.cpp">
       <Filter>ソース ファイル\collision</Filter>
     </ClCompile>
     <ClCompile Include="input\Input.cpp">
@@ -110,10 +110,10 @@
     <ClCompile Include="3d\ParticleManager.cpp">
       <Filter>ソース ファイル\3d\particle</Filter>
     </ClCompile>
-    <ClCompile Include="3d\Object3d.cpp">
+    <ClCompile Include="3d\ObjObject3d.cpp">
       <Filter>ソース ファイル\3d\object</Filter>
     </ClCompile>
-    <ClCompile Include="3d\Model.cpp">
+    <ClCompile Include="3d\ObjModel.cpp">
       <Filter>ソース ファイル\3d\object</Filter>
     </ClCompile>
     <ClCompile Include="base\DirectXBase.cpp">
@@ -149,7 +149,7 @@
     <ClCompile Include="2d\PostEffect.cpp">
       <Filter>ソース ファイル\2d\PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="BaseScene.cpp">
+    <ClCompile Include="scene\BaseScene.cpp">
       <Filter>ソース ファイル\scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -227,10 +227,10 @@
     <ClInclude Include="3d\ParticleManager.h">
       <Filter>ソース ファイル\3d\particle</Filter>
     </ClInclude>
-    <ClInclude Include="3d\Object3d.h">
+    <ClInclude Include="3d\ObjObject3d.h">
       <Filter>ソース ファイル\3d\object</Filter>
     </ClInclude>
-    <ClInclude Include="3d\Model.h">
+    <ClInclude Include="3d\ObjModel.h">
       <Filter>ソース ファイル\3d\object</Filter>
     </ClInclude>
     <ClInclude Include="audio\Audio.h">
@@ -263,7 +263,7 @@
     <ClInclude Include="camera\Camera.h">
       <Filter>ソース ファイル\camera</Filter>
     </ClInclude>
-    <ClInclude Include="collision\CollisionPrimitive.h">
+    <ClInclude Include="collision\CollisionShape.h">
       <Filter>ソース ファイル\collision</Filter>
     </ClInclude>
     <ClInclude Include="collision\Collision.h">

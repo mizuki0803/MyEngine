@@ -1,11 +1,11 @@
 #pragma once
 #include "BaseScene.h"
 #include "Sprite.h"
-#include "Object3d.h"
+#include "ObjObject3d.h"
 #include "ParticleManager.h"
 #include "LightGroup.h"
 #include "Camera.h"
-#include "CollisionPrimitive.h"
+#include "CollisionShape.h"
 #include "Collision.h"
 
 /// <summary>
@@ -82,18 +82,18 @@ private: //メンバ変数
 	Sprite* sprite = nullptr;
 	Sprite* sprite2 = nullptr;
 
-	//モデルデータ
-	Model* modelMan = nullptr;
-	Model* modelSkydome = nullptr;
-	Model* modelGround = nullptr;
-	Model* modelSphere = nullptr;
-	Model* modelFighter = nullptr;
+	//objモデルデータ
+	ObjModel* modelMan = nullptr;
+	ObjModel* modelSkydome = nullptr;
+	ObjModel* modelGround = nullptr;
+	ObjModel* modelSphere = nullptr;
+	ObjModel* modelFighter = nullptr;
 
-	//3Dオブジェクト
-	Object3d* objMan = nullptr;
-	Object3d* objGround = nullptr;
-	Object3d* objSkydome = nullptr;
-	Object3d* objSphere = nullptr;
+	//objオブジェクト
+	ObjObject3d* objMan = nullptr;
+	ObjObject3d* objGround = nullptr;
+	ObjObject3d* objSkydome = nullptr;
+	ObjObject3d* objSphere = nullptr;
 
 	//当たり判定 球
 	Sphere sphere;

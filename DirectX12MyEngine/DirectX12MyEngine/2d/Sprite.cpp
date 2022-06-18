@@ -11,7 +11,7 @@ using namespace Microsoft::WRL;
 
 Sprite* Sprite::Create(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
-	// 3Dオブジェクトのインスタンスを生成
+	//インスタンスを生成
 	Sprite* instance = new Sprite();
 	if (instance == nullptr) {
 		return nullptr;

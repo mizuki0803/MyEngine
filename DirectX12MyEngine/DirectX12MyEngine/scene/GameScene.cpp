@@ -77,17 +77,17 @@ void GameScene::Initialize()
 
 
 	//objからモデルデータを読み込む
-	modelMan = Model::LoadFromOBJ("man");
-	modelSkydome = Model::LoadFromOBJ("skydome");
-	modelGround = Model::LoadFromOBJ("ground");
-	modelSphere = Model::LoadFromOBJ("sphere", true);
-	modelFighter = Model::LoadFromOBJ("fighter", true);
+	modelMan = ObjModel::LoadFromOBJ("man");
+	modelSkydome = ObjModel::LoadFromOBJ("skydome");
+	modelGround = ObjModel::LoadFromOBJ("ground");
+	modelSphere = ObjModel::LoadFromOBJ("sphere", true);
+	modelFighter = ObjModel::LoadFromOBJ("fighter", true);
 
-	// 3Dオブジェクト生成
-	objMan = Object3d::Create(modelMan);
-	objGround = Object3d::Create(modelGround);
-	objSkydome = Object3d::Create(modelSkydome);
-	objSphere = Object3d::Create(modelSphere);
+	//objオブジェクト生成
+	objMan = ObjObject3d::Create(modelMan);
+	objGround = ObjObject3d::Create(modelGround);
+	objSkydome = ObjObject3d::Create(modelSkydome);
+	objSphere = ObjObject3d::Create(modelSphere);
 
 	//モデル割り当て
 	/*objMan->SetModel(modelMan);
@@ -103,10 +103,10 @@ void GameScene::Initialize()
 	//角度初期値
 	objMan->SetRotation({ 0, 90, 0 });
 
-	//3Dオブジェクトにカメラをセット
-	Object3d::SetCamera(camera);
-	//3Dオブジェクトにライトをセット
-	Object3d::SetLightGroup(lightGroup);
+	//objオブジェクトにカメラをセット
+	ObjObject3d::SetCamera(camera);
+	//objオブジェクトにライトをセット
+	ObjObject3d::SetLightGroup(lightGroup);
 
 
 	//当たり判定 球 の初期値を設定
@@ -150,7 +150,7 @@ void GameScene::Finalize()
 	delete modelSphere;
 	delete modelFighter;
 
-	//3Dオブジェクト解放
+	//objオブジェクト解放
 	delete objMan;
 	delete objGround;
 	delete objSkydome;
@@ -290,63 +290,11 @@ void GameScene::Update()
 	}
 
 	//オブジェクトを回転させる
-	XMFLOAT3 rot = objSphere->GetRotation();
-	rot.y += 1.0f;
-	objSphere->SetRotation(rot);
-
-	//{
-	//	//光線方向初期値
-	//	static XMVECTOR lightDir = { 0, 1, 5, 0 };
-
-	//	if (input->PushKey(DIK_W)) { lightDir.m128_f32[1] += 1.0f; }
-	//	else if (input->PushKey(DIK_S)) { lightDir.m128_f32[1] -= 1.0f; };
-	//	if (input->PushKey(DIK_D)) { lightDir.m128_f32[0] += 1.0f; }
-	//	else if (input->PushKey(DIK_A)) { lightDir.m128_f32[0] -= 1.0f; };
-
-	//	//light->SetLightDir(lightDir);
-
-	//	std::ostringstream debugstr;
-	//	debugstr << "lightDirFactor("
-	//		<< std::fixed << std::setprecision(2)
-	//		<< lightDir.m128_f32[0] << ","
-	//		<< lightDir.m128_f32[1] << ","
-	//		<< lightDir.m128_f32[2] << ")",
-	//		debugText->Print(debugstr.str(), 50, 50, 1.0f);
-
-	//	debugstr.str("");
-	//	debugstr.clear();
-
-	//	const XMFLOAT3 &cameraPos = camera->GetEye();
-	//	debugstr << "cameraPos("
-	//		<< std::fixed << std::setprecision(2)
-	//		<< cameraPos.x << ","
-	//		<< cameraPos.y << ","
-	//		<< cameraPos.z << ")",
-	//		debugText->Print(debugstr.str(), 50, 70, 1.0f);
-	//}
-
-
-	{ // imguiからのライトパラメータを反映
-	//	lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
-	//	lightGroup->SetDirLightDir(0, XMVECTOR({ lightDir0[0], lightDir0[1], lightDir0[2], 0 }));
-	//	lightGroup->SetDirLightColor(0, XMFLOAT3(lightColor0));
-	//	lightGroup->SetDirLightDir(1, XMVECTOR({ lightDir1[0], lightDir1[1], lightDir1[2], 0 }));
-	//	lightGroup->SetDirLightColor(1, XMFLOAT3(lightColor1));
-	//	lightGroup->SetDirLightDir(2, XMVECTOR({ lightDir2[0], lightDir2[1], lightDir2[2], 0 }));
-	//	lightGroup->SetDirLightColor(2, XMFLOAT3(lightColor2));
-	//	lightGroup->SetPointLightPos(0, XMFLOAT3(pointLightPos));
-	//	lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
-	//	lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
-	//	lightGroup->SetSpotLightDir(0, XMVECTOR({ spotLightDir[0], spotLightDir[1], spotLightDir[2], 0 }));
-	//	lightGroup->SetSpotLightPos(0, XMFLOAT3(spotLightPos));
-	//	lightGroup->SetSpotLightColor(0, XMFLOAT3(spotLightColor));
-	//	lightGroup->SetSpotLightAtten(0, XMFLOAT3(spotLightAtten));
-	//	lightGroup->SetSpotLightFactorAngleCos(0, XMFLOAT2(spotLightfactorAngleCos));
-		lightGroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-		lightGroup->SetCircleShadowCasterPos(0, objMan->GetPosition());
-		lightGroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
-		lightGroup->SetCircleShadowFactorAngleCos(0, XMFLOAT2(circleShadowFactorAngle));
-	}
+	XMFLOAT3 sphereRot = objSphere->GetRotation();
+	const float rotSpeed = 1.0f;
+	sphereRot.y += rotSpeed;
+	objSphere->SetRotation(sphereRot);
+	
 
 	//ライト更新
 	lightGroup->Update();
@@ -459,7 +407,7 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	//Object3d共通コマンド
-	Object3d::DrawPrev();
+	ObjObject3d::DrawPrev();
 	///-------Object3d描画ここから-------///
 
 

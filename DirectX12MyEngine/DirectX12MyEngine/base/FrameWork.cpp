@@ -1,9 +1,9 @@
 #include "FrameWork.h"
-#include "Object3d.h"
-#include "ParticleManager.h"
-#include "LightGroup.h"
+#include "ObjObject3d.h"
 #include "FbxLoader.h"
 #include "FbxObject3d.h"
+#include "ParticleManager.h"
+#include "LightGroup.h"
 
 void FrameWork::Run()
 {
@@ -64,8 +64,8 @@ void FrameWork::Initialize()
 	//ポストエフェクトの初期化
 	postEffect = PostEffect::Create();
 
-	//Object3d共通初期化処理
-	Object3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
+	//objオブジェクト3d共通初期化処理
+	ObjObject3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 
 	//FBXLoader初期化
 	FbxLoader::GetInstance()->Initialize(dxbase->GetDevice());

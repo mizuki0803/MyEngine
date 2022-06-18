@@ -317,7 +317,7 @@ void ParticleManager::DrawPrev()
 
 ParticleManager* ParticleManager::Create()
 {
-	// 3Dオブジェクトのインスタンスを生成
+	//インスタンスを生成
 	ParticleManager* object3d = new ParticleManager();
 	if (object3d == nullptr) {
 		return nullptr;

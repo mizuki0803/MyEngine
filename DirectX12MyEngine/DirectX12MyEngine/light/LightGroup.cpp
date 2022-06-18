@@ -17,7 +17,7 @@ void LightGroup::StaticInitialize(ID3D12Device* device)
 
 LightGroup* LightGroup::Create()
 {
-	//3Dオブジェクトのインスタンスを生成
+	//インスタンスを生成
 	LightGroup* instance = new LightGroup();
 	//初期化
 	instance->Initialize();

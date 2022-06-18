@@ -1,4 +1,4 @@
-#include "Object3d.h"
+#include "ObjObject3d.h"
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include <fstream>
@@ -13,30 +13,30 @@ using namespace Microsoft::WRL;
 
 using namespace std;
 
-ID3D12Device* Object3d::dev = nullptr;
-ID3D12GraphicsCommandList* Object3d::cmdList = nullptr;
-PipelineSet Object3d::pipelineSet;
-LightGroup* Object3d::lightGroup = nullptr;
-Camera* Object3d::camera = nullptr;
+ID3D12Device* ObjObject3d::dev = nullptr;
+ID3D12GraphicsCommandList* ObjObject3d::cmdList = nullptr;
+PipelineSet ObjObject3d::pipelineSet;
+LightGroup* ObjObject3d::lightGroup = nullptr;
+Camera* ObjObject3d::camera = nullptr;
 
 
-void Object3d::Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
+void ObjObject3d::Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 {
 	//nullptrチェック
 	assert(dev);
 	assert(cmdList);
 
-	Object3d::dev = dev;
-	Object3d::cmdList = cmdList;
+	ObjObject3d::dev = dev;
+	ObjObject3d::cmdList = cmdList;
 
 	//パイプライン生成
 	CreatePipeline();
 
 	//モデルにデバイスをセット
-	Model::SetDevice(dev);
+	ObjModel::SetDevice(dev);
 }
 
-void Object3d::CreatePipeline()
+void ObjObject3d::CreatePipeline()
 {
 	HRESULT result;
 
@@ -214,7 +214,7 @@ void Object3d::CreatePipeline()
 	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineSet.pipelinestate));
 }
 
-void Object3d::DrawPrev()
+void ObjObject3d::DrawPrev()
 {
 	//プリミティブ形状の設定コマンド(三角形リスト)
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -224,10 +224,10 @@ void Object3d::DrawPrev()
 	cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
 }
 
-Object3d* Object3d::Create(Model* model)
+ObjObject3d* ObjObject3d::Create(ObjModel* model)
 {
-	// 3Dオブジェクトのインスタンスを生成
-	Object3d* object3d = new Object3d();
+	//objオブジェクトのインスタンスを生成
+	ObjObject3d* object3d = new ObjObject3d();
 	if (object3d == nullptr) {
 		return nullptr;
 	}
@@ -245,7 +245,7 @@ Object3d* Object3d::Create(Model* model)
 	return object3d;
 }
 
-bool Object3d::Initialize()
+bool ObjObject3d::Initialize()
 {
 	HRESULT result;
 
@@ -273,7 +273,7 @@ bool Object3d::Initialize()
 	return true;
 }
 
-void Object3d::Update()
+void ObjObject3d::Update()
 {
 	//スケール　回転　平行移動行列の計算
 	XMMATRIX matScale, matRot, matTrans;
@@ -313,7 +313,7 @@ void Object3d::Update()
 	}
 }
 
-void Object3d::Draw()
+void ObjObject3d::Draw()
 {
 	//モデルがセットされていなければ描画をスキップ
 	if (model == nullptr) return;

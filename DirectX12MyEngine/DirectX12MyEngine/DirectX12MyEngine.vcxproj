@@ -157,11 +157,10 @@
     <ClCompile Include="3d\FbxLoader.cpp" />
     <ClCompile Include="3d\FbxModel.cpp" />
     <ClCompile Include="3d\FbxObject3d.cpp" />
-    <ClCompile Include="3d\Model.cpp" />
-    <ClCompile Include="3d\Object3d.cpp" />
+    <ClCompile Include="3d\ObjModel.cpp" />
+    <ClCompile Include="3d\ObjObject3d.cpp" />
     <ClCompile Include="3d\ParticleManager.cpp" />
     <ClCompile Include="audio\Audio.cpp" />
-    <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="base\AndosGame.cpp" />
     <ClCompile Include="base\DirectXBase.cpp" />
     <ClCompile Include="base\FrameWork.cpp" />
@@ -170,11 +169,12 @@
     <ClCompile Include="base\WindowApp.cpp" />
     <ClCompile Include="camera\Camera.cpp" />
     <ClCompile Include="collision\Collision.cpp" />
-    <ClCompile Include="collision\CollisionPrimitive.cpp" />
+    <ClCompile Include="collision\CollisionShape.cpp" />
     <ClCompile Include="effect\Easing.cpp" />
     <ClCompile Include="input\Input.cpp" />
     <ClCompile Include="light\LightGroup.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="scene\BaseScene.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\TitleScene.cpp" />
   </ItemGroup>
@@ -274,8 +274,8 @@
     <ClInclude Include="3d\FbxLoader.h" />
     <ClInclude Include="3d\FbxModel.h" />
     <ClInclude Include="3d\FbxObject3d.h" />
-    <ClInclude Include="3d\Model.h" />
-    <ClInclude Include="3d\Object3d.h" />
+    <ClInclude Include="3d\ObjModel.h" />
+    <ClInclude Include="3d\ObjObject3d.h" />
     <ClInclude Include="3d\ParticleManager.h" />
     <ClInclude Include="audio\Audio.h" />
     <ClInclude Include="base\AbstractSceneFactory.h" />
@@ -288,7 +288,7 @@
     <ClInclude Include="base\WindowApp.h" />
     <ClInclude Include="camera\Camera.h" />
     <ClInclude Include="collision\Collision.h" />
-    <ClInclude Include="collision\CollisionPrimitive.h" />
+    <ClInclude Include="collision\CollisionShape.h" />
     <ClInclude Include="effect\Easing.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="light\CircleShadow.h" />

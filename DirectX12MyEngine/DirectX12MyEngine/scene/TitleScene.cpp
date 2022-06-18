@@ -72,17 +72,17 @@ void TitleScene::Initialize()
 
 
 	//objからモデルデータを読み込む
-	modelMan = Model::LoadFromOBJ("man");
-	modelSkydome = Model::LoadFromOBJ("skydome");
-	modelGround = Model::LoadFromOBJ("ground");
-	modelSphere = Model::LoadFromOBJ("sphere", true);
-	modelFighter = Model::LoadFromOBJ("fighter", true);
+	modelMan = ObjModel::LoadFromOBJ("man");
+	modelSkydome = ObjModel::LoadFromOBJ("skydome");
+	modelGround = ObjModel::LoadFromOBJ("ground");
+	modelSphere = ObjModel::LoadFromOBJ("sphere", true);
+	modelFighter = ObjModel::LoadFromOBJ("fighter", true);
 
-	// 3Dオブジェクト生成
-	objMan = Object3d::Create(modelMan);
-	objGround = Object3d::Create(modelGround);
-	objSkydome = Object3d::Create(modelSkydome);
-	objSphere = Object3d::Create(modelSphere);
+	//objオブジェクト生成
+	objMan = ObjObject3d::Create(modelMan);
+	objGround = ObjObject3d::Create(modelGround);
+	objSkydome = ObjObject3d::Create(modelSkydome);
+	objSphere = ObjObject3d::Create(modelSphere);
 
 	//初期座標
 	objMan->SetPosition({ 0, 1, 0 });
@@ -92,10 +92,10 @@ void TitleScene::Initialize()
 	//角度初期値
 	objMan->SetRotation({ 0, 90, 0 });
 
-	//3Dオブジェクトにカメラをセット
-	Object3d::SetCamera(camera);
-	//3Dオブジェクトにライトをセット
-	Object3d::SetLightGroup(lightGroup);
+	//objオブジェクトにカメラをセット
+	ObjObject3d::SetCamera(camera);
+	//objオブジェクトにライトをセット
+	ObjObject3d::SetLightGroup(lightGroup);
 
 
 	//FBXオブジェクトのカメラをセット
@@ -106,7 +106,7 @@ void TitleScene::Initialize()
 	//fbxModel1 = FbxLoader::GetInstance()->LoadModelFromFile("cube");
 	fbxModel1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
 
-	//3Dオブジェクト生成とFBXモデルのセット
+	//オブジェクト生成とFBXモデルのセット
 	fbxObject1 = new FbxObject3d;
 	fbxObject1->Initialize();
 	fbxObject1->SetFbxModel(fbxModel1);
@@ -154,7 +154,7 @@ void TitleScene::Finalize()
 	delete modelSphere;
 	delete modelFighter;
 
-	//3Dオブジェクト解放
+	//objオブジェクト解放
 	delete objMan;
 	delete objGround;
 	delete objSkydome;
@@ -533,7 +533,7 @@ void TitleScene::Draw()
 
 
 	//Object3d共通コマンド
-	Object3d::DrawPrev();
+	ObjObject3d::DrawPrev();
 	///-------Object3d描画ここから-------///
 
 

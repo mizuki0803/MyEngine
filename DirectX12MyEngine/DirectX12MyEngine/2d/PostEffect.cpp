@@ -14,7 +14,7 @@ PipelineSet PostEffect::pipelineSet;
 
 PostEffect* PostEffect::Create()
 {
-	// 3Dオブジェクトのインスタンスを生成
+	//インスタンスを生成
 	PostEffect* instance = new PostEffect();
 	if (instance == nullptr) {
 		return nullptr;

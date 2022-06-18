@@ -1,4 +1,4 @@
-#include "Model.h"
+#include "ObjModel.h"
 #include <cassert>
 #include <string>
 #include <fstream>
@@ -15,13 +15,13 @@ using namespace std;
 
 
 //静的メンバ変数の実体
-ID3D12Device* Model::dev = nullptr;
+ID3D12Device* ObjModel::dev = nullptr;
 
 
-Model* Model::LoadFromOBJ(const std::string& modelname, const bool smoothing)
+ObjModel* ObjModel::LoadFromOBJ(const std::string& modelname, const bool smoothing)
 {
-	//新たなModel型のインスタンスのメモリを確保
-	Model* model = new Model();
+	//新たなObjModel型のインスタンスのメモリを確保
+	ObjModel* model = new ObjModel();
 
 	//デスクリプタヒープの生成
 	model->InitializeDescHeap();
@@ -35,7 +35,7 @@ Model* Model::LoadFromOBJ(const std::string& modelname, const bool smoothing)
 	return model;
 }
 
-void Model::LoadFromOBJInternal(const std::string& modelname, const bool smoothing)
+void ObjModel::LoadFromOBJInternal(const std::string& modelname, const bool smoothing)
 {
 	//objファイルからデータを読み込む
 	//const string modelname = "man";
@@ -84,10 +84,6 @@ void Model::LoadFromOBJInternal(const std::string& modelname, const bool smoothi
 			line_stream >> position.z;
 			//座標データに追加
 			positions.emplace_back(position);
-			//頂点データに追加
-			//Vertex vertex{};
-			//vertex.pos = position;
-			//vertices.emplace_back(vertex);
 		}
 
 		//先頭文字列がvtならテクスチャ
@@ -185,7 +181,7 @@ void Model::LoadFromOBJInternal(const std::string& modelname, const bool smoothi
 	}
 }
 
-void Model::LoadMaterial(const std::string& directoryPath, const std::string& filename)
+void ObjModel::LoadMaterial(const std::string& directoryPath, const std::string& filename)
 {
 	//ファイルストリーム
 	std::ifstream file;
@@ -250,7 +246,7 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 	file.close();
 }
 
-void Model::LoadTexture(const std::string& directoryPath, const std::string& filename)
+void ObjModel::LoadTexture(const std::string& directoryPath, const std::string& filename)
 {
 	HRESULT result;
 
@@ -317,7 +313,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	);
 }
 
-void Model::InitializeDescHeap()
+void ObjModel::InitializeDescHeap()
 {
 	HRESULT result;
 
@@ -330,7 +326,7 @@ void Model::InitializeDescHeap()
 	result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
 }
 
-void Model::CreateBuffers()
+void ObjModel::CreateBuffers()
 {
 	HRESULT result;
 
@@ -417,12 +413,12 @@ void Model::CreateBuffers()
 	}
 }
 
-void Model::AddSmootgData(const unsigned short indexPosition, const unsigned short indexVertex)
+void ObjModel::AddSmootgData(const unsigned short indexPosition, const unsigned short indexVertex)
 {
 	smoothData[indexPosition].emplace_back(indexVertex);
 }
 
-void Model::CalculateSmoothedVertexNormals()
+void ObjModel::CalculateSmoothedVertexNormals()
 {
 	auto itr = smoothData.begin();
 	for (; itr != smoothData.end(); ++itr) {
@@ -442,7 +438,7 @@ void Model::CalculateSmoothedVertexNormals()
 }
 
 
-void Model::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial)
+void ObjModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial)
 {
 	//頂点バッファビューの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
