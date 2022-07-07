@@ -33,7 +33,7 @@ void FrameWork::Initialize()
 {
 	//ウインドウ作成
 	win = new WindowApp();
-	win->WindowCreate(L"クラス化って難しいよねぇ...");
+	win->WindowCreate(L"ShootingGame");
 
 	//DirectX初期化
 	dxbase = new DirectXBase();
@@ -132,18 +132,18 @@ void FrameWork::Update()
 void FrameWork::Draw()
 {
 	//レンダーテクスチャへの描画
-	postEffect->DrawScenePrev();
-	SceneManager::GetInstance()->Draw();
-	postEffect->DrawSceneRear();
+	//postEffect->DrawScenePrev();
+	//SceneManager::GetInstance()->Draw();
+	//postEffect->DrawSceneRear();
 
 	//グラフィックスコマンド(前)
 	dxbase->GraphicsCommandPrev();
 
 	//ポストエフェクトの描画
-	postEffect->Draw();
+	//postEffect->Draw();
 
 	//シーン描画
-	//SceneManager::GetInstance()->Draw();
+	SceneManager::GetInstance()->Draw();
 
 	//スプライト共通コマンド
 	spriteCommon->DrawPrev();

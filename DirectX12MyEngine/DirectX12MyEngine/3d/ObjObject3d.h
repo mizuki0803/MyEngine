@@ -12,7 +12,7 @@
 /// </summary>
 class ObjObject3d
 {
-private: // エイリアス
+protected: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
@@ -62,17 +62,17 @@ public: //メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <returns>成否</returns>
-	bool Initialize();
+	virtual bool Initialize();
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	virtual void Update();
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	virtual void Draw();
 
 	//getter
 	const XMFLOAT3& GetPosition() { return position; }
@@ -87,7 +87,7 @@ public: //メンバ関数
 	static void SetLightGroup(LightGroup* lightGroup) { ObjObject3d::lightGroup = lightGroup; }
 	static void SetCamera(Camera* camera) { ObjObject3d::camera = camera; }
 
-private: //静的メンバ変数
+protected: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* dev;
 	//コマンドリスト
@@ -99,7 +99,7 @@ private: //静的メンバ変数
 	//カメラ
 	static Camera* camera;
 
-private: //メンバ変数
+protected: //メンバ変数
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuffB0;
 	//アフィン変換情報

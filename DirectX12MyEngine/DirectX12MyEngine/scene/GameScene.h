@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "CollisionShape.h"
 #include "Collision.h"
+#include "Player.h"
 
 /// <summary>
 /// ゲームシーン
@@ -75,13 +76,6 @@ private: //メンバ変数
 	float circleShadowAtten[3] = { 0.5f, 0.6f, 0.0f };
 	float circleShadowFactorAngle[2] = { 0.0f, 0.5f };
 
-	//パーティクル
-	ParticleManager* particleMan = nullptr;
-
-	//スプライト
-	Sprite* sprite = nullptr;
-	Sprite* sprite2 = nullptr;
-
 	//objモデルデータ
 	ObjModel* modelMan = nullptr;
 	ObjModel* modelSkydome = nullptr;
@@ -89,20 +83,13 @@ private: //メンバ変数
 	ObjModel* modelSphere = nullptr;
 	ObjModel* modelFighter = nullptr;
 
+	Player* player = nullptr;
+
 	//objオブジェクト
 	ObjObject3d* objMan = nullptr;
 	ObjObject3d* objGround = nullptr;
 	ObjObject3d* objSkydome = nullptr;
 	ObjObject3d* objSphere = nullptr;
-
-	//当たり判定 球
-	Sphere sphere;
-	//当たり判定 平面
-	Plane plane;
-	//当たり判定 三角形
-	Triangle triangle;
-	//当たり判定 レイ
-	Ray ray;
 
 	//その他変数
 	float soundVol = 0.1f;

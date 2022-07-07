@@ -69,6 +69,9 @@
     <Filter Include="ソース ファイル\2d\PostEffect">
       <UniqueIdentifier>{7183a348-bdc4-41c0-a69a-bc59cfd2ea30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\gameObject">
+      <UniqueIdentifier>{b67d9292-ad59-4417-a3dc-d812ac43c25d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -151,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="scene\BaseScene.cpp">
       <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\Player.cpp">
+      <Filter>ソース ファイル\gameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -310,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="2d\PostEffect.h">
       <Filter>ソース ファイル\2d\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Player.h">
+      <Filter>ソース ファイル\gameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

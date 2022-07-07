@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,7 +139,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -171,6 +171,7 @@
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="collision\CollisionShape.cpp" />
     <ClCompile Include="effect\Easing.cpp" />
+    <ClCompile Include="gameObject\Player.cpp" />
     <ClCompile Include="input\Input.cpp" />
     <ClCompile Include="light\LightGroup.cpp" />
     <ClCompile Include="main.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionShape.h" />
     <ClInclude Include="effect\Easing.h" />
+    <ClInclude Include="gameObject\Player.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="light\CircleShadow.h" />
     <ClInclude Include="light\DirectionalLight.h" />
