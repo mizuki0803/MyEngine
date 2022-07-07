@@ -83,32 +83,11 @@ private: //メンバ変数
 	Sprite* sprite = nullptr;
 
 	//モデルデータ
-	ObjModel* modelMan = nullptr;
-	ObjModel* modelSkydome = nullptr;
-	ObjModel* modelGround = nullptr;
 	ObjModel* modelSphere = nullptr;
-	ObjModel* modelFighter = nullptr;
-
 	//objオブジェクト
-	ObjObject3d* objMan = nullptr;
-	ObjObject3d* objGround = nullptr;
-	ObjObject3d* objSkydome = nullptr;
 	ObjObject3d* objSphere = nullptr;
 
 	//FBXモデル
 	FbxModel* fbxModel1 = nullptr;
 	FbxObject3d* fbxObject1 = nullptr;
-
-	//当たり判定 球
-	Sphere sphere;
-	//当たり判定 平面
-	Plane plane;
-	//当たり判定 三角形
-	Triangle triangle;
-	//当たり判定 レイ
-	Ray ray;
-
-	//その他変数
-	float soundVol = 0.1f;
-	char str[100];
 };

@@ -130,7 +130,7 @@ void ObjObject3d::CreatePipeline()
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
 	//レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = gpipeline.BlendState.RenderTarget[0];
+	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	//環境設定
 
 	//共通設定
@@ -160,6 +160,11 @@ void ObjObject3d::CreatePipeline()
 	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;	//ソースのアルファ値
 	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f-ソ
 
+	// ブレンドステートの設定
+	gpipeline.BlendState.RenderTarget[0] = blenddesc;
+	gpipeline.BlendState.RenderTarget[1] = blenddesc;
+	gpipeline.BlendState.RenderTarget[2] = blenddesc;
+
 	//深度値フォーマット
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
@@ -171,8 +176,10 @@ void ObjObject3d::CreatePipeline()
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	//その他の設定
-	gpipeline.NumRenderTargets = 1;	//描画対象は1つ
+	gpipeline.NumRenderTargets = 3;	//描画対象は3つ
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;	//0～255指定のRGBA
+	gpipeline.RTVFormats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;	//0～255指定のRGBA
+	gpipeline.RTVFormats[2] = DXGI_FORMAT_R8G8B8A8_UNORM;	//0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1;	//1ピクセルにつき1回サンプリング
 
 	//デスクリプタテーブルの設定

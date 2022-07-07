@@ -87,7 +87,8 @@ private:
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuff;
 	//テクスチャバッファ
-	ComPtr<ID3D12Resource> texBuff;
+	static const int texBuffNum = 3;
+	ComPtr<ID3D12Resource> texBuff[texBuffNum];
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 	//深度バッファ

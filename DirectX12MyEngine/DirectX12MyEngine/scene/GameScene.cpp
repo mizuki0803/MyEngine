@@ -23,7 +23,7 @@ void GameScene::Initialize()
 
 	//音全体のボリューム変更
 	audio->ChangeVolume(soundVol);
-	audio->PlayWave("BGM.wav", true);
+	//audio->PlayWave("BGM.wav", true);
 
 
 	//カメラ初期化
@@ -164,14 +164,6 @@ void GameScene::Update()
 	//デバッグテキストのインスタンスを取得
 	DebugText* debugText = DebugText::GetInstance();
 
-	if (input->TriggerKey(DIK_I))
-	{
-		Audio::GetInstance()->PlayWave("Shot.wav", false);
-	}
-	if (input->TriggerKey(DIK_0))
-	{
-		Audio::GetInstance()->StopWave("BGM.wav");
-	}
 
 	//モデル変更とスプライト変化
 	if (input->PushKey(DIK_SPACE))
@@ -187,140 +179,10 @@ void GameScene::Update()
 
 		sprite2->SetTexNumber(1);
 		sprite->SetIsFlipX(true);
-	}
-
-	//キー入力でプレイヤーの位置を変更
-	if (input->PushKey(DIK_1) || input->PushKey(DIK_2) || input->PushKey(DIK_3) || input->PushKey(DIK_4) || input->PushKey(DIK_5) || input->PushKey(DIK_6))
-	{
-		XMFLOAT3 move = { 0, 0, 0 };
-		if (input->PushKey(DIK_1)) { move.x += 0.1f; }
-		if (input->PushKey(DIK_2)) { move.x -= 0.1f; }
-		if (input->PushKey(DIK_3)) { move.y += 0.1f; }
-		if (input->PushKey(DIK_4)) { move.y -= 0.1f; }
-		if (input->PushKey(DIK_5)) { move.z += 0.1f; }
-		if (input->PushKey(DIK_6)) { move.z -= 0.1f; }
-		XMFLOAT3 playerPos = objMan->GetPosition();
-		playerPos.x += move.x;
-		playerPos.y += move.y;
-		playerPos.z += move.z;
-		objMan->SetPosition(playerPos);
-
-		//カメラも同じ値を渡す。追従する
-		camera->MoveVector(move);
-	}
-
-	//スプライトの座標や読み込み位置をキー入力でずらす
-	if (input->PushKey(DIK_LEFT) || input->PushKey(DIK_RIGHT))
-	{
-		XMFLOAT2 pos = sprite->GetPosition();
-		XMFLOAT2 leftTop = sprite->GetTexLeftTop();
-
-		if (input->PushKey(DIK_RIGHT))
-		{
-			pos.x += 1.0f;
-			leftTop.x += 1.0f;
-		}
-
-		if (input->PushKey(DIK_LEFT))
-		{
-			pos.x -= 1.0f;
-			leftTop.x -= 1.0f;
-		}
-
-		sprite->SetPosition(pos);
-		sprite->SetTexLeftTop(leftTop);
-	}
-
-
-	//レイ移動
-	{
-		XMVECTOR moveZ = XMVectorSet(0, 0, 0.01f, 0);
-		if (input->PushKey(DIK_W))
-		{
-			ray.start += moveZ;
-		}
-		else if (input->PushKey(DIK_S))
-		{
-			ray.start -= moveZ;
-		}
-
-		XMVECTOR moveX = XMVectorSet(0.01f, 0, 0, 0);
-		if (input->PushKey(DIK_D))
-		{
-			ray.start += moveX;
-		}
-		else if (input->PushKey(DIK_A))
-		{
-			ray.start -= moveX;
-		}
-	}
-	//stringstreamで変数の値を埋め込んで整形する
-	std::ostringstream raystr;
-	raystr << "ray.start("
-		<< std::fixed << std::setprecision(2)//小数点以下2桁まで
-		<< ray.start.m128_f32[0] << ","	//x
-		<< ray.start.m128_f32[1] << ","	//y
-		<< ray.start.m128_f32[2] << ")",//z
-
-		debugText->Print(raystr.str(), 50, 180, 1.0f);
-
-	//レイと球の当たり判定
-	XMVECTOR inter;
-	float distance;
-	bool hit = Collision::CheckRay2Sphere(ray, sphere, &distance, &inter);
-	if (hit) {
-		debugText->Print("HIT", 50, 260, 1.0f);
-
-		//stringstreamで変数の値を埋め込んで整形する
-		raystr.str("");
-		raystr.clear();
-		raystr << "inter:("
-			<< std::fixed << std::setprecision(2)//小数点以下2桁まで
-			<< inter.m128_f32[0] << ","	//x
-			<< inter.m128_f32[1] << ","	//y
-			<< inter.m128_f32[2] << ")",//z
-
-			debugText->Print(raystr.str(), 50, 280, 1.0f);
-
-		raystr.str("");
-		raystr.clear();
-		raystr << "distance:(" << std::fixed << std::setprecision(2) << distance << ")";
-
-		debugText->Print(raystr.str(), 50, 300, 1.0f);
-	}
-
-	//オブジェクトを回転させる
-	XMFLOAT3 sphereRot = objSphere->GetRotation();
-	const float rotSpeed = 1.0f;
-	sphereRot.y += rotSpeed;
-	objSphere->SetRotation(sphereRot);
-	
+	}	
 
 	//ライト更新
 	lightGroup->Update();
-
-
-	// カメラ移動
-	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A) || input->PushKey(DIK_E) || input->PushKey(DIK_C))
-	{
-		XMFLOAT3 move = { 0, 0, 0 };
-		if (input->PushKey(DIK_W)) { move.y += 0.1f; }
-		else if (input->PushKey(DIK_S)) { move.y -= 0.1f; }
-		if (input->PushKey(DIK_D)) { move.x += 0.1f; }
-		else if (input->PushKey(DIK_A)) { move.x -= 0.1f; }
-		if (input->PushKey(DIK_E)) { move.z += 0.1f; }
-		else if (input->PushKey(DIK_C)) { move.z -= 0.1f; }
-		camera->MoveVector(move);
-	}
-	/*if (input->PushKey(DIK_LEFT) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN))
-	{
-		XMFLOAT3 move = { 0, 0, 0 };
-		if (input->PushKey(DIK_UP)) { move.y += 0.1f; }
-		else if (input->PushKey(DIK_DOWN)) { move.y -= 0.1f; }
-		if (input->PushKey(DIK_RIGHT)) { move.x += 0.1f; }
-		else if (input->PushKey(DIK_LEFT)) { move.x -= 0.1f; }
-		camera->MoveVector(move);
-	}*/
 
 
 	//色
@@ -350,6 +212,19 @@ void GameScene::Update()
 		particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, purple, lightBlue);
 	}
 
+
+	// カメラ移動
+	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A) || input->PushKey(DIK_E) || input->PushKey(DIK_C))
+	{
+		XMFLOAT3 move = { 0, 0, 0 };
+		if (input->PushKey(DIK_W)) { move.y += 0.1f; }
+		else if (input->PushKey(DIK_S)) { move.y -= 0.1f; }
+		if (input->PushKey(DIK_D)) { move.x += 0.1f; }
+		else if (input->PushKey(DIK_A)) { move.x -= 0.1f; }
+		if (input->PushKey(DIK_E)) { move.z += 0.1f; }
+		else if (input->PushKey(DIK_C)) { move.z -= 0.1f; }
+		camera->MoveVector(move);
+	}
 
 	//カメラのアングルを変更する
 	if (input->PushKey(DIK_LEFT) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN))
@@ -390,8 +265,10 @@ void GameScene::Update()
 
 	//デバックテキスト
 	//X座標,Y座標,縮尺を指定して表示
-	debugText->Print("GAME SCENE", 1000, 50);
-
+	debugText->Print("SCENE2", 50, 50);
+	debugText->Print("[1] monochromatic", 50, 70);
+	debugText->Print("[2] ADS", 50, 90);
+	debugText->Print("[3] Toon", 50, 110);
 	//デバッグ出力
 	//sprintf_s(str, "%f\n", soundVol);
 	//OutputDebugStringA(str);
@@ -421,12 +298,12 @@ void GameScene::Draw()
 
 
 	//スプライト共通コマンド
-	SpriteCommon::GetInstance()->DrawPrev();
+	//SpriteCommon::GetInstance()->DrawPrev();
 	///-------スプライト描画ここから-------///
 
 
-	sprite->Draw();
-	sprite2->Draw();
+	//sprite->Draw();
+	//sprite2->Draw();
 
 
 	///-------スプライト描画ここまで-------///

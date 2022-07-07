@@ -33,7 +33,7 @@ void FrameWork::Initialize()
 {
 	//ウインドウ作成
 	win = new WindowApp();
-	win->WindowCreate(L"クラス化って難しいよねぇ...");
+	win->WindowCreate(L"評価課題2");
 
 	//DirectX初期化
 	dxbase = new DirectXBase();
