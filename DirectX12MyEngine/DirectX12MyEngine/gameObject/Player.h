@@ -1,5 +1,8 @@
 #pragma once
 #include "ObjObject3d.h"
+#include "PlayerBullet.h"
+#include <memory>
+#include <list>
 
 /// <summary>
 /// 自機
@@ -25,6 +28,11 @@ public: //メンバ関数
 	/// </summary>
 	void Update() override;
 
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw() override;
+
 
 private: //メンバ関数
 	/// <summary>
@@ -32,5 +40,12 @@ private: //メンバ関数
 	/// </summary>
 	void Move();
 
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
+
 private:
+	//自機弾
+	std::list<std::unique_ptr<PlayerBullet>> playerBullets;
 };

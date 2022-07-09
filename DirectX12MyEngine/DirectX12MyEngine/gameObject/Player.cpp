@@ -29,7 +29,7 @@ bool Player::Initialize()
 	scale = { 0.5f, 0.5f, 0.5f };
 
 	//3Dオブジェクトの初期化
-	if (!ObjObject3d::Initialize()) 
+	if (!ObjObject3d::Initialize())
 	{
 		return false;
 	}
@@ -42,8 +42,26 @@ void Player::Update()
 	//移動
 	Move();
 
+	//攻撃
+	Attack();
+
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
+
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
+	{
+		bullet->Update();
+	}
+}
+
+void Player::Draw()
+{
+	ObjObject3d::Draw();
+
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
+	{
+		bullet->Draw();
+	}
 }
 
 void Player::Move()
@@ -70,6 +88,15 @@ void Player::Move()
 	position.y = min(position.y, +moveLimit.y);
 }
 
-//void Player::Draw()
-//{
-//}
+void Player::Attack()
+{
+	Input* input = Input::GetInstance();
+	//発射キーを押したら
+	if (input->TriggerKey(DIK_SPACE))
+	{
+		//弾を生成
+		std::unique_ptr<PlayerBullet> newBullet;
+		newBullet.reset(PlayerBullet::Create(model, position));
+		playerBullets.push_back(std::move(newBullet));
+	}
+}

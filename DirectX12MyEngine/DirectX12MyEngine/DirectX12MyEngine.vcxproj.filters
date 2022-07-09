@@ -158,6 +158,9 @@
     <ClCompile Include="gameObject\Player.cpp">
       <Filter>ソース ファイル\gameObject</Filter>
     </ClCompile>
+    <ClCompile Include="gameObject\PlayerBullet.cpp">
+      <Filter>ソース ファイル\gameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -318,6 +321,9 @@
       <Filter>ソース ファイル\2d\PostEffect</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Player.h">
+      <Filter>ソース ファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\PlayerBullet.h">
       <Filter>ソース ファイル\gameObject</Filter>
     </ClInclude>
   </ItemGroup>
