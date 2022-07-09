@@ -39,6 +39,11 @@ bool Player::Initialize()
 
 void Player::Update()
 {
+	//€–S‚µ‚½’e‚Ìíœ
+	playerBullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
+		return bullet->GetIsDead();
+		});
+
 	//ˆÚ“®
 	Move();
 
@@ -94,9 +99,14 @@ void Player::Attack()
 	//”­ËƒL[‚ğ‰Ÿ‚µ‚½‚ç
 	if (input->TriggerKey(DIK_SPACE))
 	{
+		//’e‚Ì‘¬“x‚ğİ’è
+		const float bulletSpeed = 0.05f;
+		XMFLOAT3 velocity(0, 0, bulletSpeed);
+
+
 		//’e‚ğ¶¬
 		std::unique_ptr<PlayerBullet> newBullet;
-		newBullet.reset(PlayerBullet::Create(model, position));
+		newBullet.reset(PlayerBullet::Create(model, position, velocity));
 		playerBullets.push_back(std::move(newBullet));
 	}
 }
