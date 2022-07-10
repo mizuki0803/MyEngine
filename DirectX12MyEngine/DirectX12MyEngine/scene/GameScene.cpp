@@ -53,7 +53,13 @@ void GameScene::Initialize()
 	objGround->SetPosition({ 0, -1, 0 });
 	objSphere->SetPosition({ -1, 0, 0 });
 
-	player = Player::Create(modelFighter);
+	player.reset(Player::Create(modelFighter));
+
+	//敵の速度を設定
+	const XMFLOAT3 position(0, 0, 50);
+	const float enemySpeed = 1;
+	XMFLOAT3 velocity(0, 0, -enemySpeed);
+	enemy.reset(Enemy::Create(modelMan, position, velocity));
 
 	//角度初期値
 	objMan->SetRotation({ 0, 90, 0 });
@@ -84,7 +90,6 @@ void GameScene::Finalize()
 	delete objGround;
 	delete objSkydome;
 	delete objSphere;
-	delete player;
 }
 
 void GameScene::Update()
@@ -159,6 +164,11 @@ void GameScene::Update()
 	objSphere->Update();
 	player->Update();
 
+	if (enemy)
+	{
+		enemy->Update();
+	}
+
 	//デバックテキスト
 	//X座標,Y座標,縮尺を指定して表示
 	debugText->Print("GAME SCENE", 1000, 50);
@@ -182,6 +192,11 @@ void GameScene::Draw()
 	//objSkydome->Draw();
 	//objSphere->Draw();
 	player->Draw();
+
+	if (enemy)
+	{
+		enemy->Draw();
+	}
 
 
 	///-------Object3d描画ここまで-------///

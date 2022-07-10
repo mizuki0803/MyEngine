@@ -8,6 +8,7 @@
 #include "CollisionShape.h"
 #include "Collision.h"
 #include "Player.h"
+#include "Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -83,7 +84,8 @@ private: //メンバ変数
 	ObjModel* modelSphere = nullptr;
 	ObjModel* modelFighter = nullptr;
 
-	Player* player = nullptr;
+	std::unique_ptr<Player> player;
+	std::unique_ptr<Enemy> enemy;
 
 	//objオブジェクト
 	ObjObject3d* objMan = nullptr;

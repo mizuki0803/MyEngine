@@ -161,6 +161,9 @@
     <ClCompile Include="gameObject\PlayerBullet.cpp">
       <Filter>ソース ファイル\gameObject</Filter>
     </ClCompile>
+    <ClCompile Include="gameObject\Enemy.cpp">
+      <Filter>ソース ファイル\gameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -324,6 +327,9 @@
       <Filter>ソース ファイル\gameObject</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\PlayerBullet.h">
+      <Filter>ソース ファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Enemy.h">
       <Filter>ソース ファイル\gameObject</Filter>
     </ClInclude>
   </ItemGroup>

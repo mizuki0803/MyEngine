@@ -171,6 +171,7 @@
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="collision\CollisionShape.cpp" />
     <ClCompile Include="effect\Easing.cpp" />
+    <ClCompile Include="gameObject\Enemy.cpp" />
     <ClCompile Include="gameObject\Player.cpp" />
     <ClCompile Include="gameObject\PlayerBullet.cpp" />
     <ClCompile Include="input\Input.cpp" />
@@ -292,6 +293,7 @@
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionShape.h" />
     <ClInclude Include="effect\Easing.h" />
+    <ClInclude Include="gameObject\Enemy.h" />
     <ClInclude Include="gameObject\Player.h" />
     <ClInclude Include="gameObject\PlayerBullet.h" />
     <ClInclude Include="input\Input.h" />
