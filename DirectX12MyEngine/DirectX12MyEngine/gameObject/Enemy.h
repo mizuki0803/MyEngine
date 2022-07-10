@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjObject3d.h"
+#include "EnemyBullet.h"
 
 /// <summary>
 /// 敵
@@ -32,15 +33,38 @@ public: //メンバ関数
 	/// </summary>
 	void Update() override;
 
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw() override;
+
+	/// <summary>
+	/// 前進フェーズ初期化
+	/// </summary>
+	void PreviousPhaseInit();
+
 private: //メンバ関数
 	/// <summary>
 	/// 移動
 	/// </summary>
 	void Move();
 
+	/// <summary>
+	/// 弾発射
+	/// </summary>
+	void Fire();
+
+private: //静的メンバ変数
+	//発射間隔
+	static const int fireInterval = 60;
+
 private: //メンバ変数
 	//速度
 	XMFLOAT3 velocity;
 	//行動フェーズ
 	Phase phase = Phase::Previous;
+	//敵弾
+	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
+	//発射タイマー
+	int32_t fireTimer = 0;
 };

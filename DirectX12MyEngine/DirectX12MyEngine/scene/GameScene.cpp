@@ -56,10 +56,10 @@ void GameScene::Initialize()
 	player.reset(Player::Create(modelFighter));
 
 	//“G‚Ì‘¬“x‚ðÝ’è
-	const XMFLOAT3 position(0, 0, 50);
-	const float enemySpeed = 1;
-	XMFLOAT3 velocity(0, 0, -enemySpeed);
-	enemy.reset(Enemy::Create(modelMan, position, velocity));
+	const XMFLOAT3 position(5, 0, 50);
+	const float enemySpeed = 0.1f;
+	XMFLOAT3 velocity(0, 0, enemySpeed);
+	enemy.reset(Enemy::Create(modelSphere, position, velocity));
 
 	//Šp“x‰Šú’l
 	objMan->SetRotation({ 0, 90, 0 });
