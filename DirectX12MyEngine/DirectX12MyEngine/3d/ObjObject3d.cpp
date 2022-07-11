@@ -300,7 +300,7 @@ void ObjObject3d::Update()
 
 
 	const XMMATRIX& matViewProjection = camera->GetMatView() * camera->GetMatProjection();
-	const XMFLOAT3& cameraPos = camera->GetEye();
+	const Vector3& cameraPos = camera->GetEye();
 
 	//定数バッファへのデータ転送
 	ConstBufferDataB0* constMap = nullptr;

@@ -12,7 +12,7 @@ public: // 静的メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>敵弾</returns>
-	static EnemyBullet* Create(ObjModel* model, XMFLOAT3& position, XMFLOAT3& velocity);
+	static EnemyBullet* Create(ObjModel* model, Vector3& position, Vector3& velocity);
 
 public: //メンバ関数
 	/// <summary>
@@ -35,7 +35,7 @@ private: //静的メンバ変数
 
 private: //メンバ変数
 	//速度
-	XMFLOAT3 velocity;
+	Vector3 velocity;
 	//寿命タイマー
 	int32_t deathTimer = lifeTime;
 	//死亡フラグ

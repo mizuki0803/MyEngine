@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-Enemy* Enemy::Create(ObjModel* model, const XMFLOAT3& position, const XMFLOAT3& velocity)
+Enemy* Enemy::Create(ObjModel* model, const Vector3& position, const Vector3& velocity)
 {
 	//敵のインスタンスを生成
 	Enemy* enemy = new Enemy();
@@ -87,9 +87,7 @@ void Enemy::Move()
 	case Phase::Previous:
 	default:
 		//前進する
-		position.x -= velocity.x;
-		position.y -= velocity.y;
-		position.z -= velocity.z;
+		position -= velocity;
 
 		//一定の位置まで前進したら後退
 		if (position.z < 0.0f) {
@@ -108,9 +106,7 @@ void Enemy::Move()
 		break;
 	case Phase::Back:
 		//後退する
-		position.x += velocity.x;
-		position.y += velocity.y;
-		position.z += velocity.z;
+		position += velocity;
 		//一定の位置まで後退したら前進
 		if (position.z > 100.0f) {
 			phase = Phase::Previous;
@@ -124,7 +120,7 @@ void Enemy::Fire()
 {
 	//弾の速度を設定
 	const float bulletSpeed = 0.5f;
-	XMFLOAT3 velocity(0, 0, -bulletSpeed);
+	Vector3 velocity(0, 0, -bulletSpeed);
 
 	//弾を生成
 	std::unique_ptr<EnemyBullet> newBullet;

@@ -191,52 +191,52 @@ void TitleScene::Update()
 
 	if (input->PushGamePadTrigger(500))
 	{
-		XMFLOAT3 pos = objMan->GetPosition();
+		Vector3 pos = objMan->GetPosition();
 		pos.x += 0.1f;
 		objMan->SetPosition(pos);
 	}
 	/*if (input->PushGamePadTrigger(-500))
 	{
-		XMFLOAT3 pos = objMan->GetPosition();
+		Vector3 pos = objMan->GetPosition();
 		pos.x -= 0.1f;
 		objMan->SetPosition(pos);
 	}*/
 
 	if (input->GetMouseWheelVelocity() != 0.0f)
 	{
-		XMFLOAT3 pos = objMan->GetPosition();
+		Vector3 pos = objMan->GetPosition();
 		pos.x -= 0.1f * input->GetMouseWheelVelocity();
 		objMan->SetPosition(pos);
 	}
 
 	if (input->ReleaseMouseButton(Input::MOUSE_WHEEL))
 	{
-		XMFLOAT3 pos = objMan->GetPosition();
+		Vector3 pos = objMan->GetPosition();
 		pos.x -= 0.1f;
 		objMan->SetPosition(pos);
 	}
 
 	if (input->PushGamePadButton(Input::PAD_LEFT))
 	{
-		XMFLOAT3 pos = objMan->GetPosition();
+		Vector3 pos = objMan->GetPosition();
 		pos.x -= 0.1f;
 		objMan->SetPosition(pos);
 	}
 	if (input->PushGamePadButton(Input::PAD_RIGHT))
 	{
-		XMFLOAT3 pos = objMan->GetPosition();
+		Vector3 pos = objMan->GetPosition();
 		pos.x += 0.1f;
 		objMan->SetPosition(pos);
 	}
 	if (input->PushGamePadButton(Input::PAD_UP))
 	{
-		XMFLOAT3 pos = objMan->GetPosition();
+		Vector3 pos = objMan->GetPosition();
 		pos.y += 0.1f;
 		objMan->SetPosition(pos);
 	}
 	if (input->PushGamePadButton(Input::PAD_DOWN))
 	{
-		XMFLOAT3 pos = objMan->GetPosition();
+		Vector3 pos = objMan->GetPosition();
 		pos.y -= 0.1f;
 		objMan->SetPosition(pos);
 	}
@@ -253,14 +253,14 @@ void TitleScene::Update()
 	//キー入力でプレイヤーの位置を変更
 	if (input->PushKey(DIK_1) || input->PushKey(DIK_2) || input->PushKey(DIK_3) || input->PushKey(DIK_4) || input->PushKey(DIK_5) || input->PushKey(DIK_6))
 	{
-		XMFLOAT3 move = { 0, 0, 0 };
+		Vector3 move = { 0, 0, 0 };
 		if (input->PushKey(DIK_1)) { move.x += 0.1f; }
 		if (input->PushKey(DIK_2)) { move.x -= 0.1f; }
 		if (input->PushKey(DIK_3)) { move.y += 0.1f; }
 		if (input->PushKey(DIK_4)) { move.y -= 0.1f; }
 		if (input->PushKey(DIK_5)) { move.z += 0.1f; }
 		if (input->PushKey(DIK_6)) { move.z -= 0.1f; }
-		XMFLOAT3 playerPos = objMan->GetPosition();
+		Vector3 playerPos = objMan->GetPosition();
 		playerPos.x += move.x;
 		playerPos.y += move.y;
 		playerPos.z += move.z;
@@ -351,7 +351,7 @@ void TitleScene::Update()
 	}
 
 	//オブジェクトを回転させる
-	XMFLOAT3 rot = objSphere->GetRotation();
+	Vector3 rot = objSphere->GetRotation();
 	rot.y += 1.0f;
 	objSphere->SetRotation(rot);
 
@@ -395,7 +395,7 @@ void TitleScene::Update()
 	//	lightGroup->SetDirLightColor(1, XMFLOAT3(lightColor1));
 	//	lightGroup->SetDirLightDir(2, XMVECTOR({ lightDir2[0], lightDir2[1], lightDir2[2], 0 }));
 	//	lightGroup->SetDirLightColor(2, XMFLOAT3(lightColor2));
-		lightGroup->SetPointLightPos(0, XMFLOAT3(pointLightPos));
+		lightGroup->SetPointLightPos(0, Vector3(pointLightPos));
 		lightGroup->SetPointLightColor(0, XMFLOAT3(pointLightColor));
 		lightGroup->SetPointLightAtten(0, XMFLOAT3(pointLightAtten));
 		//	lightGroup->SetSpotLightDir(0, XMVECTOR({ spotLightDir[0], spotLightDir[1], spotLightDir[2], 0 }));
@@ -416,7 +416,7 @@ void TitleScene::Update()
 	// カメラ移動
 	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A) || input->PushKey(DIK_E) || input->PushKey(DIK_C))
 	{
-		XMFLOAT3 move = { 0, 0, 0 };
+		Vector3 move = { 0, 0, 0 };
 		if (input->PushKey(DIK_W)) { move.y += 0.1f; }
 		else if (input->PushKey(DIK_S)) { move.y -= 0.1f; }
 		if (input->PushKey(DIK_D)) { move.x += 0.1f; }
@@ -467,7 +467,7 @@ void TitleScene::Update()
 	//カメラのアングルを変更する
 	if (input->PushKey(DIK_LEFT) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN))
 	{
-		XMFLOAT3 angle = camera->GetAngle();
+		Vector3 angle = camera->GetAngle();
 		if (input->PushKey(DIK_LEFT)) { angle.y += 1.0f; }
 		if (input->PushKey(DIK_RIGHT)) { angle.y -= 1.0f; }
 		if (input->PushKey(DIK_UP)) { angle.x += 1.0f; }
@@ -537,10 +537,10 @@ void TitleScene::Draw()
 	///-------Object3d描画ここから-------///
 
 
-	//objMan->Draw();
-	//objGround->Draw();
-	//objSkydome->Draw();
-	//objSphere->Draw();
+	objMan->Draw();
+	objGround->Draw();
+	objSkydome->Draw();
+	objSphere->Draw();
 
 	fbxObject1->Draw();
 

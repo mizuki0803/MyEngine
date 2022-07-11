@@ -1,5 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
+#include "Vector3.h"
 
 /// <summary>
 /// 丸影
@@ -19,7 +20,7 @@ public://サブクラス
 	struct ConstBufferData
 	{
 		XMVECTOR dir;
-		XMFLOAT3 casterPos;
+		Vector3 casterPos;
 		float distanceCasterLight;
 		XMFLOAT3 atten;
 		float pad3;
@@ -32,7 +33,7 @@ public://メンバ関数
 
 	//getter
 	inline const XMVECTOR& GetDir() { return dir; }
-	inline const XMFLOAT3& GetCasterPos() { return casterPos; }
+	inline const Vector3& GetCasterPos() { return casterPos; }
 	inline const float GetDistanceCasterLight() { return distanceCasterLight; }
 	inline const XMFLOAT3& GetAtten() { return atten; }
 	inline const XMFLOAT2& GetFactorAngleCos() { return factorAngleCos; }
@@ -40,7 +41,7 @@ public://メンバ関数
 
 	//setter
 	inline void SetDir(const XMVECTOR& dir) { this->dir = DirectX::XMVector3Normalize(dir); }
-	inline void SetCasterPos(const XMFLOAT3& casterPos) { this->casterPos = casterPos; }
+	inline void SetCasterPos(const Vector3& casterPos) { this->casterPos = casterPos; }
 	inline void SetDistanceCasterLight(float distanceCasterLight) { this->distanceCasterLight = distanceCasterLight; }
 	inline void SetAtten(const XMFLOAT3& atten) { this->atten = atten; }
 	inline void SetFactorAngleCos(const XMFLOAT2& factorAngleCos) {
@@ -56,7 +57,7 @@ private://メンバ変数
 	//キャスターとライトの距離
 	float distanceCasterLight = 100.0f;
 	//キャスター座標(ワールド座標系)
-	XMFLOAT3 casterPos = { 0, 0, 0 };
+	Vector3 casterPos = { 0, 0, 0 };
 	//距離減衰係数
 	XMFLOAT3 atten = { 0.5f, 0.6f, 0.0f };
 	//減衰角度

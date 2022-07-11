@@ -25,8 +25,8 @@ Player* Player::Create(ObjModel* model)
 
 bool Player::Initialize()
 {
-	position = { 1,1,0 };
-	scale = { 0.5f, 0.5f, 0.5f };
+	position = { 1,1,5 };
+	//scale = { 1.5f, 1.5f, 1.5f };
 
 	//3Dオブジェクトの初期化
 	if (!ObjObject3d::Initialize())
@@ -44,15 +44,19 @@ void Player::Update()
 		return bullet->GetIsDead();
 		});
 
+	//回転
+	Rotate();
+
 	//移動
 	Move();
-
-	//攻撃
-	Attack();
 
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
 
+	//攻撃
+	Attack();
+
+	//弾更新
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
 	{
 		bullet->Update();
@@ -74,15 +78,14 @@ void Player::Move()
 	Input* input = Input::GetInstance();
 
 	//入力で移動させる
-	XMFLOAT3 move = { 0, 0, 0 };
+	Vector3 move = { 0, 0, 0 };
 	float moveSpeed = 0.1f;
 	if (input->PushKey(DIK_RIGHT)) { move.x += moveSpeed; }
 	if (input->PushKey(DIK_LEFT)) { move.x -= moveSpeed; }
 	if (input->PushKey(DIK_UP)) { move.y += moveSpeed; }
 	if (input->PushKey(DIK_DOWN)) { move.y -= moveSpeed; }
 
-	position.x += move.x;
-	position.y += move.y;
+	position += move;
 
 	//移動限界をから出ないようにする
 	const XMFLOAT2 moveLimit = { 5.0f, 5.0f };
@@ -93,6 +96,21 @@ void Player::Move()
 	position.y = min(position.y, +moveLimit.y);
 }
 
+void Player::Rotate()
+{
+	Input* input = Input::GetInstance();
+
+	//入力で回転させる
+	Vector3 rot = { 0, 0, 0 };
+	float rotSpeed = 1.0f;
+	if (input->PushKey(DIK_W)) { rot.x -= rotSpeed; }
+	if (input->PushKey(DIK_S)) { rot.x += rotSpeed; }
+	if (input->PushKey(DIK_A)) { rot.y -= rotSpeed; }
+	if (input->PushKey(DIK_D)) { rot.y += rotSpeed; }
+
+	rotation += rot;
+}
+
 void Player::Attack()
 {
 	Input* input = Input::GetInstance();
@@ -100,9 +118,12 @@ void Player::Attack()
 	if (input->TriggerKey(DIK_SPACE))
 	{
 		//弾の速度を設定
-		const float bulletSpeed = 0.05f;
-		XMFLOAT3 velocity(0, 0, bulletSpeed);
+		const float bulletSpeed = 0.5f;
+		Vector3 velocity(0, 0, bulletSpeed);
 
+		//自機の向きに合わせて飛ばす
+
+		velocity = MatrixTransform(velocity, matWorld);
 
 		//弾を生成
 		std::unique_ptr<PlayerBullet> newBullet;

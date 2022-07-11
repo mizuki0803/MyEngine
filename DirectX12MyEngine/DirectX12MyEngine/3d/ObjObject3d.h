@@ -6,6 +6,7 @@
 #include "ObjModel.h"
 #include "LightGroup.h"
 #include "Camera.h"
+#include "Vector3.h"
 
 /// <summary>
 /// obj3Dオブジェクト
@@ -27,7 +28,7 @@ public: //サブクラス
 	{
 		XMMATRIX viewproj;	//ビュープロジェクション行列
 		XMMATRIX world;		//ワールド行列
-		XMFLOAT3 cameraPos;	//カメラ座標(ワールド座標)
+		Vector3 cameraPos;	//カメラ座標(ワールド座標)
 	};
 
 
@@ -75,14 +76,14 @@ public: //メンバ関数
 	virtual void Draw();
 
 	//getter
-	const XMFLOAT3& GetPosition() { return position; }
-	const XMFLOAT3& GetRotation() { return rotation; }
-	const XMFLOAT3& GetScale() { return scale; }
+	const Vector3& GetPosition() { return position; }
+	const Vector3& GetRotation() { return rotation; }
+	const Vector3& GetScale() { return scale; }
 
 	//setter
-	void SetPosition(const XMFLOAT3& position) { this->position = position; }
-	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
-	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
+	void SetPosition(const Vector3& position) { this->position = position; }
+	void SetRotation(const Vector3& rotation) { this->rotation = rotation; }
+	void SetScale(const Vector3& scale) { this->scale = scale; }
 	void SetModel(ObjModel* model) { this->model = model; }
 	static void SetLightGroup(LightGroup* lightGroup) { ObjObject3d::lightGroup = lightGroup; }
 	static void SetCamera(Camera* camera) { ObjObject3d::camera = camera; }
@@ -103,9 +104,9 @@ protected: //メンバ変数
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuffB0;
 	//アフィン変換情報
-	XMFLOAT3 scale = { 1, 1, 1 };
-	XMFLOAT3 rotation = { 0, 0, 0 };
-	XMFLOAT3 position = { 0, 0, 0 };
+	Vector3 scale = { 1, 1, 1 };
+	Vector3 rotation = { 0, 0, 0 };
+	Vector3 position = { 0, 0, 0 };
 	XMFLOAT4 color = { 1, 1, 1, 1 };
 	//ワールド変換行列
 	XMMATRIX matWorld;

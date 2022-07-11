@@ -1,6 +1,6 @@
 #include "EnemyBullet.h"
 
-EnemyBullet* EnemyBullet::Create(ObjModel* model, XMFLOAT3& position, XMFLOAT3& velocity)
+EnemyBullet* EnemyBullet::Create(ObjModel* model, Vector3& position, Vector3& velocity)
 {
 	//弾弾のインスタンスを生成
 	EnemyBullet* enemyBullet = new EnemyBullet();
@@ -43,9 +43,7 @@ bool EnemyBullet::Initialize()
 void EnemyBullet::Update()
 {
 	//座標を移動
-	position.x += velocity.x;
-	position.y += velocity.y;
-	position.z += velocity.z;
+	position += velocity;
 
 	//時間経過で死亡
 	if (--deathTimer <= 0) {

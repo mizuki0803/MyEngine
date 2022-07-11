@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;$(ProjectDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,7 +139,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;$(ProjectDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -178,6 +178,8 @@
     <ClCompile Include="input\Input.cpp" />
     <ClCompile Include="light\LightGroup.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="math\Vector2.cpp" />
+    <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="scene\BaseScene.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\TitleScene.cpp" />
@@ -304,6 +306,8 @@
     <ClInclude Include="light\LightGroup.h" />
     <ClInclude Include="light\PointLight.h" />
     <ClInclude Include="light\SpotLight.h" />
+    <ClInclude Include="math\Vector2.h" />
+    <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="scene\BaseScene.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\TitleScene.h" />

@@ -1,5 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
+#include "Vector3.h"
 
 /// <summary>
 /// 点光源
@@ -18,7 +19,7 @@ public://サブクラス
 	//定数バッファ用データ構造体
 	struct ConstBufferData
 	{
-		XMFLOAT3 lightpos;
+		Vector3 lightpos;
 		float pad1;
 		XMFLOAT3 lightcolor;
 		float pad2;
@@ -29,20 +30,20 @@ public://サブクラス
 public://メンバ関数
 
 	//getter
-	inline const XMFLOAT3& GetLightPos() { return lightpos; }
+	inline const Vector3& GetLightPos() { return lightpos; }
 	inline const XMFLOAT3& GetLightColor() { return lightcolor; }
 	inline const XMFLOAT3& GetLightAtten() { return lightatten; }
 	inline const bool GetActive() { return active; }
 
 	//setter
-	inline void SetLightPos(const XMFLOAT3& lightpos) { this->lightpos = lightpos; }
+	inline void SetLightPos(const Vector3& lightpos) { this->lightpos = lightpos; }
 	inline void SetLightColor(const XMFLOAT3& lightcolor) { this->lightcolor = lightcolor; }
 	inline void SetLightAtten(const XMFLOAT3& lightatten) { this->lightatten = lightatten; }
 	inline void SetActive(bool active) { this->active = active; }
 
 private://メンバ変数
 	//ライト座標(ワールド座標系)
-	XMFLOAT3 lightpos = { 0, 0, 0 };
+	Vector3 lightpos = { 0, 0, 0 };
 	//ライト色
 	XMFLOAT3 lightcolor = { 1, 1, 1 };
 	//ライト距離減衰係数

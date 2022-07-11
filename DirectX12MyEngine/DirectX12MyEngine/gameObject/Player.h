@@ -41,6 +41,11 @@ private: //ƒƒ“ƒoŠÖ”
 	void Move();
 
 	/// <summary>
+	/// ‰ñ“]
+	/// </summary>
+	void Rotate();
+
+	/// <summary>
 	/// UŒ‚
 	/// </summary>
 	void Attack();

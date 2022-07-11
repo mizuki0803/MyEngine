@@ -62,11 +62,11 @@ void Camera::UpdateAngle()
 void Camera::UpdateMatView()
 {
 	//視点座標
-	XMVECTOR eyePosition = XMLoadFloat3(&eye);
+	XMVECTOR eyePosition = XMLoadFloat3(&XMFLOAT3(eye.x, eye.y, eye.z));
 	//注視店座標
-	XMVECTOR targetPosition = XMLoadFloat3(&target);
+	XMVECTOR targetPosition = XMLoadFloat3(&XMFLOAT3(target.x, target.y, target.z));
 	//(仮の)上方向
-	XMVECTOR upVector = XMLoadFloat3(&up);
+	XMVECTOR upVector = XMLoadFloat3(&XMFLOAT3(up.x, up.y, up.z));
 
 	//カメラのZ軸(視点方向)
 	XMVECTOR cameraAxisZ = XMVectorSubtract(targetPosition, eyePosition);
@@ -153,31 +153,27 @@ void Camera::UpdateMatProjection()
 	);
 }
 
-void Camera::MoveVector(const XMFLOAT3& move)
+void Camera::MoveVector(const Vector3& move)
 {
 	//視点と注視点を同じ量動かす
 	MoveEyeVector(move);
 	MoveTargetVector(move);
 }
 
-void Camera::MoveEyeVector(const XMFLOAT3& move)
+void Camera::MoveEyeVector(const Vector3& move)
 {
-	XMFLOAT3 eye_moved = GetEye();
+	Vector3 eye_moved = GetEye();
 
-	eye_moved.x += move.x;
-	eye_moved.y += move.y;
-	eye_moved.z += move.z;
+	eye_moved += move;
 
 	SetEye(eye_moved);
 }
 
-void Camera::MoveTargetVector(const XMFLOAT3& move)
+void Camera::MoveTargetVector(const Vector3& move)
 {
-	XMFLOAT3 target_moved = GetTarget();
+	Vector3 target_moved = GetTarget();
 
-	target_moved.x += move.x;
-	target_moved.y += move.y;
-	target_moved.z += move.z;
+	target_moved += move;
 
 	SetTarget(target_moved);
 }

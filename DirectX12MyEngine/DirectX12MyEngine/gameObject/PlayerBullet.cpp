@@ -1,6 +1,6 @@
 #include "PlayerBullet.h"
 
-PlayerBullet* PlayerBullet::Create(ObjModel* model, const XMFLOAT3& position, const XMFLOAT3& velocity)
+PlayerBullet* PlayerBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity)
 {
 	//自機弾のインスタンスを生成
 	PlayerBullet* playerBullet = new PlayerBullet();
@@ -44,9 +44,7 @@ bool PlayerBullet::Initialize()
 void PlayerBullet::Update()
 {
 	//座標を移動
-	position.x += velocity.x;
-	position.y += velocity.y;
-	position.z += velocity.z;
+	position += velocity;
 
 	//時間経過で死亡
 	if (--deathTimer <= 0) {

@@ -7,6 +7,7 @@
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "CircleShadow.h"
+#include "Vector3.h"
 
 /// <summary>
 /// ライト
@@ -126,7 +127,7 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightpos">ライト座標</param>
-	void SetPointLightPos(int index, const XMFLOAT3& lightpos);
+	void SetPointLightPos(int index, const Vector3& lightpos);
 
 	/// <summary>
 	/// 点光源のライト色をセット
@@ -161,7 +162,7 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightpos">ライト座標</param>
-	void SetSpotLightPos(int index, const XMFLOAT3& lightpos);
+	void SetSpotLightPos(int index, const Vector3& lightpos);
 
 	/// <summary>
 	/// スポットライトのライト色をセット
@@ -196,7 +197,7 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="index">影番号</param>
 	/// <param name="casterPos">キャスター座標</param>
-	void SetCircleShadowCasterPos(int index, const XMFLOAT3& casterPos);
+	void SetCircleShadowCasterPos(int index, const Vector3& casterPos);
 
 	/// <summary>
 	/// 丸影の影方向をセット
