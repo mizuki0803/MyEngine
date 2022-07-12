@@ -33,8 +33,14 @@ public: //メンバ関数
 	/// </summary>
 	void Draw() override;
 
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	void OnCollision();
+
 	//getter
 	Vector3 GetWorldPos();
+	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return playerBullets; };
 
 
 private: //メンバ関数

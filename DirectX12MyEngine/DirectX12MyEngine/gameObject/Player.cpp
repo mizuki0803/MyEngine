@@ -73,6 +73,10 @@ void Player::Draw()
 	}
 }
 
+void Player::OnCollision()
+{
+}
+
 Vector3 Player::GetWorldPos()
 {
 	//ƒ[ƒ‹ƒhÀ•W‚ğ“ü‚ê‚é•Ï”

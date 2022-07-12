@@ -42,6 +42,11 @@ public: //メンバ関数
 	void Draw() override;
 
 	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	void OnCollision();
+
+	/// <summary>
 	/// 前進フェーズ初期化
 	/// </summary>
 	void PreviousPhaseInit();
@@ -51,6 +56,7 @@ public: //メンバ関数
 
 	//getter
 	Vector3 GetWorldPos();
+	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return enemyBullets; };
 
 private: //メンバ関数
 	/// <summary>

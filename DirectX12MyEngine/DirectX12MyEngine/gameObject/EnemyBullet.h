@@ -26,7 +26,13 @@ public: //メンバ関数
 	/// </summary>
 	void Update() override;
 
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	void OnCollision();
+
 	//getter
+	Vector3 GetWorldPos();
 	bool GetIsDead() const { return isDead; }
 
 private: //静的メンバ変数

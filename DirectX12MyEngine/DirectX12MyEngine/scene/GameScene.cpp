@@ -53,7 +53,7 @@ void GameScene::Initialize()
 	objGround->SetPosition({ 0, -1, 0 });
 	objSphere->SetPosition({ -1, 0, 0 });
 
-	player.reset(Player::Create(modelFighter));
+	player.reset(Player::Create(modelSphere));
 
 	//敵の速度を設定
 	const Vector3 position(5, 0, 50);
@@ -172,6 +172,9 @@ void GameScene::Update()
 		enemy->Update();
 	}
 
+	//衝突判定管理
+	CollisionCheck();
+
 	//デバックテキスト
 	//X座標,Y座標,縮尺を指定して表示
 	debugText->Print("GAME SCENE", 1000, 50);
@@ -225,4 +228,68 @@ void GameScene::Draw()
 
 
 	///-------パーティクル描画ここまで-------///
+}
+
+void GameScene::CollisionCheck()
+{
+	//判定対象の座標
+	Vector3 posA, posB;
+	float radiusA, radiusB;
+
+	//自機弾リスト取得
+	const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player->GetBullets();
+	//敵弾リスト取得
+	const std::list<std::unique_ptr<EnemyBullet>>& enemyBullets = enemy->GetBullets();
+
+#pragma region 自機と敵弾の衝突判定
+	//自機座標
+	posA = player->GetWorldPos();
+	//自機半径
+	radiusA = player->GetScale().x;
+
+	//自機と全ての敵弾の衝突判定
+	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
+		//敵弾座標
+		posB = bullet->GetWorldPos();
+		//敵弾半径
+		radiusB = bullet->GetScale().x;
+
+		//球と球の衝突判定を行う
+		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+
+		//衝突していたら
+		if (isCollision) {
+			//自機のコールバック関数を呼び出す
+			player->OnCollision();
+			//敵弾のコールバック関数を呼び出す
+			bullet->OnCollision();
+		}
+	}
+#pragma endregion
+
+#pragma region 敵と自機弾の衝突判定
+	//敵座標
+	posA = enemy->GetWorldPos();
+	//敵半径
+	radiusA = enemy->GetScale().x;
+
+	//敵と全ての自機弾の衝突判定
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//敵弾座標
+		posB = bullet->GetWorldPos();
+		//敵弾半径
+		radiusB = bullet->GetScale().x;
+
+		//球と球の衝突判定を行う
+		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+
+		//衝突していたら
+		if (isCollision) {
+			//敵のコールバック関数を呼び出す
+			enemy->OnCollision();
+			//自機弾のコールバック関数を呼び出す
+			bullet->OnCollision();
+		}
+	}
+#pragma endregion
 }

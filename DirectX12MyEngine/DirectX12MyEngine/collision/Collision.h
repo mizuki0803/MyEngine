@@ -1,6 +1,6 @@
 #pragma once
-
 #include "CollisionShape.h"
+#include "Vector3.h"
 
 /// <summary>
 /// Õ“Ë”»’è
@@ -8,6 +8,17 @@
 class Collision
 {
 public:
+	/// <summary>
+	/// ‹…‚Æ‹…‚Ì“–‚½‚è”»’è
+	/// </summary>
+	/// <param name="posA">Õ“Ë‘ÎÛA‚ÌÀ•W</param>
+	/// <param name="posB">Õ“Ë‘ÎÛB‚ÌÀ•W</param>
+	/// <param name="radiusA">Õ“Ë‘ÎÛA‚Ì”¼Œa</param>
+	/// <param name="radiusB">Õ“Ë‘ÎÛB‚Ì”¼Œa</param>
+	/// <returns></returns>
+	static bool CheckSphereToSphere(const Vector3& posA, const Vector3& posB, const float radiusA, const float radiusB);
+
+
 	/// <summary>
 	/// ‹…‚Æ‹…‚Ì“–‚½‚è”»’è
 	/// </summary>

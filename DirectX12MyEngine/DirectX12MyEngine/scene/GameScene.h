@@ -46,6 +46,11 @@ public: //ƒƒ“ƒoŠÖ”
 	/// </summary>
 	void Draw() override;
 
+	/// <summary>
+	/// Õ“Ë”»’è
+	/// </summary>
+	void CollisionCheck();
+
 private: //ƒƒ“ƒo•Ï”
 	//ƒJƒƒ‰
 	Camera* camera = nullptr;

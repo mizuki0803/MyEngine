@@ -75,6 +75,10 @@ void Enemy::Draw()
 	}
 }
 
+void Enemy::OnCollision()
+{
+}
+
 void Enemy::PreviousPhaseInit()
 {
 	//発射タイマーを初期化
