@@ -82,7 +82,7 @@ public: //ƒƒ“ƒoŠÖ”
 	const bool GetIsFlipY() { return isFlipY; }
 
 	//setter
-	void SetTexNumber(UINT texNumber) { this->texNumber = texNumber; };
+	void SetTexNumber(UINT texNumber) { this->texNumber = texNumber; }
 	void SetPosition(const XMFLOAT2& position) { this->position = position; }
 	void SetRotation(float rotation) { this->rotation = rotation; }
 	void SetSize(const XMFLOAT2& size) { this->size = size; }
@@ -90,8 +90,8 @@ public: //ƒƒ“ƒoŠÖ”
 	void SetTexLeftTop(const XMFLOAT2& texLeftTop) { this->texLeftTop = texLeftTop; }
 	void SetColor(const XMFLOAT4& color) { this->color = color; }
 	void SetAnchorpoint(const XMFLOAT2& anchorpoint) { this->anchorpoint = anchorpoint; }
-	void SetIsFlipX(bool isFlipX) { this->isFlipX = isFlipX; };
-	void SetIsFlipY(bool isFlipY) { this->isFlipY = isFlipY; };
+	void SetIsFlipX(bool isFlipX) { this->isFlipX = isFlipX; }
+	void SetIsFlipY(bool isFlipY) { this->isFlipY = isFlipY; }
 
 
 protected: //ƒƒ“ƒo•Ï”

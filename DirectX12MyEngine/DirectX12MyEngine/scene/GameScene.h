@@ -9,6 +9,7 @@
 #include "Collision.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Skydome.h"
 
 /// <summary>
 /// ゲームシーン
@@ -83,20 +84,16 @@ private: //メンバ変数
 	float circleShadowFactorAngle[2] = { 0.0f, 0.5f };
 
 	//objモデルデータ
-	ObjModel* modelMan = nullptr;
 	ObjModel* modelSkydome = nullptr;
-	ObjModel* modelGround = nullptr;
 	ObjModel* modelSphere = nullptr;
 	ObjModel* modelFighter = nullptr;
 
+	//自機
 	std::unique_ptr<Player> player;
+	//敵
 	std::unique_ptr<Enemy> enemy;
-
-	//objオブジェクト
-	ObjObject3d* objMan = nullptr;
-	ObjObject3d* objGround = nullptr;
-	ObjObject3d* objSkydome = nullptr;
-	ObjObject3d* objSphere = nullptr;
+	//天球
+	std::unique_ptr<Skydome> objSkydome;
 
 	//その他変数
 	float soundVol = 0.1f;

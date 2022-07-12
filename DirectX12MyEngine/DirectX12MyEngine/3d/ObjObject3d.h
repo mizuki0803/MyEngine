@@ -109,7 +109,7 @@ protected: //メンバ変数
 	Vector3 position = { 0, 0, 0 };
 	XMFLOAT4 color = { 1, 1, 1, 1 };
 	//ワールド変換行列
-	XMMATRIX matWorld;
+	XMMATRIX matWorld = {};
 	//親子構造
 	ObjObject3d* parent = nullptr;
 	//モデル

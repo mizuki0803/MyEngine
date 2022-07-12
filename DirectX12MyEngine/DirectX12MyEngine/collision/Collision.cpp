@@ -165,7 +165,7 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 bool Collision::CheckSphere2Square(const Sphere& sphere, const Square& square, DirectX::XMVECTOR* inter)
 {
 	//四角形p0,p1,p2の三角形で当たり判定をとる
-	Triangle triangle1;
+	Triangle triangle1={};
 	triangle1.p0 = square.p0;
 	triangle1.p1 = square.p1;
 	triangle1.p2 = square.p2;
@@ -180,7 +180,7 @@ bool Collision::CheckSphere2Square(const Sphere& sphere, const Square& square, D
 	}
 
 	//四角形p0,p1,p2の三角形と衝突していない場合、四角形p0,p2,p3の三角形で当たり判定をとる
-	Triangle triangle2;
+	Triangle triangle2={};
 	triangle2.p0 = square.p0;
 	triangle2.p1 = square.p2;
 	triangle2.p2 = square.p3;

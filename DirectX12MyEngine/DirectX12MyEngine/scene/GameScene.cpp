@@ -36,23 +36,11 @@ void GameScene::Initialize()
 
 
 	//objからモデルデータを読み込む
-	modelMan = ObjModel::LoadFromOBJ("man");
 	modelSkydome = ObjModel::LoadFromOBJ("skydome");
-	modelGround = ObjModel::LoadFromOBJ("ground");
 	modelSphere = ObjModel::LoadFromOBJ("sphere", true);
 	modelFighter = ObjModel::LoadFromOBJ("fighter", true);
 
-	//objオブジェクト生成
-	objMan = ObjObject3d::Create(modelMan);
-	objGround = ObjObject3d::Create(modelGround);
-	objSkydome = ObjObject3d::Create(modelSkydome);
-	objSphere = ObjObject3d::Create(modelSphere);
-
-	//初期座標
-	objMan->SetPosition({ 0, 1, 0 });
-	objGround->SetPosition({ 0, -1, 0 });
-	objSphere->SetPosition({ -1, 0, 0 });
-
+	//自機生成
 	player.reset(Player::Create(modelSphere));
 
 	//敵の速度を設定
@@ -60,12 +48,11 @@ void GameScene::Initialize()
 	const float enemySpeed = 0.1f;
 	Vector3 velocity(0, 0, enemySpeed);
 	enemy.reset(Enemy::Create(modelSphere, position, velocity));
-
 	//敵に自機のアドレスを渡す
 	enemy->SetPlayer(player.get());
 
-	//角度初期値
-	objMan->SetRotation({ 0, 90, 0 });
+	//天球生成
+	objSkydome.reset(Skydome::Create(modelSkydome));
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(camera);
@@ -82,17 +69,9 @@ void GameScene::Finalize()
 	delete lightGroup;
 
 	//モデル解放
-	delete modelMan;
 	delete modelSkydome;
-	delete modelGround;
 	delete modelSphere;
 	delete modelFighter;
-
-	//objオブジェクト解放
-	delete objMan;
-	delete objGround;
-	delete objSkydome;
-	delete objSphere;
 }
 
 void GameScene::Update()
@@ -161,10 +140,7 @@ void GameScene::Update()
 	camera->Update();
 
 	//Object3d更新
-	objMan->Update();
-	objGround->Update();
 	objSkydome->Update();
-	objSphere->Update();
 	player->Update();
 
 	if (enemy)
@@ -193,10 +169,8 @@ void GameScene::Draw()
 	///-------Object3d描画ここから-------///
 
 
-	//objMan->Draw();
-	//objGround->Draw();
-	//objSkydome->Draw();
-	//objSphere->Draw();
+	
+	objSkydome->Draw();
 	player->Draw();
 
 	if (enemy)
