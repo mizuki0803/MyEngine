@@ -17,10 +17,10 @@ EnemyBullet* EnemyBullet::Create(ObjModel* model, Vector3& position, Vector3& ve
 
 	//モデルをセット
 	assert(model);
-	enemyBullet->SetModel(model);
+	enemyBullet->model = model;
 
 	//座標をセット
-	enemyBullet->SetPosition(position);
+	enemyBullet->position = position;
 
 	//速度をセット
 	enemyBullet->velocity = velocity;

@@ -2,6 +2,9 @@
 #include "ObjObject3d.h"
 #include "EnemyBullet.h"
 
+//自機クラスを前方宣言
+class Player;
+
 /// <summary>
 /// 敵
 /// </summary>
@@ -43,6 +46,12 @@ public: //メンバ関数
 	/// </summary>
 	void PreviousPhaseInit();
 
+	//setter
+	void SetPlayer(Player* player) { this->player = player; }
+
+	//getter
+	Vector3 GetWorldPos();
+
 private: //メンバ関数
 	/// <summary>
 	/// 移動
@@ -67,4 +76,6 @@ private: //メンバ変数
 	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
 	//発射タイマー
 	int32_t fireTimer = 0;
+	//プレイヤー自機
+	Player* player = nullptr;
 };

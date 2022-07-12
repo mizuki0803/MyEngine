@@ -61,6 +61,9 @@ void GameScene::Initialize()
 	Vector3 velocity(0, 0, enemySpeed);
 	enemy.reset(Enemy::Create(modelSphere, position, velocity));
 
+	//“G‚ÉŽ©‹@‚ÌƒAƒhƒŒƒX‚ð“n‚·
+	enemy->SetPlayer(player.get());
+
 	//Šp“x‰Šú’l
 	objMan->SetRotation({ 0, 90, 0 });
 

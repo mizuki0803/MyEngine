@@ -17,10 +17,10 @@ PlayerBullet* PlayerBullet::Create(ObjModel* model, const Vector3& position, con
 
 	//モデルをセット
 	assert(model);
-	playerBullet->SetModel(model);
+	playerBullet->model = model;
 
 	//座標をセット
-	playerBullet->SetPosition(position);
+	playerBullet->position = position;
 
 	//速度をセット
 	playerBullet->velocity = velocity;

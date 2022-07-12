@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Player.h"
 
 Enemy* Enemy::Create(ObjModel* model, const Vector3& position, const Vector3& velocity)
 {
@@ -10,7 +11,7 @@ Enemy* Enemy::Create(ObjModel* model, const Vector3& position, const Vector3& ve
 
 	//モデルをセット
 	assert(model);
-	enemy->SetModel(model);
+	enemy->model = model;
 
 	// 初期化
 	if (!enemy->Initialize()) {
@@ -21,7 +22,7 @@ Enemy* Enemy::Create(ObjModel* model, const Vector3& position, const Vector3& ve
 
 
 	//座標をセット
-	enemy->SetPosition(position);
+	enemy->position = position;
 
 	//速度をセット
 	enemy->velocity = velocity;
@@ -80,6 +81,18 @@ void Enemy::PreviousPhaseInit()
 	fireTimer = fireInterval;
 }
 
+Vector3 Enemy::GetWorldPos()
+{
+	//ワールド座標を入れる変数
+	Vector3 worldPos;
+	//平行移動成分を取得
+	worldPos.x = matWorld.r[3].m128_f32[0];
+	worldPos.y = matWorld.r[3].m128_f32[1];
+	worldPos.z = matWorld.r[3].m128_f32[2];
+
+	return worldPos;
+}
+
 void Enemy::Move()
 {
 	switch (phase)
@@ -120,7 +133,12 @@ void Enemy::Fire()
 {
 	//弾の速度を設定
 	const float bulletSpeed = 0.5f;
-	Vector3 velocity(0, 0, -bulletSpeed);
+
+	Vector3 playerPos = player->GetWorldPos();
+	Vector3 enemyPos = GetWorldPos();
+	Vector3 DifferenceVec = playerPos - enemyPos;
+	DifferenceVec.normalize();
+	Vector3 velocity = DifferenceVec * bulletSpeed;
 
 	//弾を生成
 	std::unique_ptr<EnemyBullet> newBullet;

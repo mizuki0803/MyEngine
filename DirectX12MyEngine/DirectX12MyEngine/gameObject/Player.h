@@ -33,6 +33,9 @@ public: //ƒƒ“ƒoŠÖ”
 	/// </summary>
 	void Draw() override;
 
+	//getter
+	Vector3 GetWorldPos();
+
 
 private: //ƒƒ“ƒoŠÖ”
 	/// <summary>
