@@ -15,12 +15,13 @@ using namespace DirectX;
 void GameScene::Initialize()
 {
 	//カメラ初期化
-	camera = new Camera();
-	camera->Initialize();
-
+	normalCamera.reset(new Camera());
+	normalCamera->Initialize();
+	railCamera.reset(new RailCamera());
+	railCamera->Initialize();
 
 	//ライト生成
-	lightGroup = LightGroup::Create();
+	lightGroup.reset(LightGroup::Create());
 
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightActive(1, true);
@@ -36,42 +37,28 @@ void GameScene::Initialize()
 
 
 	//objからモデルデータを読み込む
-	modelSkydome = ObjModel::LoadFromOBJ("skydome");
-	modelSphere = ObjModel::LoadFromOBJ("sphere", true);
-	modelFighter = ObjModel::LoadFromOBJ("fighter", true);
+	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
+	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
+	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
 
 	//自機生成
-	player.reset(Player::Create(modelSphere));
-
+	player.reset(Player::Create(modelFighter.get()));
+	player->SetIsCameraFollow(true);
 	//敵の速度を設定
 	const Vector3 position(5, 0, 50);
 	const float enemySpeed = 0.1f;
 	Vector3 velocity(0, 0, enemySpeed);
-	enemy.reset(Enemy::Create(modelSphere, position, velocity));
+	enemy.reset(Enemy::Create(modelSphere.get(), position, velocity));
 	//敵に自機のアドレスを渡す
 	enemy->SetPlayer(player.get());
 
 	//天球生成
-	objSkydome.reset(Skydome::Create(modelSkydome));
+	objSkydome.reset(Skydome::Create(modelSkydome.get()));
 
 	//objオブジェクトにカメラをセット
-	ObjObject3d::SetCamera(camera);
+	ObjObject3d::SetCamera(railCamera.get());
 	//objオブジェクトにライトをセット
-	ObjObject3d::SetLightGroup(lightGroup);
-}
-
-void GameScene::Finalize()
-{
-	//カメラ解放
-	delete camera;
-
-	//ライト解放
-	delete lightGroup;
-
-	//モデル解放
-	delete modelSkydome;
-	delete modelSphere;
-	delete modelFighter;
+	ObjObject3d::SetLightGroup(lightGroup.get());
 }
 
 void GameScene::Update()
@@ -135,10 +122,10 @@ void GameScene::Update()
 	//	if (input->PushKey(DIK_N)) { dis -= 0.1f; }
 	//	camera->SetDistance(dis);
 	//}
-
+	
 	//カメラ更新
-	camera->Update();
-
+	normalCamera->Update();
+	railCamera->Update();
 	//Object3d更新
 	objSkydome->Update();
 	player->Update();

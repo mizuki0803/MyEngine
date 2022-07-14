@@ -191,6 +191,9 @@
     <ClCompile Include="gameObject\Skydome.cpp">
       <Filter>ソース ファイル\gameObject\skydome</Filter>
     </ClCompile>
+    <ClCompile Include="camera\RailCamera.cpp">
+      <Filter>ソース ファイル\engine\camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -370,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="gameObject\Skydome.h">
       <Filter>ソース ファイル\gameObject\skydome</Filter>
+    </ClInclude>
+    <ClInclude Include="camera\RailCamera.h">
+      <Filter>ソース ファイル\engine\camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

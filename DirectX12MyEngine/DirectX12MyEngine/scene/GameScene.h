@@ -5,6 +5,7 @@
 #include "ParticleManager.h"
 #include "LightGroup.h"
 #include "Camera.h"
+#include "RailCamera.h"
 #include "CollisionShape.h"
 #include "Collision.h"
 #include "Player.h"
@@ -33,11 +34,6 @@ public: //メンバ関数
 	void Initialize() override;
 
 	/// <summary>
-	/// 終了処理
-	/// </summary>
-	void Finalize() override;
-
-	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update() override;
@@ -54,10 +50,12 @@ public: //メンバ関数
 
 private: //メンバ変数
 	//カメラ
-	Camera* camera = nullptr;
+	std::unique_ptr<Camera> normalCamera;
+	//レールカメラ
+	std::unique_ptr<Camera> railCamera;
 
 	//ライト
-	LightGroup* lightGroup = nullptr;
+	std::unique_ptr<LightGroup> lightGroup;
 	float ambientColor0[3] = { 1,1,1 };
 	// 光線方向初期値
 	float lightDir0[3] = { 0,0,1 };
@@ -84,9 +82,9 @@ private: //メンバ変数
 	float circleShadowFactorAngle[2] = { 0.0f, 0.5f };
 
 	//objモデルデータ
-	ObjModel* modelSkydome = nullptr;
-	ObjModel* modelSphere = nullptr;
-	ObjModel* modelFighter = nullptr;
+	std::unique_ptr<ObjModel> modelSkydome;
+	std::unique_ptr<ObjModel> modelSphere;
+	std::unique_ptr<ObjModel> modelFighter;
 
 	//自機
 	std::unique_ptr<Player> player;

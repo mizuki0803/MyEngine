@@ -4,7 +4,6 @@
 SceneManager::~SceneManager()
 {
 	//最後のシーンの終了と解放
-	scene->Finalize();
 	delete scene;
 }
 
@@ -24,7 +23,6 @@ void SceneManager::Update()
 		if (scene)
 		{
 			//旧シーンの終了
-			scene->Finalize();
 			delete scene;
 		}
 		//シーンを切り替え

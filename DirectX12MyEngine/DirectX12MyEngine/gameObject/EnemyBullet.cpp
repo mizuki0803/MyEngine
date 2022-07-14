@@ -30,7 +30,7 @@ EnemyBullet* EnemyBullet::Create(ObjModel* model, Vector3& position, Vector3& ve
 
 bool EnemyBullet::Initialize()
 {
-	scale = { 0.1f, 0.1f, 0.1f };
+	scale = { 0.5f, 0.5f, 0.5f };
 
 	if (!ObjObject3d::Initialize())
 	{

@@ -85,8 +85,10 @@ public: //メンバ関数
 	void SetRotation(const Vector3& rotation) { this->rotation = rotation; }
 	void SetScale(const Vector3& scale) { this->scale = scale; }
 	void SetModel(ObjModel* model) { this->model = model; }
+	void SetIsCameraFollow(bool isCameraFollow) { this->isCameraFollow = isCameraFollow; }
 	static void SetLightGroup(LightGroup* lightGroup) { ObjObject3d::lightGroup = lightGroup; }
 	static void SetCamera(Camera* camera) { ObjObject3d::camera = camera; }
+
 
 protected: //静的メンバ変数
 	//デバイス
@@ -114,4 +116,6 @@ protected: //メンバ変数
 	ObjObject3d* parent = nullptr;
 	//モデル
 	ObjModel* model = nullptr;
+	//カメラに追従するか
+	bool isCameraFollow = false;
 };

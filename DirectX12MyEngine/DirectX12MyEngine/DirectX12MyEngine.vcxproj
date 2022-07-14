@@ -168,6 +168,7 @@
     <ClCompile Include="base\SceneManager.cpp" />
     <ClCompile Include="base\WindowApp.cpp" />
     <ClCompile Include="camera\Camera.cpp" />
+    <ClCompile Include="camera\RailCamera.cpp" />
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="collision\CollisionShape.cpp" />
     <ClCompile Include="effect\Easing.cpp" />
@@ -294,6 +295,7 @@
     <ClInclude Include="base\SceneManager.h" />
     <ClInclude Include="base\WindowApp.h" />
     <ClInclude Include="camera\Camera.h" />
+    <ClInclude Include="camera\RailCamera.h" />
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionShape.h" />
     <ClInclude Include="effect\Easing.h" />

@@ -125,7 +125,7 @@ void Enemy::Move()
 		//Œã‘Þ‚·‚é
 		position += velocity;
 		//ˆê’è‚ÌˆÊ’u‚Ü‚ÅŒã‘Þ‚µ‚½‚ç‘Oi
-		if (position.z > 100.0f) {
+		if (position.z > 50.0f) {
 			phase = Phase::Previous;
 		}
 

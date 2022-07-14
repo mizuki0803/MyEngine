@@ -298,6 +298,12 @@ void ObjObject3d::Update()
 		matWorld *= parent->matWorld;
 	}
 
+	//カメラに追従する場合
+	if (isCameraFollow)
+	{
+		//カメラのワールド行列をかける
+		matWorld *= camera->GetMatWorld();
+	}
 
 	const XMMATRIX& matViewProjection = camera->GetMatView() * camera->GetMatProjection();
 	const Vector3& cameraPos = camera->GetEye();

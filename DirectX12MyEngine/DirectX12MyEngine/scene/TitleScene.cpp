@@ -27,13 +27,13 @@ void TitleScene::Initialize()
 	//audio->PlayWave("BGM.wav", true);
 
 	//カメラ初期化
-	camera = new Camera();
+	camera.reset(new Camera());
 	camera->Initialize();
 	camera->SetTarget({ 0, 2.5f, 0 });
 	camera->SetDistance(8.0f);
 
 	//ライト生成
-	lightGroup = LightGroup::Create();
+	lightGroup.reset(LightGroup::Create());
 
 	lightGroup->SetDirLightActive(0, false);
 	lightGroup->SetDirLightActive(1, false);
@@ -49,8 +49,8 @@ void TitleScene::Initialize()
 
 
 	//パーティクル生成
-	ParticleManager::SetCamera(camera);
-	particleMan = ParticleManager::Create();
+	ParticleManager::SetCamera(camera.get());
+	particleMan.reset(ParticleManager::Create());
 
 	//スプライト共通部分のインスタンスを取得
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
@@ -59,7 +59,7 @@ void TitleScene::Initialize()
 	//spriteCommon->LoadTexture(2, "mario.jpg");
 
 	//スプライト生成
-	sprite = Sprite::Create(1, {0, 0});
+	sprite.reset(Sprite::Create(1, {0, 0}));
 
 	//スプライト座標移動
 	//sprite->SetPosition({ 0, 0 });
@@ -72,17 +72,17 @@ void TitleScene::Initialize()
 
 
 	//objからモデルデータを読み込む
-	modelMan = ObjModel::LoadFromOBJ("man");
-	modelSkydome = ObjModel::LoadFromOBJ("skydome");
-	modelGround = ObjModel::LoadFromOBJ("ground");
-	modelSphere = ObjModel::LoadFromOBJ("sphere", true);
-	modelFighter = ObjModel::LoadFromOBJ("fighter", true);
+	modelMan.reset(ObjModel::LoadFromOBJ("man"));
+	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
+	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
+	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
+	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
 
 	//objオブジェクト生成
-	objMan = ObjObject3d::Create(modelMan);
-	objGround = ObjObject3d::Create(modelGround);
-	objSkydome = ObjObject3d::Create(modelSkydome);
-	objSphere = ObjObject3d::Create(modelSphere);
+	objMan.reset(ObjObject3d::Create(modelMan.get()));
+	objGround.reset(ObjObject3d::Create(modelGround.get()));
+	objSkydome.reset(ObjObject3d::Create(modelSkydome.get()));
+	objSphere.reset(ObjObject3d::Create(modelSphere.get()));
 
 	//初期座標
 	objMan->SetPosition({ 0, 1, 0 });
@@ -93,23 +93,23 @@ void TitleScene::Initialize()
 	objMan->SetRotation({ 0, 90, 0 });
 
 	//objオブジェクトにカメラをセット
-	ObjObject3d::SetCamera(camera);
+	ObjObject3d::SetCamera(camera.get());
 	//objオブジェクトにライトをセット
-	ObjObject3d::SetLightGroup(lightGroup);
+	ObjObject3d::SetLightGroup(lightGroup.get());
 
 
 	//FBXオブジェクトのカメラをセット
-	FbxObject3d::SetCamera(camera);
+	FbxObject3d::SetCamera(camera.get());
 
 	//モデル名を指定してファイル読み込み
 	//FbxLoader::GetInstance()->LoadModelFromFile("cube");
 	//fbxModel1 = FbxLoader::GetInstance()->LoadModelFromFile("cube");
-	fbxModel1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
+	fbxModel1.reset(FbxLoader::GetInstance()->LoadModelFromFile("boneTest"));
 
 	//オブジェクト生成とFBXモデルのセット
-	fbxObject1 = new FbxObject3d;
+	fbxObject1.reset(new FbxObject3d);
 	fbxObject1->Initialize();
-	fbxObject1->SetFbxModel(fbxModel1);
+	fbxObject1->SetFbxModel(fbxModel1.get());
 	fbxObject1->PlayAnimation();
 	fbxObject1->SetRotation({ 0, 90, 0 });
 
@@ -131,38 +131,6 @@ void TitleScene::Initialize()
 	//当たり判定 レイ の初期値を設定
 	ray.start = XMVectorSet(0, 5, 0, 1);	//原点やや上
 	ray.dir = XMVectorSet(0, -1, 0, 0);		//下向き
-}
-
-void TitleScene::Finalize()
-{
-	//カメラ解放
-	delete camera;
-
-	//ライト解放
-	delete lightGroup;
-
-	//パーティクル解放
-	delete particleMan;
-
-	//スプライト解放
-	delete sprite;
-
-	//モデル解放
-	delete modelMan;
-	delete modelSkydome;
-	delete modelGround;
-	delete modelSphere;
-	delete modelFighter;
-
-	//objオブジェクト解放
-	delete objMan;
-	delete objGround;
-	delete objSkydome;
-	delete objSphere;
-
-	//FBXオブジェクト解放
-	delete fbxModel1;
-	delete fbxObject1;
 }
 
 void TitleScene::Update()

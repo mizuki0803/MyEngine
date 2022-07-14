@@ -31,11 +31,6 @@ public: //メンバ関数
 	void Initialize() override;
 
 	/// <summary>
-	/// 終了処理
-	/// </summary>
-	void Finalize() override;
-
-	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update() override;
@@ -47,10 +42,10 @@ public: //メンバ関数
 
 private: //メンバ変数
 	//カメラ
-	Camera* camera = nullptr;
+	std::unique_ptr<Camera> camera;
 
 	//ライト
-	LightGroup* lightGroup = nullptr;
+	std::unique_ptr<LightGroup> lightGroup;
 	float ambientColor0[3] = { 1,1,1 };
 	// 光線方向初期値
 	float lightDir0[3] = { 0,0,1 };
@@ -77,27 +72,27 @@ private: //メンバ変数
 	float circleShadowFactorAngle[2] = { 0.0f, 0.5f };
 
 	//パーティクル
-	ParticleManager* particleMan = nullptr;
+	std::unique_ptr<ParticleManager> particleMan;
 
 	//スプライト
-	Sprite* sprite = nullptr;
+	std::unique_ptr<Sprite> sprite;
 
 	//モデルデータ
-	ObjModel* modelMan = nullptr;
-	ObjModel* modelSkydome = nullptr;
-	ObjModel* modelGround = nullptr;
-	ObjModel* modelSphere = nullptr;
-	ObjModel* modelFighter = nullptr;
+	std::unique_ptr<ObjModel> modelMan;
+	std::unique_ptr<ObjModel> modelSkydome;
+	std::unique_ptr<ObjModel> modelGround;
+	std::unique_ptr<ObjModel> modelSphere;
+	std::unique_ptr<ObjModel> modelFighter;
 
 	//objオブジェクト
-	ObjObject3d* objMan = nullptr;
-	ObjObject3d* objGround = nullptr;
-	ObjObject3d* objSkydome = nullptr;
-	ObjObject3d* objSphere = nullptr;
+	std::unique_ptr<ObjObject3d> objMan;
+	std::unique_ptr<ObjObject3d> objGround;
+	std::unique_ptr<ObjObject3d> objSkydome;
+	std::unique_ptr<ObjObject3d> objSphere;
 
 	//FBXモデル
-	FbxModel* fbxModel1 = nullptr;
-	FbxObject3d* fbxObject1 = nullptr;
+	std::unique_ptr<FbxModel> fbxModel1;
+	std::unique_ptr<FbxObject3d> fbxObject1;
 
 	//当たり判定 球
 	Sphere sphere;

@@ -25,8 +25,7 @@ Player* Player::Create(ObjModel* model)
 
 bool Player::Initialize()
 {
-	position = { 1,1,5 };
-	//scale = { 1.5f, 1.5f, 1.5f };
+	position = { 0 ,-5 ,25 };
 
 	//3Dオブジェクトの初期化
 	if (!ObjObject3d::Initialize())
@@ -50,7 +49,7 @@ void Player::Update()
 	//移動
 	Move();
 
-	//3Dオブジェクトの更新
+	//オブジェクト更新
 	ObjObject3d::Update();
 
 	//攻撃
@@ -65,8 +64,10 @@ void Player::Update()
 
 void Player::Draw()
 {
+	//オブジェクト描画
 	ObjObject3d::Draw();
 
+	//自機弾描画
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
 	{
 		bullet->Draw();
@@ -133,17 +134,18 @@ void Player::Attack()
 	//発射キーを押したら
 	if (input->TriggerKey(DIK_SPACE))
 	{
+		//発射位置を自機のワールド座標に設定
+		Vector3 shotPos = GetWorldPos();
+
 		//弾の速度を設定
 		const float bulletSpeed = 0.5f;
 		Vector3 velocity(0, 0, bulletSpeed);
-
 		//自機の向きに合わせて飛ばす
-
 		velocity = MatrixTransform(velocity, matWorld);
 
 		//弾を生成
 		std::unique_ptr<PlayerBullet> newBullet;
-		newBullet.reset(PlayerBullet::Create(model, position, velocity));
+		newBullet.reset(PlayerBullet::Create(model, shotPos, velocity));
 		playerBullets.push_back(std::move(newBullet));
 	}
 }

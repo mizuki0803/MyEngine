@@ -21,12 +21,12 @@ public:
 	/// <summary>
 	/// カメラ初期化
 	/// </summary>
-	void Initialize();
+	virtual void Initialize();
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	virtual void Update();
 
 	/// <summary>
 	/// カメラアングルを更新
@@ -71,14 +71,17 @@ public:
 	const XMMATRIX& GetMatBillboardY() { return matBillboardY; }
 	const Vector3& GetAngle() { return angle; }
 	const float GetDistance() { return distance; }
+	const DirectX::XMMATRIX& GetMatWorld() { return matWorld; }
 
 	//setter
 	void SetEye(const Vector3& eye) { this->eye = eye; dirtyView = true; }
 	void SetTarget(const Vector3& target) { this->target = target; dirtyView = true; }
 	void SetAngle(const Vector3& angle) { this->angle = angle; dirtyAngle = true; }
 	void SetDistance(const float distance) { this->distance = distance; dirtyAngle = true; }
-
-private:
+	
+protected:
+	//ワールド変換行列
+	DirectX::XMMATRIX matWorld = {};
 	// ビュー行列
 	XMMATRIX matView = XMMatrixIdentity();
 	// 射影行列
