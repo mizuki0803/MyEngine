@@ -18,7 +18,7 @@ void RailCamera::Update()
 	Vector3 velocity(0, 0, 0.1f);
 	position += velocity;
 	//回転
-	//Vector3 rot(0, 0, 0);
+	//Vector3 rot(0.1f, 0, 0);
 	//rotation += rot;
 	
 	//回転　平行移動行列の計算
@@ -38,12 +38,12 @@ void RailCamera::Update()
 	//ワールド前方ベクトル
 	Vector3 forward(0, 0, 1);
 	//カメラの回転を反映させる
-	forward = MatrixTransform(forward, matWorld);
+	forward = MatrixTransformDirection(forward, matWorld);
 	//視点から前方に進んだ位置を注視点に設定
 	target = eye + forward;
 	//天地が反転してもいいように上方向ベクトルも回転させる
 	Vector3 baseUp(0, 1, 0);
-	up = MatrixTransform(baseUp, matWorld);
+	up = MatrixTransformDirection(baseUp, matWorld);
 
 	//ビュー行列と射影行列の更新
 	UpdateMatView();

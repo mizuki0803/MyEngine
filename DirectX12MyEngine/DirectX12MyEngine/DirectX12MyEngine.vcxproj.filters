@@ -194,6 +194,9 @@
     <ClCompile Include="camera\RailCamera.cpp">
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClCompile>
+    <ClCompile Include="gameObject\Reticle.cpp">
+      <Filter>ソース ファイル\gameObject\player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -376,6 +379,9 @@
     </ClInclude>
     <ClInclude Include="camera\RailCamera.h">
       <Filter>ソース ファイル\engine\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Reticle.h">
+      <Filter>ソース ファイル\gameObject\player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

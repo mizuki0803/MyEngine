@@ -9,16 +9,16 @@ Player* Player::Create(ObjModel* model)
 		return nullptr;
 	}
 
+	//モデルをセット
+	assert(model);
+	player->model = model;
+
 	// 初期化
 	if (!player->Initialize()) {
 		delete player;
 		assert(0);
 		return nullptr;
 	}
-
-	//モデルをセット
-	assert(model);
-	player->model = model;
 
 	return player;
 }
@@ -32,6 +32,9 @@ bool Player::Initialize()
 	{
 		return false;
 	}
+
+	//レティクルを生成
+	reticle.reset(Reticle::Create(model));
 
 	return true;
 }
@@ -52,6 +55,11 @@ void Player::Update()
 	//オブジェクト更新
 	ObjObject3d::Update();
 
+	//レティクルに自機のワールド行列を渡す
+	reticle->SetFollowMatWorld(matWorld);
+	//レティクル更新
+	reticle->Update();
+
 	//攻撃
 	Attack();
 
@@ -66,6 +74,9 @@ void Player::Draw()
 {
 	//オブジェクト描画
 	ObjObject3d::Draw();
+
+	//レティクル描画
+	reticle->Draw();
 
 	//自機弾描画
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
@@ -139,9 +150,9 @@ void Player::Attack()
 
 		//弾の速度を設定
 		const float bulletSpeed = 0.5f;
-		Vector3 velocity(0, 0, bulletSpeed);
-		//自機の向きに合わせて飛ばす
-		velocity = MatrixTransform(velocity, matWorld);
+		//自機からレティクルへのベクトルに合わせて飛ばす
+		Vector3 velocity = reticle->GetWorldPos() - GetWorldPos();
+		velocity = velocity.normalize() * bulletSpeed;
 
 		//弾を生成
 		std::unique_ptr<PlayerBullet> newBullet;

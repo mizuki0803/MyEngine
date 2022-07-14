@@ -39,4 +39,5 @@ const Vector3 operator-(const Vector3& v1, const Vector3& v2);
 const Vector3 operator*(const Vector3& v, float s);
 const Vector3 operator*(float s, const Vector3& v);
 const Vector3 operator/(const Vector3& v, float s);
-const Vector3 MatrixTransform(Vector3 v, DirectX::XMMATRIX m);
+const Vector3 MatrixTransformPosition(Vector3 v, DirectX::XMMATRIX m);
+const Vector3 MatrixTransformDirection(Vector3 v, DirectX::XMMATRIX m);

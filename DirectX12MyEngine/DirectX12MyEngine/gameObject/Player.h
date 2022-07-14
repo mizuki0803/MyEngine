@@ -1,6 +1,7 @@
 #pragma once
 #include "ObjObject3d.h"
 #include "PlayerBullet.h"
+#include "Reticle.h"
 #include <memory>
 #include <list>
 
@@ -62,4 +63,6 @@ private: //メンバ関数
 private:
 	//自機弾
 	std::list<std::unique_ptr<PlayerBullet>> playerBullets;
+	//レティクル
+	std::unique_ptr<Reticle> reticle;
 };
