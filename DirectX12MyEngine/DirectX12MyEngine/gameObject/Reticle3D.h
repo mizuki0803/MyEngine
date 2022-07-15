@@ -1,21 +1,18 @@
 #pragma once
 #include "ObjObject3d.h"
-#include "PlayerBullet.h"
-#include <memory>
-#include <list>
 
 /// <summary>
-/// レティクルの
+/// 3Dレティクル
 /// </summary>
-class Reticle : public ObjObject3d
+class Reticle3D : public ObjObject3d
 {
 public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
-	/// <returns>レティクル</returns>
-	static Reticle* Create(ObjModel* model);
+	/// <returns>3Dレティクル</returns>
+	static Reticle3D* Create(ObjModel* model);
 
 public: //メンバ関数
 	/// <summary>

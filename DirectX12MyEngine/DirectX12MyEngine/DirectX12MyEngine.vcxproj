@@ -176,7 +176,8 @@
     <ClCompile Include="gameObject\EnemyBullet.cpp" />
     <ClCompile Include="gameObject\Player.cpp" />
     <ClCompile Include="gameObject\PlayerBullet.cpp" />
-    <ClCompile Include="gameObject\Reticle.cpp" />
+    <ClCompile Include="gameObject\Reticle3D.cpp" />
+    <ClCompile Include="gameObject\Reticle2D.cpp" />
     <ClCompile Include="gameObject\Skydome.cpp" />
     <ClCompile Include="input\Input.cpp" />
     <ClCompile Include="light\LightGroup.cpp" />
@@ -304,7 +305,8 @@
     <ClInclude Include="gameObject\EnemyBullet.h" />
     <ClInclude Include="gameObject\Player.h" />
     <ClInclude Include="gameObject\PlayerBullet.h" />
-    <ClInclude Include="gameObject\Reticle.h" />
+    <ClInclude Include="gameObject\Reticle3D.h" />
+    <ClInclude Include="gameObject\Reticle2D.h" />
     <ClInclude Include="gameObject\Skydome.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="light\CircleShadow.h" />

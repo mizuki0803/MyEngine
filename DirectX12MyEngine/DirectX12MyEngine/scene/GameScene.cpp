@@ -35,6 +35,11 @@ void GameScene::Initialize()
 	//lightGroup->SetSpotLightActive(0, true);
 	lightGroup->SetCircleShadowActive(0, true);
 
+	//スプライト共通部分のインスタンスを取得
+	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+	//スプライト用テクスチャ読み込み
+	spriteCommon->LoadTexture(1, "reticle.png");
+
 
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
@@ -42,7 +47,7 @@ void GameScene::Initialize()
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
 
 	//自機生成
-	player.reset(Player::Create(modelFighter.get()));
+	player.reset(Player::Create(modelSphere.get()));
 	player->SetIsCameraFollow(true);
 	//敵の速度を設定
 	const Vector3 position(5, 0, 50);
@@ -170,10 +175,10 @@ void GameScene::Draw()
 
 
 	//スプライト共通コマンド
-	//SpriteCommon::GetInstance()->DrawPrev();
+	SpriteCommon::GetInstance()->DrawPrev();
 	///-------スプライト描画ここから-------///
 
-
+	player->DrawUI();
 
 
 	///-------スプライト描画ここまで-------///

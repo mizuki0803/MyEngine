@@ -1,7 +1,8 @@
 #pragma once
 #include "ObjObject3d.h"
 #include "PlayerBullet.h"
-#include "Reticle.h"
+#include "Reticle3D.h"
+#include "Reticle2D.h"
 #include <memory>
 #include <list>
 
@@ -35,6 +36,11 @@ public: //メンバ関数
 	void Draw() override;
 
 	/// <summary>
+	/// UI描画
+	/// </summary>
+	void DrawUI();
+
+	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	void OnCollision();
@@ -63,6 +69,8 @@ private: //メンバ関数
 private:
 	//自機弾
 	std::list<std::unique_ptr<PlayerBullet>> playerBullets;
-	//レティクル
-	std::unique_ptr<Reticle> reticle;
+	//レティクル3D(座標計算用)
+	std::unique_ptr<Reticle3D> reticle3d;
+	//レティクル2D(表示用)
+	std::unique_ptr<Reticle2D> reticle2d;
 };

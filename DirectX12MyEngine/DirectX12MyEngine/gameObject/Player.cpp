@@ -26,6 +26,7 @@ Player* Player::Create(ObjModel* model)
 bool Player::Initialize()
 {
 	position = { 0 ,-5 ,25 };
+	scale = { 2, 2, 2 };
 
 	//3Dオブジェクトの初期化
 	if (!ObjObject3d::Initialize())
@@ -34,7 +35,10 @@ bool Player::Initialize()
 	}
 
 	//レティクルを生成
-	reticle.reset(Reticle::Create(model));
+	reticle3d.reset(Reticle3D::Create(model));
+
+	reticle2d.reset(Reticle2D::Create(1));
+	reticle2d->SetReticle(reticle3d.get());
 
 	return true;
 }
@@ -56,9 +60,12 @@ void Player::Update()
 	ObjObject3d::Update();
 
 	//レティクルに自機のワールド行列を渡す
-	reticle->SetFollowMatWorld(matWorld);
+	reticle3d->SetFollowMatWorld(matWorld);
 	//レティクル更新
-	reticle->Update();
+	reticle3d->Update();
+	reticle2d->SetMatViewProjection(camera->GetMatView(), camera->GetMatProjection());
+	reticle2d->Update();
+
 
 	//攻撃
 	Attack();
@@ -76,13 +83,18 @@ void Player::Draw()
 	ObjObject3d::Draw();
 
 	//レティクル描画
-	reticle->Draw();
+	//reticle->Draw();
 
 	//自機弾描画
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
 	{
 		bullet->Draw();
 	}
+}
+
+void Player::DrawUI()
+{
+	reticle2d->Draw();
 }
 
 void Player::OnCollision()
@@ -151,7 +163,7 @@ void Player::Attack()
 		//弾の速度を設定
 		const float bulletSpeed = 0.5f;
 		//自機からレティクルへのベクトルに合わせて飛ばす
-		Vector3 velocity = reticle->GetWorldPos() - GetWorldPos();
+		Vector3 velocity = reticle3d->GetWorldPos() - GetWorldPos();
 		velocity = velocity.normalize() * bulletSpeed;
 
 		//弾を生成

@@ -194,7 +194,10 @@
     <ClCompile Include="camera\RailCamera.cpp">
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClCompile>
-    <ClCompile Include="gameObject\Reticle.cpp">
+    <ClCompile Include="gameObject\Reticle3D.cpp">
+      <Filter>ソース ファイル\gameObject\player</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\Reticle2D.cpp">
       <Filter>ソース ファイル\gameObject\player</Filter>
     </ClCompile>
   </ItemGroup>
@@ -380,7 +383,10 @@
     <ClInclude Include="camera\RailCamera.h">
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClInclude>
-    <ClInclude Include="gameObject\Reticle.h">
+    <ClInclude Include="gameObject\Reticle3D.h">
+      <Filter>ソース ファイル\gameObject\player</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Reticle2D.h">
       <Filter>ソース ファイル\gameObject\player</Filter>
     </ClInclude>
   </ItemGroup>

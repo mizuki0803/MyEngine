@@ -52,7 +52,7 @@ public: //メンバ関数
 	/// <param name="isFlipX">左右反転するか</param>
 	/// <param name="isFlipY">上下反転するか</param>
 	/// <returns>成否</returns>
-	bool Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
+	virtual bool Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
 
 	/// <summary>
 	/// 頂点バッファの転送
@@ -62,7 +62,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	virtual void Update();
 
 	/// <summary>
 	/// 描画

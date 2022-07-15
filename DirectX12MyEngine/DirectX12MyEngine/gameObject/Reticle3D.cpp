@@ -1,28 +1,28 @@
-#include "Reticle.h"
+#include "Reticle3D.h"
 
-Reticle* Reticle::Create(ObjModel* model)
+Reticle3D* Reticle3D::Create(ObjModel* model)
 {
 	//レティクルのインスタンスを生成
-	Reticle* reticle = new Reticle();
-	if (reticle == nullptr) {
+	Reticle3D* reticle3d = new Reticle3D();
+	if (reticle3d == nullptr) {
 		return nullptr;
 	}
 
 	// 初期化
-	if (!reticle->Initialize()) {
-		delete reticle;
+	if (!reticle3d->Initialize()) {
+		delete reticle3d;
 		assert(0);
 		return nullptr;
 	}
 
 	//モデルをセット
 	assert(model);
-	reticle->model = model;
+	reticle3d->model = model;
 
-	return reticle;
+	return reticle3d;
 }
 
-void Reticle::Update()
+void Reticle3D::Update()
 {
 	//自機からレティクルまでの距離
 	const float distancePlayerToReticle = 25.0f;
@@ -67,7 +67,7 @@ void Reticle::Update()
 	}
 }
 
-Vector3 Reticle::GetWorldPos()
+Vector3 Reticle3D::GetWorldPos()
 {
 	//ワールド座標を入れる変数
 	Vector3 worldPos;

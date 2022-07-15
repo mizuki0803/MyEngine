@@ -148,3 +148,19 @@ const Vector3 MatrixTransformDirection(Vector3 v, DirectX::XMMATRIX m)
 
 	return result;
 }
+
+const Vector3 MatrixTransformWDivision(Vector3 v, DirectX::XMMATRIX m)
+{
+	float w = v.x * m.r[0].m128_f32[3] + v.y * m.r[1].m128_f32[3] + v.z * m.r[2].m128_f32[3] + m.r[3].m128_f32[3];
+
+	Vector3 result
+	{
+		(v.x * m.r[0].m128_f32[0] + v.y * m.r[1].m128_f32[0] + v.z * m.r[2].m128_f32[0] + m.r[3].m128_f32[0]) / w,
+		(v.x * m.r[0].m128_f32[1] + v.y * m.r[1].m128_f32[1] + v.z * m.r[2].m128_f32[1] + m.r[3].m128_f32[1]) / w,
+		(v.x * m.r[0].m128_f32[2] + v.y * m.r[1].m128_f32[2] + v.z * m.r[2].m128_f32[2] + m.r[3].m128_f32[2]) / w,
+	};
+
+	result /= result.z;
+
+	return result;
+}
