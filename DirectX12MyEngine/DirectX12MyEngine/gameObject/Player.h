@@ -1,8 +1,7 @@
 #pragma once
 #include "ObjObject3d.h"
 #include "PlayerBullet.h"
-#include "Reticle3D.h"
-#include "Reticle2D.h"
+#include "Reticle.h"
 #include <memory>
 #include <list>
 
@@ -69,8 +68,7 @@ private: //メンバ関数
 private:
 	//自機弾
 	std::list<std::unique_ptr<PlayerBullet>> playerBullets;
-	//レティクル3D(座標計算用)
-	std::unique_ptr<Reticle3D> reticle3d;
-	//レティクル2D(表示用)
-	std::unique_ptr<Reticle2D> reticle2d;
+	//レティクル
+	std::unique_ptr<Reticle> reticle;
+	std::unique_ptr<Reticle> reticle2;
 };

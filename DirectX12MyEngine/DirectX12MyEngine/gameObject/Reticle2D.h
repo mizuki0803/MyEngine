@@ -13,7 +13,7 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>レティクル2D</returns>
-	static Reticle2D* Create(UINT texNumber);
+	static Reticle2D* Create(UINT texNumber, const XMFLOAT2& size);
 
 public: //メンバ関数
 	/// <summary>
@@ -32,15 +32,15 @@ public: //メンバ関数
 	//void Draw() override;
 
 	//setter
-	void SetReticle(Reticle3D* reticle) { this->reticle = reticle; }
+	void SetWorldPos3d(const Vector3& worldPos3d) { this->worldPos3d = worldPos3d; }
 	void SetMatViewProjection(const XMMATRIX& matView, const XMMATRIX& matProjection) {
 		this->matView = matView;
 		this->matProjection = matProjection;
 	}
 
 private:
-	//3Dレティクル
-	Reticle3D* reticle = nullptr;
+	//3Dレティクルのワールド座標
+	Vector3 worldPos3d = {};
 	//ビュー行列
 	XMMATRIX matView = {};
 	//プロジェクション行列

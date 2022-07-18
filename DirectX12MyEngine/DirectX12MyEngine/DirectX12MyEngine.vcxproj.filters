@@ -87,6 +87,9 @@
     <Filter Include="ソース ファイル\gameObject\skydome">
       <UniqueIdentifier>{15e7c728-e790-4197-9590-3285af2ac863}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\gameObject\Reticle">
+      <UniqueIdentifier>{611ab12d-7325-4303-8d97-261286818635}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -195,10 +198,13 @@
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Reticle3D.cpp">
-      <Filter>ソース ファイル\gameObject\player</Filter>
+      <Filter>ソース ファイル\gameObject\Reticle</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Reticle2D.cpp">
-      <Filter>ソース ファイル\gameObject\player</Filter>
+      <Filter>ソース ファイル\gameObject\Reticle</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\Reticle.cpp">
+      <Filter>ソース ファイル\gameObject\Reticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -384,10 +390,13 @@
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Reticle3D.h">
-      <Filter>ソース ファイル\gameObject\player</Filter>
+      <Filter>ソース ファイル\gameObject\Reticle</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Reticle2D.h">
-      <Filter>ソース ファイル\gameObject\player</Filter>
+      <Filter>ソース ファイル\gameObject\Reticle</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Reticle.h">
+      <Filter>ソース ファイル\gameObject\Reticle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

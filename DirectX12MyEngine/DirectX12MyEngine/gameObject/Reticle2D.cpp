@@ -1,6 +1,6 @@
 #include "Reticle2D.h"
 
-Reticle2D* Reticle2D::Create(UINT texNumber)
+Reticle2D* Reticle2D::Create(UINT texNumber, const XMFLOAT2& size)
 {
 	//2Dレティクルのインスタンスを生成
 	Reticle2D* reticle2d = new Reticle2D();
@@ -14,6 +14,9 @@ Reticle2D* Reticle2D::Create(UINT texNumber)
 		assert(0);
 		return nullptr;
 	}
+
+	//大きさをセット
+	reticle2d->size = size;
 
 	return reticle2d;
 }
@@ -31,7 +34,7 @@ bool Reticle2D::Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, b
 
 void Reticle2D::Update()
 {
-	Vector3 positionReticle = reticle->GetWorldPos();
+	Vector3 positionReticle = worldPos3d;
 
 	//ビューポート行列
 	XMMATRIX matViewport = {

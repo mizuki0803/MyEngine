@@ -1,6 +1,6 @@
 #include "Reticle3D.h"
 
-Reticle3D* Reticle3D::Create(ObjModel* model)
+Reticle3D* Reticle3D::Create(ObjModel* model, float distance)
 {
 	//レティクルのインスタンスを生成
 	Reticle3D* reticle3d = new Reticle3D();
@@ -16,8 +16,12 @@ Reticle3D* Reticle3D::Create(ObjModel* model)
 	}
 
 	//モデルをセット
-	assert(model);
-	reticle3d->model = model;
+	if (model) {
+		reticle3d->model = model;
+	}
+
+	//距離をセット
+	reticle3d->distance = distance;
 
 	return reticle3d;
 }
@@ -25,7 +29,7 @@ Reticle3D* Reticle3D::Create(ObjModel* model)
 void Reticle3D::Update()
 {
 	//自機からレティクルまでの距離
-	const float distancePlayerToReticle = 25.0f;
+	const float distancePlayerToReticle = distance;
 	//自機から3DレティクルへのオフセットZ向き
 	Vector3 offset = { 0, 0, 1.0f };
 	//自機のワールド行列の回転をレティクルに反映
