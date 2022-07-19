@@ -16,7 +16,7 @@ void RailCamera::Update()
 {
 	//ˆÚ“®
 	Vector3 velocity(0, 0, 0.1f);
-	//position += velocity;
+	position += velocity;
 	//‰ñ“]
 	//Vector3 rot(0.1f, 0, 0);
 	//rotation += rot;

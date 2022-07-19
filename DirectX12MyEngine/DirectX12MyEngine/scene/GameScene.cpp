@@ -47,7 +47,7 @@ void GameScene::Initialize()
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
 
 	//©‹@¶¬
-	player.reset(Player::Create(modelSphere.get()));
+	player.reset(Player::Create(modelFighter.get()));
 	player->SetIsCameraFollow(true);
 	//“G‚Ì‘¬“x‚ğİ’è
 	const Vector3 position(5, 0, 50);

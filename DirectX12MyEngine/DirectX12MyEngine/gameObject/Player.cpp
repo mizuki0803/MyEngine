@@ -26,7 +26,7 @@ Player* Player::Create(ObjModel* model)
 bool Player::Initialize()
 {
 	position = { 0 ,-5 ,25 };
-	scale = { 2, 2, 2 };
+	scale = { 0.5f, 0.5f, 0.5f };
 
 	//3Dオブジェクトの初期化
 	if (!ObjObject3d::Initialize())
@@ -112,11 +112,11 @@ void Player::Move()
 
 	//入力で移動させる
 	Vector3 move = { 0, 0, 0 };
-	float moveSpeed = 0.1f;
-	if (input->PushKey(DIK_RIGHT)) { move.x += moveSpeed; }
-	if (input->PushKey(DIK_LEFT)) { move.x -= moveSpeed; }
-	if (input->PushKey(DIK_UP)) { move.y += moveSpeed; }
-	if (input->PushKey(DIK_DOWN)) { move.y -= moveSpeed; }
+	float moveSpeed = 0.15f;
+	if (input->PushKey(DIK_RIGHT) || input->TiltGamePadLStickX(500)) { move.x += moveSpeed; }
+	if (input->PushKey(DIK_LEFT) || input->TiltGamePadLStickX(-500)) { move.x -= moveSpeed; }
+	if (input->PushKey(DIK_UP) || input->TiltGamePadLStickY(-500)) { move.y += moveSpeed; }
+	if (input->PushKey(DIK_DOWN) || input->TiltGamePadLStickY(500)) { move.y -= moveSpeed; }
 
 	position += move;
 

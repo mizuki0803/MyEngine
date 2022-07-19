@@ -18,6 +18,7 @@ Skydome* Skydome::Create(ObjModel* model)
 	//モデルをセット
 	assert(model);
 	skydome->model = model;
+	skydome->scale = { 5, 5, 5 };
 
 	return skydome;
 }
