@@ -9,7 +9,7 @@ using namespace DirectX;
 /// </summary>
 class Camera
 {
-private: // エイリアス
+protected: // エイリアス
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;

@@ -1,4 +1,5 @@
 #include "RailCamera.h"
+#include "Input.h"
 
 void RailCamera::Initialize()
 {
@@ -14,13 +15,40 @@ void RailCamera::Initialize()
 
 void RailCamera::Update()
 {
+	Input* input = Input::GetInstance();
+
 	//移動
 	Vector3 velocity(0, 0, 0.1f);
+	//XYを入力で移動させる
+	float moveSpeed = 0.3f;
+	if (input->PushKey(DIK_RIGHT)) { velocity.x += moveSpeed; }
+	if (input->PushKey(DIK_LEFT)) { velocity.x -= moveSpeed; }
+	if (input->PushKey(DIK_UP)) { velocity.y += moveSpeed; }
+	if (input->PushKey(DIK_DOWN)) { velocity.y -= moveSpeed; }
+
+	//スティック傾きの判定を取る
+	const float stickNum = 500;
+	if (input->TiltGamePadLStickX(stickNum) || input->TiltGamePadLStickX(-stickNum) || input->TiltGamePadLStickY(stickNum) || input->TiltGamePadLStickY(-stickNum)) {
+		//プレイヤーはスティックを倒した方向に動く
+		float padRota = input->GetPadLStickAngle();
+		float moveAngle = XMConvertToRadians(padRota);
+		velocity.x = moveSpeed * cosf(moveAngle);
+		velocity.y = moveSpeed * -sinf(moveAngle);
+	}
+
 	position += velocity;
+
+	//XYの移動範囲を設定
+	const XMFLOAT2 moveLimit = { 20.0f, 10.0f };
+
+	position.x = max(position.x, -moveLimit.x);
+	position.x = min(position.x, +moveLimit.x);
+	position.y = max(position.y, -moveLimit.y);
+	position.y = min(position.y, +moveLimit.y);
 	//回転
 	//Vector3 rot(0.1f, 0, 0);
 	//rotation += rot;
-	
+
 	//回転　平行移動行列の計算
 	DirectX::XMMATRIX matRot, matTrans;
 	matRot = XMMatrixIdentity();

@@ -25,7 +25,7 @@ Player* Player::Create(ObjModel* model)
 
 bool Player::Initialize()
 {
-	position = { 0 ,-5 ,25 };
+	position = { 0 ,-5 ,15 };
 	scale = { 0.5f, 0.5f, 0.5f };
 
 	//3Dオブジェクトの初期化
@@ -35,8 +35,8 @@ bool Player::Initialize()
 	}
 
 	//レティクルを生成
-	reticle.reset(Reticle::Create(1, 25.0f, { 100, 100 }));
-	reticle2.reset(Reticle::Create(1, 50.0f, { 50, 50 }));
+	reticle.reset(Reticle::Create(1, 5.0f, { 100, 100 }));
+	reticle2.reset(Reticle::Create(1, 25.0f, { 50, 50 }));
 
 	return true;
 }
@@ -113,15 +113,25 @@ void Player::Move()
 	//入力で移動させる
 	Vector3 move = { 0, 0, 0 };
 	float moveSpeed = 0.15f;
-	if (input->PushKey(DIK_RIGHT) || input->TiltGamePadLStickX(500)) { move.x += moveSpeed; }
-	if (input->PushKey(DIK_LEFT) || input->TiltGamePadLStickX(-500)) { move.x -= moveSpeed; }
-	if (input->PushKey(DIK_UP) || input->TiltGamePadLStickY(-500)) { move.y += moveSpeed; }
-	if (input->PushKey(DIK_DOWN) || input->TiltGamePadLStickY(500)) { move.y -= moveSpeed; }
+	if (input->PushKey(DIK_RIGHT)) { move.x += moveSpeed; }
+	if (input->PushKey(DIK_LEFT)) { move.x -= moveSpeed; }
+	if (input->PushKey(DIK_UP)) { move.y += moveSpeed; }
+	if (input->PushKey(DIK_DOWN)) { move.y -= moveSpeed; }
+
+	//スティック傾きの判定を取る
+	const float stickNum = 500;
+	if (input->TiltGamePadLStickX(stickNum) || input->TiltGamePadLStickX(-stickNum) || input->TiltGamePadLStickY(stickNum) || input->TiltGamePadLStickY(-stickNum)) {
+		//プレイヤーはスティックを倒した方向に動く
+		float padRota = input->GetPadLStickAngle();
+		float moveAngle = XMConvertToRadians(padRota);
+		move.x = moveSpeed * cosf(moveAngle);
+		move.y = moveSpeed * -sinf(moveAngle);
+	}
 
 	position += move;
 
 	//移動限界をから出ないようにする
-	const XMFLOAT2 moveLimit = { 5.0f, 5.0f };
+	const XMFLOAT2 moveLimit = { 10.0f, 5.0f };
 
 	position.x = max(position.x, -moveLimit.x);
 	position.x = min(position.x, +moveLimit.x);
@@ -148,13 +158,13 @@ void Player::Attack()
 {
 	Input* input = Input::GetInstance();
 	//発射キーを押したら
-	if (input->TriggerKey(DIK_SPACE))
+	if (input->TriggerKey(DIK_SPACE) || input->TriggerGamePadButton(Input::PAD_RB))
 	{
 		//発射位置を自機のワールド座標に設定
 		Vector3 shotPos = GetWorldPos();
 
 		//弾の速度を設定
-		const float bulletSpeed = 0.5f;
+		const float bulletSpeed = 5;
 		//自機からレティクルへのベクトルに合わせて飛ばす
 		Vector3 velocity = reticle->GetWorldPos() - GetWorldPos();
 		velocity = velocity.normalize() * bulletSpeed;
