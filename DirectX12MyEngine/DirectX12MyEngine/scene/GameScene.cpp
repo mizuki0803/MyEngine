@@ -46,17 +46,23 @@ void GameScene::Initialize()
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
 
+	//自機に必要な情報をセット
+	Player::SetGameScene(this);
+	Player::SetBulletModel(modelSphere.get());
 	//自機生成
 	player.reset(Player::Create(modelFighter.get()));
 	player->SetIsCameraFollow(true);
+
+	//全敵に必要な情報をセット
+	Enemy::SetGameScene(this);
+	Enemy::SetPlayer(player.get());
+	Enemy::SetBulletModel(modelSphere.get());
 	//敵の速度を設定
 	const Vector3 position(5, 0, 50);
 	const float enemySpeed = 0.1f;
 	Vector3 velocity(0, 0, enemySpeed);
-	enemy.reset(Enemy::Create(modelSphere.get(), position, velocity));
-	//敵に自機のアドレスを渡す
-	enemy->SetPlayer(player.get());
-
+	enemy.reset(Enemy::Create(modelFighter.get(), position, velocity));
+	
 	//天球生成
 	objSkydome.reset(Skydome::Create(modelSkydome.get()));
 
@@ -72,6 +78,16 @@ void GameScene::Update()
 	Input* input = Input::GetInstance();
 	//デバッグテキストのインスタンスを取得
 	DebugText* debugText = DebugText::GetInstance();
+
+	//死亡した自機弾の削除
+	playerBullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
+		return bullet->GetIsDead();
+		});
+
+	//死亡した敵弾の削除
+	enemyBullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
+		return bullet->GetIsDead();
+		});
 
 	////キー入力でプレイヤーの位置を変更
 	//if (input->PushKey(DIK_1) || input->PushKey(DIK_2) || input->PushKey(DIK_3) || input->PushKey(DIK_4) || input->PushKey(DIK_5) || input->PushKey(DIK_6))
@@ -131,13 +147,26 @@ void GameScene::Update()
 	//カメラ更新
 	normalCamera->Update();
 	railCamera->Update();
-	//Object3d更新
-	objSkydome->Update();
-	player->Update();
 
+	//オブジェクト更新
+	//天球
+	objSkydome->Update();
+	//自機
+	player->Update();
+	//自機弾
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
+	{
+		bullet->Update();
+	}
+	//敵
 	if (enemy)
 	{
 		enemy->Update();
+	}
+	//敵弾
+	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets)
+	{
+		bullet->Update();
 	}
 
 	//衝突判定管理
@@ -161,13 +190,24 @@ void GameScene::Draw()
 	///-------Object3d描画ここから-------///
 
 
-	
+	//天球
 	objSkydome->Draw();
+	//自機
 	player->Draw();
-
+	//自機弾
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
+	{
+		bullet->Draw();
+	}
+	//敵
 	if (enemy)
 	{
 		enemy->Draw();
+	}
+	//敵弾
+	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets)
+	{
+		bullet->Draw();
 	}
 
 
@@ -203,9 +243,9 @@ void GameScene::CollisionCheck()
 	float radiusA, radiusB;
 
 	//自機弾リスト取得
-	const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player->GetBullets();
+	//const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player->GetBullets();
 	//敵弾リスト取得
-	const std::list<std::unique_ptr<EnemyBullet>>& enemyBullets = enemy->GetBullets();
+	//const std::list<std::unique_ptr<EnemyBullet>>& enemyBullets = enemy->GetBullets();
 
 #pragma region 自機と敵弾の衝突判定
 	//自機座標
@@ -258,4 +298,16 @@ void GameScene::CollisionCheck()
 		}
 	}
 #pragma endregion
+}
+
+void GameScene::AddPlayerBullet(std::unique_ptr<PlayerBullet> playerBullet)
+{
+	//自機弾リストに登録
+	playerBullets.push_back(std::move(playerBullet));
+}
+
+void GameScene::AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet)
+{
+	//敵弾リストに登録
+	enemyBullets.push_back(std::move(enemyBullet));
 }

@@ -48,6 +48,18 @@ public: //ƒƒ“ƒoŠÖ”
 	/// </summary>
 	void CollisionCheck();
 
+	/// <summary>
+	/// ©‹@’e‚ğ’Ç‰Á‚·‚é
+	/// </summary>
+	/// <param name="playerBullet">©‹@’e</param>
+	void AddPlayerBullet(std::unique_ptr<PlayerBullet> playerBullet);
+
+	/// <summary>
+	/// “G’e‚ğ’Ç‰Á‚·‚é
+	/// </summary>
+	/// <param name="enemyBullet">“G’e</param>
+	void AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet);
+
 private: //ƒƒ“ƒo•Ï”
 	//ƒJƒƒ‰
 	std::unique_ptr<Camera> normalCamera;
@@ -88,8 +100,12 @@ private: //ƒƒ“ƒo•Ï”
 
 	//©‹@
 	std::unique_ptr<Player> player;
+	//©‹@’e
+	std::list<std::unique_ptr<PlayerBullet>> playerBullets;
 	//“G
 	std::unique_ptr<Enemy> enemy;
+	//“G’e
+	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
 	//“V‹…
 	std::unique_ptr<Skydome> objSkydome;
 

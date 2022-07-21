@@ -30,7 +30,7 @@ PlayerBullet* PlayerBullet::Create(ObjModel* model, const Vector3& position, con
 
 bool PlayerBullet::Initialize()
 {
-	scale = { 0.3f, 0.3f, 0.3f };
+	scale = { 0.5f, 0.5f, 0.5f };
 
 	//3Dオブジェクトの初期化
 	if (!ObjObject3d::Initialize())

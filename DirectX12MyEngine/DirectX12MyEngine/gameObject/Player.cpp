@@ -1,5 +1,9 @@
 #include "Player.h"
 #include "Input.h"
+#include "GameScene.h"
+
+GameScene* Player::gameScene = nullptr;
+ObjModel* Player::bulletModel = nullptr;
 
 Player* Player::Create(ObjModel* model)
 {
@@ -43,11 +47,6 @@ bool Player::Initialize()
 
 void Player::Update()
 {
-	//€–S‚µ‚½’e‚Ìíœ
-	playerBullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
-		return bullet->GetIsDead();
-		});
-
 	//‰ñ“]
 	Rotate();
 
@@ -63,24 +62,6 @@ void Player::Update()
 
 	//UŒ‚
 	Attack();
-
-	//’eXV
-	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
-	{
-		bullet->Update();
-	}
-}
-
-void Player::Draw()
-{
-	//ƒIƒuƒWƒFƒNƒg•`‰æ
-	ObjObject3d::Draw();
-
-	//©‹@’e•`‰æ
-	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
-	{
-		bullet->Draw();
-	}
 }
 
 void Player::DrawUI()
@@ -171,7 +152,7 @@ void Player::Attack()
 
 		//’e‚ğ¶¬
 		std::unique_ptr<PlayerBullet> newBullet;
-		newBullet.reset(PlayerBullet::Create(model, shotPos, velocity));
-		playerBullets.push_back(std::move(newBullet));
+		newBullet.reset(PlayerBullet::Create(bulletModel, shotPos, velocity));
+		gameScene->AddPlayerBullet(std::move(newBullet));
 	}
 }

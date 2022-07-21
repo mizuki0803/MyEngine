@@ -1,5 +1,10 @@
 #include "Enemy.h"
 #include "Player.h"
+#include "GameScene.h"
+
+Player* Enemy::player = nullptr;
+GameScene* Enemy::gameScene = nullptr;
+ObjModel* Enemy::bulletModel = nullptr;
 
 Enemy* Enemy::Create(ObjModel* model, const Vector3& position, const Vector3& velocity)
 {
@@ -38,9 +43,6 @@ bool Enemy::Initialize()
 		return false;
 	}
 
-	//弾発射
-	//Fire();
-
 	PreviousPhaseInit();
 
 	return true;
@@ -48,31 +50,11 @@ bool Enemy::Initialize()
 
 void Enemy::Update()
 {
-	//死亡した弾の削除
-	enemyBullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
-		return bullet->GetIsDead();
-		});
-
 	//移動
 	Move();
 
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
-
-	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets)
-	{
-		bullet->Update();
-	}
-}
-
-void Enemy::Draw()
-{
-	ObjObject3d::Draw();
-
-	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets)
-	{
-		bullet->Draw();
-	}
 }
 
 void Enemy::OnCollision()
@@ -146,6 +128,6 @@ void Enemy::Fire()
 
 	//弾を生成
 	std::unique_ptr<EnemyBullet> newBullet;
-	newBullet.reset(EnemyBullet::Create(model, position, velocity));
-	enemyBullets.push_back(std::move(newBullet));
+	newBullet.reset(EnemyBullet::Create(bulletModel, position, velocity));
+	gameScene->AddEnemyBullet(std::move(newBullet));
 }

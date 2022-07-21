@@ -5,18 +5,25 @@
 #include <memory>
 #include <list>
 
+//ゲームシーンの前方宣言
+class GameScene;
+
 /// <summary>
 /// 自機
 /// </summary>
 class Player : public ObjObject3d
 {
-public:
+public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>自機</returns>
 	static Player* Create(ObjModel* model);
+
+	//setter
+	static void SetGameScene(GameScene* gameScene) { Player::gameScene = gameScene; }
+	static void SetBulletModel(ObjModel* model) { Player::bulletModel = model; }
 
 public: //メンバ関数
 	/// <summary>
@@ -30,11 +37,6 @@ public: //メンバ関数
 	void Update() override;
 
 	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw() override;
-
-	/// <summary>
 	/// UI描画
 	/// </summary>
 	void DrawUI();
@@ -46,7 +48,6 @@ public: //メンバ関数
 
 	//getter
 	Vector3 GetWorldPos();
-	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return playerBullets; };
 
 
 private: //メンバ関数
@@ -65,9 +66,13 @@ private: //メンバ関数
 	/// </summary>
 	void Attack();
 
-private:
-	//自機弾
-	std::list<std::unique_ptr<PlayerBullet>> playerBullets;
+private: //静的メンバ変数
+	//ゲームシーン
+	static GameScene* gameScene;
+	//自機弾のモデル
+	static ObjModel* bulletModel;
+
+private: //メンバ変数
 	//レティクル
 	std::unique_ptr<Reticle> reticle;
 	std::unique_ptr<Reticle> reticle2;

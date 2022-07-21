@@ -4,6 +4,8 @@
 
 //自機クラスを前方宣言
 class Player;
+//GameSceneの前方宣言
+class GameScene;
 
 /// <summary>
 /// 敵
@@ -25,6 +27,11 @@ public: //静的メンバ関数
 	/// <returns>敵</returns>
 	static Enemy* Create(ObjModel* model, const Vector3& position, const Vector3& velocity);
 
+	//setter
+	static void SetPlayer(Player* player) { Enemy::player = player; }
+	static void SetGameScene(GameScene* gameScene) { Enemy::gameScene = gameScene; }
+	static void SetBulletModel(ObjModel* model) { Enemy::bulletModel = model; }
+
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
@@ -37,11 +44,6 @@ public: //メンバ関数
 	void Update() override;
 
 	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw() override;
-
-	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	void OnCollision();
@@ -51,12 +53,8 @@ public: //メンバ関数
 	/// </summary>
 	void PreviousPhaseInit();
 
-	//setter
-	void SetPlayer(Player* player) { this->player = player; }
-
 	//getter
 	Vector3 GetWorldPos();
-	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return enemyBullets; };
 
 private: //メンバ関数
 	/// <summary>
@@ -72,16 +70,18 @@ private: //メンバ関数
 private: //静的メンバ変数
 	//発射間隔
 	static const int fireInterval = 60;
+	//プレイヤー自機
+	static Player* player;
+	//ゲームシーン
+	static GameScene* gameScene;
+	//敵弾のモデル
+	static ObjModel* bulletModel;
 
 private: //メンバ変数
 	//速度
 	Vector3 velocity;
 	//行動フェーズ
 	Phase phase = Phase::Previous;
-	//敵弾
-	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
 	//発射タイマー
 	int32_t fireTimer = 0;
-	//プレイヤー自機
-	Player* player = nullptr;
 };
