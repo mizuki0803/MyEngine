@@ -5,6 +5,7 @@
 #include "SpriteCommon.h"
 #include "DebugText.h"
 #include "Easing.h"
+#include "DemoEnemy.h"
 #include "Cannon.h"
 #include <cassert>
 #include <sstream>
@@ -60,12 +61,10 @@ void GameScene::Initialize()
 	Enemy::SetBulletModel(modelSphere.get());
 	//敵の速度を設定
 	const Vector3 position(5, 0, 50);
-	const float enemySpeed = 0.1f;
-	Vector3 velocity(0, 0, enemySpeed);
 	std::unique_ptr<Enemy> newEnemy;
-	newEnemy.reset(Cannon::Create(modelSphere.get(), position, velocity));
+	newEnemy.reset(Cannon::Create(modelFighter.get(), position));
 	enemys.push_back(std::move(newEnemy));
-	
+
 	//天球生成
 	objSkydome.reset(Skydome::Create(modelSkydome.get()));
 
@@ -155,13 +154,21 @@ void GameScene::Update()
 	if (input->TriggerKey(DIK_1))
 	{
 		const Vector3 position(5, 0, 50);
-		const float enemySpeed = 0.1f;
-		Vector3 velocity(0, 0, enemySpeed);
 		std::unique_ptr<Enemy> newEnemy;
-		newEnemy.reset(Cannon::Create(modelFighter.get(), position, velocity));
+		newEnemy.reset(Cannon::Create(modelFighter.get(), position));
 		enemys.push_back(std::move(newEnemy));
 	}
-	
+
+	if (input->TriggerKey(DIK_2))
+	{
+		const Vector3 position(-5, 0, 50);
+		std::unique_ptr<Enemy> newEnemy;
+		const float enemySpeed = 0.5f;
+		Vector3 velocity(0, 0, enemySpeed);
+		newEnemy.reset(DemoEnemy::Create(modelFighter.get(), position, velocity));
+		enemys.push_back(std::move(newEnemy));
+	}
+
 	//カメラ更新
 	normalCamera->Update();
 	railCamera->Update();
@@ -193,6 +200,8 @@ void GameScene::Update()
 	//デバックテキスト
 	//X座標,Y座標,縮尺を指定して表示
 	debugText->Print("GAME SCENE", 1000, 50);
+	std::string enemyNum = std::to_string(enemys.size());
+	DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 200, 200);
 
 	if (input->TriggerKey(DIK_RETURN))
 	{
@@ -260,11 +269,6 @@ void GameScene::CollisionCheck()
 	Vector3 posA, posB;
 	float radiusA, radiusB;
 
-	//自機弾リスト取得
-	//const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player->GetBullets();
-	//敵弾リスト取得
-	//const std::list<std::unique_ptr<EnemyBullet>>& enemyBullets = enemy->GetBullets();
-
 #pragma region 自機と敵弾の衝突判定
 	//自機座標
 	posA = player->GetWorldPos();
@@ -293,17 +297,17 @@ void GameScene::CollisionCheck()
 
 #pragma region 敵と自機弾の衝突判定
 	//全ての敵と全ての自機弾の衝突判定
-	for (const std::unique_ptr<Enemy>& enemy : enemys) {
-		//敵座標
-		posA = enemy->GetWorldPos();
-		//敵半径
-		radiusA = enemy->GetScale().x;
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//自機弾座標
+		posA = bullet->GetWorldPos();
+		//自機弾半径
+		radiusA = bullet->GetScale().x;
 
-		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-			//敵弾座標
-			posB = bullet->GetWorldPos();
-			//敵弾半径
-			radiusB = bullet->GetScale().x;
+		for (const std::unique_ptr<Enemy>& enemy : enemys) {
+			//敵座標
+			posB = enemy->GetWorldPos();
+			//敵半径
+			radiusB = enemy->GetScale().x;
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
@@ -314,6 +318,8 @@ void GameScene::CollisionCheck()
 				enemy->OnCollision();
 				//自機弾のコールバック関数を呼び出す
 				bullet->OnCollision();
+
+				break;
 			}
 		}
 	}
