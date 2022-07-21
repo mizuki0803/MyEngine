@@ -5,6 +5,7 @@
 #include "SpriteCommon.h"
 #include "DebugText.h"
 #include "Easing.h"
+#include "Cannon.h"
 #include <cassert>
 #include <sstream>
 #include <iomanip>
@@ -61,7 +62,9 @@ void GameScene::Initialize()
 	const Vector3 position(5, 0, 50);
 	const float enemySpeed = 0.1f;
 	Vector3 velocity(0, 0, enemySpeed);
-	enemy.reset(Enemy::Create(modelFighter.get(), position, velocity));
+	std::unique_ptr<Enemy> newEnemy;
+	newEnemy.reset(Cannon::Create(modelSphere.get(), position, velocity));
+	enemys.push_back(std::move(newEnemy));
 	
 	//“V‹…¶¬
 	objSkydome.reset(Skydome::Create(modelSkydome.get()));
@@ -82,6 +85,11 @@ void GameScene::Update()
 	//€–S‚µ‚½©‹@’e‚Ìíœ
 	playerBullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
 		return bullet->GetIsDead();
+		});
+
+	//€–S‚µ‚½“G‚Ìíœ
+	enemys.remove_if([](std::unique_ptr<Enemy>& enemy) {
+		return enemy->GetIsDead();
 		});
 
 	//€–S‚µ‚½“G’e‚Ìíœ
@@ -143,6 +151,16 @@ void GameScene::Update()
 	//	if (input->PushKey(DIK_N)) { dis -= 0.1f; }
 	//	camera->SetDistance(dis);
 	//}
+
+	if (input->TriggerKey(DIK_1))
+	{
+		const Vector3 position(5, 0, 50);
+		const float enemySpeed = 0.1f;
+		Vector3 velocity(0, 0, enemySpeed);
+		std::unique_ptr<Enemy> newEnemy;
+		newEnemy.reset(Cannon::Create(modelFighter.get(), position, velocity));
+		enemys.push_back(std::move(newEnemy));
+	}
 	
 	//ƒJƒƒ‰XV
 	normalCamera->Update();
@@ -159,7 +177,7 @@ void GameScene::Update()
 		bullet->Update();
 	}
 	//“G
-	if (enemy)
+	for (const std::unique_ptr<Enemy>& enemy : enemys)
 	{
 		enemy->Update();
 	}
@@ -176,11 +194,11 @@ void GameScene::Update()
 	//XÀ•W,YÀ•W,kÚ‚ğw’è‚µ‚Ä•\¦
 	debugText->Print("GAME SCENE", 1000, 50);
 
-	//if (input->TriggerKey(DIK_RETURN))
-	//{
-	//	//ƒV[ƒ“Ø‚è‘Ö‚¦
-	//	SceneManager::GetInstance()->ChangeScene("TITLE");
-	//}
+	if (input->TriggerKey(DIK_RETURN))
+	{
+		//ƒV[ƒ“Ø‚è‘Ö‚¦
+		SceneManager::GetInstance()->ChangeScene("TITLE");
+	}
 }
 
 void GameScene::Draw()
@@ -200,7 +218,7 @@ void GameScene::Draw()
 		bullet->Draw();
 	}
 	//“G
-	if (enemy)
+	for (const std::unique_ptr<Enemy>& enemy : enemys)
 	{
 		enemy->Draw();
 	}
@@ -274,27 +292,29 @@ void GameScene::CollisionCheck()
 #pragma endregion
 
 #pragma region “G‚Æ©‹@’e‚ÌÕ“Ë”»’è
-	//“GÀ•W
-	posA = enemy->GetWorldPos();
-	//“G”¼Œa
-	radiusA = enemy->GetScale().x;
+	//‘S‚Ä‚Ì“G‚Æ‘S‚Ä‚Ì©‹@’e‚ÌÕ“Ë”»’è
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
+		//“GÀ•W
+		posA = enemy->GetWorldPos();
+		//“G”¼Œa
+		radiusA = enemy->GetScale().x;
 
-	//“G‚Æ‘S‚Ä‚Ì©‹@’e‚ÌÕ“Ë”»’è
-	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-		//“G’eÀ•W
-		posB = bullet->GetWorldPos();
-		//“G’e”¼Œa
-		radiusB = bullet->GetScale().x;
+		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+			//“G’eÀ•W
+			posB = bullet->GetWorldPos();
+			//“G’e”¼Œa
+			radiusB = bullet->GetScale().x;
 
-		//‹…‚Æ‹…‚ÌÕ“Ë”»’è‚ğs‚¤
-		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//‹…‚Æ‹…‚ÌÕ“Ë”»’è‚ğs‚¤
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
 
-		//Õ“Ë‚µ‚Ä‚¢‚½‚ç
-		if (isCollision) {
-			//“G‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğŒÄ‚Ño‚·
-			enemy->OnCollision();
-			//©‹@’e‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğŒÄ‚Ño‚·
-			bullet->OnCollision();
+			//Õ“Ë‚µ‚Ä‚¢‚½‚ç
+			if (isCollision) {
+				//“G‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğŒÄ‚Ño‚·
+				enemy->OnCollision();
+				//©‹@’e‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğŒÄ‚Ño‚·
+				bullet->OnCollision();
+			}
 		}
 	}
 #pragma endregion

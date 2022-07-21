@@ -36,7 +36,7 @@ void RailCamera::Update()
 		velocity.y = moveSpeed * -sinf(moveAngle);
 	}
 
-	position += velocity;
+	//position += velocity;
 
 	//XY‚ÌˆÚ“®”ÍˆÍ‚ğİ’è
 	const XMFLOAT2 moveLimit = { 20.0f, 10.0f };

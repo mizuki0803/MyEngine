@@ -103,7 +103,7 @@ private: //ƒƒ“ƒo•Ï”
 	//©‹@’e
 	std::list<std::unique_ptr<PlayerBullet>> playerBullets;
 	//“G
-	std::unique_ptr<Enemy> enemy;
+	std::list<std::unique_ptr<Enemy>> enemys;
 	//“G’e
 	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
 	//“V‹…

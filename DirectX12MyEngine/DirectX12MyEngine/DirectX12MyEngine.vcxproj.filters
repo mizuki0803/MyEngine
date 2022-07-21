@@ -206,6 +206,9 @@
     <ClCompile Include="gameObject\Reticle.cpp">
       <Filter>ソース ファイル\gameObject\Reticle</Filter>
     </ClCompile>
+    <ClCompile Include="gameObject\Cannon.cpp">
+      <Filter>ソース ファイル\gameObject\enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -397,6 +400,9 @@
     </ClInclude>
     <ClInclude Include="gameObject\Reticle.h">
       <Filter>ソース ファイル\gameObject\Reticle</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Cannon.h">
+      <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

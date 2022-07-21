@@ -172,6 +172,7 @@
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="collision\CollisionShape.cpp" />
     <ClCompile Include="effect\Easing.cpp" />
+    <ClCompile Include="gameObject\Cannon.cpp" />
     <ClCompile Include="gameObject\Enemy.cpp" />
     <ClCompile Include="gameObject\EnemyBullet.cpp" />
     <ClCompile Include="gameObject\Player.cpp" />
@@ -302,6 +303,7 @@
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionShape.h" />
     <ClInclude Include="effect\Easing.h" />
+    <ClInclude Include="gameObject\Cannon.h" />
     <ClInclude Include="gameObject\Enemy.h" />
     <ClInclude Include="gameObject\EnemyBullet.h" />
     <ClInclude Include="gameObject\Player.h" />
