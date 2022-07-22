@@ -8,7 +8,7 @@
 #include "DemoEnemy.h"
 #include "Cannon.h"
 #include <cassert>
-#include <sstream>
+#include <fstream>
 #include <iomanip>
 
 using namespace DirectX;
@@ -72,6 +72,8 @@ void GameScene::Initialize()
 	ObjObject3d::SetCamera(railCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
+
+	LoadEnemySetData();
 }
 
 void GameScene::Update()
@@ -168,6 +170,8 @@ void GameScene::Update()
 		newEnemy.reset(DemoEnemy::Create(modelFighter.get(), position, velocity));
 		enemys.push_back(std::move(newEnemy));
 	}
+
+	UpdateEnemySetCommands();
 
 	//カメラ更新
 	normalCamera->Update();
@@ -336,4 +340,85 @@ void GameScene::AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet)
 {
 	//敵弾リストに登録
 	enemyBullets.push_back(std::move(enemyBullet));
+}
+
+void GameScene::LoadEnemySetData()
+{
+	//ファイルを開く
+	std::ifstream file;
+	file.open("Resources/EnemySet.csv");
+	assert(file.is_open());
+
+	//ファイルの内容を文字列ストリームにコピー
+	enemySetCommands << file.rdbuf();
+
+	//ファイルを閉じる
+	file.close();
+}
+
+void GameScene::UpdateEnemySetCommands()
+{
+	//待機処理
+	if (isWait) {
+		waitTimer--;
+		if (waitTimer <= 0) {
+			//待機終了
+			isWait = false;
+		}
+		return;
+	}
+
+	//1行分の文字列を入れる変数
+	std::string line;
+
+	//コマンドを実行するループ
+	while (getline(enemySetCommands, line)) {
+		//1行分の文字列をストリーム変換して解析しやすく
+		std::istringstream line_stream(line);
+
+		std::string word;
+		//「,」区切りで行の先頭文字を取得
+		getline(line_stream, word, ',');
+
+		//"//"から始める行はコメント
+		if (word.find("//") == 0) {
+			//コメント行を飛ばす
+			continue;
+		}
+
+		//POPコマンド
+		if (word.find("POP") == 0) {
+			//x座標
+			getline(line_stream, word, ',');
+			float x = (float)std::atof(word.c_str());
+
+			//y座標
+			getline(line_stream, word, ',');
+			float y = (float)std::atof(word.c_str());
+
+			//z座標
+			getline(line_stream, word, ',');
+			float z = (float)std::atof(word.c_str());
+
+			//敵を発生
+			std::unique_ptr<Enemy> newEnemy;
+			newEnemy.reset(Cannon::Create(modelFighter.get(), { x, y, z }));
+			enemys.push_back(std::move(newEnemy));
+		}
+
+		//WAITコマンド
+		else if (word.find("WAIT") == 0) {
+			getline(line_stream, word, ',');
+
+			//待ち時間
+			int32_t waitTime = atoi(word.c_str());
+
+			//待機開始
+			isWait = true;
+			waitTimer = waitTime;
+
+			//コマンドループを抜ける
+			break;
+		}
+	}
 }

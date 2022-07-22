@@ -12,6 +12,8 @@
 #include "Enemy.h"
 #include "Skydome.h"
 
+#include <sstream>
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -60,6 +62,16 @@ public: //メンバ関数
 	/// <param name="enemyBullet">敵弾</param>
 	void AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet);
 
+	/// <summary>
+	/// 敵発生データ読み込み
+	/// </summary>
+	void LoadEnemySetData();
+
+	/// <summary>
+	/// 敵発生コマンドの更新
+	/// </summary>
+	void UpdateEnemySetCommands();
+
 private: //メンバ変数
 	//カメラ
 	std::unique_ptr<Camera> normalCamera;
@@ -106,6 +118,12 @@ private: //メンバ変数
 	std::list<std::unique_ptr<Enemy>> enemys;
 	//敵弾
 	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
+	//敵発生コマンド
+	std::stringstream enemySetCommands;
+	//待機中か
+	bool isWait = false;
+	//待機タイマー
+	int32_t waitTimer = 0;
 	//天球
 	std::unique_ptr<Skydome> objSkydome;
 
