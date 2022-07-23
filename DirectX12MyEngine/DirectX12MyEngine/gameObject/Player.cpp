@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Input.h"
 #include "GameScene.h"
+#include "StraightBullet.h"
 
 GameScene* Player::gameScene = nullptr;
 ObjModel* Player::bulletModel = nullptr;
@@ -219,7 +220,7 @@ void Player::Attack()
 
 		//íeÇê∂ê¨
 		std::unique_ptr<PlayerBullet> newBullet;
-		newBullet.reset(PlayerBullet::Create(bulletModel, shotPos, velocity));
+		newBullet.reset(StraightBullet::Create(bulletModel, shotPos, velocity));
 		gameScene->AddPlayerBullet(std::move(newBullet));
 	}
 }

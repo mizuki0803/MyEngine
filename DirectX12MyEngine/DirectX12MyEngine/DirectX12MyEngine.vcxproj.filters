@@ -212,6 +212,9 @@
     <ClCompile Include="gameObject\DemoEnemy.cpp">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClCompile>
+    <ClCompile Include="gameObject\StraightBullet.cpp">
+      <Filter>ソース ファイル\gameObject\player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -409,6 +412,9 @@
     </ClInclude>
     <ClInclude Include="gameObject\DemoEnemy.h">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\StraightBullet.h">
+      <Filter>ソース ファイル\gameObject\player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

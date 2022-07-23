@@ -6,24 +6,11 @@
 /// </summary>
 class PlayerBullet : public ObjObject3d
 {
-public: //静的メンバ関数
-	/// <summary>
-	/// 生成処理
-	/// </summary>
-	/// <param name="model">モデル</param>
-	/// <returns>自機弾</returns>
-	static PlayerBullet* Create(ObjModel* model, const Vector3& position, const Vector3& velocity);
-
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	bool Initialize() override;
-
-	/// <summary>
-	/// 更新
-	/// </summary>
-	void Update() override;
 
 	/// <summary>
 	/// 衝突時コールバック関数
@@ -34,15 +21,9 @@ public: //メンバ関数
 	Vector3 GetWorldPos();
 	bool GetIsDead() const { return isDead; }
 
-private: //静的メンバ変数
-	//寿命時間
-	static const int32_t lifeTime = 300;
-
-private: //メンバ変数
+protected: //メンバ変数
 	//速度
 	Vector3 velocity;
-	//寿命タイマー
-	int32_t deathTimer = lifeTime;
 	//死亡フラグ
 	bool isDead = false;
 };

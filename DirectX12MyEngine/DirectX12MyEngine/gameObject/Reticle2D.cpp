@@ -1,6 +1,6 @@
 #include "Reticle2D.h"
 
-Reticle2D* Reticle2D::Create(UINT texNumber, const XMFLOAT2& size)
+Reticle2D* Reticle2D::Create(UINT texNumber, const Vector2& size)
 {
 	//2Dレティクルのインスタンスを生成
 	Reticle2D* reticle2d = new Reticle2D();
@@ -21,7 +21,7 @@ Reticle2D* Reticle2D::Create(UINT texNumber, const XMFLOAT2& size)
 	return reticle2d;
 }
 
-bool Reticle2D::Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+bool Reticle2D::Initialize(UINT texNumber, Vector2 anchorpoint, bool isFlipX, bool isFlipY)
 {
 	if (!Sprite::Initialize(texNumber, anchorpoint, isFlipX, isFlipY)) {
 		return false;

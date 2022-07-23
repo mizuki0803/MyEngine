@@ -182,6 +182,7 @@
     <ClCompile Include="gameObject\Reticle3D.cpp" />
     <ClCompile Include="gameObject\Reticle2D.cpp" />
     <ClCompile Include="gameObject\Skydome.cpp" />
+    <ClCompile Include="gameObject\StraightBullet.cpp" />
     <ClCompile Include="input\Input.cpp" />
     <ClCompile Include="light\LightGroup.cpp" />
     <ClCompile Include="main.cpp" />
@@ -314,6 +315,7 @@
     <ClInclude Include="gameObject\Reticle3D.h" />
     <ClInclude Include="gameObject\Reticle2D.h" />
     <ClInclude Include="gameObject\Skydome.h" />
+    <ClInclude Include="gameObject\StraightBullet.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="light\CircleShadow.h" />
     <ClInclude Include="light\DirectionalLight.h" />

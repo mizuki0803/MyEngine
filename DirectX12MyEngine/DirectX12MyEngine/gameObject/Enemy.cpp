@@ -24,6 +24,30 @@ Vector3 Enemy::GetWorldPos()
 	return worldPos;
 }
 
+Vector2 Enemy::GetScreenPos()
+{
+	Vector3 positionReticle = GetWorldPos();
+
+	//ビューポート行列
+	XMMATRIX matViewport = {
+		{1280 / 2, 0, 0, 0 },
+		{0, -720 / 2, 0, 0},
+		{0, 0, 1, 0},
+		{1280 / 2, 720 / 2, 0, 1}
+	};
+
+	//ビュー行列とプロジェクション行列とビューポート行列を合成
+	XMMATRIX matViewProjectionViewport =
+		camera->GetMatView() * camera->GetMatProjection() * matViewport;
+
+	//ワールド座標からスクリーン座標に変換
+	positionReticle = MatrixTransformWDivision(positionReticle, matViewProjectionViewport);
+
+	//スクリーン座標を設定
+	Vector2 screenPos = { positionReticle.x, positionReticle.y };
+	return screenPos;
+}
+
 void Enemy::Fire()
 {
 	//弾の速度を設定

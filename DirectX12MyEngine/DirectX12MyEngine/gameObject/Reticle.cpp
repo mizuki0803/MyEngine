@@ -1,6 +1,6 @@
 #include "Reticle.h"
 
-Reticle* Reticle::Create(UINT texNumber, float distance, const XMFLOAT2& size)
+Reticle* Reticle::Create(UINT texNumber, float distance, const Vector2& size)
 {
 	//レティクルのインスタンスを生成
 	Reticle* reticle = new Reticle();
@@ -18,7 +18,7 @@ Reticle* Reticle::Create(UINT texNumber, float distance, const XMFLOAT2& size)
 	return reticle;
 }
 
-bool Reticle::Initialize(UINT texNumber, float distance, const XMFLOAT2& size)
+bool Reticle::Initialize(UINT texNumber, float distance, const Vector2& size)
 {
 	reticle3d.reset(Reticle3D::Create(nullptr, distance));
 	reticle2d.reset(Reticle2D::Create(texNumber, size));

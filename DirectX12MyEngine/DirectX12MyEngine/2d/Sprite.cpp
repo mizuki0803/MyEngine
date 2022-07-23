@@ -9,7 +9,7 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 
-Sprite* Sprite::Create(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+Sprite* Sprite::Create(UINT texNumber, Vector2 anchorpoint, bool isFlipX, bool isFlipY)
 {
 	//インスタンスを生成
 	Sprite* instance = new Sprite();
@@ -27,7 +27,7 @@ Sprite* Sprite::Create(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool 
 	return instance;
 }
 
-bool Sprite::Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+bool Sprite::Initialize(UINT texNumber, Vector2 anchorpoint, bool isFlipX, bool isFlipY)
 {
 	this->texNumber = texNumber;
 	this->anchorpoint = anchorpoint;

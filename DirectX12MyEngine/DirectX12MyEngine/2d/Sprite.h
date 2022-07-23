@@ -3,6 +3,8 @@
 #include <wrl.h>
 #include <d3d12.h>
 #include "SpriteCommon.h"
+#include "Vector3.h"
+#include "Vector2.h"
 
 
 /// <summary>
@@ -22,8 +24,8 @@ protected: // エイリアス
 public: //サブクラス
 	struct VertexPosUv
 	{
-		XMFLOAT3 pos;	//xyz座標
-		XMFLOAT2 uv;	//uv座標
+		Vector3 pos;	//xyz座標
+		Vector2 uv;	//uv座標
 	};
 
 	//定数バッファ用データ構造体
@@ -42,7 +44,7 @@ public: //メンバ関数
 	/// <param name="isFlipX">左右反転するか</param>
 	/// <param name="isFlipY">上下反転するか</param>
 	/// <returns>Sprite</returns>
-	static Sprite *Create(UINT texNumber, XMFLOAT2 anchorpoint = { 0.5f, 0.5f }, bool isFlipX = false, bool isFlipY = false);
+	static Sprite* Create(UINT texNumber, Vector2 anchorpoint = { 0.5f, 0.5f }, bool isFlipX = false, bool isFlipY = false);
 
 	/// <summary>
 	/// 初期化
@@ -52,7 +54,7 @@ public: //メンバ関数
 	/// <param name="isFlipX">左右反転するか</param>
 	/// <param name="isFlipY">上下反転するか</param>
 	/// <returns>成否</returns>
-	virtual bool Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
+	virtual bool Initialize(UINT texNumber, Vector2 anchorpoint, bool isFlipX, bool isFlipY);
 
 	/// <summary>
 	/// 頂点バッファの転送
@@ -71,25 +73,25 @@ public: //メンバ関数
 
 
 	//getter
-	const XMFLOAT2 &GetPosition() { return position; }
+	const Vector2& GetPosition() { return position; }
 	const float GetRotation() { return rotation; }
-	const XMFLOAT2 &GetSize() { return size; }
-	const XMFLOAT2 &GetTexSize() { return texSize; }
-	const XMFLOAT2 &GetTexLeftTop() { return texLeftTop; }
-	const XMFLOAT4 &GetColor() { return color; }
-	const XMFLOAT2 &GetAnchorpoint() { return anchorpoint; }
+	const Vector2& GetSize() { return size; }
+	const Vector2& GetTexSize() { return texSize; }
+	const Vector2& GetTexLeftTop() { return texLeftTop; }
+	const XMFLOAT4& GetColor() { return color; }
+	const Vector2& GetAnchorpoint() { return anchorpoint; }
 	const bool GetIsFlipX() { return isFlipX; }
 	const bool GetIsFlipY() { return isFlipY; }
 
 	//setter
 	void SetTexNumber(UINT texNumber) { this->texNumber = texNumber; }
-	void SetPosition(const XMFLOAT2& position) { this->position = position; }
+	void SetPosition(const Vector2& position) { this->position = position; }
 	void SetRotation(float rotation) { this->rotation = rotation; }
-	void SetSize(const XMFLOAT2& size) { this->size = size; }
-	void SetTexSize(const XMFLOAT2& texSize) { this->texSize = texSize; }
-	void SetTexLeftTop(const XMFLOAT2& texLeftTop) { this->texLeftTop = texLeftTop; }
+	void SetSize(const Vector2& size) { this->size = size; }
+	void SetTexSize(const Vector2& texSize) { this->texSize = texSize; }
+	void SetTexLeftTop(const Vector2& texLeftTop) { this->texLeftTop = texLeftTop; }
 	void SetColor(const XMFLOAT4& color) { this->color = color; }
-	void SetAnchorpoint(const XMFLOAT2& anchorpoint) { this->anchorpoint = anchorpoint; }
+	void SetAnchorpoint(const Vector2& anchorpoint) { this->anchorpoint = anchorpoint; }
 	void SetIsFlipX(bool isFlipX) { this->isFlipX = isFlipX; }
 	void SetIsFlipY(bool isFlipY) { this->isFlipY = isFlipY; }
 
@@ -104,7 +106,7 @@ protected: //メンバ変数
 	//Z軸まわりの回転を回転角
 	float rotation = 0.0f;
 	//座標
-	XMFLOAT2 position = { 0, 0 };
+	Vector2 position = { 0, 0 };
 	//ワールド行列
 	XMMATRIX matWorld;
 	//色(RGBA)
@@ -112,15 +114,15 @@ protected: //メンバ変数
 	//テクスチャ番号
 	UINT texNumber = 0;
 	//大きさ
-	XMFLOAT2 size = { 100, 100 };
+	Vector2 size = { 100, 100 };
 	//アンカーポイント
-	XMFLOAT2 anchorpoint = { 0.5f, 0.5f };
+	Vector2 anchorpoint = { 0.5f, 0.5f };
 	//左右反転
 	bool isFlipX = false;
 	//上下反転
 	bool isFlipY = false;
 	//テクスチャ左上座標
-	XMFLOAT2 texLeftTop = { 0, 0 };
+	Vector2 texLeftTop = { 0, 0 };
 	//テクスチャ切り出しサイズ
-	XMFLOAT2 texSize = { 100, 100 };
+	Vector2 texSize = { 100, 100 };
 };

@@ -98,60 +98,7 @@ void GameScene::Update()
 		return bullet->GetIsDead();
 		});
 
-	////キー入力でプレイヤーの位置を変更
-	//if (input->PushKey(DIK_1) || input->PushKey(DIK_2) || input->PushKey(DIK_3) || input->PushKey(DIK_4) || input->PushKey(DIK_5) || input->PushKey(DIK_6))
-	//{
-	//	XMFLOAT3 move = { 0, 0, 0 };
-	//	if (input->PushKey(DIK_1)) { move.x += 0.1f; }
-	//	if (input->PushKey(DIK_2)) { move.x -= 0.1f; }
-	//	if (input->PushKey(DIK_3)) { move.y += 0.1f; }
-	//	if (input->PushKey(DIK_4)) { move.y -= 0.1f; }
-	//	if (input->PushKey(DIK_5)) { move.z += 0.1f; }
-	//	if (input->PushKey(DIK_6)) { move.z -= 0.1f; }
-	//	XMFLOAT3 playerPos = objMan->GetPosition();
-	//	playerPos.x += move.x;
-	//	playerPos.y += move.y;
-	//	playerPos.z += move.z;
-	//	objMan->SetPosition(playerPos);
-	//}
-	//
 
-	////ライト更新
-	//lightGroup->Update();
-
-
-	//// カメラ移動
-	//if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A) || input->PushKey(DIK_E) || input->PushKey(DIK_C))
-	//{
-	//	XMFLOAT3 move = { 0, 0, 0 };
-	//	if (input->PushKey(DIK_W)) { move.y += 0.1f; }
-	//	else if (input->PushKey(DIK_S)) { move.y -= 0.1f; }
-	//	if (input->PushKey(DIK_D)) { move.x += 0.1f; }
-	//	else if (input->PushKey(DIK_A)) { move.x -= 0.1f; }
-	//	if (input->PushKey(DIK_E)) { move.z += 0.1f; }
-	//	else if (input->PushKey(DIK_C)) { move.z -= 0.1f; }
-	//	camera->MoveVector(move);
-	//}
-
-	////カメラのアングルを変更する
-	//if (input->PushKey(DIK_LEFT) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN))
-	//{
-	//	XMFLOAT3 angle = camera->GetAngle();
-	//	if (input->PushKey(DIK_LEFT)) { angle.y += 1.0f; }
-	//	if (input->PushKey(DIK_RIGHT)) { angle.y -= 1.0f; }
-	//	if (input->PushKey(DIK_UP)) { angle.x += 1.0f; }
-	//	if (input->PushKey(DIK_DOWN)) { angle.x -= 1.0f; }
-	//	camera->SetAngle(angle);
-	//}
-
-	////カメラの距離を変更する
-	//if (input->PushKey(DIK_M) || input->PushKey(DIK_N))
-	//{
-	//	float dis = camera->GetDistance();
-	//	if (input->PushKey(DIK_M)) { dis += 0.1f; }
-	//	if (input->PushKey(DIK_N)) { dis -= 0.1f; }
-	//	camera->SetDistance(dis);
-	//}
 
 	if (input->TriggerKey(DIK_1))
 	{
@@ -171,6 +118,7 @@ void GameScene::Update()
 		enemys.push_back(std::move(newEnemy));
 	}
 
+	//敵発生コマンド更新
 	UpdateEnemySetCommands();
 
 	//カメラ更新

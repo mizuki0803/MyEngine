@@ -1,6 +1,7 @@
 #pragma once
 #include "ObjObject3d.h"
 #include "EnemyBullet.h"
+#include "Vector2.h"
 
 //自機クラスを前方宣言
 class Player;
@@ -25,6 +26,7 @@ public: //静的メンバ関数
 
 	//getter
 	Vector3 GetWorldPos();
+	Vector2 GetScreenPos();
 	bool GetIsDead() const { return isDead; }
 
 protected: //メンバ関数

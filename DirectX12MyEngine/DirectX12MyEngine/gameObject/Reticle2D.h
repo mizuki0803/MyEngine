@@ -13,13 +13,13 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>レティクル2D</returns>
-	static Reticle2D* Create(UINT texNumber, const XMFLOAT2& size);
+	static Reticle2D* Create(UINT texNumber, const Vector2& size);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	bool Initialize(UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY) override;
+	bool Initialize(UINT texNumber, Vector2 anchorpoint, bool isFlipX, bool isFlipY) override;
 
 	/// <summary>
 	/// 更新

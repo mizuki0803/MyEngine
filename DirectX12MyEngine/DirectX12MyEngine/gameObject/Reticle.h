@@ -13,13 +13,13 @@ public:
 	/// </summary>
 	/// <param name="texNumber">テクスチャ番号</param>
 	/// <returns>レティクル</returns>
-	static Reticle* Create(UINT texNumber, float distance, const XMFLOAT2& size);
+	static Reticle* Create(UINT texNumber, float distance, const Vector2& size);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	bool Initialize(UINT texNumber, float distance, const XMFLOAT2& size);
+	bool Initialize(UINT texNumber, float distance, const Vector2& size);
 
 	/// <summary>
 	/// 更新
@@ -33,6 +33,7 @@ public: //メンバ関数
 
 	//getter
 	Vector3 GetWorldPos() { return reticle3d->GetWorldPos(); }
+	Vector2 GetScreenPos() { return reticle2d->GetPosition(); };
 
 	//setter
 	void SetColor(const XMFLOAT4& color) { reticle2d->SetColor(color); }

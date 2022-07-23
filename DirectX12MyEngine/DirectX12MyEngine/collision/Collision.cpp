@@ -13,6 +13,15 @@ bool Collision::CheckSphereToSphere(const Vector3& posA, const Vector3& posB, co
 	return d < r * r;
 }
 
+bool Collision::CheckCircleToCircle(const Vector2& posA, const Vector2& posB, const float radiusA, const float radiusB)
+{
+	float disX = posB.x - posA.x;
+	float disY = posB.y - posA.y;
+	float d = disX * disX + disY * disY;
+	float r = radiusA + radiusB;
+	return d < r* r;
+}
+
 bool Collision::CheckSphere2Sphere(const Sphere& sphere1, const Sphere& sphere2, DirectX::XMVECTOR* inter)
 {
 	// ’†S“_‚Ì‹——£‚Ì2æ <= ”¼Œa‚Ì˜a‚Ì2æ‚È‚çŒð·
