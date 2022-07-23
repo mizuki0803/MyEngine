@@ -312,6 +312,7 @@ void ObjObject3d::Update()
 	ConstBufferDataB0* constMap = nullptr;
 	if (SUCCEEDED(constBuffB0->Map(0, nullptr, (void**)&constMap)))
 	{
+		constMap->color = color;
 		constMap->viewproj = matViewProjection;
 		constMap->world = matWorld;
 		constMap->cameraPos = cameraPos;

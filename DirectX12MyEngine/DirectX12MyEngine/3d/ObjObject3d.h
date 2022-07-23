@@ -26,6 +26,7 @@ public: //サブクラス
 	//定数バッファ用データ構造体B0
 	struct ConstBufferDataB0
 	{
+		XMFLOAT4 color;		//色
 		XMMATRIX viewproj;	//ビュープロジェクション行列
 		XMMATRIX world;		//ワールド行列
 		Vector3 cameraPos;	//カメラ座標(ワールド座標)
@@ -79,11 +80,13 @@ public: //メンバ関数
 	const Vector3& GetPosition() { return position; }
 	const Vector3& GetRotation() { return rotation; }
 	const Vector3& GetScale() { return scale; }
+	const XMFLOAT4& GetColor() { return color; }
 
 	//setter
 	void SetPosition(const Vector3& position) { this->position = position; }
 	void SetRotation(const Vector3& rotation) { this->rotation = rotation; }
 	void SetScale(const Vector3& scale) { this->scale = scale; }
+	void SetColor(const XMFLOAT4& color) { this->color = color; }
 	void SetModel(ObjModel* model) { this->model = model; }
 	void SetIsCameraFollow(bool isCameraFollow) { this->isCameraFollow = isCameraFollow; }
 	static void SetLightGroup(LightGroup* lightGroup) { ObjObject3d::lightGroup = lightGroup; }

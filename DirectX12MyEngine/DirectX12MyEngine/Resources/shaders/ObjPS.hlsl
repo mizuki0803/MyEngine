@@ -6,7 +6,7 @@ SamplerState smp : register(s0);		//0番スロットに設定されたサンプラー
 float4 main(VSOutput input) : SV_TARGET
 {
 	//テクスチャマッピング
-	float4 texcolor = tex.Sample(smp, input.uv);
+	float4 texcolor = tex.Sample(smp, input.uv) * color;
 
 	// 光沢度
 	const float shininess = 4.0f;

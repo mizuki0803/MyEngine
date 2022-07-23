@@ -29,7 +29,7 @@ Player* Player::Create(ObjModel* model)
 
 bool Player::Initialize()
 {
-	position = { 0 ,-5 ,15 };
+	position = { 0 ,-5 ,10 };
 	scale = { 0.5f, 0.5f, 0.5f };
 
 	//3Dオブジェクトの初期化
@@ -109,7 +109,7 @@ void Player::Move()
 		move.y = moveSpeed * -sinf(moveAngle);
 	}
 
-	position += move;
+	//position += move;
 
 	//移動限界をから出ないようにする
 	const XMFLOAT2 moveLimit = { 10.0f, 5.0f };
@@ -132,14 +132,81 @@ void Player::Rotate()
 	if (input->PushKey(DIK_A)) { rot.y -= rotSpeed; }
 	if (input->PushKey(DIK_D)) { rot.y += rotSpeed; }
 
+	//スティック傾きの判定を取る
+	const float stickNum = 200;
+	if (input->TiltGamePadLStickX(stickNum) || input->TiltGamePadLStickX(-stickNum)) {
+		//プレイヤーはスティックを倒した方向に動く
+		float padRota = input->GetPadLStickAngle();
+		const float padStickIncline = input->GetPadLStickIncline().x;
+		float moveAngle = XMConvertToRadians(padRota);
+		rot.y = rotSpeed * cosf(moveAngle) * fabsf(padStickIncline);
+	}
+	else {
+		if (rotation.y > 0.1f) {
+			rot.y -= rotSpeed / 5;
+		}
+		else if (rotation.y < -0.1f) {
+			rot.y += rotSpeed / 5;
+		}
+	}
+
+	if (input->TiltGamePadLStickY(stickNum) || input->TiltGamePadLStickY(-stickNum)) {
+		//プレイヤーはスティックを倒した方向に動く
+		float padRota = input->GetPadLStickAngle();
+		const float padStickIncline = input->GetPadLStickIncline().y;
+		float moveAngle = XMConvertToRadians(padRota);
+		rot.x = rotSpeed * sinf(moveAngle) * fabsf(padStickIncline);
+	}
+
+	else {
+		if (rotation.x > 0.1f) {
+			rot.x -= rotSpeed / 5;
+		}
+		else if (rotation.x < -0.1f) {
+			rot.x += rotSpeed / 5;
+		}
+	}
+
 	rotation += rot;
+
+	//角度の限界値を設定
+	const XMFLOAT2 rotLimit = { 35.0f, 35.0f };
+
+	rotation.x = max(rotation.x, -rotLimit.x);
+	rotation.x = min(rotation.x, +rotLimit.x);
+	rotation.y = max(rotation.y, -rotLimit.y);
+	rotation.y = min(rotation.y, +rotLimit.y);
+
+
+
+
+	//角度に追従して移動させる
+	Vector3 move = { 0, 0, 0 };
+	float moveSpeed = 0.15f;
+	{
+		//プレイヤーはスティックを倒した方向に動く
+		float padRota = input->GetPadLStickAngle();
+		float moveAngle = XMConvertToRadians(padRota);
+		move.x = moveSpeed * (rotation.y / rotLimit.y);
+		move.y = moveSpeed * -(rotation.x / rotLimit.x);
+	}
+
+	position += move;
+
+	//移動限界をから出ないようにする
+	const XMFLOAT2 moveLimit = { 30.0f, 15.0f };
+
+	position.x = max(position.x, -moveLimit.x);
+	position.x = min(position.x, +moveLimit.x);
+	position.y = max(position.y, -moveLimit.y);
+	position.y = min(position.y, +moveLimit.y);
 }
 
 void Player::Attack()
 {
 	Input* input = Input::GetInstance();
 	//発射キーを押したら
-	if (input->TriggerKey(DIK_SPACE) || input->TriggerGamePadButton(Input::PAD_RB))
+	if (input->TriggerKey(DIK_SPACE) || input->TriggerGamePadButton(Input::PAD_B))
 	{
 		//発射位置を自機のワールド座標に設定
 		Vector3 shotPos = GetWorldPos();

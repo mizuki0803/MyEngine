@@ -34,6 +34,9 @@ public: //メンバ関数
 	//getter
 	Vector3 GetWorldPos() { return reticle3d->GetWorldPos(); }
 
+	//setter
+	void SetColor(const XMFLOAT4& color) { reticle2d->SetColor(color); }
+
 private:
 	//3Dレティクル
 	std::unique_ptr<Reticle3D> reticle3d;
