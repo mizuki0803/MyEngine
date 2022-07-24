@@ -1,9 +1,15 @@
 #pragma once
+#include "Vector3.h"
+
 class Easing
 {
 public:
 	//“™‘¬’¼ü‰^“®
 	static float Lerp(const float start, const float end, const float time);
+	static Vector3 Lerp(const Vector3& v1, const Vector3& v2, float time);
+
+	//‹…–ÊüŒ`•âŠÔ
+	static Vector3 Slerp(const Vector3& v1, const Vector3& v2, float time);
 
 	//sin
 	static float InSine(const float start, const float end, const float time);

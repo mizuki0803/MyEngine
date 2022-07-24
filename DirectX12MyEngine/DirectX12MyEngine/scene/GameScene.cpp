@@ -88,6 +88,19 @@ void GameScene::Update()
 		return bullet->GetIsDead();
 		});
 
+	//ホーミング中に対象の敵が死亡した場合、ホーミング対象をnullptrにして追従せず直進させる
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
+		if (enemy->GetIsDead()) {
+			if (player->GetEnemy() == enemy.get()) {
+				player->SetEnemy(nullptr);
+			}
+			for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+				if (bullet->GetEnemy() == enemy.get()) {
+					bullet->SetEnemy(nullptr);
+				}
+			}
+		}
+	}
 	//死亡した敵の削除
 	enemys.remove_if([](std::unique_ptr<Enemy>& enemy) {
 		return enemy->GetIsDead();
@@ -117,6 +130,19 @@ void GameScene::Update()
 		newEnemy.reset(DemoEnemy::Create(modelFighter.get(), position, velocity));
 		enemys.push_back(std::move(newEnemy));
 	}
+
+	//ホーミング対象の敵を決める
+	for (const std::unique_ptr<Enemy>& enemy : enemys)
+	{
+		if (enemy == nullptr) { continue; }
+		const float enemyToPlayerPosZ = enemy->GetWorldPos().z - player->GetWorldPos().z;
+		if (enemyToPlayerPosZ <= 0) { continue; }
+		if (player->GetEnemy() == nullptr) { player->SetEnemy(enemy.get()); continue; }
+		const float homingEnemyToPlayerPosZ = player->GetEnemy()->GetWorldPos().z - player->GetWorldPos().z;
+		if (homingEnemyToPlayerPosZ > enemyToPlayerPosZ) { continue; }
+		player->SetEnemy(enemy.get());
+	}
+
 
 	//敵発生コマンド更新
 	UpdateEnemySetCommands();

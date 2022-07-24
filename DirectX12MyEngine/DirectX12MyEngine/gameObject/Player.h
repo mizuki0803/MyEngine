@@ -8,6 +8,8 @@
 //ゲームシーンの前方宣言
 class GameScene;
 
+class Enemy;
+
 /// <summary>
 /// 自機
 /// </summary>
@@ -48,7 +50,9 @@ public: //メンバ関数
 
 	//getter
 	Vector3 GetWorldPos();
+	Enemy* GetEnemy() { return enemy; }
 
+	void SetEnemy(Enemy* enemy) { this->enemy = enemy; }
 
 private: //メンバ関数
 	/// <summary>
@@ -76,4 +80,5 @@ private: //メンバ変数
 	//レティクル
 	std::unique_ptr<Reticle> reticle;
 	std::unique_ptr<Reticle> reticle2;
+	Enemy* enemy = nullptr;
 };

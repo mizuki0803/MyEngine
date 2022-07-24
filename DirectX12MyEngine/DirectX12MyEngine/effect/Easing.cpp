@@ -1,11 +1,33 @@
 #include "Easing.h"
 #include <cmath>
 
-
 //ìôë¨íºê¸â^ìÆ
 float Easing::Lerp(const float start, const float end, const float time)
 {
 	return start * (1.0f - time) + end * time;
+}
+
+Vector3 Easing::Lerp(const Vector3& v1, const Vector3& v2, float time)
+{
+	return v1 + time * (v2 - v1);
+}
+
+Vector3 Easing::Slerp(const Vector3& v1, const Vector3& v2, float time)
+{
+	Vector3 start = v1, end = v2;
+	start.normalize();
+	end.normalize();
+	
+	float angle = acosf(start.dot(end));
+	float sinThita = sinf(angle);
+	float sinThitaFrom = sinf((1 - time) * angle);
+	float sinThitaTo = sinf(time * angle);
+
+	float lengthLerp = Lerp(v1.length(), v2.length(), time);
+	Vector3 slerpVec = (sinThitaFrom * start + sinThitaTo * end) / sinThita;
+	
+
+	return slerpVec * lengthLerp;
 }
 
 //sin In

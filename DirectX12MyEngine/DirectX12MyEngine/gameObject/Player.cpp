@@ -2,6 +2,7 @@
 #include "Input.h"
 #include "GameScene.h"
 #include "StraightBullet.h"
+#include "HomingBullet.h"
 
 GameScene* Player::gameScene = nullptr;
 ObjModel* Player::bulletModel = nullptr;
@@ -218,9 +219,25 @@ void Player::Attack()
 		Vector3 velocity = reticle->GetWorldPos() - GetWorldPos();
 		velocity = velocity.normalize() * bulletSpeed;
 
-		//弾を生成
+		//直進弾を生成
 		std::unique_ptr<PlayerBullet> newBullet;
 		newBullet.reset(StraightBullet::Create(bulletModel, shotPos, velocity));
+		gameScene->AddPlayerBullet(std::move(newBullet));
+	}
+
+	//発射キーを押したら
+	if (input->TriggerKey(DIK_H) || input->TriggerGamePadButton(Input::PAD_A))
+	{
+		//発射位置を自機のワールド座標に設定
+		Vector3 shotPos = GetWorldPos();
+
+		//自機からレティクルへのベクトルに合わせて飛ばす
+		Vector3 velocity = reticle->GetWorldPos() - GetWorldPos();
+		velocity.normalize();
+
+		//ホーミング弾を生成
+		std::unique_ptr<PlayerBullet> newBullet;
+		newBullet.reset(HomingBullet::Create(bulletModel, shotPos, velocity, enemy));
 		gameScene->AddPlayerBullet(std::move(newBullet));
 	}
 }
