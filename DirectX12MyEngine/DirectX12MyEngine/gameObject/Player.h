@@ -70,6 +70,16 @@ private: //メンバ関数
 	/// </summary>
 	void Attack();
 
+	/// <summary>
+	/// 直進弾発射
+	/// </summary>
+	void ShotStraightBullet();
+
+	/// <summary>
+	/// ホーミング弾発射
+	/// </summary>
+	void ShotHomingBullet();
+
 private: //静的メンバ変数
 	//ゲームシーン
 	static GameScene* gameScene;
@@ -81,4 +91,12 @@ private: //メンバ変数
 	std::unique_ptr<Reticle> reticle;
 	std::unique_ptr<Reticle> reticle2;
 	Enemy* enemy = nullptr;
+	//直進弾の発射待機中か
+	bool isStraightShotWait = false;
+	//直進弾の発射待機タイマー
+	int32_t straightShotWaitTimer = 0;
+	//チャージショット中か
+	bool isChargeShotMode = false;
+	//チャージした時間
+	int32_t chargeTimer = 0;
 };
