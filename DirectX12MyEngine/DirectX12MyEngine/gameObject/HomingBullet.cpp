@@ -33,6 +33,21 @@ HomingBullet* HomingBullet::Create(ObjModel* model, const Vector3& position, con
 	return homingBullet;
 }
 
+bool HomingBullet::Initialize()
+{
+	//色を黄色に変更
+	XMFLOAT4 yellow = { 1.0f, 1.0f, 0.2f, 1 };
+	color = yellow;
+
+	//3Dオブジェクトの初期化
+	if (!PlayerBullet::Initialize())
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void HomingBullet::Update()
 {
 	//座標を移動

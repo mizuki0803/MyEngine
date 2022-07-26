@@ -15,6 +15,11 @@ public: //静的メンバ関数
 	static HomingBullet* Create(ObjModel* model, const Vector3& position, const Vector3& velocity, Enemy* enemy);
 
 	/// <summary>
+	/// 初期化
+	/// </summary>
+	bool Initialize() override;
+
+	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update() override;

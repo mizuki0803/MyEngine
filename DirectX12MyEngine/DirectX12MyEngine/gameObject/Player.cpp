@@ -170,9 +170,10 @@ void Player::Rotate()
 	}
 
 	rotation += rot;
+	rotation.z = -rotation.y / 4;
 
 	//Šp“x‚ÌŒÀŠE’l‚ğİ’è
-	const XMFLOAT2 rotLimit = { 35.0f, 35.0f };
+	const XMFLOAT2 rotLimit = { 35.0f, 20.0f };
 
 	rotation.x = max(rotation.x, -rotLimit.x);
 	rotation.x = min(rotation.x, +rotLimit.x);

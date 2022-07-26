@@ -121,7 +121,7 @@ void DirectXBase::InitializeDevice()
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
 	{
 		debugController->EnableDebugLayer();
-		//debugController->SetEnableGPUBasedValidation(TRUE);
+		debugController->SetEnableGPUBasedValidation(TRUE);
 	}
 #endif
 
@@ -181,6 +181,17 @@ void DirectXBase::InitializeDevice()
 			break;
 		}
 	}
+
+#ifdef _DEBUG
+
+	ComPtr<ID3D12InfoQueue> infoQueue;
+	if (SUCCEEDED(dev->QueryInterface(IID_PPV_ARGS(&infoQueue))))
+	{
+		infoQueue->GetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION);	//ÉÑÉoÉCÉGÉâÅ[éûÇ…é~Ç‹ÇÈ
+		infoQueue->GetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR);		//ÉGÉâÅ[éûÇ…é~Ç‹ÇÈ
+		infoQueue->GetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING);		//åxçêéûÇ…é~Ç‹ÇÈ
+	}
+#endif
 }
 
 void DirectXBase::InitializeCommand()
