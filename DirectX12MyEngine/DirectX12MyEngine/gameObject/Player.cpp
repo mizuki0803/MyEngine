@@ -44,6 +44,9 @@ bool Player::Initialize()
 	reticle.reset(Reticle::Create(1, 5.0f, { 100, 100 }));
 	reticle2.reset(Reticle::Create(1, 25.0f, { 50, 50 }));
 
+	//‘Ì—Í‚ğİ’è
+	HP = 3;
+
 	return true;
 }
 
@@ -75,6 +78,13 @@ void Player::DrawUI()
 
 void Player::OnCollision()
 {
+	//‘Ì—Í‚ğŒ¸‚ç‚·
+	HP--;
+
+	//HP‚ª0ˆÈ‰º‚É‚È‚Á‚½‚ç€–S‚³‚¹‚é
+	if (HP <= 0) {
+		isDead = true;
+	}
 }
 
 Vector3 Player::GetWorldPos()

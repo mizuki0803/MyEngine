@@ -165,9 +165,17 @@ void GameScene::Update()
 
 	//デバックテキスト
 	//X座標,Y座標,縮尺を指定して表示
-	/*debugText->Print("GAME SCENE", 1000, 50);
-	std::string enemyNum = std::to_string(enemys.size());
-	DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 200, 200);*/
+	//debugText->Print("GAME SCENE", 1000, 50);
+	//std::string enemyNum = std::to_string(enemys.size());
+	//DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 200, 200);
+	std::string playerHP = std::to_string(player->GetHP());
+	if (!player->GetIsDead()) {
+		DebugText::GetInstance()->Print("PlayerHP : " + playerHP, 200, 200);
+	}
+	else {
+		DebugText::GetInstance()->Print("PlayerDead", 200, 200);
+	}
+
 
 	if (input->TriggerKey(DIK_RETURN))
 	{

@@ -47,6 +47,8 @@ public: //メンバ関数
 	void OnCollision();
 
 	//getter
+	const int GetHP() { return HP; }
+	const bool GetIsDead() { return isDead; }
 	Vector3 GetWorldPos();
 	Reticle* GetReticle() { return reticle2.get(); }
 	const bool GetIsChargeShotMode() { return isChargeShotMode; }
@@ -84,6 +86,10 @@ private: //静的メンバ変数
 	static ObjModel* bulletModel;
 
 private: //メンバ変数
+	//体力
+	int HP = 0;
+	//死亡フラグ
+	bool isDead = false;
 	//レティクル
 	std::unique_ptr<Reticle> reticle;
 	std::unique_ptr<Reticle> reticle2;
