@@ -1,6 +1,7 @@
 #pragma once
 #include "Sprite.h"
 #include "Reticle3D.h"
+#include "Enemy.h"
 
 /// <summary>
 /// 2Dレティクル
@@ -27,9 +28,20 @@ public: //メンバ関数
 	void Update() override;
 
 	/// <summary>
-	/// 描画
+	/// 敵ロックオン
 	/// </summary>
-	//void Draw() override;
+	/// <param name="enemy">ロックオン対象の敵</param>
+	void LockonEnemy(Enemy* enemy);
+
+	/// <summary>
+	/// 敵ロックオン解除
+	/// </summary>
+	void UnlockonEnemy();
+
+
+	//getter
+	const bool GetIsLockon() { return isLockon; }
+	Enemy* GetLockonEnemy() { return this->lockonEnemy; }
 
 	//setter
 	void SetWorldPos3d(const Vector3& worldPos3d) { this->worldPos3d = worldPos3d; }
@@ -38,6 +50,23 @@ public: //メンバ関数
 		this->matProjection = matProjection;
 	}
 
+private: //メンバ変数
+	/// <summary>
+	/// ロックオン時の移動
+	/// </summary>
+	void MoveLockon();
+
+	/// <summary>
+	/// ロックオンではないときの移動
+	/// </summary>
+	void MoveNotLockon();
+
+private: //静的メンバ変数
+	//通常時の色
+	static const XMFLOAT4 normalColor;
+	//ロックオン時の色
+	static const XMFLOAT4 lockonColor;
+
 private:
 	//3Dレティクルのワールド座標
 	Vector3 worldPos3d = {};
@@ -45,4 +74,12 @@ private:
 	XMMATRIX matView = {};
 	//プロジェクション行列
 	XMMATRIX matProjection = {};
+	//敵
+	Enemy* lockonEnemy = nullptr;
+	//ロックオンしているか
+	bool isLockon = false;
+	//レティクルを元の位置(自機追従)に戻すか
+	bool isBackPos = false;
+	//レティクルを元の位置(自機追従)に戻すタイマー
+	float backTimer = 0;
 };

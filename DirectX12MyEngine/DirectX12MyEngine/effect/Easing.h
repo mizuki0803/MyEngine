@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector3.h"
+#include "Vector2.h"
 
 class Easing
 {
@@ -7,6 +8,7 @@ public:
 	//“™‘¬’¼ü‰^“®
 	static float Lerp(const float start, const float end, const float time);
 	static Vector3 Lerp(const Vector3& v1, const Vector3& v2, float time);
+	static Vector2 Lerp(const Vector2& v1, const Vector2& v2, float time);
 
 	//‹…–ÊüŒ`•âŠÔ
 	static Vector3 Slerp(const Vector3& v1, const Vector3& v2, float time);

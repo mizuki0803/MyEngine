@@ -46,9 +46,14 @@ public: //メンバ関数
 	void Draw() override;
 
 	/// <summary>
-	/// 衝突判定
+	/// 3Dオブジェクトの衝突判定
 	/// </summary>
-	void CollisionCheck();
+	void CollisionCheck3d();
+
+	/// <summary>
+	/// 2Dオブジェクトの衝突判定
+	/// </summary>
+	void CollisionCheck2d();
 
 	/// <summary>
 	/// 自機弾を追加する

@@ -216,7 +216,7 @@ void Player::Attack()
 		//チャージ未完了時
 		if (!isChargeShotMode) {
 			//ホーミング弾に切り替わる時間
-			const int32_t changeModeTime = 40;
+			const int32_t changeModeTime = 60;
 			if (chargeTimer >= changeModeTime) {
 				isChargeShotMode = true;
 			}
@@ -266,7 +266,7 @@ void Player::ShotStraightBullet()
 	//弾の速度を設定
 	const float bulletSpeed = 5;
 	//自機からレティクルへのベクトルに合わせて飛ばす
-	Vector3 velocity = reticle->GetWorldPos() - GetWorldPos();
+	Vector3 velocity = reticle->GetReticle3D()->GetWorldPos() - GetWorldPos();
 	velocity = velocity.normalize() * bulletSpeed;
 
 	//直進弾を生成
@@ -281,11 +281,11 @@ void Player::ShotHomingBullet()
 	Vector3 shotPos = GetWorldPos();
 
 	//自機からレティクルへのベクトルに合わせて飛ばす
-	Vector3 velocity = reticle->GetWorldPos() - GetWorldPos();
+	Vector3 velocity = reticle->GetReticle3D()->GetWorldPos() - GetWorldPos();
 	velocity.normalize();
 
 	//ホーミング弾を生成
 	std::unique_ptr<PlayerBullet> newBullet;
-	newBullet.reset(HomingBullet::Create(bulletModel, shotPos, velocity, enemy));
+	newBullet.reset(HomingBullet::Create(bulletModel, shotPos, velocity, reticle2->GetReticle2D()->GetLockonEnemy()));
 	gameScene->AddPlayerBullet(std::move(newBullet));
 }

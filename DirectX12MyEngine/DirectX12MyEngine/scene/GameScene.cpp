@@ -88,16 +88,19 @@ void GameScene::Update()
 		return bullet->GetIsDead();
 		});
 
-	//ホーミング中に対象の敵が死亡した場合、ホーミング対象をnullptrにして追従せず直進させる
+	//死亡した敵の削除前処理
 	for (const std::unique_ptr<Enemy>& enemy : enemys) {
-		if (enemy->GetIsDead()) {
-			if (player->GetEnemy() == enemy.get()) {
-				player->SetEnemy(nullptr);
-			}
-			for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-				if (bullet->GetEnemy() == enemy.get()) {
-					bullet->SetEnemy(nullptr);
-				}
+		//死亡していなければ飛ばす
+		if (!enemy->GetIsDead()) { continue; }
+
+		//レティクルのロックオン対象だった場合、ロックオン解除
+		if (player->GetReticle()->GetReticle2D()->GetLockonEnemy() == enemy.get()) {
+			player->GetReticle()->GetReticle2D()->UnlockonEnemy();
+		}
+		//自機弾のホーミング対象だった場合、ホーミング解除
+		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+			if (bullet->GetEnemy() == enemy.get()) {
+				bullet->SetEnemy(nullptr);
 			}
 		}
 	}
@@ -131,19 +134,6 @@ void GameScene::Update()
 		enemys.push_back(std::move(newEnemy));
 	}
 
-	//ホーミング対象の敵を決める
-	for (const std::unique_ptr<Enemy>& enemy : enemys)
-	{
-		if (enemy == nullptr) { continue; }
-		const float enemyToPlayerPosZ = enemy->GetWorldPos().z - player->GetWorldPos().z;
-		if (enemyToPlayerPosZ <= 0) { continue; }
-		if (player->GetEnemy() == nullptr) { player->SetEnemy(enemy.get()); continue; }
-		const float homingEnemyToPlayerPosZ = player->GetEnemy()->GetWorldPos().z - player->GetWorldPos().z;
-		if (homingEnemyToPlayerPosZ > enemyToPlayerPosZ) { continue; }
-		player->SetEnemy(enemy.get());
-	}
-
-
 	//敵発生コマンド更新
 	UpdateEnemySetCommands();
 
@@ -157,29 +147,27 @@ void GameScene::Update()
 	//自機
 	player->Update();
 	//自機弾
-	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
-	{
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
 		bullet->Update();
 	}
 	//敵
-	for (const std::unique_ptr<Enemy>& enemy : enemys)
-	{
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
 		enemy->Update();
 	}
 	//敵弾
-	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets)
-	{
+	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
 		bullet->Update();
 	}
 
 	//衝突判定管理
-	CollisionCheck();
+	CollisionCheck3d();
+	CollisionCheck2d();
 
 	//デバックテキスト
 	//X座標,Y座標,縮尺を指定して表示
-	debugText->Print("GAME SCENE", 1000, 50);
+	/*debugText->Print("GAME SCENE", 1000, 50);
 	std::string enemyNum = std::to_string(enemys.size());
-	DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 200, 200);
+	DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 200, 200);*/
 
 	if (input->TriggerKey(DIK_RETURN))
 	{
@@ -241,7 +229,7 @@ void GameScene::Draw()
 	///-------パーティクル描画ここまで-------///
 }
 
-void GameScene::CollisionCheck()
+void GameScene::CollisionCheck3d()
 {
 	//判定対象の座標
 	Vector3 posA, posB;
@@ -298,6 +286,51 @@ void GameScene::CollisionCheck()
 				bullet->OnCollision();
 
 				break;
+			}
+		}
+	}
+#pragma endregion
+}
+
+void GameScene::CollisionCheck2d()
+{
+	//判定対象の座標
+	Vector2 posA, posB;
+	float radiusA, radiusB;
+
+#pragma region レティクルと敵の衝突判定
+	//プレイヤーがチャージショット状態なら
+	if (player->GetIsChargeShotMode()) {
+		//レティクルがロックオン状態なら抜ける
+		if (player->GetReticle()->GetReticle2D()->GetIsLockon()) { return; }
+
+		//レティクル座標
+		posA = player->GetReticle()->GetReticle2D()->GetPosition();
+		//レティクル半径
+		radiusA = player->GetReticle()->GetReticle2D()->GetSize().x;
+
+		//レティクルと全ての敵の衝突判定
+		for (const std::unique_ptr<Enemy>& enemy : enemys) {
+			//敵のワールド座標が自機のワールド座標より手前にいたら判定しないで抜ける
+			const float enemyToPlayerPosZ = enemy->GetWorldPos().z - player->GetWorldPos().z;
+			if (enemyToPlayerPosZ < 0) { continue; }
+
+			//敵座標
+			posB = enemy->GetScreenPos();
+			//敵半径
+			radiusB = enemy->GetScale().x;
+
+			//敵座標が画面外なら処理は飛ばす
+			const bool isOutsideScreen = (posB.x > WindowApp::window_width || posB.x < 0 || posB.y > WindowApp::window_height || posB.y < 0);
+			if (isOutsideScreen) { continue; }
+
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckCircleToCircle(posA, posB, radiusA, radiusB);
+
+			//衝突していたら
+			if (isCollision) {
+				//レティクルのロックオン対象を確定させる
+				player->GetReticle()->GetReticle2D()->LockonEnemy(enemy.get());
 			}
 		}
 	}

@@ -8,8 +8,6 @@
 //ゲームシーンの前方宣言
 class GameScene;
 
-class Enemy;
-
 /// <summary>
 /// 自機
 /// </summary>
@@ -50,9 +48,8 @@ public: //メンバ関数
 
 	//getter
 	Vector3 GetWorldPos();
-	Enemy* GetEnemy() { return enemy; }
-
-	void SetEnemy(Enemy* enemy) { this->enemy = enemy; }
+	Reticle* GetReticle() { return reticle2.get(); }
+	const bool GetIsChargeShotMode() { return isChargeShotMode; }
 
 private: //メンバ関数
 	/// <summary>
@@ -90,7 +87,6 @@ private: //メンバ変数
 	//レティクル
 	std::unique_ptr<Reticle> reticle;
 	std::unique_ptr<Reticle> reticle2;
-	Enemy* enemy = nullptr;
 	//直進弾の発射待機中か
 	bool isStraightShotWait = false;
 	//直進弾の発射待機タイマー

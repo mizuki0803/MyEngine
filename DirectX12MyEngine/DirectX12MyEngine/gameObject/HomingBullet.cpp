@@ -55,13 +55,12 @@ void HomingBullet::Update()
 		Vector3 toPlayer = enemy->GetWorldPos() - GetWorldPos();
 		toPlayer.normalize();
 		velocity.normalize();
-		const float maxTime = 180;
-		float time = homingTimer / maxTime;
-		velocity = Easing::Lerp(velocity, toPlayer, time) * 0.3f;
+		const float maxTime = 120;
 		homingTimer++;
 		homingTimer = min(homingTimer, maxTime);
+		float time = homingTimer / maxTime;
+		velocity = Easing::Lerp(velocity, toPlayer, time);
 	}
-
 	position += velocity;
 
 

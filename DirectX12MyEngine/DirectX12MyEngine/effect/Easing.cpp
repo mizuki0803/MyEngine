@@ -12,6 +12,11 @@ Vector3 Easing::Lerp(const Vector3& v1, const Vector3& v2, float time)
 	return v1 + time * (v2 - v1);
 }
 
+Vector2 Easing::Lerp(const Vector2& v1, const Vector2& v2, float time)
+{
+	return v1 + time * (v2 - v1);
+}
+
 Vector3 Easing::Slerp(const Vector3& v1, const Vector3& v2, float time)
 {
 	Vector3 start = v1, end = v2;

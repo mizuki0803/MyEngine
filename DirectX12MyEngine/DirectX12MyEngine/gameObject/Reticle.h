@@ -32,11 +32,8 @@ public: //メンバ関数
 	void Draw();
 
 	//getter
-	Vector3 GetWorldPos() { return reticle3d->GetWorldPos(); }
-	Vector2 GetScreenPos() { return reticle2d->GetPosition(); };
-
-	//setter
-	void SetColor(const XMFLOAT4& color) { reticle2d->SetColor(color); }
+	Reticle3D* GetReticle3D() { return reticle3d.get(); }
+	Reticle2D* GetReticle2D() { return reticle2d.get(); }
 
 private:
 	//3Dレティクル
