@@ -50,6 +50,9 @@ Vector2 Enemy::GetScreenPos()
 
 void Enemy::Fire()
 {
+	//座標が自機より手前なら発射しない
+	if (GetWorldPos().z <= player->GetWorldPos().z) { return; }
+
 	//弾の速度を設定
 	const float bulletSpeed = 0.5f;
 

@@ -20,6 +20,12 @@ public: //メンバ関数
 	/// </summary>
 	void Update() override;
 
+private: //メンバ関数
+	/// <summary>
+	/// 画面手前まで行ったら削除する処理
+	/// </summary>
+	void FrontOfScreenDelete();
+
 private: //静的メンバ変数
 	//発射間隔
 	static const int fireInterval = 300;
