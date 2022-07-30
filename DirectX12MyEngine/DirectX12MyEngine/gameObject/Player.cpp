@@ -110,26 +110,27 @@ void Player::Rotate()
 	const float backSpeed = rotSpeed / 2.0f;
 	Vector3 rot = { 0, 0, 0 };
 
-	//キー入力で回転させる
-	if (input->PushKey(DIK_W)) { rot.x -= rotSpeed; }
-	if (input->PushKey(DIK_S)) { rot.x += rotSpeed; }
-	if (input->PushKey(DIK_A)) { rot.y -= rotSpeed; }
-	if (input->PushKey(DIK_D)) { rot.y += rotSpeed; }
 
-	//パッドスティック入力で回転させる
 	//どこまで傾けたら判定をとるか
 	const float stickNum = 200;
 	//y軸回転
 	{
+		//キー入力で回転させる
+		if (input->PushKey(DIK_A) || input->PushKey(DIK_D)) {
+			if (input->PushKey(DIK_A)) { rot.y -= rotSpeed; }
+			if (input->PushKey(DIK_D)) { rot.y += rotSpeed; }
+		}
+
 		//パッドスティックX軸の判定を取る
-		if (input->TiltGamePadLStickX(stickNum) || input->TiltGamePadLStickX(-stickNum)) {
+		else if (input->TiltGamePadLStickX(stickNum) || input->TiltGamePadLStickX(-stickNum)) {
 			//自機はスティックを倒した方向に動く
 			const float padRota = input->GetPadLStickAngle();
 			const float moveAngle = XMConvertToRadians(padRota);
 			const float padStickIncline = input->GetPadLStickIncline().x;
 			rot.y = rotSpeed * cosf(moveAngle) * fabsf(padStickIncline);
 		}
-		//スティックを倒していない場合
+
+		//キー入力なし&スティックを倒していない場合
 		else {
 			//y軸回転の傾きを修正する
 			if (rotation.y > 1.0f) {
@@ -145,15 +146,21 @@ void Player::Rotate()
 	}
 	//x軸回転
 	{
+		//キー入力で回転させる
+		if (input->PushKey(DIK_W) || input->PushKey(DIK_S)) {
+			if (input->PushKey(DIK_W)) { rot.x -= rotSpeed; }
+			if (input->PushKey(DIK_S)) { rot.x += rotSpeed; }
+		}
+
 		//パッドスティックY軸の判定を取る
-		if (input->TiltGamePadLStickY(stickNum) || input->TiltGamePadLStickY(-stickNum)) {
+		else if (input->TiltGamePadLStickY(stickNum) || input->TiltGamePadLStickY(-stickNum)) {
 			//自機はスティックを倒した方向に動く
 			const float padRota = input->GetPadLStickAngle();
 			const float moveAngle = XMConvertToRadians(padRota);
 			const float padStickIncline = input->GetPadLStickIncline().y;
 			rot.x = rotSpeed * sinf(moveAngle) * fabsf(padStickIncline);
 		}
-		//スティックを倒していない場合
+		//キー入力なし&スティックを倒していない場合
 		else {
 			//x軸回転の傾きを修正する
 			if (rotation.x > 1.0f) {
