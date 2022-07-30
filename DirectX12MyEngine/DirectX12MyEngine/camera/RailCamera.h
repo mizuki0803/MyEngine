@@ -2,11 +2,22 @@
 #include <DirectXMath.h>
 #include "Camera.h"
 
+//自機クラスを前方宣言
+class Player;
+
 /// <summary>
 /// レールカメラ
 /// </summary>
 class RailCamera : public Camera
 {
+public: //静的メンバ関数
+	/// <summary>
+	/// 自機をセット
+	/// </summary>
+	/// <param name="player">自機</param>
+	static void SetPlayer(Player* player) { RailCamera::player = player; }
+
+
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
@@ -18,7 +29,22 @@ public: //メンバ関数
 	/// </summary>
 	void Update() override;
 
-private:
+private: //メンバ関数
+	/// <summary>
+	/// 回転
+	/// </summary>
+	void Rotate();
+
+	/// <summary>
+	/// 移動
+	/// </summary>
+	void Move();
+
+private: //静的メンバ変数
+	//プレイヤー自機
+	static Player* player;
+
+private: //メンバ変数
 	//回転
 	Vector3 rotation = { 0, 0, 0 };
 	//座標

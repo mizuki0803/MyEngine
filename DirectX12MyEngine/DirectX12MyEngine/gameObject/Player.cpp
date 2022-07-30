@@ -6,6 +6,7 @@
 
 GameScene* Player::gameScene = nullptr;
 ObjModel* Player::bulletModel = nullptr;
+const Vector2 Player::rotLimit = { 35.0f, 25.0f };
 
 Player* Player::Create(ObjModel* model)
 {
@@ -31,7 +32,7 @@ Player* Player::Create(ObjModel* model)
 
 bool Player::Initialize()
 {
-	position = { 0 ,-5 ,10 };
+	position = { 0 ,1 ,10 };
 	scale = { 0.5f, 0.5f, 0.5f };
 
 	//3Dオブジェクトの初期化
@@ -41,7 +42,7 @@ bool Player::Initialize()
 	}
 
 	//レティクルを生成
-	reticle.reset(Reticle::Create(1, 5.0f, { 100, 100 }));
+	reticle.reset(Reticle::Create(1, 15.0f, { 100, 100 }));
 	reticle2.reset(Reticle::Create(1, 25.0f, { 50, 50 }));
 
 	//体力を設定
@@ -99,116 +100,117 @@ Vector3 Player::GetWorldPos()
 	return worldPos;
 }
 
-void Player::Move()
-{
-	Input* input = Input::GetInstance();
-
-	//入力で移動させる
-	Vector3 move = { 0, 0, 0 };
-	float moveSpeed = 0.15f;
-	if (input->PushKey(DIK_RIGHT)) { move.x += moveSpeed; }
-	if (input->PushKey(DIK_LEFT)) { move.x -= moveSpeed; }
-	if (input->PushKey(DIK_UP)) { move.y += moveSpeed; }
-	if (input->PushKey(DIK_DOWN)) { move.y -= moveSpeed; }
-
-	//スティック傾きの判定を取る
-	const float stickNum = 500;
-	if (input->TiltGamePadLStickX(stickNum) || input->TiltGamePadLStickX(-stickNum) || input->TiltGamePadLStickY(stickNum) || input->TiltGamePadLStickY(-stickNum)) {
-		//プレイヤーはスティックを倒した方向に動く
-		float padRota = input->GetPadLStickAngle();
-		float moveAngle = XMConvertToRadians(padRota);
-		move.x = moveSpeed * cosf(moveAngle);
-		move.y = moveSpeed * -sinf(moveAngle);
-	}
-
-	//position += move;
-
-	//移動限界をから出ないようにする
-	const XMFLOAT2 moveLimit = { 10.0f, 5.0f };
-
-	position.x = max(position.x, -moveLimit.x);
-	position.x = min(position.x, +moveLimit.x);
-	position.y = max(position.y, -moveLimit.y);
-	position.y = min(position.y, +moveLimit.y);
-}
-
 void Player::Rotate()
 {
 	Input* input = Input::GetInstance();
 
-	//入力で回転させる
+	//回転速度
+	const float rotSpeed = 1.0f;
+	//角度修正速度
+	const float backSpeed = rotSpeed / 2.0f;
 	Vector3 rot = { 0, 0, 0 };
-	float rotSpeed = 1.0f;
+
+	//キー入力で回転させる
 	if (input->PushKey(DIK_W)) { rot.x -= rotSpeed; }
 	if (input->PushKey(DIK_S)) { rot.x += rotSpeed; }
 	if (input->PushKey(DIK_A)) { rot.y -= rotSpeed; }
 	if (input->PushKey(DIK_D)) { rot.y += rotSpeed; }
 
-	//スティック傾きの判定を取る
+	//パッドスティック入力で回転させる
+	//どこまで傾けたら判定をとるか
 	const float stickNum = 200;
-	if (input->TiltGamePadLStickX(stickNum) || input->TiltGamePadLStickX(-stickNum)) {
-		//プレイヤーはスティックを倒した方向に動く
-		float padRota = input->GetPadLStickAngle();
-		const float padStickIncline = input->GetPadLStickIncline().x;
-		float moveAngle = XMConvertToRadians(padRota);
-		rot.y = rotSpeed * cosf(moveAngle) * fabsf(padStickIncline);
+	//y軸回転
+	{
+		//パッドスティックX軸の判定を取る
+		if (input->TiltGamePadLStickX(stickNum) || input->TiltGamePadLStickX(-stickNum)) {
+			//自機はスティックを倒した方向に動く
+			const float padRota = input->GetPadLStickAngle();
+			const float moveAngle = XMConvertToRadians(padRota);
+			const float padStickIncline = input->GetPadLStickIncline().x;
+			rot.y = rotSpeed * cosf(moveAngle) * fabsf(padStickIncline);
+		}
+		//スティックを倒していない場合
+		else {
+			//y軸回転の傾きを修正する
+			if (rotation.y > 1.0f) {
+				rot.y -= backSpeed;
+			}
+			else if (rotation.y < -1.0f) {
+				rot.y += backSpeed;
+			}
+			else {
+				rotation.y = 0;
+			}
+		}
 	}
-	else {
-		if (rotation.y > 0.1f) {
-			rot.y -= rotSpeed / 5;
+	//x軸回転
+	{
+		//パッドスティックY軸の判定を取る
+		if (input->TiltGamePadLStickY(stickNum) || input->TiltGamePadLStickY(-stickNum)) {
+			//自機はスティックを倒した方向に動く
+			const float padRota = input->GetPadLStickAngle();
+			const float moveAngle = XMConvertToRadians(padRota);
+			const float padStickIncline = input->GetPadLStickIncline().y;
+			rot.x = rotSpeed * sinf(moveAngle) * fabsf(padStickIncline);
 		}
-		else if (rotation.y < -0.1f) {
-			rot.y += rotSpeed / 5;
+		//スティックを倒していない場合
+		else {
+			//x軸回転の傾きを修正する
+			if (rotation.x > 1.0f) {
+				rot.x -= backSpeed;
+			}
+			else if (rotation.x < -1.0f) {
+				rot.x += backSpeed;
+			}
+			else {
+				rotation.x = 0;
+			}
 		}
+	}
+	//z軸回転
+	{
+		//動きがないと寂しいのでゆらゆらさせておく
+		const float rotZSpeed = 0.03f;
+		const float rotZLimit = 0.8f;
+		//右回転
+		if (isRotZRight) {
+			swayZ += rotZSpeed;
+			if (swayZ >= rotZLimit) {
+				isRotZRight = false;
+			}
+		}
+		//左回転
+		else {
+			swayZ -= rotZSpeed;
+			if (swayZ <= -rotZLimit) {
+				isRotZRight = true;
+			}
+		}
+
+		rotation.z = -rotation.y + swayZ;
 	}
 
-	if (input->TiltGamePadLStickY(stickNum) || input->TiltGamePadLStickY(-stickNum)) {
-		//プレイヤーはスティックを倒した方向に動く
-		float padRota = input->GetPadLStickAngle();
-		const float padStickIncline = input->GetPadLStickIncline().y;
-		float moveAngle = XMConvertToRadians(padRota);
-		rot.x = rotSpeed * sinf(moveAngle) * fabsf(padStickIncline);
-	}
-
-	else {
-		if (rotation.x > 0.1f) {
-			rot.x -= rotSpeed / 5;
-		}
-		else if (rotation.x < -0.1f) {
-			rot.x += rotSpeed / 5;
-		}
-	}
-
+	//回転の更新
 	rotation += rot;
-	rotation.z = -rotation.y / 4;
 
-	//角度の限界値を設定
-	const XMFLOAT2 rotLimit = { 35.0f, 20.0f };
-
+	//角度の限界値からはみ出さない
 	rotation.x = max(rotation.x, -rotLimit.x);
 	rotation.x = min(rotation.x, +rotLimit.x);
 	rotation.y = max(rotation.y, -rotLimit.y);
 	rotation.y = min(rotation.y, +rotLimit.y);
+}
 
-
-
-
-	//角度に追従して移動させる
+void Player::Move()
+{
+	//自機が傾いている角度に移動させる
 	Vector3 move = { 0, 0, 0 };
-	float moveSpeed = 0.15f;
-	{
-		//プレイヤーはスティックを倒した方向に動く
-		float padRota = input->GetPadLStickAngle();
-		float moveAngle = XMConvertToRadians(padRota);
-		move.x = moveSpeed * (rotation.y / rotLimit.y);
-		move.y = moveSpeed * -(rotation.x / rotLimit.x);
-	}
-
+	const float moveSpeed = 0.15f;
+	move.x = moveSpeed * (rotation.y / rotLimit.y);
+	move.y = moveSpeed * -(rotation.x / rotLimit.x);
 	position += move;
 
-	//移動限界をから出ないようにする
-	const XMFLOAT2 moveLimit = { 30.0f, 15.0f };
-
+	//移動限界から出ないようにする
+	const Vector2 moveLimit = { 10.0f, 5.0f };
 	position.x = max(position.x, -moveLimit.x);
 	position.x = min(position.x, +moveLimit.x);
 	position.y = max(position.y, -moveLimit.y);

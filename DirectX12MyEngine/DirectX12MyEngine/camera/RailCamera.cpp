@@ -1,5 +1,8 @@
 #include "RailCamera.h"
 #include "Input.h"
+#include "Player.h"
+
+Player* RailCamera::player = nullptr;
 
 void RailCamera::Initialize()
 {
@@ -17,37 +20,11 @@ void RailCamera::Update()
 {
 	Input* input = Input::GetInstance();
 
-	//移動
-	Vector3 velocity(0, 0, 0.1f);
-	//XYを入力で移動させる
-	//float moveSpeed = 0.3f;
-	//if (input->PushKey(DIK_RIGHT)) { velocity.x += moveSpeed; }
-	//if (input->PushKey(DIK_LEFT)) { velocity.x -= moveSpeed; }
-	//if (input->PushKey(DIK_UP)) { velocity.y += moveSpeed; }
-	//if (input->PushKey(DIK_DOWN)) { velocity.y -= moveSpeed; }
-
-	////スティック傾きの判定を取る
-	//const float stickNum = 500;
-	//if (input->TiltGamePadLStickX(stickNum) || input->TiltGamePadLStickX(-stickNum) || input->TiltGamePadLStickY(stickNum) || input->TiltGamePadLStickY(-stickNum)) {
-	//	//プレイヤーはスティックを倒した方向に動く
-	//	float padRota = input->GetPadLStickAngle();
-	//	float moveAngle = XMConvertToRadians(padRota);
-	//	velocity.x = moveSpeed * cosf(moveAngle);
-	//	velocity.y = moveSpeed * -sinf(moveAngle);
-	//}
-
-	position += velocity;
-
-	////XYの移動範囲を設定
-	//const XMFLOAT2 moveLimit = { 20.0f, 10.0f };
-
-	//position.x = max(position.x, -moveLimit.x);
-	//position.x = min(position.x, +moveLimit.x);
-	//position.y = max(position.y, -moveLimit.y);
-	//position.y = min(position.y, +moveLimit.y);
 	//回転
-	//Vector3 rot(0.1f, 0, 0);
-	//rotation += rot;
+	Rotate();
+
+	//移動
+	Move();		
 
 	//回転　平行移動行列の計算
 	DirectX::XMMATRIX matRot, matTrans;
@@ -76,4 +53,31 @@ void RailCamera::Update()
 	//ビュー行列と射影行列の更新
 	UpdateMatView();
 	UpdateMatProjection();
+}
+
+void RailCamera::Rotate()
+{
+	//回転(レールカメラに追従している自機の傾きを利用する)
+	rotation.x = player->GetRotation().x / 5;
+	rotation.y = player->GetRotation().y / 5;
+	rotation.z = player->GetRotation().y / 10;
+}
+
+void RailCamera::Move()
+{
+	//移動速度
+	Vector3 velocity(0, 0, 0.1f);
+	//カメラが傾いている角度に移動させる
+	const float moveSpeed = 0.8f;
+	const Vector2 rotLimit = Player::GetRotLimit();
+	velocity.x = moveSpeed * (rotation.y / rotLimit.y);
+	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
+	position += velocity;
+
+	//移動限界から出ないようにする
+	const Vector2 moveLimit = { 10.0f, 5.0f };
+	position.x = max(position.x, -moveLimit.x);
+	position.x = min(position.x, +moveLimit.x);
+	position.y = max(position.y, -moveLimit.y);
+	position.y = min(position.y, +moveLimit.y);
 }

@@ -26,7 +26,7 @@ Vector3 Enemy::GetWorldPos()
 
 Vector2 Enemy::GetScreenPos()
 {
-	Vector3 positionReticle = GetWorldPos();
+	Vector3 worldPos = GetWorldPos();
 
 	//ビューポート行列
 	XMMATRIX matViewport = {
@@ -41,10 +41,9 @@ Vector2 Enemy::GetScreenPos()
 		camera->GetMatView() * camera->GetMatProjection() * matViewport;
 
 	//ワールド座標からスクリーン座標に変換
-	positionReticle = MatrixTransformWDivision(positionReticle, matViewProjectionViewport);
+	worldPos = MatrixTransformWDivision(worldPos, matViewProjectionViewport);
+	Vector2 screenPos = { worldPos.x, worldPos.y };
 
-	//スクリーン座標を設定
-	Vector2 screenPos = { positionReticle.x, positionReticle.y };
 	return screenPos;
 }
 

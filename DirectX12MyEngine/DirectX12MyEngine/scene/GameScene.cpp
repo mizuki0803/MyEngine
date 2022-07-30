@@ -73,6 +73,10 @@ void GameScene::Initialize()
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
+	//レールカメラに自機のポインタをセット
+	RailCamera::SetPlayer(player.get());
+
+	//敵配置スクリプトの読み込み
 	LoadEnemySetData();
 }
 

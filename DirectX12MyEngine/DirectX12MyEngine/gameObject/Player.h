@@ -21,6 +21,9 @@ public: //静的メンバ関数
 	/// <returns>自機</returns>
 	static Player* Create(ObjModel* model);
 
+	//getter
+	static const Vector2& GetRotLimit() { return rotLimit; }
+
 	//setter
 	static void SetGameScene(GameScene* gameScene) { Player::gameScene = gameScene; }
 	static void SetBulletModel(ObjModel* model) { Player::bulletModel = model; }
@@ -55,14 +58,14 @@ public: //メンバ関数
 
 private: //メンバ関数
 	/// <summary>
-	/// 移動
-	/// </summary>
-	void Move();
-
-	/// <summary>
 	/// 回転
 	/// </summary>
 	void Rotate();
+
+	/// <summary>
+	/// 移動
+	/// </summary>
+	void Move();
 
 	/// <summary>
 	/// 攻撃
@@ -84,6 +87,8 @@ private: //静的メンバ変数
 	static GameScene* gameScene;
 	//自機弾のモデル
 	static ObjModel* bulletModel;
+	//自機の回転限界
+	static const Vector2 rotLimit;
 
 private: //メンバ変数
 	//体力
@@ -101,4 +106,8 @@ private: //メンバ変数
 	bool isChargeShotMode = false;
 	//チャージした時間
 	int32_t chargeTimer = 0;
+	//z軸ゆらゆら回転が右回転か
+	bool isRotZRight = true;
+	//z軸ゆらゆら回転用
+	float swayZ = 0.0f;
 };
