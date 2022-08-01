@@ -56,15 +56,13 @@ void GameScene::Initialize()
 	player.reset(Player::Create(modelFighter.get()));
 	player->SetIsCameraFollow(true);
 
+	//レールカメラに自機のポインタをセット
+	RailCamera::SetPlayer(player.get());
+
 	//全敵に必要な情報をセット
 	Enemy::SetGameScene(this);
 	Enemy::SetPlayer(player.get());
 	Enemy::SetBulletModel(modelSphere.get());
-	//敵の速度を設定
-	const Vector3 position(5, 0, 50);
-	std::unique_ptr<Enemy> newEnemy;
-	newEnemy.reset(CannonEnemy::Create(modelFighter.get(), position));
-	enemys.push_back(std::move(newEnemy));
 
 	//天球生成
 	objSkydome.reset(Skydome::Create(modelSkydome.get()));
@@ -73,9 +71,6 @@ void GameScene::Initialize()
 	ObjObject3d::SetCamera(railCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
-
-	//レールカメラに自機のポインタをセット
-	RailCamera::SetPlayer(player.get());
 
 	//敵配置スクリプトの読み込み
 	LoadEnemySetData();
@@ -119,25 +114,6 @@ void GameScene::Update()
 		return bullet->GetIsDead();
 		});
 
-
-
-	if (input->TriggerKey(DIK_1))
-	{
-		const Vector3 position(5, 0, 50);
-		std::unique_ptr<Enemy> newEnemy;
-		newEnemy.reset(CannonEnemy::Create(modelFighter.get(), position));
-		enemys.push_back(std::move(newEnemy));
-	}
-
-	if (input->TriggerKey(DIK_2))
-	{
-		const Vector3 position(-5, 0, 50);
-		std::unique_ptr<Enemy> newEnemy;
-		const float enemySpeed = 0.5f;
-		Vector3 velocity(0, 0, enemySpeed);
-		newEnemy.reset(DemoEnemy::Create(modelFighter.get(), position, velocity));
-		enemys.push_back(std::move(newEnemy));
-	}
 
 	//敵発生コマンド更新
 	UpdateEnemySetCommands();

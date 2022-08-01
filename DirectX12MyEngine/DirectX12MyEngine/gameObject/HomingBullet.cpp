@@ -58,11 +58,17 @@ void HomingBullet::Update()
 		const float maxTime = 120;
 		homingTimer++;
 		homingTimer = min(homingTimer, maxTime);
-		float time = homingTimer / maxTime;
-		velocity = Easing::Lerp(velocity, toPlayer, time);
+		const float time = homingTimer / maxTime;
+		const float speed = 1.5f;
+		velocity = Easing::Lerp(velocity, toPlayer, time) * speed;
 	}
 	position += velocity;
 
+
+	//ŽžŠÔŒo‰ß‚ÅŽ€–S
+	if (--deathTimer <= 0) {
+		isDead = true;
+	}
 
 	//is•ûŒü‚ðŒü‚­‚æ‚¤‚É‚·‚é
 	rotation.y = XMConvertToDegrees(std::atan2(velocity.x, velocity.z));

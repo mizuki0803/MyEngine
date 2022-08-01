@@ -68,14 +68,14 @@ void RailCamera::Move()
 	//移動速度
 	Vector3 velocity(0, 0, 0.1f);
 	//カメラが傾いている角度に移動させる
-	const float moveSpeed = 0.8f;
+	const float moveSpeed = 1.2f;
 	const Vector2 rotLimit = Player::GetRotLimit();
 	velocity.x = moveSpeed * (rotation.y / rotLimit.y);
 	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
 	position += velocity;
 
 	//移動限界から出ないようにする
-	const Vector2 moveLimit = { 10.0f, 5.0f };
+	const Vector2 moveLimit = { 15.0f, 7.5f };
 	position.x = max(position.x, -moveLimit.x);
 	position.x = min(position.x, +moveLimit.x);
 	position.y = max(position.y, -moveLimit.y);

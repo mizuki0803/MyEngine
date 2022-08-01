@@ -24,7 +24,13 @@ public: //静的メンバ関数
 	/// </summary>
 	void Update() override;
 
+private: //静的メンバ変数
+	//寿命時間
+	static const int32_t lifeTime = 240;
+
 private: //メンバ変数
+	//寿命タイマー
+	int32_t deathTimer = lifeTime;
 	//ホーミング用タイマー
 	float homingTimer = 0;
 };
