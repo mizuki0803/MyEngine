@@ -13,6 +13,13 @@ class GameScene;
 /// </summary>
 class Enemy : public ObjObject3d
 {
+public: //enum
+	enum EnemyType {
+		Demo,		//デモ用敵
+		Cannon,		//大砲
+		Circular,	//円運動
+	};
+
 public: //静的メンバ関数
 	//setter
 	static void SetPlayer(Player* player) { Enemy::player = player; }
@@ -34,6 +41,11 @@ protected: //メンバ関数
 	/// 弾発射
 	/// </summary>
 	void Fire();
+
+	/// <summary>
+	/// 画面手前まで行ったら削除する処理
+	/// </summary>
+	void FrontOfScreenDelete();
 
 protected: //静的メンバ変数
 	//プレイヤー自機

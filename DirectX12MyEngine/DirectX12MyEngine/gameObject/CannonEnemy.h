@@ -2,29 +2,23 @@
 #include "Enemy.h"
 
 /// <summary>
-/// 敵:大砲
+/// 大砲敵
 /// </summary>
-class Cannon : public Enemy
+class CannonEnemy : public Enemy
 {
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
-	/// <returns>大砲</returns>
-	static Cannon* Create(ObjModel* model, const Vector3& position);
+	/// <returns>大砲敵</returns>
+	static CannonEnemy* Create(ObjModel* model, const Vector3& position);
 
 public: //メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update() override;
-
-private: //メンバ関数
-	/// <summary>
-	/// 画面手前まで行ったら削除する処理
-	/// </summary>
-	void FrontOfScreenDelete();
 
 private: //静的メンバ変数
 	//発射間隔

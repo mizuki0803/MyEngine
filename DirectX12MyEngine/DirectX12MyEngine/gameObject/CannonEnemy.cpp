@@ -1,10 +1,10 @@
-#include "Cannon.h"
+#include "CannonEnemy.h"
 #include "Player.h"
 
-Cannon* Cannon::Create(ObjModel* model, const Vector3& position)
+CannonEnemy* CannonEnemy::Create(ObjModel* model, const Vector3& position)
 {
 	//敵のインスタンスを生成
-	Cannon* cannon = new Cannon();
+	CannonEnemy* cannon = new CannonEnemy();
 	if (cannon == nullptr) {
 		return nullptr;
 	}
@@ -20,14 +20,13 @@ Cannon* Cannon::Create(ObjModel* model, const Vector3& position)
 		return nullptr;
 	}
 
-
 	//座標をセット
 	cannon->position = position;
 
 	return cannon;
 }
 
-void Cannon::Update()
+void CannonEnemy::Update()
 {
 	//発射タイマーカウントダウン
 	--fireTimer;
@@ -43,13 +42,4 @@ void Cannon::Update()
 
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
-}
-
-void Cannon::FrontOfScreenDelete()
-{
-	//座標が自機より手前(画面外手前)まで行ったら削除
-	const float flontOfScreenDiffence = 100;
-	if (GetWorldPos().z <= player->GetWorldPos().z - flontOfScreenDiffence) {
-		isDead = true;
-	}
 }

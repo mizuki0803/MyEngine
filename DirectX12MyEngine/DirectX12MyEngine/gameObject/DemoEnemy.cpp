@@ -70,19 +70,19 @@ void DemoEnemy::Move()
 		//前進する
 		position -= velocity;
 
-		//一定の位置まで前進したら後退
-		if (position.z < 0.0f) {
-			phase = Phase::Back;
-		}
+		////一定の位置まで前進したら後退
+		//if (position.z < 0.0f) {
+		//	phase = Phase::Back;
+		//}
 
-		//発射タイマーカウントダウン
-		--fireTimer;
-		if (fireTimer <= 0) {
-			//弾を発射
-			Fire();
-			//発射タイマーを初期化
-			fireTimer = fireInterval;
-		}
+		////発射タイマーカウントダウン
+		//--fireTimer;
+		//if (fireTimer <= 0) {
+		//	//弾を発射
+		//	Fire();
+		//	//発射タイマーを初期化
+		//	fireTimer = fireInterval;
+		//}
 
 		break;
 	case Phase::Back:

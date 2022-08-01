@@ -66,3 +66,12 @@ void Enemy::Fire()
 	newBullet.reset(EnemyBullet::Create(bulletModel, position, velocity));
 	gameScene->AddEnemyBullet(std::move(newBullet));
 }
+
+void Enemy::FrontOfScreenDelete()
+{
+	//座標が自機より手前(画面外手前)まで行ったら削除
+	const float flontOfScreenDiffence = 100;
+	if (GetWorldPos().z <= player->GetWorldPos().z - flontOfScreenDiffence) {
+		isDead = true;
+	}
+}

@@ -6,7 +6,8 @@
 #include "DebugText.h"
 #include "Easing.h"
 #include "DemoEnemy.h"
-#include "Cannon.h"
+#include "CannonEnemy.h"
+#include "CircularEnemy.h"
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -62,7 +63,7 @@ void GameScene::Initialize()
 	//敵の速度を設定
 	const Vector3 position(5, 0, 50);
 	std::unique_ptr<Enemy> newEnemy;
-	newEnemy.reset(Cannon::Create(modelFighter.get(), position));
+	newEnemy.reset(CannonEnemy::Create(modelFighter.get(), position));
 	enemys.push_back(std::move(newEnemy));
 
 	//天球生成
@@ -124,7 +125,7 @@ void GameScene::Update()
 	{
 		const Vector3 position(5, 0, 50);
 		std::unique_ptr<Enemy> newEnemy;
-		newEnemy.reset(Cannon::Create(modelFighter.get(), position));
+		newEnemy.reset(CannonEnemy::Create(modelFighter.get(), position));
 		enemys.push_back(std::move(newEnemy));
 	}
 
@@ -407,6 +408,10 @@ void GameScene::UpdateEnemySetCommands()
 
 		//POPコマンド
 		if (word.find("POP") == 0) {
+			//敵の種類
+			getline(line_stream, word, ',');
+			int type = (int)std::atof(word.c_str());
+
 			//x座標
 			getline(line_stream, word, ',');
 			float x = (float)std::atof(word.c_str());
@@ -420,9 +425,45 @@ void GameScene::UpdateEnemySetCommands()
 			float z = (float)std::atof(word.c_str());
 
 			//敵を発生
-			std::unique_ptr<Enemy> newEnemy;
-			newEnemy.reset(Cannon::Create(modelFighter.get(), { x, y, z }));
-			enemys.push_back(std::move(newEnemy));
+			if (type == Enemy::EnemyType::Demo) {
+				//x方向速度
+				getline(line_stream, word, ',');
+				float velX = (float)std::atof(word.c_str());
+
+				//y方向速度
+				getline(line_stream, word, ',');
+				float velY = (float)std::atof(word.c_str());
+
+				//z方向速度
+				getline(line_stream, word, ',');
+				float velZ = (float)std::atof(word.c_str());
+
+				std::unique_ptr<Enemy> newEnemy;
+				newEnemy.reset(DemoEnemy::Create(modelSphere.get(), { x, y, z }, { velX, velY, velZ }));
+				enemys.push_back(std::move(newEnemy));
+			}
+			else if (type == Enemy::EnemyType::Cannon) {
+				std::unique_ptr<Enemy> newEnemy;
+				newEnemy.reset(CannonEnemy::Create(modelFighter.get(), { x, y, z }));
+				enemys.push_back(std::move(newEnemy));
+			}
+			else if (type == Enemy::EnemyType::Circular) {
+				//角度
+				getline(line_stream, word, ',');
+				float angle = (float)std::atof(word.c_str());
+
+				//半径の長さ
+				getline(line_stream, word, ',');
+				float length = (float)std::atof(word.c_str());
+
+				//回転速度
+				getline(line_stream, word, ',');
+				float rotSpeed = (float)std::atof(word.c_str());
+
+				std::unique_ptr<Enemy> newEnemy;
+				newEnemy.reset(CircularEnemy::Create(modelSphere.get(), { x, y, z }, angle, length, rotSpeed));
+				enemys.push_back(std::move(newEnemy));
+			}
 		}
 
 		//WAITコマンド

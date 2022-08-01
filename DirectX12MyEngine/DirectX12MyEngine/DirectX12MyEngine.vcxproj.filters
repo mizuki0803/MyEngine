@@ -206,7 +206,7 @@
     <ClCompile Include="gameObject\Reticle.cpp">
       <Filter>ソース ファイル\gameObject\reticle</Filter>
     </ClCompile>
-    <ClCompile Include="gameObject\Cannon.cpp">
+    <ClCompile Include="gameObject\CannonEnemy.cpp">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\DemoEnemy.cpp">
@@ -217,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="gameObject\HomingBullet.cpp">
       <Filter>ソース ファイル\gameObject\player</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\CircularEnemy.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -410,7 +413,7 @@
     <ClInclude Include="gameObject\Reticle.h">
       <Filter>ソース ファイル\gameObject\reticle</Filter>
     </ClInclude>
-    <ClInclude Include="gameObject\Cannon.h">
+    <ClInclude Include="gameObject\CannonEnemy.h">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\DemoEnemy.h">
@@ -421,6 +424,9 @@
     </ClInclude>
     <ClInclude Include="gameObject\HomingBullet.h">
       <Filter>ソース ファイル\gameObject\player</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\CircularEnemy.h">
+      <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
