@@ -191,6 +191,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\Vector2.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
+    <ClCompile Include="UpDownEnemy.cpp" />
     <ClCompile Include="scene\BaseScene.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\TitleScene.cpp" />
@@ -330,6 +331,7 @@
     <ClInclude Include="light\SpotLight.h" />
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
+    <ClInclude Include="UpDownEnemy.h" />
     <ClInclude Include="scene\BaseScene.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\TitleScene.h" />

@@ -9,6 +9,7 @@
 #include "CannonEnemy.h"
 #include "CircularEnemy.h"
 #include "FallEnemy.h"
+#include "UpDownEnemy.h"
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -444,6 +445,11 @@ void GameScene::UpdateEnemySetCommands()
 			else if (type == Enemy::EnemyType::Fall) {
 				std::unique_ptr<Enemy> newEnemy;
 				newEnemy.reset(FallEnemy::Create(modelSphere.get(), { x, y, z }));
+				enemys.push_back(std::move(newEnemy));
+			}
+			else if (type == Enemy::EnemyType::UpDown) {
+				std::unique_ptr<Enemy> newEnemy;
+				newEnemy.reset(UpDownEnemy::Create(modelSphere.get(), { x, y, z }));
 				enemys.push_back(std::move(newEnemy));
 			}
 		}
