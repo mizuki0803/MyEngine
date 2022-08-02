@@ -50,9 +50,11 @@ void FallEnemy::Action()
 		//イージングで降下する
 		const float fallTime = 60;
 		fallTimer++;
-
 		const float time = fallTimer / fallTime;
-		position.y = Easing::OutQuart(startPos.y, 0, time);
+
+		//生成位置から100降りたところで停止する
+		const float stayPosY = startPos.y - 100;
+		position.y = Easing::OutQuart(startPos.y, stayPosY, time);
 
 		//イージングが終了したら次のフェーズへ
 		if (fallTimer >= fallTime) {
