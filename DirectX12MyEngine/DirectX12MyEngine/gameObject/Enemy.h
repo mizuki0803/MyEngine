@@ -18,6 +18,7 @@ public: //enum
 		Demo,		//ƒfƒ‚—p“G
 		Cannon,		//‘å–C
 		Circular,	//‰~‰^“®
+		Fall,		//~‰º
 	};
 
 public: //Ã“Iƒƒ“ƒoŠÖ”

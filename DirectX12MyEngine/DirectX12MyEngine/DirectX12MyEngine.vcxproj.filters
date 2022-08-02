@@ -219,7 +219,10 @@
       <Filter>ソース ファイル\gameObject\player</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\CircularEnemy.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\gameObject\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\FallEnemy.cpp">
+      <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -426,6 +429,9 @@
       <Filter>ソース ファイル\gameObject\player</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\CircularEnemy.h">
+      <Filter>ソース ファイル\gameObject\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\FallEnemy.h">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClInclude>
   </ItemGroup>
