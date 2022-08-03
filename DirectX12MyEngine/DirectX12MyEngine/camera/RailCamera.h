@@ -40,6 +40,21 @@ private: //メンバ関数
 	/// </summary>
 	void Move();
 
+	/// <summary>
+	/// プレイヤーに合わせてノックバックする
+	/// </summary>
+	void Knockback();
+
+	/// <summary>
+	/// シェイク開始
+	/// </summary>
+	void ShakeStart();
+
+	/// <summary>
+	/// シェイク
+	/// </summary>
+	void Shake();
+
 private: //静的メンバ変数
 	//プレイヤー自機
 	static Player* player;
@@ -49,4 +64,8 @@ private: //メンバ変数
 	Vector3 rotation = { 0, 0, 0 };
 	//座標
 	Vector3 position = { 0, 0, 0 };
+	//シェイクするか
+	bool isShake = false;
+	//カメラシェイク用タイマー
+	int32_t shakeTimer = 0;
 };

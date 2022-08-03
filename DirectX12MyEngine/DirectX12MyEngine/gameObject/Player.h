@@ -47,16 +47,27 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	void OnCollision();
+	void OnCollision(const Vector3& subjectPos);
 
 	//getter
-	const int GetHP() { return HP; }
-	const bool GetIsDead() { return isDead; }
 	Vector3 GetWorldPos();
+	const int GetHP() { return HP; }
+	const bool GetIsDamage() { return isDamage; }
+	const bool GetIsCameraShake() { return isCameraShake; }
+	const bool GetIsDead() { return isDead; }
+	const Vector3& GetKnockbackVel() { return knockbackVel; }
 	Reticle* GetReticle() { return reticle2.get(); }
 	const bool GetIsChargeShotMode() { return isChargeShotMode; }
 
+	//setter
+	void SetIsCameraShake(const bool isCameraShake) { this->isCameraShake = isCameraShake; }
+
 private: //メンバ関数
+	/// <summary>
+	/// ダメージを喰らう
+	/// </summary>
+	void Damage();
+
 	/// <summary>
 	/// 回転
 	/// </summary>
@@ -82,6 +93,16 @@ private: //メンバ関数
 	/// </summary>
 	void ShotHomingBullet();
 
+	/// <summary>
+	/// ノックバック情報をセット
+	/// </summary>
+	void SetKnockback(const Vector3& subjectPos);
+
+	/// <summary>
+	/// ノックバック
+	/// </summary>
+	void Knockback();
+
 private: //静的メンバ変数
 	//ゲームシーン
 	static GameScene* gameScene;
@@ -93,6 +114,16 @@ private: //静的メンバ変数
 private: //メンバ変数
 	//体力
 	int HP = 0;
+	//ダメージフラグ
+	bool isDamage = false;
+	//カメラシェイク要求フラグ
+	bool isCameraShake = false;
+	//ノックバック用タイマー
+	int32_t knockbackTimer = 0;
+	//ノックバック方向
+	Vector3 knockbackVec;
+	//ノックバック速度
+	Vector3 knockbackVel;
 	//死亡フラグ
 	bool isDead = false;
 	//レティクル

@@ -56,8 +56,14 @@ void Player::Update()
 	//回転
 	Rotate();
 
-	//移動
-	Move();
+	//ダメージ状態ならノックバックする
+	if (isDamage) {
+		Knockback();
+	}
+	//ダメージ状態でないなら通常移動
+	else {
+		Move();
+	}
 
 	//オブジェクト更新
 	ObjObject3d::Update();
@@ -77,15 +83,19 @@ void Player::DrawUI()
 	reticle2->Draw();
 }
 
-void Player::OnCollision()
+void Player::OnCollision(const Vector3& subjectPos)
 {
-	//体力を減らす
-	HP--;
+	//ダメージ状態なら抜ける
+	if (isDamage) { return; }
 
-	//HPが0以下になったら死亡させる
-	if (HP <= 0) {
-		isDead = true;
-	}
+	//ダメージを喰らう
+	Damage();
+
+	//ノックバック情報をセット
+	SetKnockback(subjectPos);
+
+	//カメラをシェイクを要求する
+	isCameraShake = true;
 }
 
 Vector3 Player::GetWorldPos()
@@ -98,6 +108,22 @@ Vector3 Player::GetWorldPos()
 	worldPos.z = matWorld.r[3].m128_f32[2];
 
 	return worldPos;
+}
+
+void Player::Damage()
+{
+	//体力を減らす
+	HP--;
+
+	//HPが0以下になったら死亡させる
+	if (HP <= 0) {
+		isDead = true;
+	}
+
+	color = { 1,0,0,1 };
+
+	//ダメージ状態にする
+	isDamage = true;
 }
 
 void Player::Rotate()
@@ -307,4 +333,48 @@ void Player::ShotHomingBullet()
 	std::unique_ptr<PlayerBullet> newBullet;
 	newBullet.reset(HomingBullet::Create(bulletModel, shotPos, velocity, reticle2->GetReticle2D()->GetLockonEnemy()));
 	gameScene->AddPlayerBullet(std::move(newBullet));
+}
+
+void Player::SetKnockback(const Vector3& subjectPos)
+{
+	//ノックバックする方向を決める(対象のワールド座標 - 自機のワールド座標)
+	knockbackVec = subjectPos - GetWorldPos();
+	//ベクトルを正規化
+	knockbackVec.normalize();
+
+	//ノックバックタイマーを初期化
+	knockbackTimer = 0;
+}
+
+void Player::Knockback()
+{
+	//ノックバックする時間
+	const float knockbackTime = 30;
+	knockbackTimer++;
+	const float time = knockbackTimer / knockbackTime;
+
+	//速度を作成
+	knockbackVel = knockbackVec;
+	knockbackVel.normalize();
+	//Z軸方向には移動しないようにする
+	knockbackVel.z = 0;
+	//ノックバック時間を速度にかけて減速っぽくする
+	knockbackVel *= (1 - time);
+
+	//自機をノックバックさせる
+	const float speed = 0.2f;
+	position += knockbackVel *= speed;
+
+	//移動限界から出ないようにする
+	const Vector2 moveLimit = { 10.0f, 5.0f };
+	position.x = max(position.x, -moveLimit.x);
+	position.x = min(position.x, +moveLimit.x);
+	position.y = max(position.y, -moveLimit.y);
+	position.y = min(position.y, +moveLimit.y);
+
+	//ノックバックが終了したらダメージ状態を解除する
+	if (knockbackTimer >= knockbackTime) {
+		isDamage = false;
+		color = { 1,1,1,1 };
+	}
 }

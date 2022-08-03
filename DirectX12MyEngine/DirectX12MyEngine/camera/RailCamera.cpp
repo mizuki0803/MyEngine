@@ -23,8 +23,14 @@ void RailCamera::Update()
 	//回転
 	Rotate();
 
-	//移動
-	Move();		
+	//プレイヤーがダメージ状態ならノックバックする
+	if (player->GetIsDamage()) {
+		Knockback();
+	}
+	//ダメージ状態でないなら通常移動
+	else {
+		Move();
+	}
 
 	//回転　平行移動行列の計算
 	DirectX::XMMATRIX matRot, matTrans;
@@ -49,6 +55,15 @@ void RailCamera::Update()
 	//天地が反転してもいいように上方向ベクトルも回転させる
 	Vector3 baseUp(0, 1, 0);
 	up = MatrixTransformDirection(baseUp, matWorld);
+
+	//自機からカメラシェイクを要求されていたらカメラシェイクを開始する
+	if (player->GetIsCameraShake()) {
+		ShakeStart();
+	}
+	//シェイク状態ならカメラをシェイクさせる
+	if (isShake) {
+		Shake();
+	}
 
 	//ビュー行列と射影行列の更新
 	UpdateMatView();
@@ -80,4 +95,67 @@ void RailCamera::Move()
 	position.x = min(position.x, +moveLimit.x);
 	position.y = max(position.y, -moveLimit.y);
 	position.y = min(position.y, +moveLimit.y);
+}
+
+void RailCamera::Knockback()
+{
+	//自機にあわせてカメラをノックバックさせる
+	const float speed = 1.6f;
+	Vector3 velocity = player->GetKnockbackVel();
+	velocity *= speed;
+
+	//z方向の移動は通常より少し遅く
+	velocity.z = 0.05f;
+	position += velocity;
+
+	//移動限界から出ないようにする
+	const Vector2 moveLimit = { 15.0f, 7.5f };
+	position.x = max(position.x, -moveLimit.x);
+	position.x = min(position.x, +moveLimit.x);
+	position.y = max(position.y, -moveLimit.y);
+	position.y = min(position.y, +moveLimit.y);
+}
+
+void RailCamera::ShakeStart()
+{
+	//シェイクタイマーをリセット
+	shakeTimer = 0;
+	//シェイク状態にする
+	isShake = true;
+
+	//自機のカメラシェイク要求を終了させる
+	player->SetIsCameraShake(false);
+}
+
+void RailCamera::Shake()
+{
+	//シェイクする時間を設定
+	const float shakeTime = 20;
+	//タイマーをカウント
+	shakeTimer++;
+	const float time = shakeTimer / shakeTime;
+	//シェイクの最大の強さを設定
+	const float maxShakePower = 15;
+
+	//シェイクする値を計算
+	const float randShake = maxShakePower * (1 - time);
+	Vector3 shake{};
+
+	//ゼロ除算を避けるために0の場合はランダムを生成しない
+	if (!((int)randShake == 0)) {
+		shake.x = (float)((rand() % (int)randShake) - randShake / 2);
+		shake.y = (float)((rand() % (int)randShake) - randShake / 2);
+	}
+
+	//値が大きいので割り算して小さくする
+	const float div = 100;
+	shake /= div;
+
+	//カメラにシェイクの値を加算
+	eye += shake;
+
+	//シェイクが完了したらシェイク状態を解除
+	if (shakeTimer >= shakeTime) {
+		isShake = false;
+	}
 }

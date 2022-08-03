@@ -226,6 +226,30 @@ void GameScene::CollisionCheck3d()
 	Vector3 posA, posB;
 	float radiusA, radiusB;
 
+#pragma region 自機と敵の衝突判定
+	//自機座標
+	posA = player->GetWorldPos();
+	//自機半径
+	radiusA = player->GetScale().x;
+
+	//自機と全ての敵の衝突判定
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
+		//敵座標
+		posB = enemy->GetWorldPos();
+		//敵半径
+		radiusB = enemy->GetScale().x;
+
+		//球と球の衝突判定を行う
+		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+
+		//衝突していたら
+		if (isCollision) {
+			//自機のコールバック関数を呼び出す
+			player->OnCollision(posB);
+		}
+	}
+#pragma endregion
+
 #pragma region 自機と敵弾の衝突判定
 	//自機座標
 	posA = player->GetWorldPos();
@@ -245,7 +269,7 @@ void GameScene::CollisionCheck3d()
 		//衝突していたら
 		if (isCollision) {
 			//自機のコールバック関数を呼び出す
-			player->OnCollision();
+			player->OnCollision(posB);
 			//敵弾のコールバック関数を呼び出す
 			bullet->OnCollision();
 		}
