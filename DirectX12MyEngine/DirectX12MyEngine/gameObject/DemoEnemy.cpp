@@ -49,6 +49,9 @@ void DemoEnemy::Update()
 
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
+
+	//画面外手前まで行ったら削除
+	FrontOfScreenDelete();
 }
 
 //void DemoEnemy::OnCollision()

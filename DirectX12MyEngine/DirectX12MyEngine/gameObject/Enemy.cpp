@@ -71,7 +71,10 @@ void Enemy::FrontOfScreenDelete()
 {
 	//座標が自機より手前(画面外手前)まで行ったら削除
 	const float flontOfScreenDiffence = 100;
-	if (GetWorldPos().z <= player->GetWorldPos().z - flontOfScreenDiffence) {
+	const float deletePos = player->GetWorldPos().z - flontOfScreenDiffence;
+	const Vector3 worldPos = GetWorldPos();
+
+	if (worldPos.z <= deletePos) {
 		isDead = true;
 	}
 }

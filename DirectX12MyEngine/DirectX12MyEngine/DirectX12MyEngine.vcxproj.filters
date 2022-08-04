@@ -227,6 +227,9 @@
     <ClCompile Include="UpDownEnemy.cpp">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClCompile>
+    <ClCompile Include="gameObject\ComeGoEnemy.cpp">
+      <Filter>ソース ファイル\gameObject\enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -438,6 +441,9 @@
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="UpDownEnemy.h">
+      <Filter>ソース ファイル\gameObject\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\ComeGoEnemy.h">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClInclude>
   </ItemGroup>

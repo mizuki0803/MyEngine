@@ -19,7 +19,8 @@ public: //enum
 		Cannon,		//‘å–C
 		Circular,	//‰~‰^“®
 		Fall,		//~‰º
-		UpDown,	//ã‰ºˆÚ“®
+		UpDown,		//ã‰ºˆÚ“®
+		ComeGo,		//“’…o”­
 	};
 
 public: //Ã“Iƒƒ“ƒoŠÖ”

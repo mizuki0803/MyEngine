@@ -10,6 +10,7 @@
 #include "CircularEnemy.h"
 #include "FallEnemy.h"
 #include "UpDownEnemy.h"
+#include "ComeGoEnemy.h"
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -474,6 +475,31 @@ void GameScene::UpdateEnemySetCommands()
 			else if (type == Enemy::EnemyType::UpDown) {
 				std::unique_ptr<Enemy> newEnemy;
 				newEnemy.reset(UpDownEnemy::Create(modelSphere.get(), { x, y, z }));
+				enemys.push_back(std::move(newEnemy));
+			}
+			else if (type == Enemy::EnemyType::ComeGo) {
+				//x到着座標
+				getline(line_stream, word, ',');
+				float comeX = (float)std::atof(word.c_str());
+				//y到着座標
+				getline(line_stream, word, ',');
+				float comeY = (float)std::atof(word.c_str());
+				//z到着座標
+				getline(line_stream, word, ',');
+				float comeZ = (float)std::atof(word.c_str());
+
+				//x出発座標
+				getline(line_stream, word, ',');
+				float goX = (float)std::atof(word.c_str());
+				//y出発座標
+				getline(line_stream, word, ',');
+				float goY = (float)std::atof(word.c_str());
+				//z出発座標
+				getline(line_stream, word, ',');
+				float goZ = (float)std::atof(word.c_str());
+
+				std::unique_ptr<Enemy> newEnemy;
+				newEnemy.reset(ComeGoEnemy::Create(modelSphere.get(), { x, y, z }, {comeX, comeY, comeZ}, {goX, goY, goZ}));
 				enemys.push_back(std::move(newEnemy));
 			}
 		}
