@@ -23,7 +23,7 @@ public: //静的メンバ関数
 	/// <param name="comePos">到着座標</param>
 	/// <param name="goPos">出発目標座標</param>
 	/// <returns>到着出発敵</returns>
-	static ComeGoEnemy* Create(ObjModel* model, const Vector3& startPos, const Vector3& comePos, const Vector3& goTargetPos);
+	static ComeGoEnemy* Create(ObjModel* model, const Vector3& startPos, const Vector3& comePos, const Vector3& goTargetPos, const int attackTime);
 
 public: //メンバ関数
 	/// <summary>
@@ -58,6 +58,8 @@ private: //メンバ変数
 	int32_t goTimer = 0;
 	//攻撃時間タイマー
 	int32_t attackTimer = 0;
+	//攻撃時間
+	int attackTime = 0;
 	//発射タイマー
 	int32_t fireTimer = 0;
 };

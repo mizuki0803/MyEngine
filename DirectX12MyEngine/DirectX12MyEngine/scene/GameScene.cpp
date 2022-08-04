@@ -498,8 +498,12 @@ void GameScene::UpdateEnemySetCommands()
 				getline(line_stream, word, ',');
 				float goZ = (float)std::atof(word.c_str());
 
+				//çUåÇéûä‘
+				getline(line_stream, word, ',');
+				int time = (int)std::atof(word.c_str());
+
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(ComeGoEnemy::Create(modelSphere.get(), { x, y, z }, {comeX, comeY, comeZ}, {goX, goY, goZ}));
+				newEnemy.reset(ComeGoEnemy::Create(modelSphere.get(), { x, y, z }, {comeX, comeY, comeZ}, {goX, goY, goZ}, time));
 				enemys.push_back(std::move(newEnemy));
 			}
 		}

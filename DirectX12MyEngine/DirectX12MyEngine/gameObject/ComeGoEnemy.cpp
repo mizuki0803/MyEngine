@@ -1,7 +1,7 @@
 #include "ComeGoEnemy.h"
 #include "Easing.h"
 
-ComeGoEnemy* ComeGoEnemy::Create(ObjModel* model, const Vector3& startPos, const Vector3& comePos, const Vector3& goTargetPos)
+ComeGoEnemy* ComeGoEnemy::Create(ObjModel* model, const Vector3& startPos, const Vector3& comePos, const Vector3& goTargetPos, const int attackTime)
 {
 	//敵のインスタンスを生成
 	ComeGoEnemy* comeGoEnemy = new ComeGoEnemy();
@@ -28,6 +28,9 @@ ComeGoEnemy* ComeGoEnemy::Create(ObjModel* model, const Vector3& startPos, const
 
 	//出発目標座標をセット
 	comeGoEnemy->goTargetPos = goTargetPos;
+
+	//攻撃時間をセット
+	comeGoEnemy->attackTime = attackTime;
 
 	return comeGoEnemy;
 }
@@ -64,8 +67,7 @@ void ComeGoEnemy::Action()
 
 	case Phase::Attack:
 	{
-		//攻撃する時間
-		const float attackTime = 600;
+		//攻撃する時間をカウント
 		attackTimer++;
 
 		//Z方向に移動させる
