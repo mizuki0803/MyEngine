@@ -87,8 +87,14 @@
     <Filter Include="ソース ファイル\gameObject\skydome">
       <UniqueIdentifier>{15e7c728-e790-4197-9590-3285af2ac863}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\gameObject\reticle">
+    <Filter Include="ソース ファイル\gameObject\player\playerBullet">
+      <UniqueIdentifier>{ee3b6fa1-b71c-44f9-b1bd-b7de35a78813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameObject\player\reticle">
       <UniqueIdentifier>{611ab12d-7325-4303-8d97-261286818635}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameObject\player\HPUI">
+      <UniqueIdentifier>{0b329883-8e13-471c-98e9-0f3c5cc050b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -182,9 +188,6 @@
     <ClCompile Include="gameObject\Player.cpp">
       <Filter>ソース ファイル\gameObject\player</Filter>
     </ClCompile>
-    <ClCompile Include="gameObject\PlayerBullet.cpp">
-      <Filter>ソース ファイル\gameObject\player</Filter>
-    </ClCompile>
     <ClCompile Include="gameObject\EnemyBullet.cpp">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClCompile>
@@ -198,13 +201,13 @@
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Reticle3D.cpp">
-      <Filter>ソース ファイル\gameObject\reticle</Filter>
+      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Reticle2D.cpp">
-      <Filter>ソース ファイル\gameObject\reticle</Filter>
+      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Reticle.cpp">
-      <Filter>ソース ファイル\gameObject\reticle</Filter>
+      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\CannonEnemy.cpp">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
@@ -212,23 +215,32 @@
     <ClCompile Include="gameObject\DemoEnemy.cpp">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClCompile>
-    <ClCompile Include="gameObject\StraightBullet.cpp">
-      <Filter>ソース ファイル\gameObject\player</Filter>
-    </ClCompile>
-    <ClCompile Include="gameObject\HomingBullet.cpp">
-      <Filter>ソース ファイル\gameObject\player</Filter>
-    </ClCompile>
     <ClCompile Include="gameObject\CircularEnemy.cpp">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\FallEnemy.cpp">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClCompile>
-    <ClCompile Include="UpDownEnemy.cpp">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
-    </ClCompile>
     <ClCompile Include="gameObject\ComeGoEnemy.cpp">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\HomingBullet.cpp">
+      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\PlayerBullet.cpp">
+      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\StraightBullet.cpp">
+      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\PlayerHPBar.cpp">
+      <Filter>ソース ファイル\gameObject\player\HPUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\UpDownEnemy.cpp">
+      <Filter>ソース ファイル\gameObject\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\PlayerHPFrame.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -395,9 +407,6 @@
     <ClInclude Include="math\Vector3.h">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClInclude>
-    <ClInclude Include="gameObject\PlayerBullet.h">
-      <Filter>ソース ファイル\gameObject\player</Filter>
-    </ClInclude>
     <ClInclude Include="gameObject\Player.h">
       <Filter>ソース ファイル\gameObject\player</Filter>
     </ClInclude>
@@ -414,13 +423,13 @@
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Reticle3D.h">
-      <Filter>ソース ファイル\gameObject\reticle</Filter>
+      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Reticle2D.h">
-      <Filter>ソース ファイル\gameObject\reticle</Filter>
+      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Reticle.h">
-      <Filter>ソース ファイル\gameObject\reticle</Filter>
+      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\CannonEnemy.h">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
@@ -428,23 +437,32 @@
     <ClInclude Include="gameObject\DemoEnemy.h">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClInclude>
-    <ClInclude Include="gameObject\StraightBullet.h">
-      <Filter>ソース ファイル\gameObject\player</Filter>
-    </ClInclude>
-    <ClInclude Include="gameObject\HomingBullet.h">
-      <Filter>ソース ファイル\gameObject\player</Filter>
-    </ClInclude>
     <ClInclude Include="gameObject\CircularEnemy.h">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\FallEnemy.h">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClInclude>
-    <ClInclude Include="UpDownEnemy.h">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
-    </ClInclude>
     <ClInclude Include="gameObject\ComeGoEnemy.h">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\HomingBullet.h">
+      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\PlayerBullet.h">
+      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\StraightBullet.h">
+      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\PlayerHPBar.h">
+      <Filter>ソース ファイル\gameObject\player\HPUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\UpDownEnemy.h">
+      <Filter>ソース ファイル\gameObject\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\PlayerHPFrame.h">
+      <Filter>ソース ファイル\gameObject\player\HPUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

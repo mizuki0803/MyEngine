@@ -45,8 +45,14 @@ bool Player::Initialize()
 	reticle.reset(Reticle::Create(1, 15.0f, { 100, 100 }));
 	reticle2.reset(Reticle::Create(1, 25.0f, { 50, 50 }));
 
-	//体力を設定
-	HP = 3;
+	
+	//HPバー生成
+	const Vector2 hpBarPosition = { 20, 20 };
+	hpBar.reset(PlayerHPBar::Create(2, hpBarPosition, maxHP));
+	//HPバーフレーム生成
+	const float posDiff = 3.0f;	//HPバーの座標との差分
+	const Vector2 hpFramePosition = { hpBarPosition.x - posDiff, hpBarPosition.y - posDiff };
+	hpFrame.reset(PlayerHPFrame::Create(3, hpFramePosition));
 
 	return true;
 }
@@ -72,6 +78,11 @@ void Player::Update()
 	reticle->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
 	reticle2->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
 
+	//HPバー更新
+	hpBar->Update();
+	//HPバーフレーム更新
+	hpFrame->Update();
+
 	//攻撃
 	Attack();
 }
@@ -81,6 +92,11 @@ void Player::DrawUI()
 	//レティクル描画
 	reticle->Draw();
 	reticle2->Draw();
+
+	//HPバーフレーム描画
+	hpFrame->Draw();
+	//HPバー描画
+	hpBar->Draw();
 }
 
 void Player::OnCollision(const Vector3& subjectPos)
@@ -93,6 +109,9 @@ void Player::OnCollision(const Vector3& subjectPos)
 
 	//ノックバック情報をセット
 	SetKnockback(subjectPos);
+
+	//ダメージを喰らったのでHPバーの長さを変更する
+	hpBar->SetChangeLength(HP);
 
 	//カメラをシェイクを要求する
 	isCameraShake = true;
@@ -113,11 +132,14 @@ Vector3 Player::GetWorldPos()
 void Player::Damage()
 {
 	//体力を減らす
-	HP--;
+	HP -= 10;
 
 	//HPが0以下になったら死亡させる
 	if (HP <= 0) {
 		isDead = true;
+
+		//HPは0以下にならない
+		HP = 0;
 	}
 
 	color = { 1,0,0,1 };

@@ -2,6 +2,8 @@
 #include "ObjObject3d.h"
 #include "PlayerBullet.h"
 #include "Reticle.h"
+#include "PlayerHPBar.h"
+#include "PlayerHPFrame.h"
 #include <memory>
 #include <list>
 
@@ -110,10 +112,12 @@ private: //静的メンバ変数
 	static ObjModel* bulletModel;
 	//自機の回転限界
 	static const Vector2 rotLimit;
+	//最大体力
+	static const int maxHP = 100;
 
 private: //メンバ変数
 	//体力
-	int HP = 0;
+	int HP = maxHP;
 	//ダメージフラグ
 	bool isDamage = false;
 	//カメラシェイク要求フラグ
@@ -129,6 +133,10 @@ private: //メンバ変数
 	//レティクル
 	std::unique_ptr<Reticle> reticle;
 	std::unique_ptr<Reticle> reticle2;
+	//HPバー
+	std::unique_ptr<PlayerHPBar> hpBar;
+	//HPバーフレーム
+	std::unique_ptr<PlayerHPFrame> hpFrame;
 	//直進弾の発射待機中か
 	bool isStraightShotWait = false;
 	//直進弾の発射待機タイマー
