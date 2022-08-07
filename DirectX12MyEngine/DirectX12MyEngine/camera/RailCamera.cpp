@@ -75,7 +75,7 @@ void RailCamera::Rotate()
 	//‰ñ“](ƒŒ[ƒ‹ƒJƒƒ‰‚É’Ç]‚µ‚Ä‚¢‚éŽ©‹@‚ÌŒX‚«‚ð—˜—p‚·‚é)
 	rotation.x = player->GetRotation().x / 5;
 	rotation.y = player->GetRotation().y / 5;
-	rotation.z = player->GetRotation().y / 10;
+	rotation.z = -player->GetRotation().y / 10;
 }
 
 void RailCamera::Move()

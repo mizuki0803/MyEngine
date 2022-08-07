@@ -240,7 +240,7 @@
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\PlayerHPFrame.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\gameObject\player\HPUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
