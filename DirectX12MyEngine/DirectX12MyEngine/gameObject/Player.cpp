@@ -99,7 +99,7 @@ void Player::DrawUI()
 	hpBar->Draw();
 }
 
-void Player::OnCollision(const Vector3& subjectPos)
+void Player::OnCollisionDamage(const Vector3& subjectPos)
 {
 	//ダメージ状態なら抜ける
 	if (isDamage) { return; }
@@ -115,6 +115,15 @@ void Player::OnCollision(const Vector3& subjectPos)
 
 	//カメラをシェイクを要求する
 	isCameraShake = true;
+}
+
+void Player::OnCollisionHeal()
+{
+	//回復
+	Heal();
+
+	//ダメージを喰らったのでHPバーの長さを変更する
+	hpBar->SetChangeLength(HP);
 }
 
 Vector3 Player::GetWorldPos()
@@ -146,6 +155,17 @@ void Player::Damage()
 
 	//ダメージ状態にする
 	isDamage = true;
+}
+
+void Player::Heal()
+{
+	//体力を増やす
+	HP += 10;
+
+	//HPは最大HP以上にならない
+	if (HP >= maxHP) {
+		HP = maxHP;
+	}
 }
 
 void Player::Rotate()

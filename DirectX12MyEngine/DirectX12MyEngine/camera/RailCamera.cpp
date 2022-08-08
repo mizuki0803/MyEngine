@@ -104,8 +104,8 @@ void RailCamera::Knockback()
 	Vector3 velocity = player->GetKnockbackVel();
 	velocity *= speed;
 
-	//z•ûŒü‚ÌˆÚ“®‚Í’Êí‚æ‚è­‚µ’x‚­
-	velocity.z = 0.05f;
+	//z•ûŒü‚ÌˆÚ“®‚Í’Êí
+	velocity.z = 0.1f;
 	position += velocity;
 
 	//ˆÚ“®ŒÀŠE‚©‚ço‚È‚¢‚æ‚¤‚É‚·‚é

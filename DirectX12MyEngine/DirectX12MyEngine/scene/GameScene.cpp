@@ -68,17 +68,23 @@ void GameScene::Initialize()
 	Enemy::SetGameScene(this);
 	Enemy::SetPlayer(player.get());
 	Enemy::SetBulletModel(modelSphere.get());
+	//敵配置スクリプトの読み込み
+	LoadEnemySetData();
 
 	//天球生成
 	objSkydome.reset(Skydome::Create(modelSkydome.get()));
+
+	//回復アイテムに必要な情報をセット
+	HealingItem::SetPlayer(player.get());
+
+	std::unique_ptr<HealingItem> healingItem;
+	healingItem.reset(HealingItem::Create(modelSphere.get(), {0, 0, 35}));
+	healingItems.push_back(std::move(healingItem));
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(railCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
-
-	//敵配置スクリプトの読み込み
-	LoadEnemySetData();
 }
 
 void GameScene::Update()
@@ -119,6 +125,11 @@ void GameScene::Update()
 		return bullet->GetIsDead();
 		});
 
+	//死亡した回復アイテムの削除
+	healingItems.remove_if([](std::unique_ptr<HealingItem>& healingItem) {
+		return healingItem->GetIsDead();
+		});
+
 
 	//敵発生コマンド更新
 	UpdateEnemySetCommands();
@@ -144,6 +155,10 @@ void GameScene::Update()
 	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
 		bullet->Update();
 	}
+	//回復アイテム
+	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
+		healingItem->Update();
+	}
 
 	//衝突判定管理
 	CollisionCheck3d();
@@ -153,7 +168,9 @@ void GameScene::Update()
 	//X座標,Y座標,縮尺を指定して表示
 	//debugText->Print("GAME SCENE", 1000, 50);
 	std::string enemyNum = std::to_string(enemys.size());
-	DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 200, 200);
+	DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 100, 200);
+	std::string healingItemNum = std::to_string(healingItems.size());
+	DebugText::GetInstance()->Print("HealingItemNum : " + healingItemNum, 100, 250);
 	/*std::string playerHP = std::to_string(player->GetHP());
 	if (!player->GetIsDead()) {
 		DebugText::GetInstance()->Print("PlayerHP : " + playerHP, 200, 200);
@@ -182,21 +199,21 @@ void GameScene::Draw()
 	//自機
 	player->Draw();
 	//自機弾
-	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets)
-	{
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
 		bullet->Draw();
 	}
 	//敵
-	for (const std::unique_ptr<Enemy>& enemy : enemys)
-	{
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
 		enemy->Draw();
 	}
 	//敵弾
-	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets)
-	{
+	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
 		bullet->Draw();
 	}
-
+	//回復アイテム
+	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
+		healingItem->Draw();
+	}
 
 	///-------Object3d描画ここまで-------///
 
@@ -247,8 +264,8 @@ void GameScene::CollisionCheck3d()
 
 		//衝突していたら
 		if (isCollision) {
-			//自機のコールバック関数を呼び出す
-			player->OnCollision(posB);
+			//自機のダメージ用コールバック関数を呼び出す
+			player->OnCollisionDamage(posB);
 		}
 	}
 #pragma endregion
@@ -271,8 +288,8 @@ void GameScene::CollisionCheck3d()
 
 		//衝突していたら
 		if (isCollision) {
-			//自機のコールバック関数を呼び出す
-			player->OnCollision(posB);
+			//自機のダメージ用コールバック関数を呼び出す
+			player->OnCollisionDamage(posB);
 			//敵弾のコールバック関数を呼び出す
 			bullet->OnCollision();
 		}
@@ -305,6 +322,32 @@ void GameScene::CollisionCheck3d()
 
 				break;
 			}
+		}
+	}
+#pragma endregion
+
+#pragma region 自機と回復アイテムの衝突判定
+	//自機座標
+	posA = player->GetWorldPos();
+	//自機半径
+	radiusA = player->GetScale().x;
+
+	//自機と全ての回復アイテムの衝突判定
+	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
+		//回復アイテム座標
+		posB = healingItem->GetWorldPos();
+		//回復アイテム半径
+		radiusB = healingItem->GetScale().x;
+
+		//球と球の衝突判定を行う
+		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+
+		//衝突していたら
+		if (isCollision) {
+			//自機の回復用コールバック関数を呼び出す
+			player->OnCollisionHeal();
+			//回復アイテムのコールバック関数を呼び出す
+			healingItem->OnCollision();
 		}
 	}
 #pragma endregion
@@ -505,7 +548,7 @@ void GameScene::UpdateEnemySetCommands()
 				int time = (int)std::atof(word.c_str());
 
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(ComeGoEnemy::Create(modelSphere.get(), { x, y, z }, {comeX, comeY, comeZ}, {goX, goY, goZ}, time));
+				newEnemy.reset(ComeGoEnemy::Create(modelSphere.get(), { x, y, z }, { comeX, comeY, comeZ }, { goX, goY, goZ }, time));
 				enemys.push_back(std::move(newEnemy));
 			}
 		}

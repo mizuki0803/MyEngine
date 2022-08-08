@@ -178,6 +178,7 @@
     <ClCompile Include="gameObject\DemoEnemy.cpp" />
     <ClCompile Include="gameObject\Enemy.cpp" />
     <ClCompile Include="gameObject\EnemyBullet.cpp" />
+    <ClCompile Include="gameObject\HealingItem.cpp" />
     <ClCompile Include="gameObject\HomingBullet.cpp" />
     <ClCompile Include="gameObject\Player.cpp" />
     <ClCompile Include="gameObject\PlayerBullet.cpp" />
@@ -318,6 +319,7 @@
     <ClInclude Include="gameObject\DemoEnemy.h" />
     <ClInclude Include="gameObject\Enemy.h" />
     <ClInclude Include="gameObject\EnemyBullet.h" />
+    <ClInclude Include="gameObject\HealingItem.h" />
     <ClInclude Include="gameObject\HomingBullet.h" />
     <ClInclude Include="gameObject\Player.h" />
     <ClInclude Include="gameObject\PlayerBullet.h" />

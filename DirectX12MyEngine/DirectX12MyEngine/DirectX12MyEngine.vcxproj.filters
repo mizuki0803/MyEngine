@@ -96,6 +96,9 @@
     <Filter Include="ソース ファイル\gameObject\player\HPUI">
       <UniqueIdentifier>{0b329883-8e13-471c-98e9-0f3c5cc050b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\gameObject\item">
+      <UniqueIdentifier>{72877348-8d9b-4216-b491-41efadd351bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -241,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="gameObject\PlayerHPFrame.cpp">
       <Filter>ソース ファイル\gameObject\player\HPUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\HealingItem.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -463,6 +469,9 @@
     </ClInclude>
     <ClInclude Include="gameObject\PlayerHPFrame.h">
       <Filter>ソース ファイル\gameObject\player\HPUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\HealingItem.h">
+      <Filter>ソース ファイル\gameObject\item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

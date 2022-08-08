@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Skydome.h"
+#include "HealingItem.h"
 
 #include <sstream>
 
@@ -131,6 +132,9 @@ private: //メンバ変数
 	int32_t waitTimer = 0;
 	//天球
 	std::unique_ptr<Skydome> objSkydome;
+	//回復アイテム
+	std::list<std::unique_ptr<HealingItem>> healingItems;
+
 
 	//その他変数
 	float soundVol = 0.1f;

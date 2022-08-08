@@ -49,7 +49,12 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	void OnCollision(const Vector3& subjectPos);
+	void OnCollisionDamage(const Vector3& subjectPos);
+
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	void OnCollisionHeal();
 
 	//getter
 	Vector3 GetWorldPos();
@@ -69,6 +74,11 @@ private: //メンバ関数
 	/// ダメージを喰らう
 	/// </summary>
 	void Damage();
+
+	/// <summary>
+	/// 回復
+	/// </summary>
+	void Heal();
 
 	/// <summary>
 	/// 回転

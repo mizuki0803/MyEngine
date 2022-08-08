@@ -29,6 +29,8 @@ public: //静的メンバ関数
 	static void SetGameScene(GameScene* gameScene) { Enemy::gameScene = gameScene; }
 	static void SetBulletModel(ObjModel* model) { Enemy::bulletModel = model; }
 
+public: //メンバ関数
+
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
