@@ -172,6 +172,7 @@
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="collision\CollisionShape.cpp" />
     <ClCompile Include="effect\Easing.cpp" />
+    <ClCompile Include="gameObject\Boss.cpp" />
     <ClCompile Include="gameObject\CannonEnemy.cpp" />
     <ClCompile Include="gameObject\CircularEnemy.cpp" />
     <ClCompile Include="gameObject\ComeGoEnemy.cpp" />
@@ -313,6 +314,7 @@
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionShape.h" />
     <ClInclude Include="effect\Easing.h" />
+    <ClInclude Include="gameObject\Boss.h" />
     <ClInclude Include="gameObject\CannonEnemy.h" />
     <ClInclude Include="gameObject\CircularEnemy.h" />
     <ClInclude Include="gameObject\ComeGoEnemy.h" />

@@ -2,8 +2,6 @@
 #include "Input.h"
 #include "Player.h"
 
-Player* RailCamera::player = nullptr;
-
 void RailCamera::Initialize()
 {
 	//初期座標を設定
@@ -56,10 +54,6 @@ void RailCamera::Update()
 	Vector3 baseUp(0, 1, 0);
 	up = MatrixTransformDirection(baseUp, matWorld);
 
-	//自機からカメラシェイクを要求されていたらカメラシェイクを開始する
-	if (player->GetIsCameraShake()) {
-		ShakeStart();
-	}
 	//シェイク状態ならカメラをシェイクさせる
 	if (isShake) {
 		Shake();
@@ -68,6 +62,14 @@ void RailCamera::Update()
 	//ビュー行列と射影行列の更新
 	UpdateMatView();
 	UpdateMatProjection();
+}
+
+void RailCamera::ShakeStart()
+{
+	//シェイクタイマーをリセット
+	shakeTimer = 0;
+	//シェイク状態にする
+	isShake = true;
 }
 
 void RailCamera::Rotate()
@@ -81,12 +83,16 @@ void RailCamera::Rotate()
 void RailCamera::Move()
 {
 	//移動速度
-	Vector3 velocity(0, 0, 0.1f);
+	Vector3 velocity;
 	//カメラが傾いている角度に移動させる
 	const float moveSpeed = 1.2f;
 	const Vector2 rotLimit = Player::GetRotLimit();
 	velocity.x = moveSpeed * (rotation.y / rotLimit.y);
 	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
+
+	//前進する場合はZ方向に移動
+	if (isAdvance) { velocity.z = 0.1f; }
+	//移動
 	position += velocity;
 
 	//移動限界から出ないようにする
@@ -104,8 +110,9 @@ void RailCamera::Knockback()
 	Vector3 velocity = player->GetKnockbackVel();
 	velocity *= speed;
 
-	//z方向の移動は通常
-	velocity.z = 0.1f;
+	//前進する場合はZ方向に移動
+	if (isAdvance) { velocity.z = 0.1f; }
+	//移動
 	position += velocity;
 
 	//移動限界から出ないようにする
@@ -114,17 +121,6 @@ void RailCamera::Knockback()
 	position.x = min(position.x, +moveLimit.x);
 	position.y = max(position.y, -moveLimit.y);
 	position.y = min(position.y, +moveLimit.y);
-}
-
-void RailCamera::ShakeStart()
-{
-	//シェイクタイマーをリセット
-	shakeTimer = 0;
-	//シェイク状態にする
-	isShake = true;
-
-	//自機のカメラシェイク要求を終了させる
-	player->SetIsCameraShake(false);
 }
 
 void RailCamera::Shake()

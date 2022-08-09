@@ -10,14 +10,6 @@ class Player;
 /// </summary>
 class RailCamera : public Camera
 {
-public: //静的メンバ関数
-	/// <summary>
-	/// 自機をセット
-	/// </summary>
-	/// <param name="player">自機</param>
-	static void SetPlayer(Player* player) { RailCamera::player = player; }
-
-
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
@@ -28,6 +20,15 @@ public: //メンバ関数
 	/// 更新
 	/// </summary>
 	void Update() override;
+
+	/// <summary>
+	/// シェイク開始
+	/// </summary>
+	void ShakeStart();
+
+	//setter
+	void SetPlayer(Player* player) { this->player = player; }
+	void SetIsAdvance(const bool isAdvance) { this->isAdvance = isAdvance; }
 
 private: //メンバ関数
 	/// <summary>
@@ -46,24 +47,19 @@ private: //メンバ関数
 	void Knockback();
 
 	/// <summary>
-	/// シェイク開始
-	/// </summary>
-	void ShakeStart();
-
-	/// <summary>
 	/// シェイク
 	/// </summary>
 	void Shake();
 
-private: //静的メンバ変数
-	//プレイヤー自機
-	static Player* player;
-
 private: //メンバ変数
+	//プレイヤー自機
+	Player* player = nullptr;
 	//回転
 	Vector3 rotation = { 0, 0, 0 };
 	//座標
 	Vector3 position = { 0, 0, 0 };
+	//前進するか
+	bool isAdvance = true;
 	//シェイクするか
 	bool isShake = false;
 	//カメラシェイク用タイマー

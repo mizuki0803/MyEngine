@@ -60,14 +60,10 @@ public: //メンバ関数
 	Vector3 GetWorldPos();
 	const int GetHP() { return HP; }
 	const bool GetIsDamage() { return isDamage; }
-	const bool GetIsCameraShake() { return isCameraShake; }
 	const bool GetIsDead() { return isDead; }
 	const Vector3& GetKnockbackVel() { return knockbackVel; }
 	Reticle* GetReticle() { return reticle2.get(); }
 	const bool GetIsChargeShotMode() { return isChargeShotMode; }
-
-	//setter
-	void SetIsCameraShake(const bool isCameraShake) { this->isCameraShake = isCameraShake; }
 
 private: //メンバ関数
 	/// <summary>
@@ -130,8 +126,6 @@ private: //メンバ変数
 	int HP = maxHP;
 	//ダメージフラグ
 	bool isDamage = false;
-	//カメラシェイク要求フラグ
-	bool isCameraShake = false;
 	//ノックバック用タイマー
 	int32_t knockbackTimer = 0;
 	//ノックバック方向

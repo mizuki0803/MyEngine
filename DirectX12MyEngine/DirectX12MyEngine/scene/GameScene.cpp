@@ -62,7 +62,7 @@ void GameScene::Initialize()
 	player->SetIsCameraFollow(true);
 
 	//レールカメラに自機のポインタをセット
-	RailCamera::SetPlayer(player.get());
+	railCamera->SetPlayer(player.get());
 
 	//全敵に必要な情報をセット
 	Enemy::SetGameScene(this);
@@ -71,6 +71,7 @@ void GameScene::Initialize()
 	//敵配置スクリプトの読み込み
 	LoadEnemySetData();
 
+
 	//天球生成
 	objSkydome.reset(Skydome::Create(modelSkydome.get()));
 
@@ -78,7 +79,7 @@ void GameScene::Initialize()
 	HealingItem::SetPlayer(player.get());
 
 	std::unique_ptr<HealingItem> healingItem;
-	healingItem.reset(HealingItem::Create(modelSphere.get(), {0, 0, 35}));
+	healingItem.reset(HealingItem::Create(modelSphere.get(), { 0, 0, 35 }));
 	healingItems.push_back(std::move(healingItem));
 
 	//objオブジェクトにカメラをセット
@@ -134,6 +135,9 @@ void GameScene::Update()
 	//敵発生コマンド更新
 	UpdateEnemySetCommands();
 
+	//ボスバトル開始判定処理
+	BossBattleStart();
+
 	//カメラ更新
 	normalCamera->Update();
 	railCamera->Update();
@@ -154,6 +158,10 @@ void GameScene::Update()
 	//敵弾
 	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
 		bullet->Update();
+	}
+	//ボス
+	if (boss) {
+		boss->Update();
 	}
 	//回復アイテム
 	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
@@ -209,6 +217,10 @@ void GameScene::Draw()
 	//敵弾
 	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
 		bullet->Draw();
+	}
+	//ボス
+	if (boss) {
+		boss->Draw();
 	}
 	//回復アイテム
 	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
@@ -266,6 +278,8 @@ void GameScene::CollisionCheck3d()
 		if (isCollision) {
 			//自機のダメージ用コールバック関数を呼び出す
 			player->OnCollisionDamage(posB);
+			//カメラをシェイクさせる
+			railCamera->ShakeStart();
 		}
 	}
 #pragma endregion
@@ -292,6 +306,8 @@ void GameScene::CollisionCheck3d()
 			player->OnCollisionDamage(posB);
 			//敵弾のコールバック関数を呼び出す
 			bullet->OnCollision();
+			//カメラをシェイクさせる
+			railCamera->ShakeStart();
 		}
 	}
 #pragma endregion
@@ -568,4 +584,25 @@ void GameScene::UpdateEnemySetCommands()
 			break;
 		}
 	}
+}
+
+void GameScene::BossBattleStart()
+{
+	//既にボスバトルなら抜ける
+	if (isBossBattle) { return; }
+
+	//自機がボスバトル開始とする座標まで進んだら開始
+	const float isBossBattleStartPos = 250;
+	const bool isBossBattleStart = player->GetWorldPos().z >= isBossBattleStartPos;
+	if (!isBossBattleStart) { return; }
+
+	//ボス生成
+	const Vector3 bossPos = { 0, 100, 330 };
+	boss.reset(Boss::Create(modelSphere.get(), bossPos));
+
+	//レールカメラの前進を止める
+	railCamera->SetIsAdvance(false);
+
+	//ボスバトル状態にする
+	isBossBattle = true;
 }

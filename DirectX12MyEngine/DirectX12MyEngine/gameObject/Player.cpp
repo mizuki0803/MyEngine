@@ -112,9 +112,6 @@ void Player::OnCollisionDamage(const Vector3& subjectPos)
 
 	//ダメージを喰らったのでHPバーの長さを変更する
 	hpBar->SetChangeLength(HP);
-
-	//カメラをシェイクを要求する
-	isCameraShake = true;
 }
 
 void Player::OnCollisionHeal()
@@ -175,7 +172,7 @@ void Player::Rotate()
 	//回転速度
 	const float rotSpeed = 1.0f;
 	//角度修正速度
-	const float backSpeed = rotSpeed / 2.0f;
+	const float backSpeed = rotSpeed / 1.5f;
 	Vector3 rot = { 0, 0, 0 };
 
 

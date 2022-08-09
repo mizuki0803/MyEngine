@@ -10,6 +10,7 @@
 #include "Collision.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Boss.h"
 #include "Skydome.h"
 #include "HealingItem.h"
 
@@ -78,11 +79,16 @@ public: //メンバ関数
 	/// </summary>
 	void UpdateEnemySetCommands();
 
+	/// <summary>
+	/// ボスバトル開始判定処理
+	/// </summary>
+	void BossBattleStart();
+
 private: //メンバ変数
 	//カメラ
 	std::unique_ptr<Camera> normalCamera;
 	//レールカメラ
-	std::unique_ptr<Camera> railCamera;
+	std::unique_ptr<RailCamera> railCamera;
 
 	//ライト
 	std::unique_ptr<LightGroup> lightGroup;
@@ -126,6 +132,10 @@ private: //メンバ変数
 	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
 	//敵発生コマンド
 	std::stringstream enemySetCommands;
+	//ボス
+	std::unique_ptr<Boss> boss;
+	//ボス戦中か
+	bool isBossBattle = false;
 	//待機中か
 	bool isWait = false;
 	//待機タイマー
