@@ -95,6 +95,16 @@ void GameScene::Update()
 	//デバッグテキストのインスタンスを取得
 	DebugText* debugText = DebugText::GetInstance();
 
+	//死亡した自機弾の削除前処理
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//死亡していなければ飛ばす
+		if (!bullet->GetIsDead()) { continue; }
+
+		//レティクルがロックオン中だった場合、ホーミング弾がロックオン以外の敵に当たってしまう可能性もあるのでロックオン解除しておく
+		if (bullet->GetBulletType() == PlayerBullet::BulletType::Homing) {
+			player->GetReticle()->GetReticle2D()->UnlockonEnemy();
+		}
+	}
 	//死亡した自機弾の削除
 	playerBullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
 		return bullet->GetIsDead();
@@ -191,7 +201,7 @@ void GameScene::Update()
 	if (input->TriggerKey(DIK_RETURN))
 	{
 		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		SceneManager::GetInstance()->ChangeScene("GAME");
 	}
 }
 
@@ -598,7 +608,7 @@ void GameScene::BossBattleStart()
 
 	//ボス生成
 	const Vector3 bossPos = { 0, 100, 330 };
-	boss.reset(Boss::Create(modelSphere.get(), bossPos));
+	boss.reset(Boss::Create(modelSphere.get(), modelFighter.get(), bossPos));
 
 	//レールカメラの前進を止める
 	railCamera->SetIsAdvance(false);

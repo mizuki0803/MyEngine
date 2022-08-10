@@ -19,6 +19,9 @@ StraightBullet* StraightBullet::Create(ObjModel* model, const Vector3& position,
 	assert(model);
 	straightBullet->model = model;
 
+	//弾の種類をセット
+	straightBullet->bulletType = BulletType::Straight;
+
 	//座標をセット
 	straightBullet->position = position;
 

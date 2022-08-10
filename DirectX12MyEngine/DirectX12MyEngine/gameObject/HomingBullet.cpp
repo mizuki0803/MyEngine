@@ -21,6 +21,9 @@ HomingBullet* HomingBullet::Create(ObjModel* model, const Vector3& position, con
 	assert(model);
 	homingBullet->model = model;
 
+	//弾の種類をセット
+	homingBullet->bulletType = BulletType::Homing;
+
 	//座標をセット
 	homingBullet->position = position;
 

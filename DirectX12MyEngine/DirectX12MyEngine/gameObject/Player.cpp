@@ -36,8 +36,7 @@ bool Player::Initialize()
 	scale = { 0.5f, 0.5f, 0.5f };
 
 	//3Dオブジェクトの初期化
-	if (!ObjObject3d::Initialize())
-	{
+	if (!ObjObject3d::Initialize()) {
 		return false;
 	}
 
@@ -45,7 +44,7 @@ bool Player::Initialize()
 	reticle.reset(Reticle::Create(1, 15.0f, { 100, 100 }));
 	reticle2.reset(Reticle::Create(1, 25.0f, { 50, 50 }));
 
-	
+
 	//HPバー生成
 	const Vector2 hpBarPosition = { 20, 20 };
 	hpBar.reset(PlayerHPBar::Create(2, hpBarPosition, maxHP));
