@@ -47,6 +47,8 @@ void GameScene::Initialize()
 	spriteCommon->LoadTexture(1, "reticle.png");
 	spriteCommon->LoadTexture(2, "HPGaugeIn.png");
 	spriteCommon->LoadTexture(3, "HPGaugeOut.png");
+	spriteCommon->LoadTexture(4, "bossHPGaugeIn.png");
+	spriteCommon->LoadTexture(5, "bossHPGaugeOut.png");
 
 
 	//objからモデルデータを読み込む
@@ -244,7 +246,13 @@ void GameScene::Draw()
 	SpriteCommon::GetInstance()->DrawPrev();
 	///-------スプライト描画ここから-------///
 
+	//自機のUI描画
 	player->DrawUI();
+
+	//ボスのUI描画
+	if (boss) {
+		boss->DrawUI();
+	}
 
 
 	///-------スプライト描画ここまで-------///

@@ -1,6 +1,8 @@
 #pragma once
 #include "BossBody.h"
 #include "BossHead.h"
+#include "BossHPBar.h"
+#include "BossHPFrame.h"
 
 /// <summary>
 /// ボス
@@ -37,11 +39,20 @@ public: //メンバ関数
 	//描画
 	void Draw();
 
+	/// <summary>
+	/// UI描画
+	/// </summary>
+	void DrawUI();
+
 private: //メンバ関数
 	/// <summary>
 	/// 行動
 	/// </summary>
 	void Action();
+
+private: //静的メンバ変数
+	//最大体力
+	static const int maxHP = 100;
 
 protected: //メンバ変数
 	//体
@@ -55,7 +66,11 @@ protected: //メンバ変数
 	//降下する時間タイマー
 	int32_t fallTimer = 0;
 	//体力
-	int HP = 1;
+	int HP = maxHP;
+	//HPバー
+	std::unique_ptr<BossHPBar> hpBar;
+	//HPバーフレーム
+	std::unique_ptr<BossHPFrame> hpFrame;
 	//死亡フラグ
 	bool isDead = false;
 };

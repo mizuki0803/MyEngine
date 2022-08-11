@@ -124,6 +124,10 @@ private: //静的メンバ変数
 private: //メンバ変数
 	//体力
 	int HP = maxHP;
+	//HPバー
+	std::unique_ptr<PlayerHPBar> hpBar;
+	//HPバーフレーム
+	std::unique_ptr<PlayerHPFrame> hpFrame;
 	//ダメージフラグ
 	bool isDamage = false;
 	//ノックバック用タイマー
@@ -137,10 +141,6 @@ private: //メンバ変数
 	//レティクル
 	std::unique_ptr<Reticle> reticle;
 	std::unique_ptr<Reticle> reticle2;
-	//HPバー
-	std::unique_ptr<PlayerHPBar> hpBar;
-	//HPバーフレーム
-	std::unique_ptr<PlayerHPFrame> hpFrame;
 	//直進弾の発射待機中か
 	bool isStraightShotWait = false;
 	//直進弾の発射待機タイマー

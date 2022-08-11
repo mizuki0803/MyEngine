@@ -93,14 +93,17 @@
     <Filter Include="ソース ファイル\gameObject\player\reticle">
       <UniqueIdentifier>{611ab12d-7325-4303-8d97-261286818635}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\gameObject\player\HPUI">
-      <UniqueIdentifier>{0b329883-8e13-471c-98e9-0f3c5cc050b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\gameObject\item">
       <UniqueIdentifier>{72877348-8d9b-4216-b491-41efadd351bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\gameObject\boss">
       <UniqueIdentifier>{91203ab6-acd7-4054-abd2-437daabf050b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameObject\player\playerHPUI">
+      <UniqueIdentifier>{0b329883-8e13-471c-98e9-0f3c5cc050b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameObject\boss\bossHPUI">
+      <UniqueIdentifier>{70e1b55e-225f-4a10-9986-a9f713668e3c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -240,13 +243,13 @@
       <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\PlayerHPBar.cpp">
-      <Filter>ソース ファイル\gameObject\player\HPUI</Filter>
+      <Filter>ソース ファイル\gameObject\player\playerHPUI</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\UpDownEnemy.cpp">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\PlayerHPFrame.cpp">
-      <Filter>ソース ファイル\gameObject\player\HPUI</Filter>
+      <Filter>ソース ファイル\gameObject\player\playerHPUI</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\HealingItem.cpp">
       <Filter>ソース ファイル\gameObject\item</Filter>
@@ -259,6 +262,12 @@
     </ClCompile>
     <ClCompile Include="gameObject\BossHead.cpp">
       <Filter>ソース ファイル\gameObject\boss</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\BossHPFrame.cpp">
+      <Filter>ソース ファイル\gameObject\boss\bossHPUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\BossHPBar.cpp">
+      <Filter>ソース ファイル\gameObject\boss\bossHPUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -474,13 +483,13 @@
       <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\PlayerHPBar.h">
-      <Filter>ソース ファイル\gameObject\player\HPUI</Filter>
+      <Filter>ソース ファイル\gameObject\player\playerHPUI</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\UpDownEnemy.h">
       <Filter>ソース ファイル\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\PlayerHPFrame.h">
-      <Filter>ソース ファイル\gameObject\player\HPUI</Filter>
+      <Filter>ソース ファイル\gameObject\player\playerHPUI</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\HealingItem.h">
       <Filter>ソース ファイル\gameObject\item</Filter>
@@ -493,6 +502,12 @@
     </ClInclude>
     <ClInclude Include="gameObject\BossHead.h">
       <Filter>ソース ファイル\gameObject\boss</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\BossHPFrame.h">
+      <Filter>ソース ファイル\gameObject\boss\bossHPUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\BossHPBar.h">
+      <Filter>ソース ファイル\gameObject\boss\bossHPUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

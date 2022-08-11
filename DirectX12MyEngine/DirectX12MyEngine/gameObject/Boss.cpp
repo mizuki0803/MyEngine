@@ -29,6 +29,15 @@ bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& p
 	//頭生成
 	bossHead.reset(BossHead::Create(headModel, bossBody.get()));
 
+
+	//HPバー生成
+	const Vector2 hpBarPosition = { 20, 120 };
+	hpBar.reset(BossHPBar::Create(4, hpBarPosition, maxHP));
+	//HPバーフレーム生成
+	const float posDiff = 3.0f;	//HPバーの座標との差分
+	const Vector2 hpFramePosition = { hpBarPosition.x - posDiff, hpBarPosition.y - posDiff };
+	hpFrame.reset(BossHPFrame::Create(5, hpFramePosition));
+
 	return true;
 }
 
@@ -40,6 +49,11 @@ void Boss::Update()
 	//更新
 	bossBody->Update();//体
 	bossHead->Update();//頭
+
+	//HPバー更新
+	hpBar->Update();
+	//HPバーフレーム更新
+	hpFrame->Update();
 }
 
 void Boss::Draw()
@@ -47,6 +61,14 @@ void Boss::Draw()
 	//描画
 	bossBody->Draw();//体
 	bossHead->Draw();//頭
+}
+
+void Boss::DrawUI()
+{
+	//HPバーフレーム描画
+	hpFrame->Draw();
+	//HPバー描画
+	hpBar->Draw();
 }
 
 void Boss::Action()
@@ -97,6 +119,18 @@ void Boss::Action()
 		}
 		bossBody->SetPosition(posBody);
 		bossHead->SetPosition(posHead);
+
+
+		if (input->TriggerKey(DIK_Q)) {
+			HP--;
+			//HPは0以下にならない
+			if (HP <= 0) {
+				
+				HP = 0;
+			}
+
+			hpBar->ChangeLength(HP);
+		}
 
 		break;
 	}
