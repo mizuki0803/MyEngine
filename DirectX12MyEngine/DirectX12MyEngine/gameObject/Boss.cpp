@@ -1,6 +1,7 @@
 #include "Boss.h"
 #include "Easing.h"
 #include "Input.h"
+#include "DebugText.h"
 
 Boss* Boss::Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position)
 {
@@ -38,6 +39,10 @@ bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& p
 	const Vector2 hpFramePosition = { hpBarPosition.x - posDiff, hpBarPosition.y - posDiff };
 	hpFrame.reset(BossHPFrame::Create(5, hpFramePosition));
 
+	//ビヘイビアツリー生成
+	behaviorTree.reset(BossBehaviorTree::Create(this));
+
+
 	return true;
 }
 
@@ -45,6 +50,9 @@ void Boss::Update()
 {
 	//行動
 	Action();
+
+	//ビヘイビアツリーによる行動遷移
+	behaviorTree->Root();
 
 	//更新
 	bossBody->Update();//体
@@ -69,6 +77,32 @@ void Boss::DrawUI()
 	hpFrame->Draw();
 	//HPバー描画
 	hpBar->Draw();
+}
+
+bool Boss::Otamesi()
+{
+	//デバッグ用キー操作
+	Input* input = Input::GetInstance();
+	if (input->PushKey(DIK_1)) {
+		DebugText::GetInstance()->Print("1push", 300, 300);
+		return true;
+	}
+
+	DebugText::GetInstance()->Print("1noPush", 300, 300);
+	return false;
+}
+
+bool Boss::Otamesi2()
+{
+	//デバッグ用キー操作
+	Input* input = Input::GetInstance();
+	if (input->PushKey(DIK_2)) {
+		DebugText::GetInstance()->Print("2push", 400, 300);
+		return true;
+	}
+
+	DebugText::GetInstance()->Print("2noPush", 400, 300);
+	return false;
 }
 
 void Boss::Action()

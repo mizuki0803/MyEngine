@@ -3,6 +3,8 @@
 #include "BossHead.h"
 #include "BossHPBar.h"
 #include "BossHPFrame.h"
+#include "BossBehaviorTree.h"
+
 
 /// <summary>
 /// ボス
@@ -36,13 +38,27 @@ public: //メンバ関数
 	/// </summary>
 	void Update();
 
-	//描画
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
 	/// <summary>
 	/// UI描画
 	/// </summary>
 	void DrawUI();
+
+	/// <summary>
+	/// お試し用
+	/// </summary>
+	/// <returns></returns>
+	static bool Otamesi();
+
+	/// <summary>
+	/// お試し用
+	/// </summary>
+	/// <returns></returns>
+	static bool Otamesi2();
 
 private: //メンバ関数
 	/// <summary>
@@ -55,6 +71,8 @@ private: //静的メンバ変数
 	static const int maxHP = 100;
 
 protected: //メンバ変数
+	//ボスの行動遷移ビヘイビアツリー
+	std::unique_ptr<BossBehaviorTree> behaviorTree;
 	//体
 	std::unique_ptr<BossBody> bossBody;
 	//頭

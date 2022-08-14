@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;$(ProjectDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;$(ProjectDir)math;$(ProjectDir)behaviorTree;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,7 +139,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;$(ProjectDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;$(ProjectDir)math;$(ProjectDir)behaviorTree;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -167,6 +167,9 @@
     <ClCompile Include="base\SceneFactory.cpp" />
     <ClCompile Include="base\SceneManager.cpp" />
     <ClCompile Include="base\WindowApp.cpp" />
+    <ClCompile Include="behaviorTree\BossBehaviorTree.cpp" />
+    <ClCompile Include="behaviorTree\Selector.cpp" />
+    <ClCompile Include="behaviorTree\Sequencer.cpp" />
     <ClCompile Include="camera\Camera.cpp" />
     <ClCompile Include="camera\RailCamera.cpp" />
     <ClCompile Include="collision\Collision.cpp" />
@@ -313,6 +316,9 @@
     <ClInclude Include="base\SceneFactory.h" />
     <ClInclude Include="base\SceneManager.h" />
     <ClInclude Include="base\WindowApp.h" />
+    <ClInclude Include="behaviorTree\BossBehaviorTree.h" />
+    <ClInclude Include="behaviorTree\Selector.h" />
+    <ClInclude Include="behaviorTree\Sequencer.h" />
     <ClInclude Include="camera\Camera.h" />
     <ClInclude Include="camera\RailCamera.h" />
     <ClInclude Include="collision\Collision.h" />
