@@ -16,7 +16,7 @@ bool Selector::Select()
 {
 	//true‚ª‹A‚Á‚Ä‚«‚½‚ç‘¦I—¹
 	for (int i = 0; i < (signed)nodes.size(); i++) {
-		if (nodes[i]()) {
+		if ((*nodes[i])()) {
 			return true;
 		}
 	}

@@ -1,6 +1,11 @@
 #include "UpDownEnemy.h"
 #include "Player.h"
 
+void (UpDownEnemy::* UpDownEnemy::actionFuncTable[])() = {
+	&UpDownEnemy::UpBrake,
+	&UpDownEnemy::DownBrake,
+};
+
 UpDownEnemy* UpDownEnemy::Create(ObjModel* model, const Vector3& position)
 {
 	//敵のインスタンスを生成
@@ -29,7 +34,7 @@ UpDownEnemy* UpDownEnemy::Create(ObjModel* model, const Vector3& position)
 void UpDownEnemy::Update()
 {
 	//行動
-	Action();
+	(this->*actionFuncTable[static_cast<size_t>(phase)])();
 
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
@@ -38,40 +43,32 @@ void UpDownEnemy::Update()
 	FrontOfScreenDelete();
 }
 
-void UpDownEnemy::Action()
+void UpDownEnemy::UpBrake()
 {
-	switch (phase)
-	{
-	case Phase::UpBrake:
-	{
-		//上昇を抑える
-		Vector3 accel = { 0, -0.01f, 0 };
-		velocity += accel;
-		position += velocity;
+	//上昇を抑える
+	Vector3 accel = { 0, -0.01f, 0 };
+	velocity += accel;
+	position += velocity;
 
 
-		//指定した速度まで下降状態になったら下降にブレーキをかける
-		const float changePhaseVelY = -0.5f;
-		if (velocity.y <= changePhaseVelY) {
-			phase = Phase::DownBrake;
-		}
+	//指定した速度まで下降状態になったら下降にブレーキをかける
+	const float changePhaseVelY = -0.5f;
+	if (velocity.y <= changePhaseVelY) {
+		phase = Phase::DownBrake;
 	}
-	break;
+}
 
-	case Phase::DownBrake:
-	{
-		//下降を抑える
-		Vector3 accel = { 0, 0.01f, 0 };
-		velocity += accel;
-		position += velocity;
+void UpDownEnemy::DownBrake()
+{
+	//下降を抑える
+	Vector3 accel = { 0, 0.01f, 0 };
+	velocity += accel;
+	position += velocity;
 
 
-		//指定した速度まで上昇状態になったら上昇にブレーキをかける
-		const float changePhaseVelY = 0.5f;
-		if (velocity.y >= changePhaseVelY) {
-			phase = Phase::UpBrake;
-		}
-	}
-	break;
+	//指定した速度まで上昇状態になったら上昇にブレーキをかける
+	const float changePhaseVelY = 0.5f;
+	if (velocity.y >= changePhaseVelY) {
+		phase = Phase::UpBrake;
 	}
 }

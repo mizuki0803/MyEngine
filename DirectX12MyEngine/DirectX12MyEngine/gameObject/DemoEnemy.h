@@ -32,21 +32,23 @@ public: //メンバ関数
 	/// </summary>
 	void Update() override;
 
-	/// <summary>
-	/// 前進フェーズ初期化
-	/// </summary>
-	void PreviousPhaseInit();
-
 
 private: //メンバ関数
 	/// <summary>
-	/// 移動
+	/// 前進
 	/// </summary>
-	void Move();
+	void Previous();
+
+	/// <summary>
+	/// 後退
+	/// </summary>
+	void Back();
 
 private: //静的メンバ変数
 	//発射間隔
 	static const int fireInterval = 60;
+	//行動遷移
+	static void (DemoEnemy::* actionFuncTable[])();
 
 private: //メンバ変数
 	//速度

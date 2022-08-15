@@ -29,13 +29,20 @@ public: //メンバ関数
 
 private: //メンバ関数
 	/// <summary>
-	/// 行動
+	/// 上昇にブレーキをかける
 	/// </summary>
-	void Action();
+	void UpBrake();
+
+	/// <summary>
+	/// 下降にブレーキをかける
+	/// </summary>
+	void DownBrake();
 
 private: //静的メンバ変数
 	//発射間隔
 	static const int fireInterval = 180;
+	//行動遷移
+	static void (UpDownEnemy::* actionFuncTable[])();
 
 private: //メンバ変数
 	//行動

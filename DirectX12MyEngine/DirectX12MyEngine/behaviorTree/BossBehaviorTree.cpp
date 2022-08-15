@@ -25,8 +25,8 @@ bool BossBehaviorTree::Initialize(Boss* boss)
 {
 	//s“®‘JˆÚƒcƒŠ[‚ğì‚é
 	selector.reset(Selector::Create());
-	selector->AddNode(boss->Otamesi);
-	selector->AddNode(boss->Otamesi2);
+	//selector->AddNode(boss->Otamesi);
+	//selector->AddNode(boss->Otamesi2);
 
 
 	return true;

@@ -10,7 +10,7 @@ public:
 	//行動フェーズ
 	enum class Phase {
 		Fall,	//降下
-		Shot,	//射撃
+		Attack,	//攻撃
 	};
 
 public: //静的メンバ関数
@@ -29,13 +29,20 @@ public: //メンバ関数
 
 private: //メンバ関数
 	/// <summary>
-	/// 行動
+	/// 降下
 	/// </summary>
-	void Action();
+	void Fall();
+
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
 
 private: //静的メンバ変数
 	//発射間隔
 	static const int fireInterval = 180;
+	//行動遷移
+	static void (FallEnemy::* actionFuncTable[])();
 
 private: //メンバ変数
 	//行動

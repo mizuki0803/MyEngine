@@ -5,7 +5,6 @@
 #include "BossHPFrame.h"
 #include "BossBehaviorTree.h"
 
-
 /// <summary>
 /// ボス
 /// </summary>
@@ -52,23 +51,32 @@ public: //メンバ関数
 	/// お試し用
 	/// </summary>
 	/// <returns></returns>
-	static bool Otamesi();
+	bool Otamesi();
 
 	/// <summary>
 	/// お試し用
 	/// </summary>
 	/// <returns></returns>
-	static bool Otamesi2();
+	bool Otamesi2();
 
 private: //メンバ関数
 	/// <summary>
-	/// 行動
+	/// 降下
 	/// </summary>
-	void Action();
+	void Fall();
+
+	/// <summary>
+	/// 停止
+	/// </summary>
+	void Stay();
 
 private: //静的メンバ変数
 	//最大体力
 	static const int maxHP = 100;
+	//行動遷移
+	static void (Boss::*actionFuncTable[])();
+
+	static bool (Boss::*spFuncTable[])();
 
 protected: //メンバ変数
 	//ボスの行動遷移ビヘイビアツリー

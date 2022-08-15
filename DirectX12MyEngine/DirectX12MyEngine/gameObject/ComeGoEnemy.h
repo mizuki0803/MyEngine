@@ -33,13 +33,25 @@ public: //メンバ関数
 
 private: //メンバ関数
 	/// <summary>
-	/// 行動
+	/// 到着
 	/// </summary>
-	void Action();
+	void Come();
+
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
+
+	/// <summary>
+	/// 出発
+	/// </summary>
+	void Go();
 
 private: //静的メンバ変数
 	//発射間隔
 	static const int fireInterval = 120;
+	//行動遷移
+	static void (ComeGoEnemy::* actionFuncTable[])();
 
 private: //メンバ変数
 	//行動

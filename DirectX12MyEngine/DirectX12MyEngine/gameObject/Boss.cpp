@@ -3,6 +3,16 @@
 #include "Input.h"
 #include "DebugText.h"
 
+void (Boss::* Boss::actionFuncTable[])() = {
+	&Boss::Fall,
+	&Boss::Stay
+};
+
+bool (Boss::* Boss::spFuncTable[])() = {
+	&Boss::Otamesi,
+	&Boss::Otamesi2
+};
+
 Boss* Boss::Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position)
 {
 	//ボスのインスタンスを生成
@@ -40,8 +50,7 @@ bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& p
 	hpFrame.reset(BossHPFrame::Create(5, hpFramePosition));
 
 	//ビヘイビアツリー生成
-	behaviorTree.reset(BossBehaviorTree::Create(this));
-
+	//behaviorTree.reset(BossBehaviorTree::Create(this));
 
 	return true;
 }
@@ -49,10 +58,16 @@ bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& p
 void Boss::Update()
 {
 	//行動
-	Action();
+	(this->*actionFuncTable[static_cast<size_t>(phase)])();
 
 	//ビヘイビアツリーによる行動遷移
-	behaviorTree->Root();
+	//behaviorTree->Root();
+
+
+	for (int i = 0; i < 2; i++) {
+		if ((this->*spFuncTable[i])()) { break; }
+	}
+
 
 	//更新
 	bossBody->Update();//体
@@ -105,67 +120,60 @@ bool Boss::Otamesi2()
 	return false;
 }
 
-void Boss::Action()
+void Boss::Fall()
 {
-	switch (phase)
-	{
-	case Phase::Fall:
-	{
-		//イージングで降下する
-		const float fallTime = 300;
-		fallTimer++;
-		const float time = fallTimer / fallTime;
+	//イージングで降下する
+	const float fallTime = 300;
+	fallTimer++;
+	const float time = fallTimer / fallTime;
 
-		//生成位置から降りたところで停止する
-		Vector3 stayPos = startPos;
-		stayPos.y = 0;
-		bossBody->SetPosition(Easing::Lerp(startPos, stayPos, time)) ;
+	//生成位置から降りたところで停止する
+	Vector3 stayPos = startPos;
+	stayPos.y = 0;
+	bossBody->SetPosition(Easing::Lerp(startPos, stayPos, time));
 
-		//イージングが終了したら次のフェーズへ
-		if (fallTimer >= fallTime) {
-			phase = Phase::Stay;
-		}
+	//イージングが終了したら次のフェーズへ
+	if (fallTimer >= fallTime) {
+		phase = Phase::Stay;
 	}
-	break;
+}
 
-	case Phase::Stay:
-		//デバッグ用キー操作
-		Input* input = Input::GetInstance();
+void Boss::Stay()
+{
+	//デバッグ用キー操作
+	Input* input = Input::GetInstance();
 
-		Vector3 posBody = bossBody->GetPosition();
-		Vector3 posHead = bossHead->GetPosition();
-		const float moveSpeed = 1.0f;
-		if (input->PushKey(DIK_LEFT)) {
-			//posBody.x -= moveSpeed;
-			posHead.x -= moveSpeed;
-		}
-		if (input->PushKey(DIK_RIGHT)) {
-			//posBody.x += moveSpeed;
-			posHead.x += moveSpeed;
-		}
-		if (input->PushKey(DIK_UP)) {
-			//posBody.y += moveSpeed;
-			posHead.y += moveSpeed;
-		}
-		if (input->PushKey(DIK_DOWN)) {
-			//posBody.y -= moveSpeed;
-			posHead.y -= moveSpeed;
-		}
-		bossBody->SetPosition(posBody);
-		bossHead->SetPosition(posHead);
+	Vector3 posBody = bossBody->GetPosition();
+	Vector3 posHead = bossHead->GetPosition();
+	const float moveSpeed = 1.0f;
+	if (input->PushKey(DIK_LEFT)) {
+		//posBody.x -= moveSpeed;
+		posHead.x -= moveSpeed;
+	}
+	if (input->PushKey(DIK_RIGHT)) {
+		//posBody.x += moveSpeed;
+		posHead.x += moveSpeed;
+	}
+	if (input->PushKey(DIK_UP)) {
+		//posBody.y += moveSpeed;
+		posHead.y += moveSpeed;
+	}
+	if (input->PushKey(DIK_DOWN)) {
+		//posBody.y -= moveSpeed;
+		posHead.y -= moveSpeed;
+	}
+	bossBody->SetPosition(posBody);
+	bossHead->SetPosition(posHead);
 
 
-		if (input->TriggerKey(DIK_Q)) {
-			HP--;
-			//HPは0以下にならない
-			if (HP <= 0) {
-				
-				HP = 0;
-			}
+	if (input->TriggerKey(DIK_Q)) {
+		HP--;
+		//HPは0以下にならない
+		if (HP <= 0) {
 
-			hpBar->ChangeLength(HP);
+			HP = 0;
 		}
 
-		break;
+		hpBar->ChangeLength(HP);
 	}
 }

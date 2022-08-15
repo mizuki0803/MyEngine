@@ -1,5 +1,10 @@
 #include "DemoEnemy.h"
 
+void (DemoEnemy::* DemoEnemy::actionFuncTable[])() = {
+	&DemoEnemy::Previous,
+	&DemoEnemy::Back
+};
+
 DemoEnemy* DemoEnemy::Create(ObjModel* model, const Vector3& position, const Vector3& velocity)
 {
 	//敵のインスタンスを生成
@@ -37,15 +42,13 @@ bool DemoEnemy::Initialize()
 		return false;
 	}
 
-	PreviousPhaseInit();
-
 	return true;
 }
 
 void DemoEnemy::Update()
 {
-	//移動
-	Move();
+	//行動
+	(this->*actionFuncTable[static_cast<size_t>(phase)])();
 
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
@@ -54,48 +57,32 @@ void DemoEnemy::Update()
 	FrontOfScreenDelete();
 }
 
-//void DemoEnemy::OnCollision()
-//{
-//}
-
-void DemoEnemy::PreviousPhaseInit()
+void DemoEnemy::Previous()
 {
-	//発射タイマーを初期化
-	fireTimer = fireInterval;
+	//前進する
+	position -= velocity;
+
+	//一定の位置まで前進したら後退
+	if (position.z < 0.0f) {
+		phase = Phase::Back;
+	}
+
+	//発射タイマーカウントダウン
+	--fireTimer;
+	if (fireTimer <= 0) {
+		//弾を発射
+		Fire();
+		//発射タイマーを初期化
+		fireTimer = fireInterval;
+	}
 }
 
-void DemoEnemy::Move()
+void DemoEnemy::Back()
 {
-	switch (phase)
-	{
-	case Phase::Previous:
-	default:
-		//前進する
-		position -= velocity;
-
-		////一定の位置まで前進したら後退
-		//if (position.z < 0.0f) {
-		//	phase = Phase::Back;
-		//}
-
-		////発射タイマーカウントダウン
-		//--fireTimer;
-		//if (fireTimer <= 0) {
-		//	//弾を発射
-		//	Fire();
-		//	//発射タイマーを初期化
-		//	fireTimer = fireInterval;
-		//}
-
-		break;
-	case Phase::Back:
-		//後退する
-		position += velocity;
-		//一定の位置まで後退したら前進
-		if (position.z > 50.0f) {
-			phase = Phase::Previous;
-		}
-
-		break;
+	//後退する
+	position += velocity;
+	//一定の位置まで後退したら前進
+	if (position.z > 50.0f) {
+		phase = Phase::Previous;
 	}
 }

@@ -1,6 +1,11 @@
 #include "FallEnemy.h"
 #include "Easing.h"
 
+void (FallEnemy::* FallEnemy::actionFuncTable[])() = {
+	&FallEnemy::Fall,
+	&FallEnemy::Attack,
+};
+
 FallEnemy* FallEnemy::Create(ObjModel* model, const Vector3& position)
 {
 	//敵のインスタンスを生成
@@ -32,7 +37,7 @@ FallEnemy* FallEnemy::Create(ObjModel* model, const Vector3& position)
 void FallEnemy::Update()
 {
 	//行動
-	Action();
+	(this->*actionFuncTable[static_cast<size_t>(phase)])();
 
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
@@ -41,38 +46,31 @@ void FallEnemy::Update()
 	FrontOfScreenDelete();	
 }
 
-void FallEnemy::Action()
+void FallEnemy::Fall()
 {
-	switch (phase)
-	{
-	case Phase::Fall:
-	{
-		//イージングで降下する
-		const float fallTime = 60;
-		fallTimer++;
-		const float time = fallTimer / fallTime;
+	//イージングで降下する
+	const float fallTime = 60;
+	fallTimer++;
+	const float time = fallTimer / fallTime;
 
-		//生成位置から100降りたところで停止する
-		const float stayPosY = startPos.y - 100;
-		position.y = Easing::OutQuart(startPos.y, stayPosY, time);
+	//生成位置から100降りたところで停止する
+	const float stayPosY = startPos.y - 100;
+	position.y = Easing::OutQuart(startPos.y, stayPosY, time);
 
-		//イージングが終了したら次のフェーズへ
-		if (fallTimer >= fallTime) {
-			phase = Phase::Shot;
-		}
+	//イージングが終了したら次のフェーズへ
+	if (fallTimer >= fallTime) {
+		phase = Phase::Attack;
 	}
-	break;
+}
 
-	case Phase::Shot:
-		//発射タイマーカウントダウン
-		--fireTimer;
-		if (fireTimer <= 0) {
-			//弾を発射
-			Fire();
-			//発射タイマーを初期化
-			fireTimer = fireInterval;
-		}
-
-		break;
+void FallEnemy::Attack()
+{
+	//発射タイマーカウントダウン
+	--fireTimer;
+	if (fireTimer <= 0) {
+		//弾を発射
+		Fire();
+		//発射タイマーを初期化
+		fireTimer = fireInterval;
 	}
 }
