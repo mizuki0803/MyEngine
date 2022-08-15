@@ -59,6 +59,18 @@ public: //メンバ関数
 	/// <returns></returns>
 	bool Otamesi2();
 
+	/// <summary>
+	/// お試し用
+	/// </summary>
+	/// <returns></returns>
+	bool Otamesi3();
+
+	/// <summary>
+	/// お試し用
+	/// </summary>
+	/// <returns></returns>
+	bool Otamesi4();
+
 private: //メンバ関数
 	/// <summary>
 	/// 降下
@@ -75,8 +87,6 @@ private: //静的メンバ変数
 	static const int maxHP = 100;
 	//行動遷移
 	static void (Boss::*actionFuncTable[])();
-
-	static bool (Boss::*spFuncTable[])();
 
 protected: //メンバ変数
 	//ボスの行動遷移ビヘイビアツリー

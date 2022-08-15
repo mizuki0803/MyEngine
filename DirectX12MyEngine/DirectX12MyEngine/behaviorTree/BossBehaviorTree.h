@@ -10,25 +10,37 @@ class Boss;
 /// </summary>
 class BossBehaviorTree
 {
-public:
+public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
 	/// <returns>ボスの行動遷移ビヘイビアツリー</returns>
 	static BossBehaviorTree* Create(Boss* boss);
 
+public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <returns></returns>
 	bool Initialize(Boss* boss);
 
-
+	/// <summary>
+	/// 行動遷移
+	/// </summary>
 	void Root();
 
+private: //メンバ関数
+	/// <summary>
+	/// 木構造の作成
+	/// </summary>
+	void MakeTree(Boss* boss);
+
 private:
-	//セレクター
-	std::unique_ptr<Selector> selector;
 	//シーケンサー
-	std::unique_ptr<Sequencer> sequencer;
+	std::unique_ptr<Sequencer> topSequencer;
+	//セレクター
+	std::unique_ptr<Selector> selector1or2;
+	//セレクター
+	std::unique_ptr<Selector> selector3or4;
+
 };

@@ -16,7 +16,7 @@ bool Selector::Select()
 {
 	//trueが帰ってきたら即終了
 	for (int i = 0; i < (signed)nodes.size(); i++) {
-		if ((*nodes[i])()) {
+		if ((nodes[i])()) {
 			return true;
 		}
 	}
@@ -24,7 +24,7 @@ bool Selector::Select()
 	return false;
 }
 
-void Selector::AddNode(bool func())
+void Selector::AddNode(std::function<bool()> func)
 {
 	//子ノードリストに登録
 	nodes.push_back(func);

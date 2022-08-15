@@ -8,11 +8,6 @@ void (Boss::* Boss::actionFuncTable[])() = {
 	&Boss::Stay
 };
 
-bool (Boss::* Boss::spFuncTable[])() = {
-	&Boss::Otamesi,
-	&Boss::Otamesi2
-};
-
 Boss* Boss::Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position)
 {
 	//ボスのインスタンスを生成
@@ -50,7 +45,7 @@ bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& p
 	hpFrame.reset(BossHPFrame::Create(5, hpFramePosition));
 
 	//ビヘイビアツリー生成
-	//behaviorTree.reset(BossBehaviorTree::Create(this));
+	behaviorTree.reset(BossBehaviorTree::Create(this));
 
 	return true;
 }
@@ -61,13 +56,7 @@ void Boss::Update()
 	(this->*actionFuncTable[static_cast<size_t>(phase)])();
 
 	//ビヘイビアツリーによる行動遷移
-	//behaviorTree->Root();
-
-
-	for (int i = 0; i < 2; i++) {
-		if ((this->*spFuncTable[i])()) { break; }
-	}
-
+	behaviorTree->Root();
 
 	//更新
 	bossBody->Update();//体
@@ -117,6 +106,32 @@ bool Boss::Otamesi2()
 	}
 
 	DebugText::GetInstance()->Print("2noPush", 400, 300);
+	return false;
+}
+
+bool Boss::Otamesi3()
+{
+	//デバッグ用キー操作
+	Input* input = Input::GetInstance();
+	if (input->PushKey(DIK_3)) {
+		DebugText::GetInstance()->Print("3push", 600, 300);
+		return true;
+	}
+
+	DebugText::GetInstance()->Print("3noPush", 600, 300);
+	return false;
+}
+
+bool Boss::Otamesi4()
+{
+	//デバッグ用キー操作
+	Input* input = Input::GetInstance();
+	if (input->PushKey(DIK_4)) {
+		DebugText::GetInstance()->Print("4push", 700, 300);
+		return true;
+	}
+
+	DebugText::GetInstance()->Print("4noPush", 700, 300);
 	return false;
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <d3dx12.h>
 #include <vector>
+#include <functional>
 
 /// <summary>
 /// シーケンサー
@@ -23,10 +24,9 @@ public:
 	/// 子ノードを追加する
 	/// </summary>
 	/// <param name="func()">関数</param>
-	void AddNode(bool func());
+	void AddNode(std::function<bool()> func);
 
 private:
-	typedef bool (*Func)();
 	//子ノード
-	std::vector<Func> nodes;
+	std::vector<std::function<bool()>> nodes;
 };
