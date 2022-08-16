@@ -36,8 +36,8 @@ private: //メンバ関数
 	void MakeTree(Boss* boss);
 
 private:
-	//シーケンサー
-	std::unique_ptr<Sequencer> topSequencer;
+	//セレクター
+	std::unique_ptr<Selector> topSelector;
 	//セレクター
 	std::unique_ptr<Selector> selector1or2;
 	//セレクター

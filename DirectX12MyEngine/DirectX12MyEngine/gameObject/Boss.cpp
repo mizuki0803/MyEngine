@@ -128,6 +128,12 @@ bool Boss::Otamesi4()
 	Input* input = Input::GetInstance();
 	if (input->PushKey(DIK_4)) {
 		DebugText::GetInstance()->Print("4push", 700, 300);
+
+		Vector3 posHead = bossHead->GetPosition();
+		const float moveSpeed = 0.25f;
+		posHead.y -= moveSpeed;
+		bossHead->SetPosition(posHead);
+
 		return true;
 	}
 

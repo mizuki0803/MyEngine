@@ -24,7 +24,7 @@ BossBehaviorTree* BossBehaviorTree::Create(Boss* boss)
 bool BossBehaviorTree::Initialize(Boss* boss)
 {	
 	//Selector,Sequencerの生成
-	topSequencer.reset(Sequencer::Create());
+	topSelector.reset(Selector::Create());
 	selector1or2.reset(Selector::Create());
 	selector3or4.reset(Selector::Create());
 
@@ -37,8 +37,8 @@ bool BossBehaviorTree::Initialize(Boss* boss)
 
 void BossBehaviorTree::Root()
 {
-	//関数自体をルートノードに見立て、ルートノード直下のSequencerを実行する
-	if (topSequencer->Sequence()) {
+	//関数自体をルートノードに見立て、ルートノード直下のノードを実行する
+	if (topSelector->Select()) {
 		DebugText::GetInstance()->Print("Success", 300, 330);
 	}
 	else {
@@ -51,10 +51,10 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 	//ルートノード直下のSequencer
 	std::function<bool()> onetwo =
 		std::bind(&Selector::Select, selector1or2.get());
-	topSequencer->AddNode(onetwo);
+	topSelector->AddNode(onetwo);
 	std::function<bool()> threefour =
 		std::bind(&Selector::Select, selector3or4.get());
-	topSequencer->AddNode(threefour);
+	topSelector->AddNode(threefour);
 
 
 	std::function<bool()> otamesi =
