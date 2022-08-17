@@ -610,12 +610,12 @@ void GameScene::BossBattleStart()
 	if (isBossBattle) { return; }
 
 	//自機がボスバトル開始とする座標まで進んだら開始
-	const float isBossBattleStartPos = 250;
+	const float isBossBattleStartPos = 5;
 	const bool isBossBattleStart = player->GetWorldPos().z >= isBossBattleStartPos;
 	if (!isBossBattleStart) { return; }
 
 	//ボス生成
-	const Vector3 bossPos = { 0, 100, 320 };
+	const Vector3 bossPos = { 0, 100, 75 };
 	boss.reset(Boss::Create(modelSphere.get(), modelFighter.get(), bossPos));
 
 	//レールカメラの前進を止める

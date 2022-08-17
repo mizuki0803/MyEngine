@@ -30,11 +30,15 @@ Boss* Boss::Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& posi
 
 bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position)
 {
-	//体生成
-	bossBody.reset(BossBody::Create(bodyModel, position));
-	//頭生成
-	bossHead.reset(BossHead::Create(headModel, bossBody.get()));
-
+	//本体生成
+	bossMainBody.reset(BossMainBody::Create(bodyModel, position));
+	//ボス分身生成
+	const int avatarNum = 2;
+	for (int i = 0; i < avatarNum; i++) {
+		std::unique_ptr<BossAvatar> newBossAvatar;
+		newBossAvatar.reset(BossAvatar::Create(headModel, bossMainBody.get()));
+		bossAvatars.push_back(std::move(newBossAvatar));
+	}
 
 	//HPバー生成
 	const Vector2 hpBarPosition = { 20, 120 };
@@ -59,20 +63,27 @@ void Boss::Update()
 	behaviorTree->Root();
 
 	//更新
-	bossBody->Update();//体
-	bossHead->Update();//頭
+	bossMainBody->Update();//本体
+	for (int i = 0; i < (signed)bossAvatars.size(); i++) {
+		bossAvatars[i]->Update();//分身
+	}
 
 	//HPバー更新
 	hpBar->Update();
 	//HPバーフレーム更新
 	hpFrame->Update();
+
+	std::string avatarNum = std::to_string(bossAvatars.size());
+	DebugText::GetInstance()->Print("AvatarNum : " + avatarNum, 100, 100);
 }
 
 void Boss::Draw()
 {
 	//描画
-	bossBody->Draw();//体
-	bossHead->Draw();//頭
+	bossMainBody->Draw();//本体
+	for (int i = 0; i < (signed)bossAvatars.size(); i++) {
+		bossAvatars[i]->Draw();//分身
+	}
 }
 
 void Boss::DrawUI()
@@ -129,10 +140,10 @@ bool Boss::Otamesi4()
 	if (input->PushKey(DIK_4)) {
 		DebugText::GetInstance()->Print("4push", 700, 300);
 
-		Vector3 posHead = bossHead->GetPosition();
+		Vector3 posAvatar = bossAvatars[0]->GetPosition();
 		const float moveSpeed = 0.25f;
-		posHead.y -= moveSpeed;
-		bossHead->SetPosition(posHead);
+		posAvatar.y -= moveSpeed;
+		bossAvatars[0]->SetPosition(posAvatar);
 
 		return true;
 	}
@@ -151,7 +162,7 @@ void Boss::Fall()
 	//生成位置から降りたところで停止する
 	Vector3 stayPos = startPos;
 	stayPos.y = 0;
-	bossBody->SetPosition(Easing::Lerp(startPos, stayPos, time));
+	bossMainBody->SetPosition(Easing::Lerp(startPos, stayPos, time));
 
 	//イージングが終了したら次のフェーズへ
 	if (fallTimer >= fallTime) {
@@ -164,27 +175,21 @@ void Boss::Stay()
 	//デバッグ用キー操作
 	Input* input = Input::GetInstance();
 
-	Vector3 posBody = bossBody->GetPosition();
-	Vector3 posHead = bossHead->GetPosition();
+	Vector3 posAvatar = bossAvatars[0]->GetPosition();
 	const float moveSpeed = 1.0f;
 	if (input->PushKey(DIK_LEFT)) {
-		//posBody.x -= moveSpeed;
-		posHead.x -= moveSpeed;
+		posAvatar.x -= moveSpeed;
 	}
 	if (input->PushKey(DIK_RIGHT)) {
-		//posBody.x += moveSpeed;
-		posHead.x += moveSpeed;
+		posAvatar.x += moveSpeed;
 	}
 	if (input->PushKey(DIK_UP)) {
-		//posBody.y += moveSpeed;
-		posHead.y += moveSpeed;
+		posAvatar.y += moveSpeed;
 	}
 	if (input->PushKey(DIK_DOWN)) {
-		//posBody.y -= moveSpeed;
-		posHead.y -= moveSpeed;
+		posAvatar.y -= moveSpeed;
 	}
-	bossBody->SetPosition(posBody);
-	bossHead->SetPosition(posHead);
+	bossAvatars[0]->SetPosition(posAvatar);
 
 
 	if (input->TriggerKey(DIK_Q)) {

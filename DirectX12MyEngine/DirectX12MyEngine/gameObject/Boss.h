@@ -1,6 +1,6 @@
 #pragma once
-#include "BossBody.h"
-#include "BossHead.h"
+#include "BossMainBody.h"
+#include "BossAvatar.h"
 #include "BossHPBar.h"
 #include "BossHPFrame.h"
 #include "BossBehaviorTree.h"
@@ -91,10 +91,10 @@ private: //静的メンバ変数
 protected: //メンバ変数
 	//ボスの行動遷移ビヘイビアツリー
 	std::unique_ptr<BossBehaviorTree> behaviorTree;
-	//体
-	std::unique_ptr<BossBody> bossBody;
-	//頭
-	std::unique_ptr<BossHead> bossHead;
+	//本体
+	std::unique_ptr<BossMainBody> bossMainBody;
+	//分身
+	std::vector<std::unique_ptr<BossAvatar>> bossAvatars;
 	//行動
 	Phase phase = Phase::Fall;
 	//初期座標

@@ -260,10 +260,7 @@
     <ClCompile Include="gameObject\Boss.cpp">
       <Filter>ソース ファイル\gameObject\boss</Filter>
     </ClCompile>
-    <ClCompile Include="gameObject\BossBody.cpp">
-      <Filter>ソース ファイル\gameObject\boss</Filter>
-    </ClCompile>
-    <ClCompile Include="gameObject\BossHead.cpp">
+    <ClCompile Include="gameObject\BossMainBody.cpp">
       <Filter>ソース ファイル\gameObject\boss</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\BossHPFrame.cpp">
@@ -280,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="behaviorTree\Sequencer.cpp">
       <Filter>ソース ファイル\engine\behaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\BossAvatar.cpp">
+      <Filter>ソース ファイル\gameObject\boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -509,10 +509,7 @@
     <ClInclude Include="gameObject\Boss.h">
       <Filter>ソース ファイル\gameObject\boss</Filter>
     </ClInclude>
-    <ClInclude Include="gameObject\BossBody.h">
-      <Filter>ソース ファイル\gameObject\boss</Filter>
-    </ClInclude>
-    <ClInclude Include="gameObject\BossHead.h">
+    <ClInclude Include="gameObject\BossMainBody.h">
       <Filter>ソース ファイル\gameObject\boss</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\BossHPFrame.h">
@@ -529,6 +526,9 @@
     </ClInclude>
     <ClInclude Include="behaviorTree\Sequencer.h">
       <Filter>ソース ファイル\engine\behaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\BossAvatar.h">
+      <Filter>ソース ファイル\gameObject\boss</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
