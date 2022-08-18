@@ -25,6 +25,6 @@ bool Sequencer::Sequence()
 
 void Sequencer::AddNode(std::function<bool()> func)
 {
-    //子ノードリストに登録
+    //子ノード配列に登録
     nodes.push_back(func);
 }

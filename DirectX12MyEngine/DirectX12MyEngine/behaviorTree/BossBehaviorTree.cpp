@@ -25,8 +25,7 @@ bool BossBehaviorTree::Initialize(Boss* boss)
 {	
 	//Selector,Sequencerの生成
 	topSelector.reset(Selector::Create());
-	selector1or2.reset(Selector::Create());
-	selector3or4.reset(Selector::Create());
+	selector1or2or3or4.reset(Selector::Create());
 
 	//木構造を作成
 	MakeTree(boss);
@@ -49,26 +48,29 @@ void BossBehaviorTree::Root()
 void BossBehaviorTree::MakeTree(Boss* boss)
 {
 	//ルートノード直下のSequencer
-	std::function<bool()> onetwo =
-		std::bind(&Selector::Select, selector1or2.get());
-	topSelector->AddNode(onetwo);
-	std::function<bool()> threefour =
-		std::bind(&Selector::Select, selector3or4.get());
-	topSelector->AddNode(threefour);
+	std::function<bool()> fall =
+		std::bind(&Boss::Fall, boss);
+	topSelector->AddNode(fall);
+
+	std::function<bool()> onetwothreefour =
+		std::bind(&Selector::Select, selector1or2or3or4.get());
+	topSelector->AddNode(onetwothreefour);
+
 
 
 	std::function<bool()> otamesi =
 		std::bind(&Boss::Otamesi, boss);
-	selector1or2->AddNode(otamesi);
+	selector1or2or3or4->AddNode(otamesi);
+
 	std::function<bool()> otamesi2 =
 		std::bind(&Boss::Otamesi2, boss);
-	selector1or2->AddNode(otamesi2);
-
+	selector1or2or3or4->AddNode(otamesi2);
 
 	std::function<bool()> otamesi3 =
 		std::bind(&Boss::Otamesi3, boss);
-	selector3or4->AddNode(otamesi3);
+	selector1or2or3or4->AddNode(otamesi3);
+
 	std::function<bool()> otamesi4 =
 		std::bind(&Boss::Otamesi4, boss);
-	selector3or4->AddNode(otamesi4);
+	selector1or2or3or4->AddNode(otamesi4);
 }

@@ -2,11 +2,10 @@
 #include "Easing.h"
 #include "Input.h"
 #include "DebugText.h"
-
-void (Boss::* Boss::actionFuncTable[])() = {
-	&Boss::Fall,
-	&Boss::Stay
-};
+#include "BossAvatarType01.h"
+#include "BossAvatarType02.h"
+#include "BossAvatarType03.h"
+#include "BossAvatarType04.h"
 
 Boss* Boss::Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position)
 {
@@ -33,12 +32,19 @@ bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& p
 	//本体生成
 	bossMainBody.reset(BossMainBody::Create(bodyModel, position));
 	//ボス分身生成
-	const int avatarNum = 2;
-	for (int i = 0; i < avatarNum; i++) {
-		std::unique_ptr<BossAvatar> newBossAvatar;
-		newBossAvatar.reset(BossAvatar::Create(headModel, bossMainBody.get()));
-		bossAvatars.push_back(std::move(newBossAvatar));
-	}
+	std::unique_ptr<BossAvatarType01> newbossAvatarType01;
+	newbossAvatarType01.reset(BossAvatarType01::Create(headModel, bossMainBody.get(), {5, 0, 0}));
+	bossAvatars.push_back(std::move(newbossAvatarType01));
+	std::unique_ptr<BossAvatarType02> newbossAvatarType02;
+	newbossAvatarType02.reset(BossAvatarType02::Create(headModel, bossMainBody.get(), { -5, 0, 0 }));
+	bossAvatars.push_back(std::move(newbossAvatarType02));
+	std::unique_ptr<BossAvatarType03> newbossAvatarType03;
+	newbossAvatarType03.reset(BossAvatarType03::Create(headModel, bossMainBody.get(), { 0, 5, 0 }));
+	bossAvatars.push_back(std::move(newbossAvatarType03));
+	std::unique_ptr<BossAvatarType04> newbossAvatarType04;
+	newbossAvatarType04.reset(BossAvatarType04::Create(headModel, bossMainBody.get(), { 0, -5, 0 }));
+	bossAvatars.push_back(std::move(newbossAvatarType04));
+
 
 	//HPバー生成
 	const Vector2 hpBarPosition = { 20, 120 };
@@ -56,16 +62,18 @@ bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& p
 
 void Boss::Update()
 {
-	//行動
-	(this->*actionFuncTable[static_cast<size_t>(phase)])();
+	//死亡した分身の削除
+	bossAvatars.remove_if([](std::unique_ptr<BossAvatar>& bossAvatar) {
+		return bossAvatar->GetIsDead();
+		});
 
 	//ビヘイビアツリーによる行動遷移
 	behaviorTree->Root();
 
 	//更新
 	bossMainBody->Update();//本体
-	for (int i = 0; i < (signed)bossAvatars.size(); i++) {
-		bossAvatars[i]->Update();//分身
+	for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
+		bossAvatar->Update();//分身
 	}
 
 	//HPバー更新
@@ -81,8 +89,8 @@ void Boss::Draw()
 {
 	//描画
 	bossMainBody->Draw();//本体
-	for (int i = 0; i < (signed)bossAvatars.size(); i++) {
-		bossAvatars[i]->Draw();//分身
+	for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
+		bossAvatar->Draw();//分身
 	}
 }
 
@@ -94,66 +102,11 @@ void Boss::DrawUI()
 	hpBar->Draw();
 }
 
-bool Boss::Otamesi()
+bool Boss::Fall()
 {
-	//デバッグ用キー操作
-	Input* input = Input::GetInstance();
-	if (input->PushKey(DIK_1)) {
-		DebugText::GetInstance()->Print("1push", 300, 300);
-		return true;
-	}
+	//降下状態でなければ抜ける
+	if (!(phase == Phase::Fall)) { return false; }
 
-	DebugText::GetInstance()->Print("1noPush", 300, 300);
-	return false;
-}
-
-bool Boss::Otamesi2()
-{
-	//デバッグ用キー操作
-	Input* input = Input::GetInstance();
-	if (input->PushKey(DIK_2)) {
-		DebugText::GetInstance()->Print("2push", 400, 300);
-		return true;
-	}
-
-	DebugText::GetInstance()->Print("2noPush", 400, 300);
-	return false;
-}
-
-bool Boss::Otamesi3()
-{
-	//デバッグ用キー操作
-	Input* input = Input::GetInstance();
-	if (input->PushKey(DIK_3)) {
-		DebugText::GetInstance()->Print("3push", 600, 300);
-		return true;
-	}
-
-	DebugText::GetInstance()->Print("3noPush", 600, 300);
-	return false;
-}
-
-bool Boss::Otamesi4()
-{
-	//デバッグ用キー操作
-	Input* input = Input::GetInstance();
-	if (input->PushKey(DIK_4)) {
-		DebugText::GetInstance()->Print("4push", 700, 300);
-
-		Vector3 posAvatar = bossAvatars[0]->GetPosition();
-		const float moveSpeed = 0.25f;
-		posAvatar.y -= moveSpeed;
-		bossAvatars[0]->SetPosition(posAvatar);
-
-		return true;
-	}
-
-	DebugText::GetInstance()->Print("4noPush", 700, 300);
-	return false;
-}
-
-void Boss::Fall()
-{
 	//イージングで降下する
 	const float fallTime = 300;
 	fallTimer++;
@@ -168,38 +121,78 @@ void Boss::Fall()
 	if (fallTimer >= fallTime) {
 		phase = Phase::Stay;
 	}
+
+	return true;
 }
 
-void Boss::Stay()
+bool Boss::Otamesi()
 {
 	//デバッグ用キー操作
 	Input* input = Input::GetInstance();
+	if (input->PushKey(DIK_1)) {
+		DebugText::GetInstance()->Print("1push", 300, 300);
 
-	Vector3 posAvatar = bossAvatars[0]->GetPosition();
-	const float moveSpeed = 1.0f;
-	if (input->PushKey(DIK_LEFT)) {
-		posAvatar.x -= moveSpeed;
-	}
-	if (input->PushKey(DIK_RIGHT)) {
-		posAvatar.x += moveSpeed;
-	}
-	if (input->PushKey(DIK_UP)) {
-		posAvatar.y += moveSpeed;
-	}
-	if (input->PushKey(DIK_DOWN)) {
-		posAvatar.y -= moveSpeed;
-	}
-	bossAvatars[0]->SetPosition(posAvatar);
-
-
-	if (input->TriggerKey(DIK_Q)) {
-		HP--;
-		//HPは0以下にならない
-		if (HP <= 0) {
-
-			HP = 0;
+		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
+			bossAvatar->Otamesi();//分身
 		}
 
-		hpBar->ChangeLength(HP);
+		return true;
 	}
+
+	DebugText::GetInstance()->Print("1noPush", 300, 300);
+	return false;
+}
+
+bool Boss::Otamesi2()
+{
+	//デバッグ用キー操作
+	Input* input = Input::GetInstance();
+	if (input->PushKey(DIK_2)) {
+		DebugText::GetInstance()->Print("2push", 400, 300);
+
+		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
+			bossAvatar->Otamesi2();//分身
+		}
+
+		return true;
+	}
+
+	DebugText::GetInstance()->Print("2noPush", 400, 300);
+	return false;
+}
+
+bool Boss::Otamesi3()
+{
+	//デバッグ用キー操作
+	Input* input = Input::GetInstance();
+	if (input->PushKey(DIK_3)) {
+		DebugText::GetInstance()->Print("3push", 600, 300);
+
+		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
+			bossAvatar->Otamesi3();//分身
+		}
+
+		return true;
+	}
+
+	DebugText::GetInstance()->Print("3noPush", 600, 300);
+	return false;
+}
+
+bool Boss::Otamesi4()
+{
+	//デバッグ用キー操作
+	Input* input = Input::GetInstance();
+	if (input->PushKey(DIK_4)) {
+		DebugText::GetInstance()->Print("4push", 700, 300);
+
+		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
+			bossAvatar->Otamesi4();//分身
+		}
+
+		return true;
+	}
+
+	DebugText::GetInstance()->Print("4noPush", 700, 300);
+	return false;
 }

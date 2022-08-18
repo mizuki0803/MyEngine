@@ -48,6 +48,11 @@ public: //メンバ関数
 	void DrawUI();
 
 	/// <summary>
+	/// 降下
+	/// </summary>
+	bool Fall();
+
+	/// <summary>
 	/// お試し用
 	/// </summary>
 	/// <returns></returns>
@@ -71,22 +76,12 @@ public: //メンバ関数
 	/// <returns></returns>
 	bool Otamesi4();
 
-private: //メンバ関数
-	/// <summary>
-	/// 降下
-	/// </summary>
-	void Fall();
-
-	/// <summary>
-	/// 停止
-	/// </summary>
-	void Stay();
+	//getter
+	const Phase& GetPhase() { return this->phase; }
 
 private: //静的メンバ変数
 	//最大体力
 	static const int maxHP = 100;
-	//行動遷移
-	static void (Boss::*actionFuncTable[])();
 
 protected: //メンバ変数
 	//ボスの行動遷移ビヘイビアツリー
@@ -94,7 +89,7 @@ protected: //メンバ変数
 	//本体
 	std::unique_ptr<BossMainBody> bossMainBody;
 	//分身
-	std::vector<std::unique_ptr<BossAvatar>> bossAvatars;
+	std::list<std::unique_ptr<BossAvatar>> bossAvatars;
 	//行動
 	Phase phase = Phase::Fall;
 	//初期座標

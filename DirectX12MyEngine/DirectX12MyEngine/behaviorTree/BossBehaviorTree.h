@@ -39,8 +39,5 @@ private:
 	//セレクター
 	std::unique_ptr<Selector> topSelector;
 	//セレクター
-	std::unique_ptr<Selector> selector1or2;
-	//セレクター
-	std::unique_ptr<Selector> selector3or4;
-
+	std::unique_ptr<Selector> selector1or2or3or4;
 };

@@ -177,6 +177,10 @@
     <ClCompile Include="effect\Easing.cpp" />
     <ClCompile Include="gameObject\Boss.cpp" />
     <ClCompile Include="gameObject\BossAvatar.cpp" />
+    <ClCompile Include="gameObject\BossAvatarType01.cpp" />
+    <ClCompile Include="gameObject\BossAvatarType02.cpp" />
+    <ClCompile Include="gameObject\BossAvatarType03.cpp" />
+    <ClCompile Include="gameObject\BossAvatarType04.cpp" />
     <ClCompile Include="gameObject\BossMainBody.cpp" />
     <ClCompile Include="gameObject\BossHPBar.cpp" />
     <ClCompile Include="gameObject\BossHPFrame.cpp" />
@@ -326,6 +330,10 @@
     <ClInclude Include="effect\Easing.h" />
     <ClInclude Include="gameObject\Boss.h" />
     <ClInclude Include="gameObject\BossAvatar.h" />
+    <ClInclude Include="gameObject\BossAvatarType01.h" />
+    <ClInclude Include="gameObject\BossAvatarType02.h" />
+    <ClInclude Include="gameObject\BossAvatarType03.h" />
+    <ClInclude Include="gameObject\BossAvatarType04.h" />
     <ClInclude Include="gameObject\BossMainBody.h" />
     <ClInclude Include="gameObject\BossHPBar.h" />
     <ClInclude Include="gameObject\BossHPFrame.h" />
