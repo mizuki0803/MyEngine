@@ -385,6 +385,71 @@ void GameScene::CollisionCheck3d()
 		}
 	}
 #pragma endregion
+
+	//ボス戦状態でなければこの先の処理は行わない
+	if (!isBossBattle) { return; }
+
+#pragma region 自機弾とボス本体の衝突判定
+	//本体座標
+	posA = boss->GetMainBody()->GetWorldPos();
+	//本体半径
+	radiusA = boss->GetMainBody()->GetScale().x;
+
+	//全て自機弾とボス本体の衝突判定
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//敵弾座標
+		posB = bullet->GetWorldPos();
+		//敵弾半径
+		radiusB = bullet->GetScale().x;
+
+		//球と球の衝突判定を行う
+		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+
+		//衝突していたら
+		if (isCollision) {
+			//ボスのコールバック関数を呼び出す
+			const int damageNum = 2;
+			boss->OnCollisionMainBody(damageNum);
+			//自機弾のコールバック関数を呼び出す
+			bullet->OnCollision();
+
+			break;
+		}
+	}
+#pragma endregion
+
+#pragma region 自機弾とボス分身の衝突判定
+	//全ての敵と全ての自機弾の衝突判定
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//自機弾座標
+		posA = bullet->GetWorldPos();
+		//自機弾半径
+		radiusA = bullet->GetScale().x;
+
+		//ボス分身のリストを持ってくる
+		const std::list<std::unique_ptr<BossAvatar>>& bossAvators = boss->GetAvators();
+		for (const std::unique_ptr<BossAvatar>& bossAvator : bossAvators) {
+			//ボス分身座標
+			posB = bossAvator->GetWorldPos();
+			//ボス分身半径
+			radiusB = bossAvator->GetScale().x;
+
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+
+			//衝突していたら
+			if (isCollision) {
+				//ボスのコールバック関数を呼び出す
+				const int damageNum = 2;
+				boss->OnCollisionAvator(bossAvator.get(), damageNum);
+				//自機弾のコールバック関数を呼び出す
+				bullet->OnCollision();
+
+				break;
+			}
+		}
+	}
+#pragma endregion
 }
 
 void GameScene::CollisionCheck2d()

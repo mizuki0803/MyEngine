@@ -47,7 +47,7 @@ void BossBehaviorTree::Root()
 
 void BossBehaviorTree::MakeTree(Boss* boss)
 {
-	//ルートノード直下のSequencer
+	//ルートノード直下
 	std::function<bool()> fall =
 		std::bind(&Boss::Fall, boss);
 	topSelector->AddNode(fall);

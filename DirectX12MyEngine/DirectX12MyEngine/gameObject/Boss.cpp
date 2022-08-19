@@ -1,5 +1,4 @@
 #include "Boss.h"
-#include "Easing.h"
 #include "Input.h"
 #include "DebugText.h"
 #include "BossAvatarType01.h"
@@ -22,29 +21,30 @@ Boss* Boss::Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& posi
 		return nullptr;
 	}
 
-	boss->startPos = position;
-
 	return boss;
 }
 
 bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position)
 {
 	//本体生成
-	bossMainBody.reset(BossMainBody::Create(bodyModel, position));
+	mainBody.reset(BossMainBody::Create(bodyModel, position));
 	//ボス分身生成
-	std::unique_ptr<BossAvatarType01> newbossAvatarType01;
-	newbossAvatarType01.reset(BossAvatarType01::Create(headModel, bossMainBody.get(), {5, 0, 0}));
-	bossAvatars.push_back(std::move(newbossAvatarType01));
-	std::unique_ptr<BossAvatarType02> newbossAvatarType02;
-	newbossAvatarType02.reset(BossAvatarType02::Create(headModel, bossMainBody.get(), { -5, 0, 0 }));
-	bossAvatars.push_back(std::move(newbossAvatarType02));
-	std::unique_ptr<BossAvatarType03> newbossAvatarType03;
-	newbossAvatarType03.reset(BossAvatarType03::Create(headModel, bossMainBody.get(), { 0, 5, 0 }));
-	bossAvatars.push_back(std::move(newbossAvatarType03));
-	std::unique_ptr<BossAvatarType04> newbossAvatarType04;
-	newbossAvatarType04.reset(BossAvatarType04::Create(headModel, bossMainBody.get(), { 0, -5, 0 }));
-	bossAvatars.push_back(std::move(newbossAvatarType04));
+	std::unique_ptr<BossAvatarType01> newAvatarType01;
+	newAvatarType01.reset(BossAvatarType01::Create(headModel, mainBody.get(), { 5, 0, 0 }));
+	avatars.push_back(std::move(newAvatarType01));
+	std::unique_ptr<BossAvatarType02> newAvatarType02;
+	newAvatarType02.reset(BossAvatarType02::Create(headModel, mainBody.get(), { -5, 0, 0 }));
+	avatars.push_back(std::move(newAvatarType02));
+	std::unique_ptr<BossAvatarType03> newAvatarType03;
+	newAvatarType03.reset(BossAvatarType03::Create(headModel, mainBody.get(), { 0, 5, 0 }));
+	avatars.push_back(std::move(newAvatarType03));
+	std::unique_ptr<BossAvatarType04> newAvatarType04;
+	newAvatarType04.reset(BossAvatarType04::Create(headModel, mainBody.get(), { 0, -5, 0 }));
+	avatars.push_back(std::move(newAvatarType04));
 
+	//HPを本体とボス分身の合計で算出する
+	int maxHP = BossMainBody::GetMaxHP() + BossAvatar::GetMaxHP() * (int)avatars.size();
+	HP = maxHP;
 
 	//HPバー生成
 	const Vector2 hpBarPosition = { 20, 120 };
@@ -63,17 +63,17 @@ bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& p
 void Boss::Update()
 {
 	//死亡した分身の削除
-	bossAvatars.remove_if([](std::unique_ptr<BossAvatar>& bossAvatar) {
-		return bossAvatar->GetIsDead();
+	avatars.remove_if([](std::unique_ptr<BossAvatar>& avatar) {
+		return avatar->GetIsDead();
 		});
 
 	//ビヘイビアツリーによる行動遷移
 	behaviorTree->Root();
 
 	//更新
-	bossMainBody->Update();//本体
-	for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
-		bossAvatar->Update();//分身
+	mainBody->Update();//本体
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		avatar->Update();//分身
 	}
 
 	//HPバー更新
@@ -81,16 +81,22 @@ void Boss::Update()
 	//HPバーフレーム更新
 	hpFrame->Update();
 
-	std::string avatarNum = std::to_string(bossAvatars.size());
+	if (isDead) {
+		DebugText::GetInstance()->Print("BossDead", 100, 60);
+	}
+
+	std::string hpNum = std::to_string(HP);
+	DebugText::GetInstance()->Print("HP : " + hpNum, 100, 80);
+	std::string avatarNum = std::to_string(avatars.size());
 	DebugText::GetInstance()->Print("AvatarNum : " + avatarNum, 100, 100);
 }
 
 void Boss::Draw()
 {
 	//描画
-	bossMainBody->Draw();//本体
-	for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
-		bossAvatar->Draw();//分身
+	mainBody->Draw();//本体
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		avatar->Draw();//分身
 	}
 }
 
@@ -102,20 +108,39 @@ void Boss::DrawUI()
 	hpBar->Draw();
 }
 
+void Boss::OnCollisionMainBody(const int damageNum)
+{
+	//分身が全て死んでいない限りダメージを受けない
+	if (!(avatars.size() == 0)) { return; }
+
+	//本体にダメージ
+	mainBody->Damage(damageNum);
+
+	//ボス全体にダメージ
+	Damage(damageNum);
+}
+
+void Boss::OnCollisionAvator(BossAvatar* avatar, const int damageNum)
+{
+	//衝突した分身にダメージ
+	avatar->Damage(damageNum);
+
+	//ボス全体にダメージ
+	Damage(damageNum);
+}
+
 bool Boss::Fall()
 {
 	//降下状態でなければ抜ける
 	if (!(phase == Phase::Fall)) { return false; }
 
-	//イージングで降下する
+	//タイマーを更新
 	const float fallTime = 300;
 	fallTimer++;
 	const float time = fallTimer / fallTime;
 
-	//生成位置から降りたところで停止する
-	Vector3 stayPos = startPos;
-	stayPos.y = 0;
-	bossMainBody->SetPosition(Easing::Lerp(startPos, stayPos, time));
+	//ボス本体を降下させる
+	mainBody->Fall(time);
 
 	//イージングが終了したら次のフェーズへ
 	if (fallTimer >= fallTime) {
@@ -132,8 +157,8 @@ bool Boss::Otamesi()
 	if (input->PushKey(DIK_1)) {
 		DebugText::GetInstance()->Print("1push", 300, 300);
 
-		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
-			bossAvatar->Otamesi();//分身
+		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+			avatar->Otamesi();//分身
 		}
 
 		return true;
@@ -150,8 +175,8 @@ bool Boss::Otamesi2()
 	if (input->PushKey(DIK_2)) {
 		DebugText::GetInstance()->Print("2push", 400, 300);
 
-		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
-			bossAvatar->Otamesi2();//分身
+		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+			avatar->Otamesi2();//分身
 		}
 
 		return true;
@@ -168,8 +193,8 @@ bool Boss::Otamesi3()
 	if (input->PushKey(DIK_3)) {
 		DebugText::GetInstance()->Print("3push", 600, 300);
 
-		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
-			bossAvatar->Otamesi3();//分身
+		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+			avatar->Otamesi3();//分身
 		}
 
 		return true;
@@ -186,8 +211,8 @@ bool Boss::Otamesi4()
 	if (input->PushKey(DIK_4)) {
 		DebugText::GetInstance()->Print("4push", 700, 300);
 
-		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
-			bossAvatar->Otamesi4();//分身
+		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+			avatar->Otamesi4();//分身
 		}
 
 		return true;
@@ -195,4 +220,20 @@ bool Boss::Otamesi4()
 
 	DebugText::GetInstance()->Print("4noPush", 700, 300);
 	return false;
+}
+
+void Boss::Damage(const int damageNum)
+{
+	//引数の数字の分ダメージを喰らう
+	HP -= damageNum;
+
+	//HPが0以下になったら死亡
+	if (HP <= 0) {
+		HP = 0;
+
+		isDead = true;
+	}
+
+	//ダメージを喰らったのでHPバーの長さを変更する
+	hpBar->ChangeLength(HP);
 }

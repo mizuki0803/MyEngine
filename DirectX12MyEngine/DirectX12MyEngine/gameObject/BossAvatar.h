@@ -6,7 +6,17 @@
 /// </summary>
 class BossAvatar : public ObjObject3d
 {
+public: //静的メンバ関数
+	//getter
+	static const int GetMaxHP() { return BossAvatar::maxHP; }
+
 public: //メンバ関数
+	/// <summary>
+	/// ダメージを喰らう
+	/// </summary>
+	/// <param name="damageNum">ダメージ量</param>
+	void Damage(int damageNum);
+
 	/// <summary>
 	/// お試し用
 	/// </summary>
@@ -16,6 +26,7 @@ public: //メンバ関数
 	virtual void Otamesi4() = 0;
 
 	//getter
+	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
 
 protected: //静的メンバ変数

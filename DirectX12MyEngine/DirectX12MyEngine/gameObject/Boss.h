@@ -48,6 +48,20 @@ public: //メンバ関数
 	void DrawUI();
 
 	/// <summary>
+	/// 衝突時コールバック関数(本体)
+	/// </summary>
+	/// <param name="bossAvatars">衝突した分身</param>
+	/// <param name="damageNum">ダメージ量</param>
+	void OnCollisionMainBody(const int damageNum);
+
+	/// <summary>
+	/// 衝突時コールバック関数(分身)
+	/// </summary>
+	/// <param name="avatars">衝突した分身</param>
+	/// <param name="damageNum">ダメージ量</param>
+	void OnCollisionAvator(BossAvatar* avatar, const int damageNum);
+
+	/// <summary>
 	/// 降下
 	/// </summary>
 	bool Fall();
@@ -78,26 +92,29 @@ public: //メンバ関数
 
 	//getter
 	const Phase& GetPhase() { return this->phase; }
+	BossMainBody* GetMainBody() { return mainBody.get(); }
+	const std::list<std::unique_ptr<BossAvatar>>& GetAvators() { return avatars; };
 
-private: //静的メンバ変数
-	//最大体力
-	static const int maxHP = 100;
+private: //メンバ関数
+	/// <summary>
+	/// ダメージを喰らう
+	/// </summary>
+	/// <param name="damageNum">ダメージ量</param>
+	void Damage(const int damageNum);
 
-protected: //メンバ変数
+private: //メンバ変数
 	//ボスの行動遷移ビヘイビアツリー
 	std::unique_ptr<BossBehaviorTree> behaviorTree;
 	//本体
-	std::unique_ptr<BossMainBody> bossMainBody;
+	std::unique_ptr<BossMainBody> mainBody;
 	//分身
-	std::list<std::unique_ptr<BossAvatar>> bossAvatars;
+	std::list<std::unique_ptr<BossAvatar>> avatars;
 	//行動
 	Phase phase = Phase::Fall;
-	//初期座標
-	Vector3 startPos;
 	//降下する時間タイマー
 	int32_t fallTimer = 0;
 	//体力
-	int HP = maxHP;
+	int HP = 0;
 	//HPバー
 	std::unique_ptr<BossHPBar> hpBar;
 	//HPバーフレーム

@@ -14,7 +14,35 @@ public: //静的メンバ関数
 	/// <returns>ボス(本体)</returns>
 	static BossMainBody* Create(ObjModel* model, const Vector3& position);
 
+	//getter
+	static const int GetMaxHP() { return BossMainBody::maxHP; }
+
+public: //メンバ関数
+	/// <summary>
+	/// ダメージを喰らう
+	/// </summary>
+	/// <param name="damageNum">ダメージ量</param>
+	void Damage(int damageNum);
+
+	/// <summary>
+	/// 降下
+	/// </summary>
+	/// <param name="time">イージング用(0～1)の数値</param>
+	void Fall(const float time);
+
+	//getter
+	Vector3 GetWorldPos();
+	const bool GetIsDead() { return isDead; }
+
+protected: //静的メンバ変数
+	//体力
+	static const int maxHP = 60;
+
 private: //メンバ変数
+	//初期座標
+	Vector3 startPos;
+	//体力
+	int HP = maxHP;
 	//死亡フラグ
 	bool isDead = false;
 };

@@ -47,12 +47,12 @@ public: //メンバ関数
 	void DrawUI();
 
 	/// <summary>
-	/// 衝突時コールバック関数
+	/// 衝突時コールバック関数(敵などダメージを喰らう)
 	/// </summary>
 	void OnCollisionDamage(const Vector3& subjectPos);
 
 	/// <summary>
-	/// 衝突時コールバック関数
+	/// 衝突時コールバック関数(アイテムなど回復する)
 	/// </summary>
 	void OnCollisionHeal();
 
