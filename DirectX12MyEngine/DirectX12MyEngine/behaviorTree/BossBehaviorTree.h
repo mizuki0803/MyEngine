@@ -38,6 +38,8 @@ private: //メンバ関数
 private:
 	//セレクター
 	std::unique_ptr<Selector> topSelector;
-	//セレクター
-	std::unique_ptr<Selector> selector1or2or3or4;
+	//シーケンサー
+	std::unique_ptr<Sequencer> attackModeSequencer;
+	//シーケンサー
+	std::unique_ptr<Sequencer> waitModeSequencer;
 };

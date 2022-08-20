@@ -6,6 +6,10 @@
 #include "BossAvatarType03.h"
 #include "BossAvatarType04.h"
 
+Player* Boss::player = nullptr;
+const float Boss::attackModeTime = 600;
+const float Boss::waitModeTime = 600;
+
 Boss* Boss::Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position)
 {
 	//ボスのインスタンスを生成
@@ -142,84 +146,92 @@ bool Boss::Fall()
 	//ボス本体を降下させる
 	mainBody->Fall(time);
 
-	//イージングが終了したら次のフェーズへ
+	//タイマーが指定した時間になったら次のフェーズへ
 	if (fallTimer >= fallTime) {
-		phase = Phase::Stay;
+		phase = Phase::Attack;
 	}
 
 	return true;
 }
 
-bool Boss::Otamesi()
+bool Boss::AttackMode()
 {
-	//デバッグ用キー操作
-	Input* input = Input::GetInstance();
-	if (input->PushKey(DIK_1)) {
-		DebugText::GetInstance()->Print("1push", 300, 300);
+	//攻撃状態でなければ抜ける
+	if (!(phase == Phase::Attack)) { return false; }
 
-		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
-			avatar->Otamesi();//分身
-		}
+	//タイマーを更新
+	attackModeTimer++;	
 
-		return true;
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackModeTimer >= attackModeTime) {
+		phase = Phase::Wait;
+
+		//次に攻撃状態になったときのためにタイマーを初期化しておく
+		attackModeTimer = 0;
+
+		//攻撃状態を終えるのでfalseを返す
+		return false;
 	}
 
-	DebugText::GetInstance()->Print("1noPush", 300, 300);
-	return false;
+	return true;
 }
 
-bool Boss::Otamesi2()
+bool Boss::ChangeRotAttackMode()
 {
-	//デバッグ用キー操作
-	Input* input = Input::GetInstance();
-	if (input->PushKey(DIK_2)) {
-		DebugText::GetInstance()->Print("2push", 400, 300);
+	//モードチェンジ回転に要する時間
+	const float changeModeTime = 60;
+	//タイマーがモードチェンジ時間以下でないなら抜ける
+	if (!(attackModeTimer < changeModeTime)) { return false; }
 
-		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
-			avatar->Otamesi2();//分身
-		}
+	//イージング用に0～1の値を算出する
+	const float time = attackModeTimer / changeModeTime;
 
-		return true;
+	//攻撃状態にするため分身を回転させる
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		avatar->ChangeAttackMode(time);
 	}
 
-	DebugText::GetInstance()->Print("2noPush", 400, 300);
-	return false;
+	return true;
 }
 
-bool Boss::Otamesi3()
+bool Boss::WaitMode()
 {
-	//デバッグ用キー操作
-	Input* input = Input::GetInstance();
-	if (input->PushKey(DIK_3)) {
-		DebugText::GetInstance()->Print("3push", 600, 300);
+	//待機状態でなければ抜ける
+	if (!(phase == Phase::Wait)) { return false; }
 
-		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
-			avatar->Otamesi3();//分身
-		}
+	//タイマーを更新
+	waitModeTimer++;
 
-		return true;
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (waitModeTimer >= waitModeTime) {
+		phase = Phase::Attack;
+
+		//次に待機状態になったときのためにタイマーを初期化しておく
+		waitModeTimer = 0;
+
+		//待機状態を終えるのでfalseを返す
+		return false;
 	}
 
-	DebugText::GetInstance()->Print("3noPush", 600, 300);
-	return false;
+	return true;
 }
 
-bool Boss::Otamesi4()
+bool Boss::ChangeRotWaitMode()
 {
-	//デバッグ用キー操作
-	Input* input = Input::GetInstance();
-	if (input->PushKey(DIK_4)) {
-		DebugText::GetInstance()->Print("4push", 700, 300);
+	//モードチェンジ回転に要する時間
+	const float changeModeTime = 60;
+	//タイマーがモードチェンジ時間以下でないなら抜ける
+	if (!(waitModeTimer < changeModeTime)) { return false; }
 
-		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
-			avatar->Otamesi4();//分身
-		}
+	//イージング用に0～1の値を算出する
+	const float time = waitModeTimer / changeModeTime;
 
-		return true;
+	//待機状態にするため分身を回転させる
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		avatar->ChangeWaitMode(time);
 	}
 
-	DebugText::GetInstance()->Print("4noPush", 700, 300);
-	return false;
+	return true;
 }
 
 void Boss::Damage(const int damageNum)

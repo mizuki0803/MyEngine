@@ -1,6 +1,10 @@
 #include "BossAvatar.h"
+#include "Easing.h"
 
 const float BossAvatar::moveSpeed = 0.1f;
+const float BossAvatar::attackModeRotY = 180.0f;
+const float BossAvatar::waitModeRotY = 0.0f;
+
 
 void BossAvatar::Damage(int damageNum)
 {
@@ -11,6 +15,18 @@ void BossAvatar::Damage(int damageNum)
 	if (HP <= 0) {
 		isDead = true;
 	}
+}
+
+void BossAvatar::ChangeAttackMode(const float time)
+{
+	//180“x‰ñ“]‚³‚¹‚Ä”½‘ÎŒü‚«‚É‚·‚é
+	rotation.y = Easing::InOutBack(waitModeRotY, attackModeRotY, time);
+}
+
+void BossAvatar::ChangeWaitMode(const float time)
+{
+	//180“x‰ñ“]‚³‚¹‚Ä”½‘ÎŒü‚«‚É‚·‚é
+	rotation.y = Easing::InOutBack(attackModeRotY, waitModeRotY, time);
 }
 
 Vector3 BossAvatar::GetWorldPos()

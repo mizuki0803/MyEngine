@@ -5,6 +5,9 @@
 #include "BossHPFrame.h"
 #include "BossBehaviorTree.h"
 
+//自機クラスを前方宣言
+class Player;
+
 /// <summary>
 /// ボス
 /// </summary>
@@ -14,7 +17,8 @@ public:
 	//行動フェーズ
 	enum class Phase {
 		Fall,	//降下
-		Stay,	//停止
+		Attack,	//攻撃
+		Wait,	//待機
 	};
 
 public: //静的メンバ関数
@@ -24,6 +28,9 @@ public: //静的メンバ関数
 	/// <param name="model">モデル</param>
 	/// <returns>ボス</returns>
 	static Boss* Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position);
+
+	//setter
+	static void SetPlayer(Player* player) { Boss::player = player; }
 
 public: //メンバ関数
 	/// <summary>
@@ -67,28 +74,24 @@ public: //メンバ関数
 	bool Fall();
 
 	/// <summary>
-	/// お試し用
+	/// 攻撃状態
 	/// </summary>
-	/// <returns></returns>
-	bool Otamesi();
+	bool AttackMode();
 
 	/// <summary>
-	/// お試し用
+	/// 攻撃状態用の角度に変更
 	/// </summary>
-	/// <returns></returns>
-	bool Otamesi2();
+	bool ChangeRotAttackMode();
 
 	/// <summary>
-	/// お試し用
+	/// 待機状態
 	/// </summary>
-	/// <returns></returns>
-	bool Otamesi3();
+	bool WaitMode();
 
 	/// <summary>
-	/// お試し用
+	/// 待機状態用の角度に変更
 	/// </summary>
-	/// <returns></returns>
-	bool Otamesi4();
+	bool ChangeRotWaitMode();
 
 	//getter
 	const Phase& GetPhase() { return this->phase; }
@@ -102,6 +105,14 @@ private: //メンバ関数
 	/// <param name="damageNum">ダメージ量</param>
 	void Damage(const int damageNum);
 
+protected: //静的メンバ変数
+	//プレイヤー自機
+	static Player* player;
+	//攻撃状態時間
+	static const float attackModeTime;
+	//待機状態時間
+	static const float waitModeTime;
+
 private: //メンバ変数
 	//ボスの行動遷移ビヘイビアツリー
 	std::unique_ptr<BossBehaviorTree> behaviorTree;
@@ -113,6 +124,10 @@ private: //メンバ変数
 	Phase phase = Phase::Fall;
 	//降下する時間タイマー
 	int32_t fallTimer = 0;
+	//攻撃状態時間タイマー
+	int32_t attackModeTimer = 0;
+	//待機状態時間タイマー
+	int32_t waitModeTimer = 0;
 	//体力
 	int HP = 0;
 	//HPバー

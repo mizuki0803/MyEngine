@@ -25,7 +25,8 @@ bool BossBehaviorTree::Initialize(Boss* boss)
 {	
 	//Selector,Sequencerの生成
 	topSelector.reset(Selector::Create());
-	selector1or2or3or4.reset(Selector::Create());
+	attackModeSequencer.reset(Sequencer::Create());
+	waitModeSequencer.reset(Sequencer::Create());
 
 	//木構造を作成
 	MakeTree(boss);
@@ -47,30 +48,36 @@ void BossBehaviorTree::Root()
 
 void BossBehaviorTree::MakeTree(Boss* boss)
 {
-	//ルートノード直下
+	//ルートノード
 	std::function<bool()> fall =
 		std::bind(&Boss::Fall, boss);
 	topSelector->AddNode(fall);
 
-	std::function<bool()> onetwothreefour =
-		std::bind(&Selector::Select, selector1or2or3or4.get());
-	topSelector->AddNode(onetwothreefour);
+	std::function<bool()> attackSequencer =
+		std::bind(&Sequencer::Sequence, attackModeSequencer.get());
+	topSelector->AddNode(attackSequencer);
+
+	std::function<bool()> waitSequencer =
+		std::bind(&Sequencer::Sequence, waitModeSequencer.get());
+	topSelector->AddNode(waitSequencer);
 
 
+	//攻撃状態シーケンサー
+	std::function<bool()> attackMode =
+		std::bind(&Boss::AttackMode, boss);
+	attackModeSequencer->AddNode(attackMode);
 
-	std::function<bool()> otamesi =
-		std::bind(&Boss::Otamesi, boss);
-	selector1or2or3or4->AddNode(otamesi);
+	std::function<bool()> changeAttackMode =
+		std::bind(&Boss::ChangeRotAttackMode, boss);
+	attackModeSequencer->AddNode(changeAttackMode);
 
-	std::function<bool()> otamesi2 =
-		std::bind(&Boss::Otamesi2, boss);
-	selector1or2or3or4->AddNode(otamesi2);
 
-	std::function<bool()> otamesi3 =
-		std::bind(&Boss::Otamesi3, boss);
-	selector1or2or3or4->AddNode(otamesi3);
+	//待機状態シーケンサー
+	std::function<bool()> waitMode =
+		std::bind(&Boss::WaitMode, boss);
+	waitModeSequencer->AddNode(waitMode);
 
-	std::function<bool()> otamesi4 =
-		std::bind(&Boss::Otamesi4, boss);
-	selector1or2or3or4->AddNode(otamesi4);
+	std::function<bool()> changeWaitMode =
+		std::bind(&Boss::ChangeRotWaitMode, boss);
+	waitModeSequencer->AddNode(changeWaitMode);
 }

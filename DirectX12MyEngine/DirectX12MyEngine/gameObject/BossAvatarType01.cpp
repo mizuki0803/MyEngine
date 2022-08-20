@@ -27,23 +27,3 @@ BossAvatarType01* BossAvatarType01::Create(ObjModel* model, ObjObject3d* parent,
 
 	return bossAvatarType01;
 }
-
-void BossAvatarType01::Otamesi()
-{
-	position.x -= moveSpeed;
-}
-
-void BossAvatarType01::Otamesi2()
-{
-	position.x += moveSpeed;
-}
-
-void BossAvatarType01::Otamesi3()
-{
-	position.y += moveSpeed;
-}
-
-void BossAvatarType01::Otamesi4()
-{
-	position.y -= moveSpeed;
-}

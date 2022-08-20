@@ -70,6 +70,7 @@ void GameScene::Initialize()
 	Enemy::SetGameScene(this);
 	Enemy::SetPlayer(player.get());
 	Enemy::SetBulletModel(modelSphere.get());
+	Boss::SetPlayer(player.get());
 	//敵配置スクリプトの読み込み
 	LoadEnemySetData();
 

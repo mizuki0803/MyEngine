@@ -18,12 +18,16 @@ public: //メンバ関数
 	void Damage(int damageNum);
 
 	/// <summary>
-	/// お試し用
+	/// 攻撃状態に変更
 	/// </summary>
-	virtual void Otamesi() = 0;
-	virtual void Otamesi2() = 0;
-	virtual void Otamesi3() = 0;
-	virtual void Otamesi4() = 0;
+	/// <param name="time">イージング用(0～1)の数値</param>
+	void ChangeAttackMode(const float time);
+
+	/// <summary>
+	/// 待機状態に変更
+	/// </summary>
+	/// <param name="time">イージング用(0～1)の数値</param>
+	void ChangeWaitMode(const float time);
 
 	//getter
 	Vector3 GetWorldPos();
@@ -34,6 +38,10 @@ protected: //静的メンバ変数
 	static const int maxHP = 20;
 	//移動速度
 	static const float moveSpeed;
+	//攻撃状態のY軸回転
+	static const float attackModeRotY;
+	//待機状態のY軸回転
+	static const float waitModeRotY;
 
 protected: //メンバ変数
 	//体力
