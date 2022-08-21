@@ -428,12 +428,12 @@ void GameScene::CollisionCheck3d()
 		radiusA = bullet->GetScale().x;
 
 		//ボス分身のリストを持ってくる
-		const std::list<std::unique_ptr<BossAvatar>>& bossAvators = boss->GetAvators();
-		for (const std::unique_ptr<BossAvatar>& bossAvator : bossAvators) {
+		const std::list<std::unique_ptr<BossAvatar>>& bossAvatars = boss->GetAvatars();
+		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
 			//ボス分身座標
-			posB = bossAvator->GetWorldPos();
+			posB = bossAvatar->GetWorldPos();
 			//ボス分身半径
-			radiusB = bossAvator->GetScale().x;
+			radiusB = bossAvatar->GetScale().x;
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
@@ -442,7 +442,7 @@ void GameScene::CollisionCheck3d()
 			if (isCollision) {
 				//ボスのコールバック関数を呼び出す
 				const int damageNum = 2;
-				boss->OnCollisionAvator(bossAvator.get(), damageNum);
+				boss->OnCollisionAvatar(bossAvatar.get(), damageNum);
 				//自機弾のコールバック関数を呼び出す
 				bullet->OnCollision();
 

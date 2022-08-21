@@ -27,6 +27,8 @@ bool BossBehaviorTree::Initialize(Boss* boss)
 	topSelector.reset(Selector::Create());
 	attackModeSequencer.reset(Sequencer::Create());
 	waitModeSequencer.reset(Sequencer::Create());
+	attackModeRotaSelector.reset(Selector::Create());
+	waitModeRotaSelector.reset(Selector::Create());
 
 	//木構造を作成
 	MakeTree(boss);
@@ -53,31 +55,51 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 		std::bind(&Boss::Fall, boss);
 	topSelector->AddNode(fall);
 
-	std::function<bool()> attackSequencer =
+	std::function<bool()> attackModeSequence =
 		std::bind(&Sequencer::Sequence, attackModeSequencer.get());
-	topSelector->AddNode(attackSequencer);
+	topSelector->AddNode(attackModeSequence);
 
-	std::function<bool()> waitSequencer =
+	std::function<bool()> waitModeSequence =
 		std::bind(&Sequencer::Sequence, waitModeSequencer.get());
-	topSelector->AddNode(waitSequencer);
+	topSelector->AddNode(waitModeSequence);
 
 
 	//攻撃状態シーケンサー
 	std::function<bool()> attackMode =
-		std::bind(&Boss::AttackMode, boss);
+		std::bind(&Boss::AttackModeCount, boss);
 	attackModeSequencer->AddNode(attackMode);
 
-	std::function<bool()> changeAttackMode =
-		std::bind(&Boss::ChangeRotAttackMode, boss);
-	attackModeSequencer->AddNode(changeAttackMode);
+	std::function<bool()> attackModeRotaSelect =
+		std::bind(&Selector::Select, attackModeRotaSelector.get());
+	attackModeSequencer->AddNode(attackModeRotaSelect);
 
 
 	//待機状態シーケンサー
 	std::function<bool()> waitMode =
-		std::bind(&Boss::WaitMode, boss);
+		std::bind(&Boss::WaitModeCount, boss);
 	waitModeSequencer->AddNode(waitMode);
 
-	std::function<bool()> changeWaitMode =
-		std::bind(&Boss::ChangeRotWaitMode, boss);
-	waitModeSequencer->AddNode(changeWaitMode);
+	std::function<bool()> waitModeRotaSelect =
+		std::bind(&Selector::Select, waitModeRotaSelector.get());
+	waitModeSequencer->AddNode(waitModeRotaSelect);
+
+
+	//攻撃状態移行回転セレクター
+	std::function<bool()> attackModeMainBodyRota =
+		std::bind(&Boss::AttackModeMainBodyRota, boss);
+	attackModeRotaSelector->AddNode(attackModeMainBodyRota);
+
+	std::function<bool()> attackModeAvatarRota =
+		std::bind(&Boss::AttackModeAvatarRota, boss);
+	attackModeRotaSelector->AddNode(attackModeAvatarRota);
+
+
+	//待機状態移行回転セレクター
+	std::function<bool()> waitModeMainBodyRota =
+		std::bind(&Boss::WaitModeMainBodyRota, boss);
+	waitModeRotaSelector->AddNode(waitModeMainBodyRota);
+
+	std::function<bool()> waitModeAvatarRota =
+		std::bind(&Boss::WaitModeAvatarRota, boss);
+	waitModeRotaSelector->AddNode(waitModeAvatarRota);
 }

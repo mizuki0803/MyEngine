@@ -7,8 +7,9 @@
 #include "BossAvatarType04.h"
 
 Player* Boss::player = nullptr;
-const float Boss::attackModeTime = 600;
-const float Boss::waitModeTime = 600;
+const float Boss::attackModeTime = 600.0f;
+const float Boss::waitModeTime = 600.0f;
+const float Boss::changeModeTime = 60.0f;
 
 Boss* Boss::Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position)
 {
@@ -31,7 +32,7 @@ Boss* Boss::Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& posi
 bool Boss::Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position)
 {
 	//本体生成
-	mainBody.reset(BossMainBody::Create(bodyModel, position));
+	mainBody.reset(BossMainBody::Create(headModel, position));
 	//ボス分身生成
 	std::unique_ptr<BossAvatarType01> newAvatarType01;
 	newAvatarType01.reset(BossAvatarType01::Create(headModel, mainBody.get(), { 5, 0, 0 }));
@@ -70,6 +71,8 @@ void Boss::Update()
 	avatars.remove_if([](std::unique_ptr<BossAvatar>& avatar) {
 		return avatar->GetIsDead();
 		});
+	//分身が全滅したかチェック
+	CheckAllAvatarDead();
 
 	//ビヘイビアツリーによる行動遷移
 	behaviorTree->Root();
@@ -124,7 +127,7 @@ void Boss::OnCollisionMainBody(const int damageNum)
 	Damage(damageNum);
 }
 
-void Boss::OnCollisionAvator(BossAvatar* avatar, const int damageNum)
+void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum)
 {
 	//衝突した分身にダメージ
 	avatar->Damage(damageNum);
@@ -154,13 +157,13 @@ bool Boss::Fall()
 	return true;
 }
 
-bool Boss::AttackMode()
+bool Boss::AttackModeCount()
 {
 	//攻撃状態でなければ抜ける
 	if (!(phase == Phase::Attack)) { return false; }
 
 	//タイマーを更新
-	attackModeTimer++;	
+	attackModeTimer++;
 
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (attackModeTimer >= attackModeTime) {
@@ -176,10 +179,28 @@ bool Boss::AttackMode()
 	return true;
 }
 
-bool Boss::ChangeRotAttackMode()
+bool Boss::AttackModeMainBodyRota()
 {
-	//モードチェンジ回転に要する時間
-	const float changeModeTime = 60;
+	//本体が攻撃状態でなければ抜ける
+	if (!isMainBodyAttackMode) { return false; }
+
+	//タイマーがモードチェンジ時間以下でないなら抜ける
+	if (!(attackModeTimer < changeModeTime)) { return false; }
+
+	//イージング用に0～1の値を算出する
+	const float time = attackModeTimer / changeModeTime;
+
+	//攻撃状態にするため本体を回転させる
+	mainBody->ChangeAttackMode(time);
+
+	return true;
+}
+
+bool Boss::AttackModeAvatarRota()
+{
+	//本体が攻撃状態でなら抜ける
+	if (isMainBodyAttackMode) { return false; }
+
 	//タイマーがモードチェンジ時間以下でないなら抜ける
 	if (!(attackModeTimer < changeModeTime)) { return false; }
 
@@ -194,7 +215,7 @@ bool Boss::ChangeRotAttackMode()
 	return true;
 }
 
-bool Boss::WaitMode()
+bool Boss::WaitModeCount()
 {
 	//待機状態でなければ抜ける
 	if (!(phase == Phase::Wait)) { return false; }
@@ -216,10 +237,28 @@ bool Boss::WaitMode()
 	return true;
 }
 
-bool Boss::ChangeRotWaitMode()
+bool Boss::WaitModeMainBodyRota()
 {
-	//モードチェンジ回転に要する時間
-	const float changeModeTime = 60;
+	//本体が攻撃状態でなければ抜ける
+	if (!isMainBodyAttackMode) { return false; }
+
+	//タイマーがモードチェンジ時間以下でないなら抜ける
+	if (!(waitModeTimer < changeModeTime)) { return false; }
+
+	//イージング用に0～1の値を算出する
+	const float time = waitModeTimer / changeModeTime;
+
+	//待機状態にするため本体を回転させる
+	mainBody->ChangeWaitMode(time);
+
+	return true;
+}
+
+bool Boss::WaitModeAvatarRota()
+{
+	//本体が攻撃状態でなら抜ける
+	if (isMainBodyAttackMode) { return false; }
+
 	//タイマーがモードチェンジ時間以下でないなら抜ける
 	if (!(waitModeTimer < changeModeTime)) { return false; }
 
@@ -248,4 +287,23 @@ void Boss::Damage(const int damageNum)
 
 	//ダメージを喰らったのでHPバーの長さを変更する
 	hpBar->ChangeLength(HP);
+}
+
+void Boss::CheckAllAvatarDead()
+{
+	//既に本体が攻撃状態なら抜ける
+	if (isMainBodyAttackMode) { return; }
+
+	//分身の数が0以外抜ける
+	if (!(avatars.size() == 0)) { return; }
+
+	//本体を攻撃状態にする
+	isMainBodyAttackMode = true;
+	//本体は待機中なので、待機状態にしておく
+	phase = Phase::Wait;
+
+	//攻撃状態で本体が攻撃する状態になってしまった場合のために攻撃状態タイマーを初期化しておく
+	attackModeTimer = 0;
+	//タイミング調整のために待機状態タイマーをモードチェンジ回転終了の時間しておく
+	waitModeTimer = (int)changeModeTime;
 }

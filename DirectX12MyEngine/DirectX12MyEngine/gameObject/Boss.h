@@ -19,6 +19,12 @@ public:
 		Fall,	//降下
 		Attack,	//攻撃
 		Wait,	//待機
+		Dead,	//死亡
+	};
+
+	//行動フェーズ
+	enum class AttackName {
+
 	};
 
 public: //静的メンバ関数
@@ -66,7 +72,7 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="avatars">衝突した分身</param>
 	/// <param name="damageNum">ダメージ量</param>
-	void OnCollisionAvator(BossAvatar* avatar, const int damageNum);
+	void OnCollisionAvatar(BossAvatar* avatar, const int damageNum);
 
 	/// <summary>
 	/// 降下
@@ -76,27 +82,37 @@ public: //メンバ関数
 	/// <summary>
 	/// 攻撃状態
 	/// </summary>
-	bool AttackMode();
+	bool AttackModeCount();
 
 	/// <summary>
-	/// 攻撃状態用の角度に変更
+	/// 攻撃状態用の角度に本体回転
 	/// </summary>
-	bool ChangeRotAttackMode();
+	bool AttackModeMainBodyRota();
+
+	/// <summary>
+	/// 攻撃状態用の角度に分身回転
+	/// </summary>
+	bool AttackModeAvatarRota();
 
 	/// <summary>
 	/// 待機状態
 	/// </summary>
-	bool WaitMode();
+	bool WaitModeCount();
 
 	/// <summary>
-	/// 待機状態用の角度に変更
+	/// 待機状態用の角度に本体回転
 	/// </summary>
-	bool ChangeRotWaitMode();
+	bool WaitModeMainBodyRota();
+
+	/// <summary>
+	/// 待機状態用の角度に分身回転
+	/// </summary>
+	bool WaitModeAvatarRota();
 
 	//getter
 	const Phase& GetPhase() { return this->phase; }
 	BossMainBody* GetMainBody() { return mainBody.get(); }
-	const std::list<std::unique_ptr<BossAvatar>>& GetAvators() { return avatars; };
+	const std::list<std::unique_ptr<BossAvatar>>& GetAvatars() { return avatars; };
 
 private: //メンバ関数
 	/// <summary>
@@ -105,6 +121,11 @@ private: //メンバ関数
 	/// <param name="damageNum">ダメージ量</param>
 	void Damage(const int damageNum);
 
+	/// <summary>
+	/// 分身が全滅したかチェックする
+	/// </summary>
+	void CheckAllAvatarDead();
+
 protected: //静的メンバ変数
 	//プレイヤー自機
 	static Player* player;
@@ -112,6 +133,8 @@ protected: //静的メンバ変数
 	static const float attackModeTime;
 	//待機状態時間
 	static const float waitModeTime;
+	//モードチェンジ回転に要する時間
+	static const float changeModeTime;
 
 private: //メンバ変数
 	//ボスの行動遷移ビヘイビアツリー
@@ -120,10 +143,16 @@ private: //メンバ変数
 	std::unique_ptr<BossMainBody> mainBody;
 	//分身
 	std::list<std::unique_ptr<BossAvatar>> avatars;
+	//本体が攻撃する状態か
+	bool isMainBodyAttackMode = false;
 	//行動
 	Phase phase = Phase::Fall;
 	//降下する時間タイマー
 	int32_t fallTimer = 0;
+	//攻撃内容が決まっているか
+	bool isAttackSelect = false;
+	//攻撃内容
+	AttackName attackName;
 	//攻撃状態時間タイマー
 	int32_t attackModeTimer = 0;
 	//待機状態時間タイマー

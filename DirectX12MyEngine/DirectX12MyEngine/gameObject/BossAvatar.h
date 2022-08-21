@@ -36,8 +36,6 @@ public: //メンバ関数
 protected: //静的メンバ変数
 	//体力
 	static const int maxHP = 20;
-	//移動速度
-	static const float moveSpeed;
 	//攻撃状態のY軸回転
 	static const float attackModeRotY;
 	//待機状態のY軸回転

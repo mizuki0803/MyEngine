@@ -42,4 +42,8 @@ private:
 	std::unique_ptr<Sequencer> attackModeSequencer;
 	//シーケンサー
 	std::unique_ptr<Sequencer> waitModeSequencer;
+	//セレクター
+	std::unique_ptr<Selector> attackModeRotaSelector;
+	//セレクター
+	std::unique_ptr<Selector> waitModeRotaSelector;
 };

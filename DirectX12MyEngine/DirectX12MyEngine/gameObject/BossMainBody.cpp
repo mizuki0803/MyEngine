@@ -1,6 +1,9 @@
 #include "BossMainBody.h"
 #include "Easing.h"
 
+const float BossMainBody::attackModeRotY = 180.0f;
+const float BossMainBody::waitModeRotY = 0.0f;
+
 BossMainBody* BossMainBody::Create(ObjModel* model, const Vector3& position)
 {
 	//ボス(本体)のインスタンスを生成
@@ -46,6 +49,18 @@ void BossMainBody::Fall(const float time)
 	Vector3 stayPos = startPos;
 	stayPos.y = 0;
 	position = Easing::Lerp(startPos, stayPos, time);
+}
+
+void BossMainBody::ChangeAttackMode(const float time)
+{
+	//180度回転させて反対向きにする
+	rotation.y = Easing::InOutBack(waitModeRotY, attackModeRotY, time);
+}
+
+void BossMainBody::ChangeWaitMode(const float time)
+{
+	//180度回転させて反対向きにする
+	rotation.y = Easing::InOutBack(attackModeRotY, waitModeRotY, time);
 }
 
 Vector3 BossMainBody::GetWorldPos()

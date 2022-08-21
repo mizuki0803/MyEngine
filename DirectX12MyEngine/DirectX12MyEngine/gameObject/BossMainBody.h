@@ -30,6 +30,18 @@ public: //メンバ関数
 	/// <param name="time">イージング用(0～1)の数値</param>
 	void Fall(const float time);
 
+	/// <summary>
+	/// 攻撃状態に変更
+	/// </summary>
+	/// <param name="time">イージング用(0～1)の数値</param>
+	void ChangeAttackMode(const float time);
+
+	/// <summary>
+	/// 待機状態に変更
+	/// </summary>
+	/// <param name="time">イージング用(0～1)の数値</param>
+	void ChangeWaitMode(const float time);
+
 	//getter
 	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
@@ -37,6 +49,10 @@ public: //メンバ関数
 protected: //静的メンバ変数
 	//体力
 	static const int maxHP = 60;
+	//攻撃状態のY軸回転
+	static const float attackModeRotY;
+	//待機状態のY軸回転
+	static const float waitModeRotY;
 
 private: //メンバ変数
 	//初期座標

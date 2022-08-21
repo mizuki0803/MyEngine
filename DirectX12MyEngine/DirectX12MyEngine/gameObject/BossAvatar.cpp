@@ -1,10 +1,8 @@
 #include "BossAvatar.h"
 #include "Easing.h"
 
-const float BossAvatar::moveSpeed = 0.1f;
 const float BossAvatar::attackModeRotY = 180.0f;
 const float BossAvatar::waitModeRotY = 0.0f;
-
 
 void BossAvatar::Damage(int damageNum)
 {
