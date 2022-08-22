@@ -23,8 +23,10 @@ public:
 	};
 
 	//行動フェーズ
-	enum class AttackName {
-
+	enum class AttackType {
+		None,	//未設定
+		A,
+		B,
 	};
 
 public: //静的メンバ関数
@@ -80,9 +82,39 @@ public: //メンバ関数
 	bool Fall();
 
 	/// <summary>
+	/// 攻撃内容設定を開始するか
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeSelectStart();
+
+	/// <summary>
+	/// 攻撃内容Aを設定するか
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeASelect();
+
+	/// <summary>
+	/// 攻撃内容Bを設定するか
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeBSelect();
+
+	/// <summary>
 	/// 攻撃状態
 	/// </summary>
 	bool AttackModeCount();
+
+	/// <summary>
+	/// 攻撃内容A
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeA();
+
+	/// <summary>
+	/// 攻撃内容B
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeB();
 
 	/// <summary>
 	/// 攻撃状態用の角度に本体回転
@@ -126,7 +158,8 @@ private: //メンバ関数
 	/// </summary>
 	void CheckAllAvatarDead();
 
-protected: //静的メンバ変数
+
+private: //静的メンバ変数
 	//プレイヤー自機
 	static Player* player;
 	//攻撃状態時間
@@ -149,10 +182,8 @@ private: //メンバ変数
 	Phase phase = Phase::Fall;
 	//降下する時間タイマー
 	int32_t fallTimer = 0;
-	//攻撃内容が決まっているか
-	bool isAttackSelect = false;
 	//攻撃内容
-	AttackName attackName;
+	AttackType attackType = AttackType::None;
 	//攻撃状態時間タイマー
 	int32_t attackModeTimer = 0;
 	//待機状態時間タイマー

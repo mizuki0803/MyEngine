@@ -1,6 +1,6 @@
 #include "EnemyBullet.h"
 
-EnemyBullet* EnemyBullet::Create(ObjModel* model, Vector3& position, Vector3& velocity)
+EnemyBullet* EnemyBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity)
 {
 	//弾弾のインスタンスを生成
 	EnemyBullet* enemyBullet = new EnemyBullet();

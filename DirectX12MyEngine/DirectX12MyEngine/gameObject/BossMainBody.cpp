@@ -1,6 +1,9 @@
 #include "BossMainBody.h"
 #include "Easing.h"
+#include "GameScene.h"
 
+GameScene* BossMainBody::gameScene = nullptr;
+ObjModel* BossMainBody::bulletModel = nullptr;
 const float BossMainBody::attackModeRotY = 180.0f;
 const float BossMainBody::waitModeRotY = 0.0f;
 
@@ -51,6 +54,26 @@ void BossMainBody::Fall(const float time)
 	position = Easing::Lerp(startPos, stayPos, time);
 }
 
+void BossMainBody::AttackTypeA()
+{
+	position.x += 0.01f;
+
+	//弾発射タイマーカウント
+	fireTimer++;
+	const int fireInterval = 30;
+	if (fireTimer >= fireInterval) {
+		//弾を発射
+		Fire();
+		//発射タイマーを初期化
+		fireTimer = 0;
+	}
+}
+
+void BossMainBody::AttackTypeB()
+{
+	position.x -= 0.01f;
+}
+
 void BossMainBody::ChangeAttackMode(const float time)
 {
 	//180度回転させて反対向きにする
@@ -73,4 +96,17 @@ Vector3 BossMainBody::GetWorldPos()
 	worldPos.z = matWorld.r[3].m128_f32[2];
 
 	return worldPos;
+}
+
+void BossMainBody::Fire()
+{
+	//弾の速度を設定
+	const float bulletSpeed = 0.5f;
+	Vector3 velocity(0, 0, bulletSpeed);
+	velocity = MatrixTransformDirection(velocity, matWorld);
+
+	//弾を生成
+	std::unique_ptr<EnemyBullet> newBullet;
+	newBullet.reset(EnemyBullet::Create(bulletModel, GetWorldPos(), velocity));
+	gameScene->AddEnemyBullet(std::move(newBullet));
 }

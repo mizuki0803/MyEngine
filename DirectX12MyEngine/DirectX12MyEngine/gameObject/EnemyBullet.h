@@ -12,7 +12,7 @@ public: // 静的メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>敵弾</returns>
-	static EnemyBullet* Create(ObjModel* model, Vector3& position, Vector3& velocity);
+	static EnemyBullet* Create(ObjModel* model, const Vector3& position, const Vector3& velocity);
 
 public: //メンバ関数
 	/// <summary>

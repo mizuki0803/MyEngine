@@ -1,6 +1,9 @@
 #pragma once
 #include "ObjObject3d.h"
 
+//GameSceneの前方宣言
+class GameScene;
+
 /// <summary>
 /// ボス(分身)
 /// </summary>
@@ -10,12 +13,21 @@ public: //静的メンバ関数
 	//getter
 	static const int GetMaxHP() { return BossAvatar::maxHP; }
 
+	//setter
+	static void SetGameScene(GameScene* gameScene) { BossAvatar::gameScene = gameScene; }
+	static void SetBulletModel(ObjModel* model) { BossAvatar::bulletModel = model; }
+
 public: //メンバ関数
 	/// <summary>
 	/// ダメージを喰らう
 	/// </summary>
 	/// <param name="damageNum">ダメージ量</param>
 	void Damage(int damageNum);
+
+	/// <summary>
+	/// 攻撃内容B
+	/// </summary>
+	void AttackTypeB();
 
 	/// <summary>
 	/// 攻撃状態に変更
@@ -33,7 +45,17 @@ public: //メンバ関数
 	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
 
+protected:
+	/// <summary>
+	/// 弾発射
+	/// </summary>
+	void Fire();
+
 protected: //静的メンバ変数
+	//ゲームシーン
+	static GameScene* gameScene;
+	//敵弾のモデル
+	static ObjModel* bulletModel;
 	//体力
 	static const int maxHP = 20;
 	//攻撃状態のY軸回転
@@ -46,4 +68,6 @@ protected: //メンバ変数
 	int HP = maxHP;
 	//死亡フラグ
 	bool isDead = false;
+	//弾発射タイマー
+	int32_t fireTimer = 0;
 };

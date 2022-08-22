@@ -70,10 +70,15 @@ void GameScene::Initialize()
 	Enemy::SetGameScene(this);
 	Enemy::SetPlayer(player.get());
 	Enemy::SetBulletModel(modelSphere.get());
-	Boss::SetPlayer(player.get());
 	//敵配置スクリプトの読み込み
 	LoadEnemySetData();
 
+	//ボスに必要な情報をセット
+	Boss::SetPlayer(player.get());
+	BossMainBody::SetGameScene(this);
+	BossMainBody::SetBulletModel(modelSphere.get());
+	BossAvatar::SetGameScene(this);
+	BossAvatar::SetBulletModel(modelSphere.get());
 
 	//天球生成
 	objSkydome.reset(Skydome::Create(modelSkydome.get()));

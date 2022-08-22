@@ -1,6 +1,7 @@
 #include "Boss.h"
 #include "Input.h"
 #include "DebugText.h"
+#include "Player.h"
 #include "BossAvatarType01.h"
 #include "BossAvatarType02.h"
 #include "BossAvatarType03.h"
@@ -71,8 +72,6 @@ void Boss::Update()
 	avatars.remove_if([](std::unique_ptr<BossAvatar>& avatar) {
 		return avatar->GetIsDead();
 		});
-	//分身が全滅したかチェック
-	CheckAllAvatarDead();
 
 	//ビヘイビアツリーによる行動遷移
 	behaviorTree->Root();
@@ -132,6 +131,9 @@ void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum)
 	//衝突した分身にダメージ
 	avatar->Damage(damageNum);
 
+	//分身が全滅したかチェック
+	CheckAllAvatarDead();
+
 	//ボス全体にダメージ
 	Damage(damageNum);
 }
@@ -157,6 +159,37 @@ bool Boss::Fall()
 	return true;
 }
 
+bool Boss::AttackTypeSelectStart()
+{
+	//攻撃内容が既に決まっていたらtrueを返す
+	if (!(attackType == AttackType::None)) { return true; }
+
+	//攻撃内容設定を開始するためfalseを返す
+	return false;
+}
+
+bool Boss::AttackTypeASelect()
+{
+	//本体が攻撃状態でなければ抜ける
+	if (!isMainBodyAttackMode) { return false; }
+
+	//攻撃内容Aをセット
+	attackType = AttackType::A;
+
+	return true;
+}
+
+bool Boss::AttackTypeBSelect()
+{
+	//本体が攻撃状態でなら抜ける
+	if (isMainBodyAttackMode) { return false; }
+
+	//攻撃内容Bをセット
+	attackType = AttackType::B;
+
+	return true;
+}
+
 bool Boss::AttackModeCount()
 {
 	//攻撃状態でなければ抜ける
@@ -171,10 +204,37 @@ bool Boss::AttackModeCount()
 
 		//次に攻撃状態になったときのためにタイマーを初期化しておく
 		attackModeTimer = 0;
+		//攻撃内容を未設定にしておく
+		attackType = AttackType::None;
 
 		//攻撃状態を終えるのでfalseを返す
 		return false;
 	}
+
+	return true;
+}
+
+bool Boss::AttackTypeA()
+{
+	//攻撃内容がAでなければ抜ける
+	if (!(attackType == AttackType::A)) { return false; }
+
+	mainBody->AttackTypeA();
+
+	return true;
+}
+
+bool Boss::AttackTypeB()
+{
+	//攻撃内容がBでなければ抜ける
+	if (!(attackType == AttackType::B)) { return false; }
+
+	//本体と分身を攻撃内容Bで動かす
+	mainBody->AttackTypeB();
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		avatar->AttackTypeB();
+	}
+
 
 	return true;
 }
@@ -294,14 +354,20 @@ void Boss::CheckAllAvatarDead()
 	//既に本体が攻撃状態なら抜ける
 	if (isMainBodyAttackMode) { return; }
 
-	//分身の数が0以外抜ける
-	if (!(avatars.size() == 0)) { return; }
+	//一体でも生きていたら抜ける
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		if (!avatar->GetIsDead()) {
+			return;
+		}
+	}
 
 	//本体を攻撃状態にする
 	isMainBodyAttackMode = true;
 	//本体は待機中なので、待機状態にしておく
 	phase = Phase::Wait;
 
+	//攻撃内容を未設定にしておく
+	attackType = AttackType::None;
 	//攻撃状態で本体が攻撃する状態になってしまった場合のために攻撃状態タイマーを初期化しておく
 	attackModeTimer = 0;
 	//タイミング調整のために待機状態タイマーをモードチェンジ回転終了の時間しておく

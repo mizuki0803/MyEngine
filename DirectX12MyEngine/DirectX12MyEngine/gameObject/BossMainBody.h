@@ -1,6 +1,9 @@
 #pragma once
 #include "ObjObject3d.h"
 
+//GameSceneの前方宣言
+class GameScene;
+
 /// <summary>
 /// ボス(本体)
 /// </summary>
@@ -17,6 +20,10 @@ public: //静的メンバ関数
 	//getter
 	static const int GetMaxHP() { return BossMainBody::maxHP; }
 
+	//setter
+	static void SetGameScene(GameScene* gameScene) { BossMainBody::gameScene = gameScene; }
+	static void SetBulletModel(ObjModel* model) { BossMainBody::bulletModel = model; }
+
 public: //メンバ関数
 	/// <summary>
 	/// ダメージを喰らう
@@ -29,6 +36,16 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="time">イージング用(0～1)の数値</param>
 	void Fall(const float time);
+
+	/// <summary>
+	/// 攻撃内容A
+	/// </summary>
+	void AttackTypeA();
+
+	/// <summary>
+	/// 攻撃内容B
+	/// </summary>
+	void AttackTypeB();
 
 	/// <summary>
 	/// 攻撃状態に変更
@@ -46,7 +63,17 @@ public: //メンバ関数
 	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
 
-protected: //静的メンバ変数
+private: //メンバ関数
+	/// <summary>
+	/// 弾発射
+	/// </summary>
+	void Fire();
+
+private: //静的メンバ変数
+	//ゲームシーン
+	static GameScene* gameScene;
+	//敵弾のモデル
+	static ObjModel* bulletModel;
 	//体力
 	static const int maxHP = 60;
 	//攻撃状態のY軸回転
@@ -61,4 +88,6 @@ private: //メンバ変数
 	int HP = maxHP;
 	//死亡フラグ
 	bool isDead = false;
+	//弾発射タイマー
+	int32_t fireTimer = 0;
 };

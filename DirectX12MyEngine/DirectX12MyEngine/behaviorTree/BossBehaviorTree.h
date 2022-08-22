@@ -43,7 +43,13 @@ private:
 	//シーケンサー
 	std::unique_ptr<Sequencer> waitModeSequencer;
 	//セレクター
+	std::unique_ptr<Selector> attackTypeSelector;
+	//セレクター
+	std::unique_ptr<Selector> attackModeActionSelector;
+	//セレクター
 	std::unique_ptr<Selector> attackModeRotaSelector;
+	//セレクター
+	std::unique_ptr<Selector> attackSelector;
 	//セレクター
 	std::unique_ptr<Selector> waitModeRotaSelector;
 };

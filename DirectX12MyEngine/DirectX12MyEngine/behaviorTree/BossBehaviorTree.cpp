@@ -27,7 +27,10 @@ bool BossBehaviorTree::Initialize(Boss* boss)
 	topSelector.reset(Selector::Create());
 	attackModeSequencer.reset(Sequencer::Create());
 	waitModeSequencer.reset(Sequencer::Create());
+	attackTypeSelector.reset(Selector::Create());
+	attackModeActionSelector.reset(Selector::Create());
 	attackModeRotaSelector.reset(Selector::Create());
+	attackSelector.reset(Selector::Create());
 	waitModeRotaSelector.reset(Selector::Create());
 
 	//木構造を作成
@@ -69,9 +72,13 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 		std::bind(&Boss::AttackModeCount, boss);
 	attackModeSequencer->AddNode(attackMode);
 
-	std::function<bool()> attackModeRotaSelect =
-		std::bind(&Selector::Select, attackModeRotaSelector.get());
-	attackModeSequencer->AddNode(attackModeRotaSelect);
+	std::function<bool()> attackTypeSelect =
+		std::bind(&Selector::Select, attackTypeSelector.get());
+	attackModeSequencer->AddNode(attackTypeSelect);
+
+	std::function<bool()> attackModeActionSelect =
+		std::bind(&Selector::Select, attackModeActionSelector.get());
+	attackModeSequencer->AddNode(attackModeActionSelect);
 
 
 	//待機状態シーケンサー
@@ -84,6 +91,30 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 	waitModeSequencer->AddNode(waitModeRotaSelect);
 
 
+	//攻撃内容設定セレクター
+	std::function<bool()> attackTypeSelectStart =
+		std::bind(&Boss::AttackTypeSelectStart, boss);
+	attackTypeSelector->AddNode(attackTypeSelectStart);
+
+	std::function<bool()> attackTypeASelect =
+		std::bind(&Boss::AttackTypeASelect, boss);
+	attackTypeSelector->AddNode(attackTypeASelect);
+
+	std::function<bool()> attackTypeBSelect =
+		std::bind(&Boss::AttackTypeBSelect, boss);
+	attackTypeSelector->AddNode(attackTypeBSelect);
+
+
+	//攻撃状態動きセレクター
+	std::function<bool()> attackModeRotaSelect =
+		std::bind(&Selector::Select, attackModeRotaSelector.get());
+	attackModeActionSelector->AddNode(attackModeRotaSelect);
+
+	std::function<bool()> attackSelect =
+		std::bind(&Selector::Select, attackSelector.get());
+	attackModeActionSelector->AddNode(attackSelect);
+
+
 	//攻撃状態移行回転セレクター
 	std::function<bool()> attackModeMainBodyRota =
 		std::bind(&Boss::AttackModeMainBodyRota, boss);
@@ -92,6 +123,17 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 	std::function<bool()> attackModeAvatarRota =
 		std::bind(&Boss::AttackModeAvatarRota, boss);
 	attackModeRotaSelector->AddNode(attackModeAvatarRota);
+
+
+	//攻撃セレクター
+	std::function<bool()> attackTypeA =
+		std::bind(&Boss::AttackTypeA, boss);
+	attackSelector->AddNode(attackTypeA);
+
+	std::function<bool()> attackTypeB =
+		std::bind(&Boss::AttackTypeB, boss);
+	attackSelector->AddNode(attackTypeB);
+
 
 
 	//待機状態移行回転セレクター
