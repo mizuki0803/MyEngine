@@ -51,5 +51,7 @@ private:
 	//セレクター
 	std::unique_ptr<Selector> attackSelector;
 	//セレクター
+	std::unique_ptr<Selector> waitModeActionSelector;
+	//セレクター
 	std::unique_ptr<Selector> waitModeRotaSelector;
 };

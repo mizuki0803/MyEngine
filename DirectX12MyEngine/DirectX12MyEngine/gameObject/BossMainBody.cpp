@@ -30,7 +30,7 @@ BossMainBody* BossMainBody::Create(ObjModel* model, const Vector3& position)
 	bossMainBody->position = position;
 
 	//初期座標をセット
-	bossMainBody->startPos = position;
+	bossMainBody->bornPos = position;
 
 	return bossMainBody;
 }
@@ -49,9 +49,9 @@ void BossMainBody::Damage(int damageNum)
 void BossMainBody::Fall(const float time)
 {
 	//生成位置から降りたところで停止する
-	Vector3 stayPos = startPos;
+	Vector3 stayPos = bornPos;
 	stayPos.y = 0;
-	position = Easing::Lerp(startPos, stayPos, time);
+	position = Easing::Lerp(bornPos, stayPos, time);
 }
 
 void BossMainBody::AttackTypeA()
@@ -84,6 +84,18 @@ void BossMainBody::ChangeWaitMode(const float time)
 {
 	//180度回転させて反対向きにする
 	rotation.y = Easing::InOutBack(attackModeRotY, waitModeRotY, time);
+}
+
+void BossMainBody::ReturnFixedPosition(const float time)
+{
+	//座標(0, 0, Z)に戻す
+	position = Easing::Lerp(returnStartPos, { 0, 0, bornPos.z }, time);
+}
+
+void BossMainBody::SetReturnStartPos()
+{
+	//呼び出した瞬間の座標を固定位置に戻るときの出発座標として記録しておく
+  	returnStartPos = position;
 }
 
 Vector3 BossMainBody::GetWorldPos()

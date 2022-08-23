@@ -132,6 +132,12 @@ public: //メンバ関数
 	bool WaitModeCount();
 
 	/// <summary>
+	/// 固定位置に戻る
+	/// </summary>
+	/// <returns></returns>
+	bool ReturnFixedPosition();
+
+	/// <summary>
 	/// 待機状態用の角度に本体回転
 	/// </summary>
 	bool WaitModeMainBodyRota();
@@ -158,6 +164,11 @@ private: //メンバ関数
 	/// </summary>
 	void CheckAllAvatarDead();
 
+	/// <summary>
+	/// 固定位置に戻るときの出発座標を記録する
+	/// </summary>
+	void SetReturnStartPos();
+
 
 private: //静的メンバ変数
 	//プレイヤー自機
@@ -168,6 +179,8 @@ private: //静的メンバ変数
 	static const float waitModeTime;
 	//モードチェンジ回転に要する時間
 	static const float changeModeTime;
+	//固定位置に戻るために要する時間
+	static const float returnFixedPositionTime;
 
 private: //メンバ変数
 	//ボスの行動遷移ビヘイビアツリー

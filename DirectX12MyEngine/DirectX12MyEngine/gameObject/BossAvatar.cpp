@@ -43,6 +43,20 @@ void BossAvatar::ChangeWaitMode(const float time)
 	rotation.y = Easing::InOutBack(attackModeRotY, waitModeRotY, time);
 }
 
+void BossAvatar::ReturnFixedPosition(const float time)
+{
+	//親子関係上での定位置座標に戻す
+	position.x = Easing::OutQuad(returnStartPos.x, fixedPos.x, time);
+	position.y = Easing::OutQuad(returnStartPos.y, fixedPos.y, time);
+	position.z = Easing::OutQuad(returnStartPos.z, fixedPos.z, time);
+}
+
+void BossAvatar::SetReturnStartPos()
+{
+	//呼び出した瞬間の座標を固定位置に戻るときの出発座標として記録しておく
+	returnStartPos = position;
+}
+
 Vector3 BossAvatar::GetWorldPos()
 {
 	//ワールド座標を入れる変数

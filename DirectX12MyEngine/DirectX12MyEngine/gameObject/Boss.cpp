@@ -11,6 +11,7 @@ Player* Boss::player = nullptr;
 const float Boss::attackModeTime = 600.0f;
 const float Boss::waitModeTime = 600.0f;
 const float Boss::changeModeTime = 60.0f;
+const float Boss::returnFixedPositionTime = 180.0f;
 
 Boss* Boss::Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position)
 {
@@ -207,6 +208,9 @@ bool Boss::AttackModeCount()
 		//攻撃内容を未設定にしておく
 		attackType = AttackType::None;
 
+		//固定位置に戻るとき出発座標を記録しておく
+		SetReturnStartPos();
+
 		//攻撃状態を終えるのでfalseを返す
 		return false;
 	}
@@ -297,6 +301,24 @@ bool Boss::WaitModeCount()
 	return true;
 }
 
+bool Boss::ReturnFixedPosition()
+{
+	//タイマーが固定位置に戻るために要する時間以下でないなら抜ける
+	const float timer = waitModeTimer - changeModeTime;
+	if (!(timer < returnFixedPositionTime)) { return false; }
+
+	//イージング用に0～1の値を算出する
+	const float time = timer / returnFixedPositionTime;
+
+	//固定位置に戻す
+	mainBody->ReturnFixedPosition(time);
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		avatar->ReturnFixedPosition(time);
+	}
+
+	return true;
+}
+
 bool Boss::WaitModeMainBodyRota()
 {
 	//本体が攻撃状態でなければ抜ける
@@ -372,4 +394,13 @@ void Boss::CheckAllAvatarDead()
 	attackModeTimer = 0;
 	//タイミング調整のために待機状態タイマーをモードチェンジ回転終了の時間しておく
 	waitModeTimer = (int)changeModeTime;
+}
+
+void Boss::SetReturnStartPos()
+{
+	//呼び出した瞬間の座標を固定位置に戻るときの出発座標として記録しておく
+	mainBody->SetReturnStartPos();
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		avatar->SetReturnStartPos();
+	}
 }

@@ -25,5 +25,8 @@ BossAvatarType03* BossAvatarType03::Create(ObjModel* model, ObjObject3d* parent,
 	//座標をセット
 	bossAvatarType03->position = position;
 
+	//親子関係上での定位置をセット
+	bossAvatarType03->fixedPos = position;
+
 	return bossAvatarType03;
 }

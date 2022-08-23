@@ -59,6 +59,17 @@ public: //メンバ関数
 	/// <param name="time">イージング用(0～1)の数値</param>
 	void ChangeWaitMode(const float time);
 
+	/// <summary>
+	/// 固定位置に戻る
+	/// </summary>
+	/// <param name="time">イージング用(0～1)の数値</param>
+	void ReturnFixedPosition(const float time);
+
+	/// <summary>
+	/// 固定位置に戻るときの出発座標を記録
+	/// </summary>
+	void SetReturnStartPos();
+
 	//getter
 	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
@@ -82,12 +93,14 @@ private: //静的メンバ変数
 	static const float waitModeRotY;
 
 private: //メンバ変数
-	//初期座標
-	Vector3 startPos;
+	//生成座標
+	Vector3 bornPos;
 	//体力
 	int HP = maxHP;
 	//死亡フラグ
 	bool isDead = false;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
+	//固定位置に戻るときの出発座標
+	Vector3 returnStartPos;
 };

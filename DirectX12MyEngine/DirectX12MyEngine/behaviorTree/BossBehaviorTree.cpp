@@ -31,6 +31,7 @@ bool BossBehaviorTree::Initialize(Boss* boss)
 	attackModeActionSelector.reset(Selector::Create());
 	attackModeRotaSelector.reset(Selector::Create());
 	attackSelector.reset(Selector::Create());
+	waitModeActionSelector.reset(Selector::Create());
 	waitModeRotaSelector.reset(Selector::Create());
 
 	//木構造を作成
@@ -86,9 +87,9 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 		std::bind(&Boss::WaitModeCount, boss);
 	waitModeSequencer->AddNode(waitMode);
 
-	std::function<bool()> waitModeRotaSelect =
-		std::bind(&Selector::Select, waitModeRotaSelector.get());
-	waitModeSequencer->AddNode(waitModeRotaSelect);
+	std::function<bool()> waitModeActionSelect =
+		std::bind(&Selector::Select, waitModeActionSelector.get());
+	waitModeSequencer->AddNode(waitModeActionSelect);
 
 
 	//攻撃内容設定セレクター
@@ -134,6 +135,15 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 		std::bind(&Boss::AttackTypeB, boss);
 	attackSelector->AddNode(attackTypeB);
 
+
+	//待機状態動きセレクター
+	std::function<bool()> waitModeRotaSelect =
+		std::bind(&Selector::Select, waitModeRotaSelector.get());
+	waitModeActionSelector->AddNode(waitModeRotaSelect);
+
+	std::function<bool()> returnFixedPosition =
+		std::bind(&Boss::ReturnFixedPosition, boss);
+	waitModeActionSelector->AddNode(returnFixedPosition);
 
 
 	//待機状態移行回転セレクター
