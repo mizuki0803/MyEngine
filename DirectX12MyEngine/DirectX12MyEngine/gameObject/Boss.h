@@ -35,7 +35,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>ボス</returns>
-	static Boss* Create(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position);
+	static Boss* Create(ObjModel* mainBodyModel, ObjModel* avatarModel, const Vector3& position);
 
 	//setter
 	static void SetPlayer(Player* player) { Boss::player = player; }
@@ -45,7 +45,7 @@ public: //メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <returns>成否</returns>
-	bool Initialize(ObjModel* bodyModel, ObjModel* headModel, const Vector3& position);
+	bool Initialize(ObjModel* mainBodyModel, ObjModel* avatarModel, const Vector3& position);
 
 	/// <summary>
 	/// 更新
@@ -165,9 +165,10 @@ private: //メンバ関数
 	void CheckAllAvatarDead();
 
 	/// <summary>
-	/// 固定位置に戻るときの出発座標を記録する
+	/// 攻撃状態を終了するので必要な情報をセット
+	/// 固定位置に戻るときの出発座標を記録する、弾発射状態解除
 	/// </summary>
-	void SetReturnStartPos();
+	void AttackEnd();
 
 
 private: //静的メンバ変数

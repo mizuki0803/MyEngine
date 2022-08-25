@@ -19,6 +19,11 @@ public: //静的メンバ関数
 
 public: //メンバ関数
 	/// <summary>
+	/// 初期化
+	/// </summary>
+	bool Initialize() override;
+
+	/// <summary>
 	/// ダメージを喰らう
 	/// </summary>
 	/// <param name="damageNum">ダメージ量</param>
@@ -48,9 +53,10 @@ public: //メンバ関数
 	void ReturnFixedPosition(const float time);
 
 	/// <summary>
-	/// 固定位置に戻るときの出発座標を記録
+	/// 攻撃状態を終了するので必要な情報をセット
+	/// 固定位置に戻るときの出発座標を記録する、弾発射状態解除
 	/// </summary>
-	void SetReturnStartPos();
+	void AttackEnd();
 
 	//getter
 	Vector3 GetWorldPos();
@@ -68,7 +74,7 @@ protected: //静的メンバ変数
 	//敵弾のモデル
 	static ObjModel* bulletModel;
 	//体力
-	static const int maxHP = 20;
+	static const int maxHP = 1;
 	//攻撃状態のY軸回転
 	static const float attackModeRotY;
 	//待機状態のY軸回転
@@ -81,6 +87,8 @@ protected: //メンバ変数
 	bool isDead = false;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
+	//弾発射開始するか
+	bool isFire = false;
 	//ボス本体との親子関係上の定位置座標
 	Vector3 fixedPos;
 	//固定位置に戻るときの出発座標

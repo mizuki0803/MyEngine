@@ -40,7 +40,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 攻撃内容A
 	/// </summary>
-	void AttackTypeA();
+	void AttackTypeA(const Vector3& playerPosition);
 
 	/// <summary>
 	/// 攻撃内容B
@@ -66,9 +66,10 @@ public: //メンバ関数
 	void ReturnFixedPosition(const float time);
 
 	/// <summary>
-	/// 固定位置に戻るときの出発座標を記録
+	/// 攻撃状態を終了するので必要な情報をセット
+	/// 固定位置に戻るときの出発座標を記録する、弾発射状態解除
 	/// </summary>
-	void SetReturnStartPos();
+	void AttackEnd();
 
 	//getter
 	Vector3 GetWorldPos();
@@ -101,6 +102,8 @@ private: //メンバ変数
 	bool isDead = false;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
+	//弾発射開始するか
+	bool isFire = false;
 	//固定位置に戻るときの出発座標
 	Vector3 returnStartPos;
 };

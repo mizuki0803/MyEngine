@@ -7,6 +7,18 @@ ObjModel* BossAvatar::bulletModel = nullptr;
 const float BossAvatar::attackModeRotY = 180.0f;
 const float BossAvatar::waitModeRotY = 0.0f;
 
+bool BossAvatar::Initialize()
+{
+	//大きさは本体の3/4
+	scale = { 0.75f, 0.75f, 0.75f };
+
+	if (!ObjObject3d::Initialize()) {
+		return false;
+	}
+
+	return true;
+}
+
 void BossAvatar::Damage(int damageNum)
 {
 	//引数の数字の分ダメージを喰らう
@@ -40,7 +52,9 @@ void BossAvatar::ChangeAttackMode(const float time)
 void BossAvatar::ChangeWaitMode(const float time)
 {
 	//180度回転させて反対向きにする
+	rotation.x = 0;
 	rotation.y = Easing::InOutBack(attackModeRotY, waitModeRotY, time);
+	rotation.z = 0;
 }
 
 void BossAvatar::ReturnFixedPosition(const float time)
@@ -51,10 +65,15 @@ void BossAvatar::ReturnFixedPosition(const float time)
 	position.z = Easing::OutQuad(returnStartPos.z, fixedPos.z, time);
 }
 
-void BossAvatar::SetReturnStartPos()
+void BossAvatar::AttackEnd()
 {
 	//呼び出した瞬間の座標を固定位置に戻るときの出発座標として記録しておく
 	returnStartPos = position;
+
+	//弾発射タイマーを初期化
+	fireTimer = 0;
+	//弾発射状態を解除
+	isFire = false;
 }
 
 Vector3 BossAvatar::GetWorldPos()
@@ -72,7 +91,7 @@ Vector3 BossAvatar::GetWorldPos()
 void BossAvatar::Fire()
 {
 	//弾の速度を設定
-	const float bulletSpeed = 0.5f;
+	const float bulletSpeed = 1.0f;
 	Vector3 velocity(0, 0, bulletSpeed);
 	velocity = MatrixTransformDirection(velocity, matWorld);
 

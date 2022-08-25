@@ -686,8 +686,8 @@ void GameScene::BossBattleStart()
 	if (!isBossBattleStart) { return; }
 
 	//ボス生成
-	const Vector3 bossPos = { 0, 100, 75 };
-	boss.reset(Boss::Create(modelSphere.get(), modelFighter.get(), bossPos));
+	const Vector3 bossPos = { 0, 70, 45 };
+	boss.reset(Boss::Create(modelFighter.get(), modelFighter.get(), bossPos));
 
 	//レールカメラの前進を止める
 	railCamera->SetIsAdvance(false);

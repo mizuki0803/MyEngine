@@ -32,6 +32,9 @@ BossMainBody* BossMainBody::Create(ObjModel* model, const Vector3& position)
 	//初期座標をセット
 	bossMainBody->bornPos = position;
 
+	//大きさをセット
+	bossMainBody->scale = { 1.5f, 1.5f, 1.5f };
+
 	return bossMainBody;
 }
 
@@ -54,13 +57,34 @@ void BossMainBody::Fall(const float time)
 	position = Easing::Lerp(bornPos, stayPos, time);
 }
 
-void BossMainBody::AttackTypeA()
+void BossMainBody::AttackTypeA(const Vector3& playerPosition)
 {
-	position.x += 0.01f;
+	//プレイヤー方向に移動する
+	Vector3 velocity = playerPosition - position;
+	const float moveSpeed = 1.5f;
+	velocity = velocity.normalize() * moveSpeed;
+	position.x += velocity.x;
+	position.y += velocity.y;
+
+	//進行方向を向くようにする
+	rotation.y = XMConvertToDegrees(std::atan2(velocity.x, velocity.z));
+	XMMATRIX matRot;
+	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
+	Vector3 velocityZ = MatrixTransformDirection(velocity, matRot);
+	rotation.x = XMConvertToDegrees(std::atan2(-velocityZ.y, velocityZ.z));
 
 	//弾発射タイマーカウント
 	fireTimer++;
-	const int fireInterval = 30;
+
+	//弾発射を開始するか
+	if (!isFire) {
+		const int firstFireInterval = 200;
+		if (fireTimer >= firstFireInterval) { isFire = true; }
+		else { return; }
+	}
+
+	//発射間隔
+	const int fireInterval = 10;
 	if (fireTimer >= fireInterval) {
 		//弾を発射
 		Fire();
@@ -71,7 +95,7 @@ void BossMainBody::AttackTypeA()
 
 void BossMainBody::AttackTypeB()
 {
-	position.x -= 0.01f;
+
 }
 
 void BossMainBody::ChangeAttackMode(const float time)
@@ -83,7 +107,9 @@ void BossMainBody::ChangeAttackMode(const float time)
 void BossMainBody::ChangeWaitMode(const float time)
 {
 	//180度回転させて反対向きにする
+	rotation.x = 0;
 	rotation.y = Easing::InOutBack(attackModeRotY, waitModeRotY, time);
+	rotation.z = 0;
 }
 
 void BossMainBody::ReturnFixedPosition(const float time)
@@ -92,10 +118,15 @@ void BossMainBody::ReturnFixedPosition(const float time)
 	position = Easing::Lerp(returnStartPos, { 0, 0, bornPos.z }, time);
 }
 
-void BossMainBody::SetReturnStartPos()
+void BossMainBody::AttackEnd()
 {
 	//呼び出した瞬間の座標を固定位置に戻るときの出発座標として記録しておく
-  	returnStartPos = position;
+	returnStartPos = position;
+
+	//弾発射タイマーを初期化
+	fireTimer = 0;
+	//弾発射状態を解除
+	isFire = false;
 }
 
 Vector3 BossMainBody::GetWorldPos()
@@ -113,7 +144,7 @@ Vector3 BossMainBody::GetWorldPos()
 void BossMainBody::Fire()
 {
 	//弾の速度を設定
-	const float bulletSpeed = 0.5f;
+	const float bulletSpeed = 1.5f;
 	Vector3 velocity(0, 0, bulletSpeed);
 	velocity = MatrixTransformDirection(velocity, matWorld);
 
