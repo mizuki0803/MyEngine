@@ -106,4 +106,6 @@ private: //メンバ変数
 	bool isFire = false;
 	//固定位置に戻るときの出発座標
 	Vector3 returnStartPos;
+	//攻撃内容Bで使うタイマー
+	int32_t attackBTimer = 0;
 };

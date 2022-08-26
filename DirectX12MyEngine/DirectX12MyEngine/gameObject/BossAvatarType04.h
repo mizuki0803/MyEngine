@@ -13,4 +13,10 @@ public: //静的メンバ関数
 	/// <param name="model">モデル</param>
 	/// <returns>ボス(分身：タイプ04)</returns>
 	static BossAvatarType04* Create(ObjModel* model, ObjObject3d* parent, const Vector3& position);
+
+public: //メンバ関数
+	/// <summary>
+	/// 攻撃内容Bのロックオン処理
+	/// </summary>
+	void AttackTypeBLockon() override;
 };

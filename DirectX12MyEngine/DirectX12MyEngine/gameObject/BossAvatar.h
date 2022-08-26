@@ -9,6 +9,14 @@ class GameScene;
 /// </summary>
 class BossAvatar : public ObjObject3d
 {
+protected:
+	enum class AttackTypeBPhase {
+		Lockon,
+		Shot,
+		Back,
+		Stay,
+	};
+
 public: //静的メンバ関数
 	//getter
 	static const int GetMaxHP() { return BossAvatar::maxHP; }
@@ -32,7 +40,12 @@ public: //メンバ関数
 	/// <summary>
 	/// 攻撃内容B
 	/// </summary>
-	void AttackTypeB();
+	void AttackTypeB(const Vector3& playerPosition);
+
+	/// <summary>
+	/// 攻撃内容C
+	/// </summary>
+	void AttackTypeC();
 
 	/// <summary>
 	/// 攻撃状態に変更
@@ -68,6 +81,26 @@ protected:
 	/// </summary>
 	void Fire();
 
+	/// <summary>
+	/// 攻撃内容Bのロックオン処理
+	/// </summary>
+	virtual void AttackTypeBLockon() = 0;
+
+	/// <summary>
+	/// 攻撃内容Bの飛ばす処理
+	/// </summary>
+	void AttackTypeBShot();
+
+	/// <summary>
+	/// 攻撃内容Bの元の位置に戻る処理
+	/// </summary>
+	void AttackTypeBBack();
+
+	/// <summary>
+	/// 攻撃内容Bの待機処理
+	/// </summary>
+	void AttackTypeBStay();
+
 protected: //静的メンバ変数
 	//ゲームシーン
 	static GameScene* gameScene;
@@ -79,6 +112,8 @@ protected: //静的メンバ変数
 	static const float attackModeRotY;
 	//待機状態のY軸回転
 	static const float waitModeRotY;
+	//攻撃内容Bの行動遷移
+	static void (BossAvatar::* attackTypeBPhaseFuncTable[])();
 
 protected: //メンバ変数
 	//体力
@@ -93,4 +128,12 @@ protected: //メンバ変数
 	Vector3 fixedPos;
 	//固定位置に戻るときの出発座標
 	Vector3 returnStartPos;
+	//攻撃内容Bの行動
+	AttackTypeBPhase attackBPhase = AttackTypeBPhase::Lockon;
+	//攻撃内容Bで飛ばす角度
+	Vector3 attackBVelocity;
+	//攻撃内容Bで使うタイマー
+	int32_t attackBTimer = 0;
+	//攻撃内容Bでロックオン対象になる座標
+	Vector3 attackBLockonPos;
 };

@@ -395,6 +395,33 @@ void GameScene::CollisionCheck3d()
 	//ボス戦状態でなければこの先の処理は行わない
 	if (!isBossBattle) { return; }
 
+#pragma region 自機とボス分身の衝突判定
+	//自機座標
+	posA = player->GetWorldPos();
+	//自機半径
+	radiusA = player->GetScale().x;
+
+	//ボス分身のリストを持ってくる
+	const std::list<std::unique_ptr<BossAvatar>>& bossAvatars = boss->GetAvatars();
+	for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
+		//ボス分身座標
+		posB = bossAvatar->GetWorldPos();
+		//ボス分身半径
+		radiusB = bossAvatar->GetScale().x;
+
+		//球と球の衝突判定を行う
+		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+
+		//衝突していたら
+		if (isCollision) {
+			//自機のダメージ用コールバック関数を呼び出す
+			player->OnCollisionDamage(posB);
+			//カメラをシェイクさせる
+			railCamera->ShakeStart();
+		}
+	}
+#pragma endregion
+
 #pragma region 自機弾とボス本体の衝突判定
 	//本体座標
 	posA = boss->GetMainBody()->GetWorldPos();

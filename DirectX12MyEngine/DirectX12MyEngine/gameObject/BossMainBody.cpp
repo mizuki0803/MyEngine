@@ -61,17 +61,10 @@ void BossMainBody::AttackTypeA(const Vector3& playerPosition)
 {
 	//プレイヤー方向に移動する
 	Vector3 velocity = playerPosition - position;
-	const float moveSpeed = 1.5f;
+	const float moveSpeed = 2.0f;
 	velocity = velocity.normalize() * moveSpeed;
 	position.x += velocity.x;
 	position.y += velocity.y;
-
-	//進行方向を向くようにする
-	rotation.y = XMConvertToDegrees(std::atan2(velocity.x, velocity.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
-	Vector3 velocityZ = MatrixTransformDirection(velocity, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-velocityZ.y, velocityZ.z));
 
 	//弾発射タイマーカウント
 	fireTimer++;
@@ -95,7 +88,17 @@ void BossMainBody::AttackTypeA(const Vector3& playerPosition)
 
 void BossMainBody::AttackTypeB()
 {
+	//タイマーが移動する時間を越えていたら抜ける
+	const float moveTime = 100;
+	if (attackBTimer >= moveTime) { return; }
 
+	//タイマーを更新
+	attackBTimer++;
+	const float time = attackBTimer / moveTime;
+
+	//奥に移動させる
+	const float moveNum = 30;
+	position.z = Easing::OutQuad(bornPos.z, bornPos.z + moveNum, time);
 }
 
 void BossMainBody::ChangeAttackMode(const float time)
@@ -127,6 +130,9 @@ void BossMainBody::AttackEnd()
 	fireTimer = 0;
 	//弾発射状態を解除
 	isFire = false;
+
+	//攻撃内容Bの変数の初期化
+	attackBTimer = 0;
 }
 
 Vector3 BossMainBody::GetWorldPos()

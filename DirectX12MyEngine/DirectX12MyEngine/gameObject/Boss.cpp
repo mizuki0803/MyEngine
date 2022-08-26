@@ -236,7 +236,7 @@ bool Boss::AttackTypeB()
 	//–{‘Ì‚Æ•ªg‚ðUŒ‚“à—eB‚Å“®‚©‚·
 	mainBody->AttackTypeB();
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
-		avatar->AttackTypeB();
+		avatar->AttackTypeB(player->GetWorldPos());
 	}
 
 

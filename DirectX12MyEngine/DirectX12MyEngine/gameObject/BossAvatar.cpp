@@ -2,6 +2,14 @@
 #include "Easing.h"
 #include "GameScene.h"
 
+void (BossAvatar::* BossAvatar::attackTypeBPhaseFuncTable[])() = {
+	&BossAvatar::AttackTypeBLockon,
+	&BossAvatar::AttackTypeBShot,
+	&BossAvatar::AttackTypeBBack,
+	&BossAvatar::AttackTypeBStay,
+};
+
+
 GameScene* BossAvatar::gameScene = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
 const float BossAvatar::attackModeRotY = 180.0f;
@@ -30,7 +38,16 @@ void BossAvatar::Damage(int damageNum)
 	}
 }
 
-void BossAvatar::AttackTypeB()
+void BossAvatar::AttackTypeB(const Vector3& playerPosition)
+{
+	//自機座標をロックオンする
+	attackBLockonPos = playerPosition;
+
+	//行動
+	(this->*attackTypeBPhaseFuncTable[static_cast<size_t>(attackBPhase)])();
+}
+
+void BossAvatar::AttackTypeC()
 {
 	//弾発射タイマーカウント
 	fireTimer++;
@@ -74,6 +91,10 @@ void BossAvatar::AttackEnd()
 	fireTimer = 0;
 	//弾発射状態を解除
 	isFire = false;
+
+	//攻撃内容Bの変数の初期化
+	attackBPhase = AttackTypeBPhase::Lockon;
+	attackBTimer = 0;
 }
 
 Vector3 BossAvatar::GetWorldPos()
@@ -99,4 +120,47 @@ void BossAvatar::Fire()
 	std::unique_ptr<EnemyBullet> newBullet;
 	newBullet.reset(EnemyBullet::Create(bulletModel, GetWorldPos(), velocity));
 	gameScene->AddEnemyBullet(std::move(newBullet));
+}
+
+void BossAvatar::AttackTypeBShot()
+{
+	//ロックオンで決めた速度で飛ばす
+	position += attackBVelocity;
+
+	//タイマーを更新
+	const float shotTime = 180;
+	attackBTimer++;
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackBTimer >= shotTime) {
+		attackBPhase = AttackTypeBPhase::Back;
+
+		//タイマー初期化
+		attackBTimer = 0;
+	}
+}
+
+void BossAvatar::AttackTypeBBack()
+{
+	//タイマーを更新
+	const float backTime = 120;
+	attackBTimer++;
+	const float time = attackBTimer / backTime;
+
+	//親子関係上での定位置座標に戻す
+	position.x = Easing::OutQuad(0, fixedPos.x, time);
+	position.y = Easing::OutQuad(60, fixedPos.y, time);
+	position.z = Easing::OutQuad(0, fixedPos.z, time);
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackBTimer >= backTime) {
+		attackBPhase = AttackTypeBPhase::Stay;
+
+		//タイマー初期化
+		attackBTimer = 0;
+	}
+}
+
+void BossAvatar::AttackTypeBStay()
+{
 }

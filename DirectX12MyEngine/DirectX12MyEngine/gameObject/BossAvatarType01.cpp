@@ -30,3 +30,23 @@ BossAvatarType01* BossAvatarType01::Create(ObjModel* model, ObjObject3d* parent,
 
 	return bossAvatarType01;
 }
+
+void BossAvatarType01::AttackTypeBLockon()
+{
+	//タイマーを更新
+	const float backTime = 120;
+	attackBTimer++;
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackBTimer >= backTime) {
+		attackBPhase = AttackTypeBPhase::Shot;
+
+		//飛ばす速度を確定させる
+		attackBVelocity = attackBLockonPos - GetWorldPos();
+		const float moveSpeed = 1.0f;
+		attackBVelocity = attackBVelocity.normalize() * moveSpeed;
+
+		//タイマー初期化
+		attackBTimer = 0;
+	}
+}
