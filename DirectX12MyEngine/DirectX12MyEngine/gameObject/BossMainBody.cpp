@@ -101,6 +101,16 @@ void BossMainBody::AttackTypeB()
 	position.z = Easing::OutQuad(bornPos.z, bornPos.z + moveNum, time);
 }
 
+void BossMainBody::AttackTypeC(const Vector3& playerPosition)
+{
+	//プレイヤー方向に移動する
+	Vector3 velocity = playerPosition - position;
+	const float moveSpeed = 1.0f;
+	velocity = velocity.normalize() * moveSpeed;
+	position.x += velocity.x;
+	position.y += velocity.y;
+}
+
 void BossMainBody::ChangeAttackMode(const float time)
 {
 	//180度回転させて反対向きにする

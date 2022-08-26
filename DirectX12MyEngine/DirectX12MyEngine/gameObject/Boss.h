@@ -27,6 +27,7 @@ public:
 		None,	//未設定
 		A,
 		B,
+		C,
 	};
 
 public: //静的メンバ関数
@@ -100,6 +101,12 @@ public: //メンバ関数
 	bool AttackTypeBSelect();
 
 	/// <summary>
+	/// 攻撃内容Cを設定するか
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeCSelect();
+
+	/// <summary>
 	/// 攻撃状態
 	/// </summary>
 	bool AttackModeCount();
@@ -115,6 +122,12 @@ public: //メンバ関数
 	/// </summary>
 	/// <returns></returns>
 	bool AttackTypeB();
+
+	/// <summary>
+	/// 攻撃内容C
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeC();
 
 	/// <summary>
 	/// 攻撃状態用の角度に本体回転

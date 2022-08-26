@@ -19,4 +19,9 @@ public: //メンバ関数
 	/// 攻撃内容Bのロックオン処理
 	/// </summary>
 	void AttackTypeBLockon() override;
+
+	/// <summary>
+	/// 攻撃内容Cの中心に移動させる処理
+	/// </summary>
+	void AttackTypeCMoveCenter() override;
 };

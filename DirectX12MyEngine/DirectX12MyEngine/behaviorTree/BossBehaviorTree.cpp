@@ -105,6 +105,10 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 		std::bind(&Boss::AttackTypeBSelect, boss);
 	attackTypeSelector->AddNode(attackTypeBSelect);
 
+	std::function<bool()> attackTypeCSelect =
+		std::bind(&Boss::AttackTypeCSelect, boss);
+	attackTypeSelector->AddNode(attackTypeCSelect);
+
 
 	//攻撃状態動きセレクター
 	std::function<bool()> attackModeRotaSelect =
@@ -134,6 +138,10 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 	std::function<bool()> attackTypeB =
 		std::bind(&Boss::AttackTypeB, boss);
 	attackSelector->AddNode(attackTypeB);
+
+	std::function<bool()> attackTypeC =
+		std::bind(&Boss::AttackTypeC, boss);
+	attackSelector->AddNode(attackTypeC);
 
 
 	//待機状態動きセレクター

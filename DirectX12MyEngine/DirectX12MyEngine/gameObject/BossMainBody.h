@@ -48,6 +48,11 @@ public: //メンバ関数
 	void AttackTypeB();
 
 	/// <summary>
+	/// 攻撃内容C
+	/// </summary>
+	void AttackTypeC(const Vector3& playerPosition);
+
+	/// <summary>
 	/// 攻撃状態に変更
 	/// </summary>
 	/// <param name="time">イージング用(0～1)の数値</param>

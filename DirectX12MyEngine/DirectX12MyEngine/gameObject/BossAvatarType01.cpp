@@ -1,4 +1,5 @@
 #include "BossAvatarType01.h"
+#include "Easing.h"
 
 BossAvatarType01* BossAvatarType01::Create(ObjModel* model, ObjObject3d* parent, const Vector3& position)
 {
@@ -48,5 +49,27 @@ void BossAvatarType01::AttackTypeBLockon()
 
 		//タイマー初期化
 		attackBTimer = 0;
+	}
+}
+
+void BossAvatarType01::AttackTypeCMoveCenter()
+{
+	//タイマーを更新
+	const float moveTime = 120;
+	attackCTimer++;
+	const float time = attackCTimer / moveTime;
+
+	//中心に移動させる
+	position.x = Easing::OutQuad(fixedPos.x, attackCLength, time);
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackCTimer >= moveTime) {
+		attackCPhase = AttackTypeCPhase::RotStart;
+
+		//回転開始用に角度を設定する
+		attackCAngle = 0;
+
+		//タイマー初期化
+		attackCTimer = 0;
 	}
 }

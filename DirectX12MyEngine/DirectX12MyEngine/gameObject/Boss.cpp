@@ -185,8 +185,22 @@ bool Boss::AttackTypeBSelect()
 	//本体が攻撃状態でなら抜ける
 	if (isMainBodyAttackMode) { return false; }
 
+	//プレイヤー自機が画面右側にいたら抜ける
+	if (player->GetPosition().x <= 0) { return false; }
+
 	//攻撃内容Bをセット
 	attackType = AttackType::B;
+
+	return true;
+}
+
+bool Boss::AttackTypeCSelect()
+{
+	//本体が攻撃状態でなら抜ける
+	if (isMainBodyAttackMode) { return false; }
+
+	//攻撃内容Cをセット
+	attackType = AttackType::C;
 
 	return true;
 }
@@ -239,6 +253,19 @@ bool Boss::AttackTypeB()
 		avatar->AttackTypeB(player->GetWorldPos());
 	}
 
+	return true;
+}
+
+bool Boss::AttackTypeC()
+{
+	//攻撃内容がCでなければ抜ける
+	if (!(attackType == AttackType::C)) { return false; }
+
+	//本体と分身を攻撃内容Cで動かす
+	mainBody->AttackTypeC(player->GetWorldPos());
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		avatar->AttackTypeC();
+	}
 
 	return true;
 }

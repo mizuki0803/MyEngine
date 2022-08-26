@@ -17,6 +17,14 @@ protected:
 		Stay,
 	};
 
+	enum class AttackTypeCPhase {
+		MoveCenter,
+		RotStart,
+		Shot,
+		RotEnd,
+		Stay,
+	};
+
 public: //静的メンバ関数
 	//getter
 	static const int GetMaxHP() { return BossAvatar::maxHP; }
@@ -97,9 +105,29 @@ protected:
 	void AttackTypeBBack();
 
 	/// <summary>
-	/// 攻撃内容Bの待機処理
+	/// 攻撃内容Cの中心に移動させる処理
 	/// </summary>
-	void AttackTypeBStay();
+	virtual void AttackTypeCMoveCenter() = 0;
+
+	/// <summary>
+	/// 攻撃内容Cの回転開始処理
+	/// </summary>
+	void AttackTypeCRotStart();
+
+	/// <summary>
+	/// 攻撃内容Cの飛ばす処理
+	/// </summary>
+	void AttackTypeCShot();
+
+	/// <summary>
+	/// 攻撃内容Cの回転終了処理
+	/// </summary>
+	void AttackTypeCRotEnd();
+
+	/// <summary>
+	/// 待機処理
+	/// </summary>
+	void Stay();
 
 protected: //静的メンバ変数
 	//ゲームシーン
@@ -114,6 +142,10 @@ protected: //静的メンバ変数
 	static const float waitModeRotY;
 	//攻撃内容Bの行動遷移
 	static void (BossAvatar::* attackTypeBPhaseFuncTable[])();
+	//攻撃内容Cの行動遷移
+	static void (BossAvatar::* attackTypeCPhaseFuncTable[])();
+	//攻撃内容Cで使う円の半径の長さ
+	static const float attackCLength;
 
 protected: //メンバ変数
 	//体力
@@ -136,4 +168,12 @@ protected: //メンバ変数
 	int32_t attackBTimer = 0;
 	//攻撃内容Bでロックオン対象になる座標
 	Vector3 attackBLockonPos;
+	//攻撃内容Cの行動
+	AttackTypeCPhase attackCPhase = AttackTypeCPhase::MoveCenter;
+	//攻撃内容Cで使うタイマー
+	int32_t attackCTimer = 0;
+	//攻撃内容Cで使う円運動用角度
+	float attackCAngle;
+	//攻撃内容Cで使う回転速度
+	float attackCRotSpeed = 0;
 };
