@@ -17,6 +17,14 @@ void (BossAvatar::* BossAvatar::attackTypeCPhaseFuncTable[])() = {
 	&BossAvatar::Stay,
 };
 
+void (BossAvatar::* BossAvatar::attackTypeDPhaseFuncTable[])() = {
+	&BossAvatar::AttackTypeDWait,
+	&BossAvatar::AttackTypeDMove,
+	&BossAvatar::AttackTypeDChargeShot,
+	&BossAvatar::AttackTypeDRecoil,
+	&BossAvatar::Stay,
+};
+
 
 GameScene* BossAvatar::gameScene = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
@@ -62,6 +70,12 @@ void BossAvatar::AttackTypeC()
 	(this->*attackTypeCPhaseFuncTable[static_cast<size_t>(attackCPhase)])();
 }
 
+void BossAvatar::AttackTypeD()
+{
+	//行動
+	(this->*attackTypeDPhaseFuncTable[static_cast<size_t>(attackDPhase)])();
+}
+
 void BossAvatar::ChangeAttackMode(const float time)
 {
 	//180度回転させて反対向きにする
@@ -102,6 +116,12 @@ void BossAvatar::AttackEnd()
 	attackCPhase = AttackTypeCPhase::MoveCenter;
 	attackCTimer = 0;
 	attackCRotSpeed = 0;
+
+	//攻撃内容Dの変数の初期化
+	attackDPhase = AttackTypeDPhase::Wait;
+	attackDTimer = 0;
+	attackDRecoilVelocity = { 0, 0, 2 };
+	attackDRecoilAccel = { 0, 0, -0.05f };
 }
 
 Vector3 BossAvatar::GetWorldPos()
@@ -116,10 +136,9 @@ Vector3 BossAvatar::GetWorldPos()
 	return worldPos;
 }
 
-void BossAvatar::Fire(const float scale)
+void BossAvatar::Fire(const float scale, const float bulletSpeed)
 {
 	//弾の速度を設定
-	const float bulletSpeed = 1.0f;
 	Vector3 velocity(0, 0, bulletSpeed);
 	velocity = MatrixTransformDirection(velocity, matWorld);
 
@@ -213,7 +232,8 @@ void BossAvatar::AttackTypeCShot()
 	if (fireTimer >= fireInterval) {
 		//弾を発射
 		const float bulletScale = 1.0f;
-		Fire(bulletScale);
+		const float bulletSpeed = 1.0f;
+		Fire(bulletScale, bulletSpeed);
 		//発射タイマーを初期化
 		fireTimer = 0;
 	}
@@ -246,6 +266,46 @@ void BossAvatar::AttackTypeCRotEnd()
 	//回転速度が0以下になったら次のフェーズへ
 	if (attackCRotSpeed <= 0) {
 		attackCPhase = AttackTypeCPhase::Stay;
+	}
+}
+
+void BossAvatar::AttackTypeDChargeShot()
+{
+	//タイマーを更新
+	const float chargeTime = 180;
+	attackDTimer++;
+	const float time = attackDTimer / chargeTime;
+
+	//色を赤くする
+	color.y = Easing::OutQuad(1, 0, time);
+	color.z = Easing::OutQuad(1, 0, time);
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackDTimer >= chargeTime) {
+		attackDPhase = AttackTypeDPhase::Recoil;
+
+		//タイマー初期化
+		attackDTimer = 0;
+
+		//弾を発射
+		const float bulletScale = 10.0f;
+		const float bulletSpeed = 0.8f;
+		Fire(bulletScale, bulletSpeed);
+
+		//色を元に戻す
+		color = { 1, 1, 1, 1 };
+	}
+}
+
+void BossAvatar::AttackTypeDRecoil()
+{
+	//反動で奥に移動させる
+	position += attackDRecoilVelocity;
+	attackDRecoilVelocity += attackDRecoilAccel;
+
+	//反動の速度が0になったら次のフェーズへ
+	if (attackDRecoilVelocity.z <= 0) {
+		attackDPhase = AttackTypeDPhase::Stay;
 	}
 }
 

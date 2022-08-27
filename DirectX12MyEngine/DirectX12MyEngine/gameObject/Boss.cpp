@@ -174,8 +174,13 @@ bool Boss::AttackTypeASelect()
 	//本体が攻撃状態でなければ抜ける
 	if (!isMainBodyAttackMode) { return false; }
 
+	//前回の攻撃内容がAだったら抜ける
+	if (preAttackType == AttackType::A) { return false; }
+
 	//攻撃内容Aをセット
 	attackType = AttackType::A;
+	//1つ前の攻撃内容を更新
+	preAttackType = AttackType::A;
 
 	return true;
 }
@@ -185,11 +190,16 @@ bool Boss::AttackTypeBSelect()
 	//本体が攻撃状態でなら抜ける
 	if (isMainBodyAttackMode) { return false; }
 
+	//前回の攻撃内容がBだったら抜ける
+	if (preAttackType == AttackType::B) { return false; }
+
 	//プレイヤー自機が画面右側にいたら抜ける
 	if (player->GetPosition().x <= 0) { return false; }
 
 	//攻撃内容Bをセット
 	attackType = AttackType::B;
+	//1つ前の攻撃内容を更新
+	preAttackType = AttackType::B;
 
 	return true;
 }
@@ -199,8 +209,29 @@ bool Boss::AttackTypeCSelect()
 	//本体が攻撃状態でなら抜ける
 	if (isMainBodyAttackMode) { return false; }
 
+	//前回の攻撃内容がCだったら抜ける
+	if (preAttackType == AttackType::C) { return false; }
+
 	//攻撃内容Cをセット
 	attackType = AttackType::C;
+	//1つ前の攻撃内容を更新
+	preAttackType = AttackType::C;
+
+	return true;
+}
+
+bool Boss::AttackTypeDSelect()
+{
+	//本体が攻撃状態でなら抜ける
+	if (isMainBodyAttackMode) { return false; }
+
+	//前回の攻撃内容がDだったら抜ける
+	if (preAttackType == AttackType::D) { return false; }
+
+	//攻撃内容Cをセット
+	attackType = AttackType::D;
+	//1つ前の攻撃内容を更新
+	preAttackType = AttackType::D;
 
 	return true;
 }
@@ -265,6 +296,19 @@ bool Boss::AttackTypeC()
 	mainBody->AttackTypeC(player->GetWorldPos());
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
 		avatar->AttackTypeC();
+	}
+
+	return true;
+}
+
+bool Boss::AttackTypeD()
+{
+	//攻撃内容がDでなければ抜ける
+	if (!(attackType == AttackType::D)) { return false; }
+
+	//本体と分身を攻撃内容Dで動かす
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		avatar->AttackTypeD();
 	}
 
 	return true;

@@ -28,6 +28,7 @@ public:
 		A,
 		B,
 		C,
+		D,
 	};
 
 public: //静的メンバ関数
@@ -107,6 +108,12 @@ public: //メンバ関数
 	bool AttackTypeCSelect();
 
 	/// <summary>
+	/// 攻撃内容Dを設定するか
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeDSelect();
+
+	/// <summary>
 	/// 攻撃状態
 	/// </summary>
 	bool AttackModeCount();
@@ -128,6 +135,12 @@ public: //メンバ関数
 	/// </summary>
 	/// <returns></returns>
 	bool AttackTypeC();
+
+	/// <summary>
+	/// 攻撃内容D
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeD();
 
 	/// <summary>
 	/// 攻撃状態用の角度に本体回転
@@ -211,6 +224,8 @@ private: //メンバ変数
 	int32_t fallTimer = 0;
 	//攻撃内容
 	AttackType attackType = AttackType::None;
+	//1つ前に発動した攻撃内容
+	AttackType preAttackType = AttackType::None;
 	//攻撃状態時間タイマー
 	int32_t attackModeTimer = 0;
 	//待機状態時間タイマー

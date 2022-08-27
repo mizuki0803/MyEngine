@@ -73,3 +73,39 @@ void BossAvatarType03::AttackTypeCMoveCenter()
 		attackCTimer = 0;
 	}
 }
+
+void BossAvatarType03::AttackTypeDWait()
+{
+	//タイマーを更新
+	const float waitTime = 30;
+	attackDTimer++;
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackDTimer >= waitTime) {
+		attackDPhase = AttackTypeDPhase::Move;
+
+		//タイマー初期化
+		attackDTimer = 0;
+	}
+}
+
+void BossAvatarType03::AttackTypeDMove()
+{
+	//タイマーを更新
+	const float moveTime = 150;
+	attackDTimer++;
+	const float time = attackDTimer / moveTime;
+
+	//発射位置に移動させる
+	const Vector3 movePos = { -7, 0, 0 };
+	position.x = Easing::OutQuad(fixedPos.x, movePos.x, time);
+	position.y = Easing::OutQuad(fixedPos.y, movePos.y, time);
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackDTimer >= moveTime) {
+		attackDPhase = AttackTypeDPhase::ChargeShot;
+
+		//タイマー初期化
+		attackDTimer = 0;
+	}
+}

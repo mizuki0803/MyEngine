@@ -24,4 +24,14 @@ public: //メンバ関数
 	/// 攻撃内容Cの中心に移動させる処理
 	/// </summary>
 	void AttackTypeCMoveCenter() override;
+
+	/// <summary>
+	/// 攻撃内容Dの待機処理
+	/// </summary>
+	void AttackTypeDWait() override;
+
+	/// <summary>
+	/// 攻撃内容Dの移動させる処理
+	/// </summary>
+	void AttackTypeDMove() override;
 };

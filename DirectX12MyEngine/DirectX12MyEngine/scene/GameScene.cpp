@@ -173,13 +173,13 @@ void GameScene::Update()
 	for (const std::unique_ptr<Enemy>& enemy : enemys) {
 		enemy->Update();
 	}
-	//敵弾
-	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
-		bullet->Update();
-	}
 	//ボス
 	if (boss) {
 		boss->Update();
+	}
+	//敵弾
+	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
+		bullet->Update();
 	}
 	//回復アイテム
 	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
@@ -713,7 +713,7 @@ void GameScene::BossBattleStart()
 	if (!isBossBattleStart) { return; }
 
 	//ボス生成
-	const Vector3 bossPos = { 0, 70, 45 };
+	const Vector3 bossPos = { 0, 70, 65 };
 	boss.reset(Boss::Create(modelFighter.get(), modelFighter.get(), bossPos));
 
 	//レールカメラの前進を止める

@@ -25,6 +25,14 @@ protected:
 		Stay,
 	};
 
+	enum class AttackTypeDPhase {
+		Wait,
+		Move,
+		ChargeShot,
+		Recoil,
+		Stay,
+	};
+
 public: //静的メンバ関数
 	//getter
 	static const int GetMaxHP() { return BossAvatar::maxHP; }
@@ -54,6 +62,11 @@ public: //メンバ関数
 	/// 攻撃内容C
 	/// </summary>
 	void AttackTypeC();
+
+	/// <summary>
+	/// 攻撃内容D
+	/// </summary>
+	void AttackTypeD();
 
 	/// <summary>
 	/// 攻撃状態に変更
@@ -87,7 +100,7 @@ protected:
 	/// <summary>
 	/// 弾発射
 	/// </summary>
-	void Fire(const float scale);
+	void Fire(const float scale, const float bulletSpeed);
 
 	/// <summary>
 	/// 攻撃内容Bのロックオン処理
@@ -125,6 +138,26 @@ protected:
 	void AttackTypeCRotEnd();
 
 	/// <summary>
+	/// 攻撃内容Dの待機処理
+	/// </summary>
+	virtual void AttackTypeDWait() = 0;
+
+	/// <summary>
+	/// 攻撃内容Dの移動させる処理
+	/// </summary>
+	virtual void AttackTypeDMove() = 0;
+
+	/// <summary>
+	/// 攻撃内容Dのチャージショット処理
+	/// </summary>
+	void AttackTypeDChargeShot();
+
+	/// <summary>
+	/// 攻撃内容Dの反動で移動する処理
+	/// </summary>
+	void AttackTypeDRecoil();
+
+	/// <summary>
 	/// 待機処理
 	/// </summary>
 	void Stay();
@@ -146,6 +179,8 @@ protected: //静的メンバ変数
 	static void (BossAvatar::* attackTypeCPhaseFuncTable[])();
 	//攻撃内容Cで使う円の半径の長さ
 	static const float attackCLength;
+	//攻撃内容Dの行動遷移
+	static void (BossAvatar::* attackTypeDPhaseFuncTable[])();
 
 protected: //メンバ変数
 	//体力
@@ -176,4 +211,13 @@ protected: //メンバ変数
 	float attackCAngle;
 	//攻撃内容Cで使う回転速度
 	float attackCRotSpeed = 0;
+
+	//攻撃内容Dの行動
+	AttackTypeDPhase attackDPhase = AttackTypeDPhase::Wait;
+	//攻撃内容Dで使うタイマー
+	int32_t attackDTimer = 0;
+	//攻撃内容Dで使う反動速度
+	Vector3 attackDRecoilVelocity = { 0, 0, 2 };
+	//攻撃内容Dで使う反動加速度
+	Vector3 attackDRecoilAccel = { 0, 0, -0.05f };
 };
