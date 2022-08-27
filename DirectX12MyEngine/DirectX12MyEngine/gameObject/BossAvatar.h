@@ -87,7 +87,7 @@ protected:
 	/// <summary>
 	/// 弾発射
 	/// </summary>
-	void Fire();
+	void Fire(const float scale);
 
 	/// <summary>
 	/// 攻撃内容Bのロックオン処理

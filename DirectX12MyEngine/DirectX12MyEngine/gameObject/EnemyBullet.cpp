@@ -1,6 +1,6 @@
 #include "EnemyBullet.h"
 
-EnemyBullet* EnemyBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity)
+EnemyBullet* EnemyBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float scale)
 {
 	//弾弾のインスタンスを生成
 	EnemyBullet* enemyBullet = new EnemyBullet();
@@ -25,19 +25,10 @@ EnemyBullet* EnemyBullet::Create(ObjModel* model, const Vector3& position, const
 	//速度をセット
 	enemyBullet->velocity = velocity;
 
+	//大きさをセット
+	enemyBullet->scale = { scale, scale, scale };
+
 	return enemyBullet;
-}
-
-bool EnemyBullet::Initialize()
-{
-	scale = { 0.5f, 0.5f, 0.5f };
-
-	if (!ObjObject3d::Initialize())
-	{
-		return false;
-	}
-
-	return true;
 }
 
 void EnemyBullet::Update()

@@ -22,7 +22,7 @@ GameScene* BossAvatar::gameScene = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
 const float BossAvatar::attackModeRotY = 180.0f;
 const float BossAvatar::waitModeRotY = 0.0f;
-const float BossAvatar::attackCLength = 3.0f;
+const float BossAvatar::attackCLength = 1.5f;
 
 bool BossAvatar::Initialize()
 {
@@ -116,7 +116,7 @@ Vector3 BossAvatar::GetWorldPos()
 	return worldPos;
 }
 
-void BossAvatar::Fire()
+void BossAvatar::Fire(const float scale)
 {
 	//弾の速度を設定
 	const float bulletSpeed = 1.0f;
@@ -125,7 +125,7 @@ void BossAvatar::Fire()
 
 	//弾を生成
 	std::unique_ptr<EnemyBullet> newBullet;
-	newBullet.reset(EnemyBullet::Create(bulletModel, GetWorldPos(), velocity));
+	newBullet.reset(EnemyBullet::Create(bulletModel, GetWorldPos(), velocity, scale));
 	gameScene->AddEnemyBullet(std::move(newBullet));
 }
 
@@ -209,10 +209,11 @@ void BossAvatar::AttackTypeCShot()
 
 	//弾発射タイマーカウント
 	fireTimer++;
-	const int fireInterval = 5;
+	const int fireInterval = 10;
 	if (fireTimer >= fireInterval) {
 		//弾を発射
-		Fire();
+		const float bulletScale = 1.0f;
+		Fire(bulletScale);
 		//発射タイマーを初期化
 		fireTimer = 0;
 	}
