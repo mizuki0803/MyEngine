@@ -105,8 +105,6 @@ void BossAvatar::AttackEnd()
 
 	//弾発射タイマーを初期化
 	fireTimer = 0;
-	//弾発射状態を解除
-	isFire = false;
 
 	//攻撃内容Bの変数の初期化
 	attackBPhase = AttackTypeBPhase::Lockon;

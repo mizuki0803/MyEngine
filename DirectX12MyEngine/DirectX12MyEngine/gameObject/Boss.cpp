@@ -175,7 +175,7 @@ bool Boss::AttackTypeASelect()
 	if (!isMainBodyAttackMode) { return false; }
 
 	//前回の攻撃内容がAだったら抜ける
-	if (preAttackType == AttackType::A) { return false; }
+	//if (preAttackType == AttackType::A) { return false; }
 
 	//攻撃内容Aをセット
 	attackType = AttackType::A;

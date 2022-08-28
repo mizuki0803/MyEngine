@@ -2,6 +2,12 @@
 #include "Easing.h"
 #include "GameScene.h"
 
+void (BossMainBody::* BossMainBody::attackTypeAPhaseFuncTable[])() = {
+	&BossMainBody::AttackTypeALockon,
+	&BossMainBody::AttackTypeAShot,
+	&BossMainBody::Stay,
+};
+
 GameScene* BossMainBody::gameScene = nullptr;
 ObjModel* BossMainBody::bulletModel = nullptr;
 const float BossMainBody::attackModeRotY = 180.0f;
@@ -59,31 +65,15 @@ void BossMainBody::Fall(const float time)
 
 void BossMainBody::AttackTypeA(const Vector3& playerPosition)
 {
-	//プレイヤー方向に移動する
+	//常にプレイヤー方向に移動する
 	Vector3 velocity = playerPosition - position;
 	const float moveSpeed = 2.0f;
 	velocity = velocity.normalize() * moveSpeed;
 	position.x += velocity.x;
 	position.y += velocity.y;
 
-	//弾発射タイマーカウント
-	fireTimer++;
-
-	//弾発射を開始するか
-	if (!isFire) {
-		const int firstFireInterval = 200;
-		if (fireTimer >= firstFireInterval) { isFire = true; }
-		else { return; }
-	}
-
-	//発射間隔
-	const int fireInterval = 10;
-	if (fireTimer >= fireInterval) {
-		//弾を発射
-		Fire();
-		//発射タイマーを初期化
-		fireTimer = 0;
-	}
+	//行動
+	(this->*attackTypeAPhaseFuncTable[static_cast<size_t>(attackAPhase)])();
 }
 
 void BossMainBody::AttackTypeB()
@@ -103,7 +93,7 @@ void BossMainBody::AttackTypeB()
 
 void BossMainBody::AttackTypeC(const Vector3& playerPosition)
 {
-	//プレイヤー方向に移動する
+	//常にプレイヤー方向に移動する
 	Vector3 velocity = playerPosition - position;
 	const float moveSpeed = 1.0f;
 	velocity = velocity.normalize() * moveSpeed;
@@ -138,8 +128,10 @@ void BossMainBody::AttackEnd()
 
 	//弾発射タイマーを初期化
 	fireTimer = 0;
-	//弾発射状態を解除
-	isFire = false;
+	
+	//攻撃内容Aの変数の初期化
+	attackAPhase = AttackTypeAPhase::Lockon;
+	attackATimer = 0;
 
 	//攻撃内容Bの変数の初期化
 	attackBTimer = 0;
@@ -157,15 +149,61 @@ Vector3 BossMainBody::GetWorldPos()
 	return worldPos;
 }
 
-void BossMainBody::Fire()
+void BossMainBody::Fire(const float scale, const float bulletSpeed)
 {
 	//弾の速度を設定
-	const float bulletSpeed = 1.5f;
 	Vector3 velocity(0, 0, bulletSpeed);
 	velocity = MatrixTransformDirection(velocity, matWorld);
 
 	//弾を生成
 	std::unique_ptr<EnemyBullet> newBullet;
-	newBullet.reset(EnemyBullet::Create(bulletModel, GetWorldPos(), velocity));
+	newBullet.reset(EnemyBullet::Create(bulletModel, GetWorldPos(), velocity, scale));
 	gameScene->AddEnemyBullet(std::move(newBullet));
+}
+
+void BossMainBody::AttackTypeALockon()
+{
+	//タイマーを更新
+	const float lockonTime = 120;
+	attackATimer++;
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackATimer >= lockonTime) {
+		attackAPhase = AttackTypeAPhase::Shot;
+
+		//タイマー初期化
+		attackATimer = 0;
+	}
+}
+
+void BossMainBody::AttackTypeAShot()
+{
+	//タイマーを更新
+	const float shotTime = 380;
+	attackATimer++;
+
+	//弾発射タイマーカウント
+	fireTimer++;
+	//発射間隔
+	const int fireInterval = 10;
+	if (fireTimer >= fireInterval) {
+		//弾を発射
+		const float bulletScale = 1.0f;
+		const float bulletSpeed = 1.5f;
+		Fire(bulletScale, bulletSpeed);
+		//発射タイマーを初期化
+		fireTimer = 0;
+	}
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackATimer >= shotTime) {
+		attackAPhase = AttackTypeAPhase::Stay;
+
+		//タイマー初期化
+		attackATimer = 0;
+	}
+}
+
+void BossMainBody::Stay()
+{
 }

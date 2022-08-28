@@ -9,7 +9,7 @@ class GameScene;
 /// </summary>
 class BossAvatar : public ObjObject3d
 {
-protected:
+protected: //攻撃内容ごとのフェーズ
 	enum class AttackTypeBPhase {
 		Lockon,
 		Shot,
@@ -189,18 +189,16 @@ protected: //メンバ変数
 	bool isDead = false;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
-	//弾発射開始するか
-	bool isFire = false;
 	//ボス本体との親子関係上の定位置座標
 	Vector3 fixedPos;
 	//固定位置に戻るときの出発座標
 	Vector3 returnStartPos;
 	//攻撃内容Bの行動
 	AttackTypeBPhase attackBPhase = AttackTypeBPhase::Lockon;
-	//攻撃内容Bで飛ばす角度
-	Vector3 attackBVelocity;
 	//攻撃内容Bで使うタイマー
 	int32_t attackBTimer = 0;
+	//攻撃内容Bで飛ばす角度
+	Vector3 attackBVelocity;
 	//攻撃内容Bでロックオン対象になる座標
 	Vector3 attackBLockonPos;
 	//攻撃内容Cの行動

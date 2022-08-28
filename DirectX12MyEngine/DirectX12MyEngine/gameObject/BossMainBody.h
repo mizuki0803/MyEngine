@@ -9,6 +9,13 @@ class GameScene;
 /// </summary>
 class BossMainBody : public ObjObject3d
 {
+private: //攻撃内容ごとのフェーズ
+	enum class AttackTypeAPhase {
+		Lockon,
+		Shot,
+		Stay,
+	};
+
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
@@ -84,7 +91,22 @@ private: //メンバ関数
 	/// <summary>
 	/// 弾発射
 	/// </summary>
-	void Fire();
+	void Fire(const float scale, const float bulletSpeed);
+
+	/// <summary>
+	/// 攻撃内容Aのロックオン処理
+	/// </summary>
+	void AttackTypeALockon();
+
+	/// <summary>
+	/// 攻撃内容Aの弾発射処理
+	/// </summary>
+	void AttackTypeAShot();
+
+	/// <summary>
+	/// 待機処理
+	/// </summary>
+	void Stay();
 
 private: //静的メンバ変数
 	//ゲームシーン
@@ -97,6 +119,8 @@ private: //静的メンバ変数
 	static const float attackModeRotY;
 	//待機状態のY軸回転
 	static const float waitModeRotY;
+	//攻撃内容Aの行動遷移
+	static void (BossMainBody::* attackTypeAPhaseFuncTable[])();
 
 private: //メンバ変数
 	//生成座標
@@ -107,10 +131,12 @@ private: //メンバ変数
 	bool isDead = false;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
-	//弾発射開始するか
-	bool isFire = false;
 	//固定位置に戻るときの出発座標
 	Vector3 returnStartPos;
+	//攻撃内容Aの行動
+	AttackTypeAPhase attackAPhase = AttackTypeAPhase::Lockon;
+	//攻撃内容Aで使うタイマー
+	int32_t attackATimer = 0;
 	//攻撃内容Bで使うタイマー
 	int32_t attackBTimer = 0;
 };
