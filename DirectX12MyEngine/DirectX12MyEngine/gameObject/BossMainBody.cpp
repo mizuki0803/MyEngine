@@ -8,6 +8,12 @@ void (BossMainBody::* BossMainBody::attackTypeAPhaseFuncTable[])() = {
 	&BossMainBody::Stay,
 };
 
+void (BossMainBody::* BossMainBody::attackTypeA2PhaseFuncTable[])() = {
+	&BossMainBody::AttackTypeA2Move,
+	&BossMainBody::AttackTypeA2ChargeShot,
+	&BossMainBody::Stay,
+};
+
 GameScene* BossMainBody::gameScene = nullptr;
 ObjModel* BossMainBody::bulletModel = nullptr;
 const float BossMainBody::attackModeRotY = 180.0f;
@@ -76,6 +82,12 @@ void BossMainBody::AttackTypeA(const Vector3& playerPosition)
 	(this->*attackTypeAPhaseFuncTable[static_cast<size_t>(attackAPhase)])();
 }
 
+void BossMainBody::AttackTypeA2()
+{
+	//行動
+	(this->*attackTypeA2PhaseFuncTable[static_cast<size_t>(attackA2Phase)])();
+}
+
 void BossMainBody::AttackTypeB()
 {
 	//タイマーが移動する時間を越えていたら抜ける
@@ -128,10 +140,14 @@ void BossMainBody::AttackEnd()
 
 	//弾発射タイマーを初期化
 	fireTimer = 0;
-	
+
 	//攻撃内容Aの変数の初期化
 	attackAPhase = AttackTypeAPhase::Lockon;
 	attackATimer = 0;
+
+	//攻撃内容A2の変数の初期化
+	attackA2Phase = AttackTypeA2Phase::Move;
+	attackA2Timer = 0;
 
 	//攻撃内容Bの変数の初期化
 	attackBTimer = 0;
@@ -201,6 +217,54 @@ void BossMainBody::AttackTypeAShot()
 
 		//タイマー初期化
 		attackATimer = 0;
+	}
+}
+
+void BossMainBody::AttackTypeA2Move()
+{
+	//タイマーを更新
+	const float moveTime = 150;
+	attackA2Timer++;
+	const float time = attackA2Timer / moveTime;
+
+	//奥に移動させる
+	const float moveZ = 100;
+	position.z = Easing::OutQuad(bornPos.z, bornPos.z + moveZ, time);
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackA2Timer >= moveTime) {
+		attackA2Phase = AttackTypeA2Phase::ChargeShot;
+
+		//タイマー初期化
+		attackA2Timer = 0;
+	}
+}
+
+void BossMainBody::AttackTypeA2ChargeShot()
+{
+	//タイマーを更新
+	const float chargeTime = 300;
+	attackA2Timer++;
+	const float time = attackA2Timer / chargeTime;
+
+	//色を赤くする
+	color.y = Easing::OutQuad(1, 0, time);
+	color.z = Easing::OutQuad(1, 0, time);
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackA2Timer >= chargeTime) {
+		attackA2Phase = AttackTypeA2Phase::Stay;
+
+		//タイマー初期化
+		attackA2Timer = 0;
+
+		//弾を発射
+		const float bulletScale = 25.0f;
+		const float bulletSpeed = 1.0f;
+		Fire(bulletScale, bulletSpeed);
+
+		//色を元に戻す
+		color = { 1, 1, 1, 1 };
 	}
 }
 

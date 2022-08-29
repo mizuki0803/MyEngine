@@ -26,6 +26,7 @@ public:
 	enum class AttackType {
 		None,	//未設定
 		A,
+		A2,
 		B,
 		C,
 		D,
@@ -96,6 +97,12 @@ public: //メンバ関数
 	bool AttackTypeASelect();
 
 	/// <summary>
+	/// 攻撃内容A2を設定するか
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeA2Select();
+
+	/// <summary>
 	/// 攻撃内容Bを設定するか
 	/// </summary>
 	/// <returns></returns>
@@ -123,6 +130,12 @@ public: //メンバ関数
 	/// </summary>
 	/// <returns></returns>
 	bool AttackTypeA();
+
+	/// <summary>
+	/// 攻撃内容A2
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeA2();
 
 	/// <summary>
 	/// 攻撃内容B

@@ -22,7 +22,7 @@ BossBehaviorTree* BossBehaviorTree::Create(Boss* boss)
 }
 
 bool BossBehaviorTree::Initialize(Boss* boss)
-{	
+{
 	//Selector,Sequencer‚Ì¶¬
 	topSelector.reset(Selector::Create());
 	attackModeSequencer.reset(Sequencer::Create());
@@ -101,6 +101,10 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 		std::bind(&Boss::AttackTypeASelect, boss);
 	attackTypeSelector->AddNode(attackTypeASelect);
 
+	std::function<bool()> attackTypeA2Select =
+		std::bind(&Boss::AttackTypeA2Select, boss);
+	attackTypeSelector->AddNode(attackTypeA2Select);
+
 	std::function<bool()> attackTypeBSelect =
 		std::bind(&Boss::AttackTypeBSelect, boss);
 	attackTypeSelector->AddNode(attackTypeBSelect);
@@ -138,6 +142,10 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 	std::function<bool()> attackTypeA =
 		std::bind(&Boss::AttackTypeA, boss);
 	attackSelector->AddNode(attackTypeA);
+
+	std::function<bool()> attackTypeA2 =
+		std::bind(&Boss::AttackTypeA2, boss);
+	attackSelector->AddNode(attackTypeA2);
 
 	std::function<bool()> attackTypeB =
 		std::bind(&Boss::AttackTypeB, boss);

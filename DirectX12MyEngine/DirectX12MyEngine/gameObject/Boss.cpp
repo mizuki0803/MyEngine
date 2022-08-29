@@ -9,7 +9,7 @@
 
 Player* Boss::player = nullptr;
 const float Boss::attackModeTime = 600.0f;
-const float Boss::waitModeTime = 600.0f;
+const float Boss::waitModeTime = 480.0f;
 const float Boss::changeModeTime = 60.0f;
 const float Boss::returnFixedPositionTime = 180.0f;
 
@@ -175,12 +175,31 @@ bool Boss::AttackTypeASelect()
 	if (!isMainBodyAttackMode) { return false; }
 
 	//前回の攻撃内容がAだったら抜ける
-	//if (preAttackType == AttackType::A) { return false; }
+	if (preAttackType == AttackType::A) { return false; }
+
+	//プレイヤー自機が画面右側にいたら抜ける
+	if (player->GetPosition().x <= 0) { return false; }
 
 	//攻撃内容Aをセット
 	attackType = AttackType::A;
 	//1つ前の攻撃内容を更新
 	preAttackType = AttackType::A;
+
+	return true;
+}
+
+bool Boss::AttackTypeA2Select()
+{
+	//本体が攻撃状態でなければ抜ける
+	if (!isMainBodyAttackMode) { return false; }
+
+	//前回の攻撃内容がA2だったら抜ける
+	//if (preAttackType == AttackType::A2) { return false; }
+
+	//攻撃内容Aをセット
+	attackType = AttackType::A2;
+	//1つ前の攻撃内容を更新
+	preAttackType = AttackType::A2;
 
 	return true;
 }
@@ -269,6 +288,16 @@ bool Boss::AttackTypeA()
 	if (!(attackType == AttackType::A)) { return false; }
 
 	mainBody->AttackTypeA(player->GetWorldPos());
+
+	return true;
+}
+
+bool Boss::AttackTypeA2()
+{
+	//攻撃内容がAでなければ抜ける
+	if (!(attackType == AttackType::A2)) { return false; }
+
+	mainBody->AttackTypeA2();
 
 	return true;
 }

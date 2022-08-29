@@ -16,6 +16,12 @@ private: //攻撃内容ごとのフェーズ
 		Stay,
 	};
 
+	enum class AttackTypeA2Phase {
+		Move,
+		ChargeShot,
+		Stay,
+	};
+
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
@@ -48,6 +54,11 @@ public: //メンバ関数
 	/// 攻撃内容A
 	/// </summary>
 	void AttackTypeA(const Vector3& playerPosition);
+
+	/// <summary>
+	/// 攻撃内容A2
+	/// </summary>
+	void AttackTypeA2();
 
 	/// <summary>
 	/// 攻撃内容B
@@ -104,6 +115,16 @@ private: //メンバ関数
 	void AttackTypeAShot();
 
 	/// <summary>
+	/// 攻撃内容A2の移動処理
+	/// </summary>
+	void AttackTypeA2Move();
+
+	/// <summary>
+	/// 攻撃内容A2のチャージショット処理
+	/// </summary>
+	void AttackTypeA2ChargeShot();
+
+	/// <summary>
 	/// 待機処理
 	/// </summary>
 	void Stay();
@@ -121,6 +142,8 @@ private: //静的メンバ変数
 	static const float waitModeRotY;
 	//攻撃内容Aの行動遷移
 	static void (BossMainBody::* attackTypeAPhaseFuncTable[])();
+	//攻撃内容A2の行動遷移
+	static void (BossMainBody::* attackTypeA2PhaseFuncTable[])();
 
 private: //メンバ変数
 	//生成座標
@@ -137,6 +160,10 @@ private: //メンバ変数
 	AttackTypeAPhase attackAPhase = AttackTypeAPhase::Lockon;
 	//攻撃内容Aで使うタイマー
 	int32_t attackATimer = 0;
+	//攻撃内容A2の行動
+	AttackTypeA2Phase attackA2Phase = AttackTypeA2Phase::Move;
+	//攻撃内容A2で使うタイマー
+	int32_t attackA2Timer = 0;
 	//攻撃内容Bで使うタイマー
 	int32_t attackBTimer = 0;
 };

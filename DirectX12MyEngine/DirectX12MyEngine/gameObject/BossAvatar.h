@@ -209,7 +209,6 @@ protected: //メンバ変数
 	float attackCAngle;
 	//攻撃内容Cで使う回転速度
 	float attackCRotSpeed = 0;
-
 	//攻撃内容Dの行動
 	AttackTypeDPhase attackDPhase = AttackTypeDPhase::Wait;
 	//攻撃内容Dで使うタイマー
