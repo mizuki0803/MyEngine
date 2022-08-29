@@ -105,6 +105,10 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 		std::bind(&Boss::AttackTypeA2Select, boss);
 	attackTypeSelector->AddNode(attackTypeA2Select);
 
+	std::function<bool()> attackTypeA3Select =
+		std::bind(&Boss::AttackTypeA3Select, boss);
+	attackTypeSelector->AddNode(attackTypeA3Select);
+
 	std::function<bool()> attackTypeBSelect =
 		std::bind(&Boss::AttackTypeBSelect, boss);
 	attackTypeSelector->AddNode(attackTypeBSelect);
@@ -147,6 +151,10 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 		std::bind(&Boss::AttackTypeA2, boss);
 	attackSelector->AddNode(attackTypeA2);
 
+	std::function<bool()> attackTypeA3 =
+		std::bind(&Boss::AttackTypeA3, boss);
+	attackSelector->AddNode(attackTypeA3);
+
 	std::function<bool()> attackTypeB =
 		std::bind(&Boss::AttackTypeB, boss);
 	attackSelector->AddNode(attackTypeB);
@@ -165,9 +173,9 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 		std::bind(&Selector::Select, waitModeRotaSelector.get());
 	waitModeActionSelector->AddNode(waitModeRotaSelect);
 
-	std::function<bool()> returnFixedPosition =
-		std::bind(&Boss::ReturnFixedPosition, boss);
-	waitModeActionSelector->AddNode(returnFixedPosition);
+	std::function<bool()> returnBasePosition =
+		std::bind(&Boss::ReturnBasePosition, boss);
+	waitModeActionSelector->AddNode(returnBasePosition);
 
 
 	//待機状態移行回転セレクター

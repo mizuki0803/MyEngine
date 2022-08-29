@@ -81,14 +81,14 @@ public: //メンバ関数
 	void ChangeWaitMode(const float time);
 
 	/// <summary>
-	/// 固定位置に戻る
+	/// 基準位置に戻る
 	/// </summary>
 	/// <param name="time">イージング用(0～1)の数値</param>
-	void ReturnFixedPosition(const float time);
+	void ReturnBasePosition(const float time);
 
 	/// <summary>
 	/// 攻撃状態を終了するので必要な情報をセット
-	/// 固定位置に戻るときの出発座標を記録する、弾発射状態解除
+	/// 基準位置に戻るときの出発座標を記録する、弾発射状態解除
 	/// </summary>
 	void AttackEnd();
 
@@ -189,9 +189,9 @@ protected: //メンバ変数
 	bool isDead = false;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
-	//ボス本体との親子関係上の定位置座標
-	Vector3 fixedPos;
-	//固定位置に戻るときの出発座標
+	//ボス本体との親子関係上の基準座標
+	Vector3 basePos;
+	//基準位置に戻るときの出発座標
 	Vector3 returnStartPos;
 	//攻撃内容Bの行動
 	AttackTypeBPhase attackBPhase = AttackTypeBPhase::Lockon;

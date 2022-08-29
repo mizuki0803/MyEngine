@@ -11,7 +11,7 @@ Player* Boss::player = nullptr;
 const float Boss::attackModeTime = 600.0f;
 const float Boss::waitModeTime = 480.0f;
 const float Boss::changeModeTime = 60.0f;
-const float Boss::returnFixedPositionTime = 180.0f;
+const float Boss::returnBasePositionTime = 180.0f;
 
 Boss* Boss::Create(ObjModel* mainBodyModel, ObjModel* avatarModel, const Vector3& position)
 {
@@ -177,7 +177,7 @@ bool Boss::AttackTypeASelect()
 	//前回の攻撃内容がAだったら抜ける
 	if (preAttackType == AttackType::A) { return false; }
 
-	//プレイヤー自機が画面右側にいたら抜ける
+	//プレイヤー自機が画面左側にいたら抜ける
 	if (player->GetPosition().x <= 0) { return false; }
 
 	//攻撃内容Aをセット
@@ -194,12 +194,28 @@ bool Boss::AttackTypeA2Select()
 	if (!isMainBodyAttackMode) { return false; }
 
 	//前回の攻撃内容がA2だったら抜ける
-	//if (preAttackType == AttackType::A2) { return false; }
+	if (preAttackType == AttackType::A2) { return false; }
 
 	//攻撃内容Aをセット
 	attackType = AttackType::A2;
 	//1つ前の攻撃内容を更新
 	preAttackType = AttackType::A2;
+
+	return true;
+}
+
+bool Boss::AttackTypeA3Select()
+{
+	//本体が攻撃状態でなければ抜ける
+	if (!isMainBodyAttackMode) { return false; }
+
+	//前回の攻撃内容がA3だったら抜ける
+	if (preAttackType == AttackType::A3) { return false; }
+
+	//攻撃内容Aをセット
+	attackType = AttackType::A3;
+	//1つ前の攻撃内容を更新
+	preAttackType = AttackType::A3;
 
 	return true;
 }
@@ -294,10 +310,20 @@ bool Boss::AttackTypeA()
 
 bool Boss::AttackTypeA2()
 {
-	//攻撃内容がAでなければ抜ける
+	//攻撃内容がA2でなければ抜ける
 	if (!(attackType == AttackType::A2)) { return false; }
 
 	mainBody->AttackTypeA2();
+
+	return true;
+}
+
+bool Boss::AttackTypeA3()
+{
+	//攻撃内容がA3でなければ抜ける
+	if (!(attackType == AttackType::A3)) { return false; }
+
+	mainBody->AttackTypeA3();
 
 	return true;
 }
@@ -401,19 +427,19 @@ bool Boss::WaitModeCount()
 	return true;
 }
 
-bool Boss::ReturnFixedPosition()
+bool Boss::ReturnBasePosition()
 {
-	//タイマーが固定位置に戻るために要する時間以下でないなら抜ける
+	//タイマーが基準位置に戻るために要する時間以下でないなら抜ける
 	const float timer = waitModeTimer - changeModeTime;
-	if (!(timer < returnFixedPositionTime)) { return false; }
+	if (!(timer < returnBasePositionTime)) { return false; }
 
 	//イージング用に0～1の値を算出する
-	const float time = timer / returnFixedPositionTime;
+	const float time = timer / returnBasePositionTime;
 
-	//固定位置に戻す
-	mainBody->ReturnFixedPosition(time);
+	//基準位置に戻す
+	mainBody->ReturnBasePosition(time);
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
-		avatar->ReturnFixedPosition(time);
+		avatar->ReturnBasePosition(time);
 	}
 
 	return true;

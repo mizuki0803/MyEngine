@@ -26,8 +26,8 @@ BossAvatarType03* BossAvatarType03::Create(ObjModel* model, ObjObject3d* parent,
 	//座標をセット
 	bossAvatarType03->position = position;
 
-	//親子関係上での定位置をセット
-	bossAvatarType03->fixedPos = position;
+	//親子関係上での基準位置をセット
+	bossAvatarType03->basePos = position;
 
 	return bossAvatarType03;
 }
@@ -59,8 +59,8 @@ void BossAvatarType03::AttackTypeCMoveCenter()
 	attackCTimer++;
 	const float time = attackCTimer / moveTime;
 
-	//中心に移動させる
-	position.y = Easing::OutQuad(fixedPos.y, attackCLength, time);
+	//親子関係上での基準位置に移動させる
+	position.y = Easing::OutQuad(basePos.y, attackCLength, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (attackCTimer >= moveTime) {
@@ -98,8 +98,8 @@ void BossAvatarType03::AttackTypeDMove()
 
 	//発射位置に移動させる
 	const Vector3 movePos = { -7, 0, 0 };
-	position.x = Easing::OutQuad(fixedPos.x, movePos.x, time);
-	position.y = Easing::OutQuad(fixedPos.y, movePos.y, time);
+	position.x = Easing::OutQuad(basePos.x, movePos.x, time);
+	position.y = Easing::OutQuad(basePos.y, movePos.y, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (attackDTimer >= moveTime) {

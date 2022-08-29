@@ -22,13 +22,20 @@ private: //攻撃内容ごとのフェーズ
 		Stay,
 	};
 
+	enum class AttackTypeA3Phase {
+		Wait,
+		Shot,
+		Move,
+		Stay,
+	};
+
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>ボス(本体)</returns>
-	static BossMainBody* Create(ObjModel* model, const Vector3& position);
+	static BossMainBody* Create(ObjModel* model, const Vector3& basePos);
 
 	//getter
 	static const int GetMaxHP() { return BossMainBody::maxHP; }
@@ -61,6 +68,11 @@ public: //メンバ関数
 	void AttackTypeA2();
 
 	/// <summary>
+	/// 攻撃内容A3
+	/// </summary>
+	void AttackTypeA3();
+
+	/// <summary>
 	/// 攻撃内容B
 	/// </summary>
 	void AttackTypeB();
@@ -83,14 +95,14 @@ public: //メンバ関数
 	void ChangeWaitMode(const float time);
 
 	/// <summary>
-	/// 固定位置に戻る
+	/// 基準位置に戻る
 	/// </summary>
 	/// <param name="time">イージング用(0～1)の数値</param>
-	void ReturnFixedPosition(const float time);
+	void ReturnBasePosition(const float time);
 
 	/// <summary>
 	/// 攻撃状態を終了するので必要な情報をセット
-	/// 固定位置に戻るときの出発座標を記録する、弾発射状態解除
+	/// 基準位置に戻るときの出発座標を記録する、弾発射状態解除
 	/// </summary>
 	void AttackEnd();
 
@@ -125,6 +137,21 @@ private: //メンバ関数
 	void AttackTypeA2ChargeShot();
 
 	/// <summary>
+	/// 攻撃内容A3の待機処理
+	/// </summary>
+	void AttackTypeA3Wait();
+
+	/// <summary>
+	/// 攻撃内容A3の弾発射処理
+	/// </summary>
+	void AttackTypeA3Shot();
+
+	/// <summary>
+	/// 攻撃内容A3の移動処理
+	/// </summary>
+	void AttackTypeA3Move();
+
+	/// <summary>
 	/// 待機処理
 	/// </summary>
 	void Stay();
@@ -144,17 +171,19 @@ private: //静的メンバ変数
 	static void (BossMainBody::* attackTypeAPhaseFuncTable[])();
 	//攻撃内容A2の行動遷移
 	static void (BossMainBody::* attackTypeA2PhaseFuncTable[])();
+	//攻撃内容A3の行動遷移
+	static void (BossMainBody::* attackTypeA3PhaseFuncTable[])();
 
 private: //メンバ変数
-	//生成座標
-	Vector3 bornPos;
+	//停止する基準の座標
+	Vector3 basePos;
 	//体力
 	int HP = maxHP;
 	//死亡フラグ
 	bool isDead = false;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
-	//固定位置に戻るときの出発座標
+	//基準位置に戻るときの出発座標
 	Vector3 returnStartPos;
 	//攻撃内容Aの行動
 	AttackTypeAPhase attackAPhase = AttackTypeAPhase::Lockon;
@@ -164,6 +193,16 @@ private: //メンバ変数
 	AttackTypeA2Phase attackA2Phase = AttackTypeA2Phase::Move;
 	//攻撃内容A2で使うタイマー
 	int32_t attackA2Timer = 0;
+	//攻撃内容A3の行動
+	AttackTypeA3Phase attackA3Phase = AttackTypeA3Phase::Wait;
+	//攻撃内容A3で使うタイマー
+	int32_t attackA3Timer = 0;
+	//攻撃内容A3で使う攻撃回数
+	int attackA3ShotCount = 0;
+	//攻撃内容A3で移動前座標
+	Vector3 attackA3MoveBeforePos;
+	//攻撃内容A3で移動後座標
+	Vector3 attackA3MpveAfterPos;
 	//攻撃内容Bで使うタイマー
 	int32_t attackBTimer = 0;
 };

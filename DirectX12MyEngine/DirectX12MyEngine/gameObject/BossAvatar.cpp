@@ -90,17 +90,17 @@ void BossAvatar::ChangeWaitMode(const float time)
 	rotation.z = 0;
 }
 
-void BossAvatar::ReturnFixedPosition(const float time)
+void BossAvatar::ReturnBasePosition(const float time)
 {
-	//親子関係上での定位置座標に戻す
-	position.x = Easing::OutQuad(returnStartPos.x, fixedPos.x, time);
-	position.y = Easing::OutQuad(returnStartPos.y, fixedPos.y, time);
-	position.z = Easing::OutQuad(returnStartPos.z, fixedPos.z, time);
+	//親子関係上での基準位置座標に戻す
+	position.x = Easing::OutQuad(returnStartPos.x, basePos.x, time);
+	position.y = Easing::OutQuad(returnStartPos.y, basePos.y, time);
+	position.z = Easing::OutQuad(returnStartPos.z, basePos.z, time);
 }
 
 void BossAvatar::AttackEnd()
 {
-	//呼び出した瞬間の座標を固定位置に戻るときの出発座標として記録しておく
+	//呼び出した瞬間の座標を基準位置に戻るときの出発座標として記録しておく
 	returnStartPos = position;
 
 	//弾発射タイマーを初期化
@@ -171,10 +171,10 @@ void BossAvatar::AttackTypeBBack()
 	attackBTimer++;
 	const float time = attackBTimer / backTime;
 
-	//親子関係上での定位置座標に戻す
-	position.x = Easing::OutQuad(0, fixedPos.x, time);
-	position.y = Easing::OutQuad(60, fixedPos.y, time);
-	position.z = Easing::OutQuad(0, fixedPos.z, time);
+	//親子関係上での基準座標に戻す
+	position.x = Easing::OutQuad(0, basePos.x, time);
+	position.y = Easing::OutQuad(60, basePos.y, time);
+	position.z = Easing::OutQuad(0, basePos.z, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (attackBTimer >= backTime) {

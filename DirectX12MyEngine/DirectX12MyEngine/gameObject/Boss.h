@@ -27,6 +27,7 @@ public:
 		None,	//未設定
 		A,
 		A2,
+		A3,
 		B,
 		C,
 		D,
@@ -103,6 +104,12 @@ public: //メンバ関数
 	bool AttackTypeA2Select();
 
 	/// <summary>
+	/// 攻撃内容A3を設定するか
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeA3Select();
+
+	/// <summary>
 	/// 攻撃内容Bを設定するか
 	/// </summary>
 	/// <returns></returns>
@@ -138,6 +145,12 @@ public: //メンバ関数
 	bool AttackTypeA2();
 
 	/// <summary>
+	/// 攻撃内容A3
+	/// </summary>
+	/// <returns></returns>
+	bool AttackTypeA3();
+
+	/// <summary>
 	/// 攻撃内容B
 	/// </summary>
 	/// <returns></returns>
@@ -171,10 +184,10 @@ public: //メンバ関数
 	bool WaitModeCount();
 
 	/// <summary>
-	/// 固定位置に戻る
+	/// 基準位置に戻る
 	/// </summary>
 	/// <returns></returns>
-	bool ReturnFixedPosition();
+	bool ReturnBasePosition();
 
 	/// <summary>
 	/// 待機状態用の角度に本体回転
@@ -205,7 +218,7 @@ private: //メンバ関数
 
 	/// <summary>
 	/// 攻撃状態を終了するので必要な情報をセット
-	/// 固定位置に戻るときの出発座標を記録する、弾発射状態解除
+	/// 基準位置に戻るときの出発座標を記録する、弾発射状態解除
 	/// </summary>
 	void AttackEnd();
 
@@ -219,8 +232,8 @@ private: //静的メンバ変数
 	static const float waitModeTime;
 	//モードチェンジ回転に要する時間
 	static const float changeModeTime;
-	//固定位置に戻るために要する時間
-	static const float returnFixedPositionTime;
+	//基準位置に戻るために要する時間
+	static const float returnBasePositionTime;
 
 private: //メンバ変数
 	//ボスの行動遷移ビヘイビアツリー
