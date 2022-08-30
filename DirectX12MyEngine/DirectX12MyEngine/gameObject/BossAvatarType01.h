@@ -16,22 +16,22 @@ public: //静的メンバ関数
 
 public: //メンバ関数
 	/// <summary>
-	/// 攻撃内容Bのロックオン処理
+	/// 攻撃内容:分身体当たりのロックオン処理
 	/// </summary>
-	void AttackTypeBLockon() override;
+	void AttackTypeAvatarBodyBlowLockon() override;
 
 	/// <summary>
-	/// 攻撃内容Cの中心に移動させる処理
+	/// 攻撃内容:分身ガトリング砲の中心に移動させる処理
 	/// </summary>
-	void AttackTypeCMoveCenter() override;
+	void AttackTypeAvatarGatlingMoveCenter() override;
 
 	/// <summary>
-	/// 攻撃内容Dの待機処理
+	/// 攻撃内容:分身巨大弾の待機処理
 	/// </summary>
-	void AttackTypeDWait() override;
+	void AttackTypeAvatarGiantBulletWait() override;
 
 	/// <summary>
-	/// 攻撃内容Dの移動させる処理
+	/// 攻撃内容:分身巨大弾の移動させる処理
 	/// </summary>
-	void AttackTypeDMove() override;
+	void AttackTypeAvatarGiantBulletMove() override;
 };

@@ -2,26 +2,26 @@
 #include "Easing.h"
 #include "GameScene.h"
 
-void (BossAvatar::* BossAvatar::attackTypeBPhaseFuncTable[])() = {
-	&BossAvatar::AttackTypeBLockon,
-	&BossAvatar::AttackTypeBShot,
-	&BossAvatar::AttackTypeBBack,
+void (BossAvatar::* BossAvatar::attackTypeAvatarBodyBlowPhaseFuncTable[])() = {
+	&BossAvatar::AttackTypeAvatarBodyBlowLockon,
+	&BossAvatar::AttackTypeAvatarBodyBlowShot,
+	&BossAvatar::AttackTypeAvatarBodyBlowBack,
 	&BossAvatar::Stay,
 };
 
-void (BossAvatar::* BossAvatar::attackTypeCPhaseFuncTable[])() = {
-	&BossAvatar::AttackTypeCMoveCenter,
-	&BossAvatar::AttackTypeCRotStart,
-	&BossAvatar::AttackTypeCShot,
-	&BossAvatar::AttackTypeCRotEnd,
+void (BossAvatar::* BossAvatar::attackTypeAvatarGatlingPhaseFuncTable[])() = {
+	&BossAvatar::AttackTypeAvatarGatlingMoveCenter,
+	&BossAvatar::AttackTypeAvatarGatlingRotStart,
+	&BossAvatar::AttackTypeAvatarGatlingShot,
+	&BossAvatar::AttackTypeAvatarGatlingRotEnd,
 	&BossAvatar::Stay,
 };
 
-void (BossAvatar::* BossAvatar::attackTypeDPhaseFuncTable[])() = {
-	&BossAvatar::AttackTypeDWait,
-	&BossAvatar::AttackTypeDMove,
-	&BossAvatar::AttackTypeDChargeShot,
-	&BossAvatar::AttackTypeDRecoil,
+void (BossAvatar::* BossAvatar::attackTypeAvatarGiantBulletPhaseFuncTable[])() = {
+	&BossAvatar::AttackTypeAvatarGiantBulletWait,
+	&BossAvatar::AttackTypeAvatarGiantBulletMove,
+	&BossAvatar::AttackTypeAvatarGiantBulletChargeShot,
+	&BossAvatar::AttackTypeAvatarGiantBulletRecoil,
 	&BossAvatar::Stay,
 };
 
@@ -30,7 +30,7 @@ GameScene* BossAvatar::gameScene = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
 const float BossAvatar::attackModeRotY = 180.0f;
 const float BossAvatar::waitModeRotY = 0.0f;
-const float BossAvatar::attackCLength = 1.5f;
+const float BossAvatar::attackAvatarGatlingLength = 1.5f;
 
 bool BossAvatar::Initialize()
 {
@@ -55,25 +55,25 @@ void BossAvatar::Damage(int damageNum)
 	}
 }
 
-void BossAvatar::AttackTypeB(const Vector3& playerPosition)
+void BossAvatar::AttackTypeAvatarBodyBlow(const Vector3& playerPosition)
 {
 	//自機座標をロックオンする
-	attackBLockonPos = playerPosition;
+	attackAvatarBodyBlowLockonPos = playerPosition;
 
 	//行動
-	(this->*attackTypeBPhaseFuncTable[static_cast<size_t>(attackBPhase)])();
+	(this->*attackTypeAvatarBodyBlowPhaseFuncTable[static_cast<size_t>(attackAvatarBodyBlowPhase)])();
 }
 
-void BossAvatar::AttackTypeC()
+void BossAvatar::AttackTypeAvatarGatling()
 {
 	//行動
-	(this->*attackTypeCPhaseFuncTable[static_cast<size_t>(attackCPhase)])();
+	(this->*attackTypeAvatarGatlingPhaseFuncTable[static_cast<size_t>(attackAvatarGatlingPhase)])();
 }
 
-void BossAvatar::AttackTypeD()
+void BossAvatar::AttackTypeAvatarGiantBullet()
 {
 	//行動
-	(this->*attackTypeDPhaseFuncTable[static_cast<size_t>(attackDPhase)])();
+	(this->*attackTypeAvatarGiantBulletPhaseFuncTable[static_cast<size_t>(attackAvatarGiantBulletPhase)])();
 }
 
 void BossAvatar::ChangeAttackMode(const float time)
@@ -106,20 +106,20 @@ void BossAvatar::AttackEnd()
 	//弾発射タイマーを初期化
 	fireTimer = 0;
 
-	//攻撃内容Bの変数の初期化
-	attackBPhase = AttackTypeBPhase::Lockon;
-	attackBTimer = 0;
+	//攻撃タイマーを初期化
+	attackTimer = 0;
 
-	//攻撃内容Cの変数の初期化
-	attackCPhase = AttackTypeCPhase::MoveCenter;
-	attackCTimer = 0;
-	attackCRotSpeed = 0;
+	//攻撃内容:分身体当たりの変数の初期化
+	attackAvatarBodyBlowPhase = AttackTypeAvatarBodyBlowPhase::Lockon;
 
-	//攻撃内容Dの変数の初期化
-	attackDPhase = AttackTypeDPhase::Wait;
-	attackDTimer = 0;
-	attackDRecoilVelocity = { 0, 0, 2 };
-	attackDRecoilAccel = { 0, 0, -0.05f };
+	//攻撃内容:分身ガトリング砲の変数の初期化
+	attackAvatarGatlingPhase = AttackTypeAvatarGatlingPhase::MoveCenter;
+	attackAvatarGatlingRotSpeed = 0;
+
+	//攻撃内容:分身巨大弾の変数の初期化
+	attackAvatarGiantBulletPhase = AttackTypeAvatarGiantBulletPhase::Wait;
+	attackAvatarGiantBulletRecoilVelocity = { 0, 0, 2 };
+	attackAvatarGiantBulletRecoilAccel = { 0, 0, -0.05f };
 }
 
 Vector3 BossAvatar::GetWorldPos()
@@ -146,30 +146,30 @@ void BossAvatar::Fire(const float scale, const float bulletSpeed)
 	gameScene->AddEnemyBullet(std::move(newBullet));
 }
 
-void BossAvatar::AttackTypeBShot()
+void BossAvatar::AttackTypeAvatarBodyBlowShot()
 {
 	//ロックオンで決めた速度で飛ばす
-	position += attackBVelocity;
+	position += attackAvatarBodyBlowVelocity;
 
 	//タイマーを更新
 	const float shotTime = 180;
-	attackBTimer++;
+	attackTimer++;
 
 	//タイマーが指定した時間になったら次のフェーズへ
-	if (attackBTimer >= shotTime) {
-		attackBPhase = AttackTypeBPhase::Back;
+	if (attackTimer >= shotTime) {
+		attackAvatarBodyBlowPhase = AttackTypeAvatarBodyBlowPhase::Back;
 
 		//タイマー初期化
-		attackBTimer = 0;
+		attackTimer = 0;
 	}
 }
 
-void BossAvatar::AttackTypeBBack()
+void BossAvatar::AttackTypeAvatarBodyBlowBack()
 {
 	//タイマーを更新
 	const float backTime = 120;
-	attackBTimer++;
-	const float time = attackBTimer / backTime;
+	attackTimer++;
+	const float time = attackTimer / backTime;
 
 	//親子関係上での基準座標に戻す
 	position.x = Easing::OutQuad(0, basePos.x, time);
@@ -177,52 +177,52 @@ void BossAvatar::AttackTypeBBack()
 	position.z = Easing::OutQuad(0, basePos.z, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
-	if (attackBTimer >= backTime) {
-		attackBPhase = AttackTypeBPhase::Stay;
+	if (attackTimer >= backTime) {
+		attackAvatarBodyBlowPhase = AttackTypeAvatarBodyBlowPhase::Stay;
 
 		//タイマー初期化
-		attackBTimer = 0;
+		attackTimer = 0;
 	}
 }
 
-void BossAvatar::AttackTypeCRotStart()
+void BossAvatar::AttackTypeAvatarGatlingRotStart()
 {
 	//回転を開始(回転速度を速くする)
 	const float rotAccelSpeed = 0.1f;
-	attackCRotSpeed += rotAccelSpeed;
+	attackAvatarGatlingRotSpeed += rotAccelSpeed;
 
 	//角度を弧度法に変換
-	float radius = XMConvertToRadians(attackCAngle);
+	float radius = XMConvertToRadians(attackAvatarGatlingAngle);
 
 	//円の中心から指定した半径の長さをぐるぐる回る
-	position.x = cos(radius) * attackCLength;
-	position.y = sin(radius) * attackCLength;
+	position.x = cos(radius) * attackAvatarGatlingLength;
+	position.y = sin(radius) * attackAvatarGatlingLength;
 
 	//角度の更新
-	attackCAngle += attackCRotSpeed;
+	attackAvatarGatlingAngle += attackAvatarGatlingRotSpeed;
 
 	//回転速度が指定した速度以上になったら次のフェーズへ
 	const float maxRotSpeed = 4.0f;
-	if (attackCRotSpeed >= maxRotSpeed) {
-		attackCPhase = AttackTypeCPhase::Shot;
+	if (attackAvatarGatlingRotSpeed >= maxRotSpeed) {
+		attackAvatarGatlingPhase = AttackTypeAvatarGatlingPhase::Shot;
 	}
 }
 
-void BossAvatar::AttackTypeCShot()
+void BossAvatar::AttackTypeAvatarGatlingShot()
 {
 	//タイマーを更新
 	const float moveTime = 300;
-	attackCTimer++;
+	attackTimer++;
 
 	//角度を弧度法に変換
-	float radius = XMConvertToRadians(attackCAngle);
+	float radius = XMConvertToRadians(attackAvatarGatlingAngle);
 
 	//円の中心から指定した半径の長さをぐるぐる回る
-	position.x = cos(radius) * attackCLength;
-	position.y = sin(radius) * attackCLength;
+	position.x = cos(radius) * attackAvatarGatlingLength;
+	position.y = sin(radius) * attackAvatarGatlingLength;
 
 	//角度の更新
-	attackCAngle += attackCRotSpeed;
+	attackAvatarGatlingAngle += attackAvatarGatlingRotSpeed;
 
 	//弾発射タイマーカウント
 	fireTimer++;
@@ -237,53 +237,53 @@ void BossAvatar::AttackTypeCShot()
 	}
 
 	//タイマーが指定した時間になったら次のフェーズへ
-	if (attackCTimer >= moveTime) {
-		attackCPhase = AttackTypeCPhase::RotEnd;
+	if (attackTimer >= moveTime) {
+		attackAvatarGatlingPhase = AttackTypeAvatarGatlingPhase::RotEnd;
 
 		//タイマー初期化
-		attackCTimer = 0;
+		attackTimer = 0;
 	}
 }
 
-void BossAvatar::AttackTypeCRotEnd()
+void BossAvatar::AttackTypeAvatarGatlingRotEnd()
 {
 	//回転を終了(回転速度を遅くする)
 	const float rotAccelSpeed = -0.1f;
-	attackCRotSpeed += rotAccelSpeed;
+	attackAvatarGatlingRotSpeed += rotAccelSpeed;
 
 	//角度を弧度法に変換
-	float radius = XMConvertToRadians(attackCAngle);
+	float radius = XMConvertToRadians(attackAvatarGatlingAngle);
 
 	//円の中心から指定した半径の長さをぐるぐる回る
-	position.x = cos(radius) * attackCLength;
-	position.y = sin(radius) * attackCLength;
+	position.x = cos(radius) * attackAvatarGatlingLength;
+	position.y = sin(radius) * attackAvatarGatlingLength;
 
 	//角度の更新
-	attackCAngle += attackCRotSpeed;
+	attackAvatarGatlingAngle += attackAvatarGatlingRotSpeed;
 
 	//回転速度が0以下になったら次のフェーズへ
-	if (attackCRotSpeed <= 0) {
-		attackCPhase = AttackTypeCPhase::Stay;
+	if (attackAvatarGatlingRotSpeed <= 0) {
+		attackAvatarGatlingPhase = AttackTypeAvatarGatlingPhase::Stay;
 	}
 }
 
-void BossAvatar::AttackTypeDChargeShot()
+void BossAvatar::AttackTypeAvatarGiantBulletChargeShot()
 {
 	//タイマーを更新
 	const float chargeTime = 180;
-	attackDTimer++;
-	const float time = attackDTimer / chargeTime;
+	attackTimer++;
+	const float time = attackTimer / chargeTime;
 
 	//色を赤くする
 	color.y = Easing::OutQuad(1, 0, time);
 	color.z = Easing::OutQuad(1, 0, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
-	if (attackDTimer >= chargeTime) {
-		attackDPhase = AttackTypeDPhase::Recoil;
+	if (attackTimer >= chargeTime) {
+		attackAvatarGiantBulletPhase = AttackTypeAvatarGiantBulletPhase::Recoil;
 
 		//タイマー初期化
-		attackDTimer = 0;
+		attackTimer = 0;
 
 		//弾を発射
 		const float bulletScale = 10.0f;
@@ -295,15 +295,15 @@ void BossAvatar::AttackTypeDChargeShot()
 	}
 }
 
-void BossAvatar::AttackTypeDRecoil()
+void BossAvatar::AttackTypeAvatarGiantBulletRecoil()
 {
 	//反動で奥に移動させる
-	position += attackDRecoilVelocity;
-	attackDRecoilVelocity += attackDRecoilAccel;
+	position += attackAvatarGiantBulletRecoilVelocity;
+	attackAvatarGiantBulletRecoilVelocity += attackAvatarGiantBulletRecoilAccel;
 
 	//反動の速度が0になったら次のフェーズへ
-	if (attackDRecoilVelocity.z <= 0) {
-		attackDPhase = AttackTypeDPhase::Stay;
+	if (attackAvatarGiantBulletRecoilVelocity.z <= 0) {
+		attackAvatarGiantBulletPhase = AttackTypeAvatarGiantBulletPhase::Stay;
 	}
 }
 

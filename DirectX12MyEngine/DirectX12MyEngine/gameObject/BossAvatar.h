@@ -10,14 +10,14 @@ class GameScene;
 class BossAvatar : public ObjObject3d
 {
 protected: //攻撃内容ごとのフェーズ
-	enum class AttackTypeBPhase {
+	enum class AttackTypeAvatarBodyBlowPhase {
 		Lockon,
 		Shot,
 		Back,
 		Stay,
 	};
 
-	enum class AttackTypeCPhase {
+	enum class AttackTypeAvatarGatlingPhase {
 		MoveCenter,
 		RotStart,
 		Shot,
@@ -25,7 +25,7 @@ protected: //攻撃内容ごとのフェーズ
 		Stay,
 	};
 
-	enum class AttackTypeDPhase {
+	enum class AttackTypeAvatarGiantBulletPhase {
 		Wait,
 		Move,
 		ChargeShot,
@@ -54,19 +54,19 @@ public: //メンバ関数
 	void Damage(int damageNum);
 
 	/// <summary>
-	/// 攻撃内容B
+	/// 攻撃内容:分身体当たり
 	/// </summary>
-	void AttackTypeB(const Vector3& playerPosition);
+	void AttackTypeAvatarBodyBlow(const Vector3& playerPosition);
 
 	/// <summary>
-	/// 攻撃内容C
+	/// 攻撃内容:分身ガトリング砲
 	/// </summary>
-	void AttackTypeC();
+	void AttackTypeAvatarGatling();
 
 	/// <summary>
-	/// 攻撃内容D
+	/// 攻撃内容:分身巨大弾
 	/// </summary>
-	void AttackTypeD();
+	void AttackTypeAvatarGiantBullet();
 
 	/// <summary>
 	/// 攻撃状態に変更
@@ -103,59 +103,59 @@ protected:
 	void Fire(const float scale, const float bulletSpeed);
 
 	/// <summary>
-	/// 攻撃内容Bのロックオン処理
+	/// 攻撃内容:分身体当たりのロックオン処理
 	/// </summary>
-	virtual void AttackTypeBLockon() = 0;
+	virtual void AttackTypeAvatarBodyBlowLockon() = 0;
 
 	/// <summary>
-	/// 攻撃内容Bの飛ばす処理
+	/// 攻撃内容:分身体当たりの飛ばす処理
 	/// </summary>
-	void AttackTypeBShot();
+	void AttackTypeAvatarBodyBlowShot();
 
 	/// <summary>
-	/// 攻撃内容Bの元の位置に戻る処理
+	/// 攻撃内容:分身体当たりの元の位置に戻る処理
 	/// </summary>
-	void AttackTypeBBack();
+	void AttackTypeAvatarBodyBlowBack();
 
 	/// <summary>
-	/// 攻撃内容Cの中心に移動させる処理
+	/// 攻撃内容:分身ガトリング砲の中心に移動させる処理
 	/// </summary>
-	virtual void AttackTypeCMoveCenter() = 0;
+	virtual void AttackTypeAvatarGatlingMoveCenter() = 0;
 
 	/// <summary>
-	/// 攻撃内容Cの回転開始処理
+	/// 攻撃内容:分身ガトリング砲の回転開始処理
 	/// </summary>
-	void AttackTypeCRotStart();
+	void AttackTypeAvatarGatlingRotStart();
 
 	/// <summary>
-	/// 攻撃内容Cの飛ばす処理
+	/// 攻撃内容:分身ガトリング砲の飛ばす処理
 	/// </summary>
-	void AttackTypeCShot();
+	void AttackTypeAvatarGatlingShot();
 
 	/// <summary>
-	/// 攻撃内容Cの回転終了処理
+	/// 攻撃内容:分身ガトリング砲の回転終了処理
 	/// </summary>
-	void AttackTypeCRotEnd();
+	void AttackTypeAvatarGatlingRotEnd();
 
 	/// <summary>
-	/// 攻撃内容Dの待機処理
+	/// 攻撃内容:分身巨大弾の待機処理
 	/// </summary>
-	virtual void AttackTypeDWait() = 0;
+	virtual void AttackTypeAvatarGiantBulletWait() = 0;
 
 	/// <summary>
-	/// 攻撃内容Dの移動させる処理
+	/// 攻撃内容:分身巨大弾の移動させる処理
 	/// </summary>
-	virtual void AttackTypeDMove() = 0;
+	virtual void AttackTypeAvatarGiantBulletMove() = 0;
 
 	/// <summary>
-	/// 攻撃内容Dのチャージショット処理
+	/// 攻撃内容:分身巨大弾のチャージショット処理
 	/// </summary>
-	void AttackTypeDChargeShot();
+	void AttackTypeAvatarGiantBulletChargeShot();
 
 	/// <summary>
-	/// 攻撃内容Dの反動で移動する処理
+	/// 攻撃内容:分身巨大弾の反動で移動する処理
 	/// </summary>
-	void AttackTypeDRecoil();
+	void AttackTypeAvatarGiantBulletRecoil();
 
 	/// <summary>
 	/// 待機処理
@@ -173,14 +173,14 @@ protected: //静的メンバ変数
 	static const float attackModeRotY;
 	//待機状態のY軸回転
 	static const float waitModeRotY;
-	//攻撃内容Bの行動遷移
-	static void (BossAvatar::* attackTypeBPhaseFuncTable[])();
-	//攻撃内容Cの行動遷移
-	static void (BossAvatar::* attackTypeCPhaseFuncTable[])();
-	//攻撃内容Cで使う円の半径の長さ
-	static const float attackCLength;
-	//攻撃内容Dの行動遷移
-	static void (BossAvatar::* attackTypeDPhaseFuncTable[])();
+	//攻撃内容:分身体当たりの行動遷移
+	static void (BossAvatar::* attackTypeAvatarBodyBlowPhaseFuncTable[])();
+	//攻撃内容:分身ガトリング砲の行動遷移
+	static void (BossAvatar::* attackTypeAvatarGatlingPhaseFuncTable[])();
+	//攻撃内容:分身ガトリング砲で使う円の半径の長さ
+	static const float attackAvatarGatlingLength;
+	//攻撃内容:分身巨大弾の行動遷移
+	static void (BossAvatar::* attackTypeAvatarGiantBulletPhaseFuncTable[])();
 
 protected: //メンバ変数
 	//体力
@@ -193,28 +193,24 @@ protected: //メンバ変数
 	Vector3 basePos;
 	//基準位置に戻るときの出発座標
 	Vector3 returnStartPos;
-	//攻撃内容Bの行動
-	AttackTypeBPhase attackBPhase = AttackTypeBPhase::Lockon;
-	//攻撃内容Bで使うタイマー
-	int32_t attackBTimer = 0;
-	//攻撃内容Bで飛ばす角度
-	Vector3 attackBVelocity;
-	//攻撃内容Bでロックオン対象になる座標
-	Vector3 attackBLockonPos;
-	//攻撃内容Cの行動
-	AttackTypeCPhase attackCPhase = AttackTypeCPhase::MoveCenter;
-	//攻撃内容Cで使うタイマー
-	int32_t attackCTimer = 0;
-	//攻撃内容Cで使う円運動用角度
-	float attackCAngle;
-	//攻撃内容Cで使う回転速度
-	float attackCRotSpeed = 0;
-	//攻撃内容Dの行動
-	AttackTypeDPhase attackDPhase = AttackTypeDPhase::Wait;
-	//攻撃内容Dで使うタイマー
-	int32_t attackDTimer = 0;
-	//攻撃内容Dで使う反動速度
-	Vector3 attackDRecoilVelocity = { 0, 0, 2 };
-	//攻撃内容Dで使う反動加速度
-	Vector3 attackDRecoilAccel = { 0, 0, -0.05f };
+	//攻撃で使うタイマー
+	int32_t attackTimer = 0;
+	//攻撃内容:分身体当たりの行動
+	AttackTypeAvatarBodyBlowPhase attackAvatarBodyBlowPhase = AttackTypeAvatarBodyBlowPhase::Lockon;
+	//攻撃内容:分身体当たりで飛ばす角度
+	Vector3 attackAvatarBodyBlowVelocity;
+	//攻撃内容:分身体当たりでロックオン対象になる座標
+	Vector3 attackAvatarBodyBlowLockonPos;
+	//攻撃内容:分身ガトリング砲の行動
+	AttackTypeAvatarGatlingPhase attackAvatarGatlingPhase = AttackTypeAvatarGatlingPhase::MoveCenter;
+	//攻撃内容:分身ガトリング砲で使う円運動用角度
+	float attackAvatarGatlingAngle;
+	//攻撃内容:分身ガトリング砲で使う回転速度
+	float attackAvatarGatlingRotSpeed = 0;
+	//攻撃内容:分身巨大弾の行動
+	AttackTypeAvatarGiantBulletPhase attackAvatarGiantBulletPhase = AttackTypeAvatarGiantBulletPhase::Wait;
+	//攻撃内容:分身巨大弾で使う反動速度
+	Vector3 attackAvatarGiantBulletRecoilVelocity = { 0, 0, 2 };
+	//攻撃内容:分身巨大弾で使う反動加速度
+	Vector3 attackAvatarGiantBulletRecoilAccel = { 0, 0, -0.05f };
 };

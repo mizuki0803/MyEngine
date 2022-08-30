@@ -24,13 +24,13 @@ public:
 
 	//行動フェーズ
 	enum class AttackType {
-		None,	//未設定
-		A,
-		A2,
-		A3,
-		B,
-		C,
-		D,
+		None,				//未設定
+		Tracking,			//追従
+		SuperGiantBullet,	//超巨大弾
+		Rotate,				//回転からの発射
+		AvatarBodyBlow,		//分身体当たり
+		AvatarGatling,		//分身ガトリング砲
+		AvatarGiantBullet,	//分身巨大弾
 	};
 
 public: //静的メンバ関数
@@ -92,40 +92,40 @@ public: //メンバ関数
 	bool AttackTypeSelectStart();
 
 	/// <summary>
-	/// 攻撃内容Aを設定するか
+	/// 攻撃内容:追従を設定するか
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeASelect();
+	bool AttackTypeTrackingSelect();
 
 	/// <summary>
-	/// 攻撃内容A2を設定するか
+	/// 攻撃内容:超巨大弾を設定するか
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeA2Select();
+	bool AttackTypeSuperGiantBulletSelect();
 
 	/// <summary>
-	/// 攻撃内容A3を設定するか
+	/// 攻撃内容:回転を設定するか
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeA3Select();
+	bool AttackTypeRotateSelect();
 
 	/// <summary>
-	/// 攻撃内容Bを設定するか
+	/// 攻撃内容:分身体当たりを設定するか
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeBSelect();
+	bool AttackTypeAvatarBodyBlowSelect();
 
 	/// <summary>
-	/// 攻撃内容Cを設定するか
+	/// 攻撃内容:分身ガトリング砲を設定するか
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeCSelect();
+	bool AttackTypeAvatarGatlingSelect();
 
 	/// <summary>
-	/// 攻撃内容Dを設定するか
+	/// 攻撃内容:分身巨大弾を設定するか
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeDSelect();
+	bool AttackTypeAvatarGiantBulletSelect();
 
 	/// <summary>
 	/// 攻撃状態
@@ -133,40 +133,40 @@ public: //メンバ関数
 	bool AttackModeCount();
 
 	/// <summary>
-	/// 攻撃内容A
+	/// 攻撃内容;追従
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeA();
+	bool AttackTypeTracking();
 
 	/// <summary>
-	/// 攻撃内容A2
+	/// 攻撃内容:超巨大弾
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeA2();
+	bool AttackTypeSuperGiantBullet();
 
 	/// <summary>
-	/// 攻撃内容A3
+	/// 攻撃内容:回転
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeA3();
+	bool AttackTypeRotate();
 
 	/// <summary>
-	/// 攻撃内容B
+	/// 攻撃内容:分身体当たり
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeB();
+	bool AttackTypeAvatarBodyBlow();
 
 	/// <summary>
-	/// 攻撃内容C
+	/// 攻撃内容:分身ガトリング砲
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeC();
+	bool AttackTypeAvatarGatling();
 
 	/// <summary>
-	/// 攻撃内容D
+	/// 攻撃内容:分身巨大弾
 	/// </summary>
 	/// <returns></returns>
-	bool AttackTypeD();
+	bool AttackTypeAvatarGiantBullet();
 
 	/// <summary>
 	/// 攻撃状態用の角度に本体回転

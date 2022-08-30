@@ -32,69 +32,69 @@ BossAvatarType01* BossAvatarType01::Create(ObjModel* model, ObjObject3d* parent,
 	return bossAvatarType01;
 }
 
-void BossAvatarType01::AttackTypeBLockon()
+void BossAvatarType01::AttackTypeAvatarBodyBlowLockon()
 {
 	//タイマーを更新
 	const float backTime = 120;
-	attackBTimer++;
+	attackTimer++;
 
 	//タイマーが指定した時間になったら次のフェーズへ
-	if (attackBTimer >= backTime) {
-		attackBPhase = AttackTypeBPhase::Shot;
+	if (attackTimer >= backTime) {
+		attackAvatarBodyBlowPhase = AttackTypeAvatarBodyBlowPhase::Shot;
 
 		//飛ばす速度を確定させる
-		attackBVelocity = attackBLockonPos - GetWorldPos();
+		attackAvatarBodyBlowVelocity = attackAvatarBodyBlowLockonPos - GetWorldPos();
 		const float moveSpeed = 1.0f;
-		attackBVelocity = attackBVelocity.normalize() * moveSpeed;
+		attackAvatarBodyBlowVelocity = attackAvatarBodyBlowVelocity.normalize() * moveSpeed;
 
 		//タイマー初期化
-		attackBTimer = 0;
+		attackTimer = 0;
 	}
 }
 
-void BossAvatarType01::AttackTypeCMoveCenter()
+void BossAvatarType01::AttackTypeAvatarGatlingMoveCenter()
 {
 	//タイマーを更新
 	const float moveTime = 120;
-	attackCTimer++;
-	const float time = attackCTimer / moveTime;
+	attackTimer++;
+	const float time = attackTimer / moveTime;
 
 	//親子関係上での基準位置に移動させる
-	position.x = Easing::OutQuad(basePos.x, attackCLength, time);
+	position.x = Easing::OutQuad(basePos.x, attackAvatarGatlingLength, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
-	if (attackCTimer >= moveTime) {
-		attackCPhase = AttackTypeCPhase::RotStart;
+	if (attackTimer >= moveTime) {
+		attackAvatarGatlingPhase = AttackTypeAvatarGatlingPhase::RotStart;
 
 		//回転開始用に角度を設定する
-		attackCAngle = 0;
+		attackAvatarGatlingAngle = 0;
 
 		//タイマー初期化
-		attackCTimer = 0;
+		attackTimer = 0;
 	}
 }
 
-void BossAvatarType01::AttackTypeDWait()
+void BossAvatarType01::AttackTypeAvatarGiantBulletWait()
 {
 	//タイマーを更新
 	const float waitTime = 90;
-	attackDTimer++;
+	attackTimer++;
 
 	//タイマーが指定した時間になったら次のフェーズへ
-	if (attackDTimer >= waitTime) {
-		attackDPhase = AttackTypeDPhase::Move;
+	if (attackTimer >= waitTime) {
+		attackAvatarGiantBulletPhase = AttackTypeAvatarGiantBulletPhase::Move;
 
 		//タイマー初期化
-		attackDTimer = 0;
+		attackTimer = 0;
 	}
 }
 
-void BossAvatarType01::AttackTypeDMove()
+void BossAvatarType01::AttackTypeAvatarGiantBulletMove()
 {
 	//タイマーを更新
 	const float moveTime = 150;
-	attackDTimer++;
-	const float time = attackDTimer / moveTime;
+	attackTimer++;
+	const float time = attackTimer / moveTime;
 
 	//発射位置に移動させる
 	const Vector3 movePos = { 21, 0, 0 };
@@ -102,10 +102,10 @@ void BossAvatarType01::AttackTypeDMove()
 	position.y = Easing::OutQuad(basePos.y, movePos.y, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
-	if (attackDTimer >= moveTime) {
-		attackDPhase = AttackTypeDPhase::ChargeShot;
+	if (attackTimer >= moveTime) {
+		attackAvatarGiantBulletPhase = AttackTypeAvatarGiantBulletPhase::ChargeShot;
 
 		//タイマー初期化
-		attackDTimer = 0;
+		attackTimer = 0;
 	}
 }

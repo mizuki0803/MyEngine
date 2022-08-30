@@ -97,29 +97,29 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 		std::bind(&Boss::AttackTypeSelectStart, boss);
 	attackTypeSelector->AddNode(attackTypeSelectStart);
 
-	std::function<bool()> attackTypeASelect =
-		std::bind(&Boss::AttackTypeASelect, boss);
-	attackTypeSelector->AddNode(attackTypeASelect);
+	std::function<bool()> attackTypeTrackingSelect =
+		std::bind(&Boss::AttackTypeTrackingSelect, boss);
+	attackTypeSelector->AddNode(attackTypeTrackingSelect);
 
-	std::function<bool()> attackTypeA2Select =
-		std::bind(&Boss::AttackTypeA2Select, boss);
-	attackTypeSelector->AddNode(attackTypeA2Select);
+	std::function<bool()> attackTypeSuperGiantBulletSelect =
+		std::bind(&Boss::AttackTypeSuperGiantBulletSelect, boss);
+	attackTypeSelector->AddNode(attackTypeSuperGiantBulletSelect);
 
-	std::function<bool()> attackTypeA3Select =
-		std::bind(&Boss::AttackTypeA3Select, boss);
-	attackTypeSelector->AddNode(attackTypeA3Select);
+	std::function<bool()> attackTypeRotateSelect =
+		std::bind(&Boss::AttackTypeRotateSelect, boss);
+	attackTypeSelector->AddNode(attackTypeRotateSelect);
 
-	std::function<bool()> attackTypeBSelect =
-		std::bind(&Boss::AttackTypeBSelect, boss);
-	attackTypeSelector->AddNode(attackTypeBSelect);
+	std::function<bool()> attackTypeAvatarBodyBlowSelect =
+		std::bind(&Boss::AttackTypeAvatarBodyBlowSelect, boss);
+	attackTypeSelector->AddNode(attackTypeAvatarBodyBlowSelect);
 
-	std::function<bool()> attackTypeCSelect =
-		std::bind(&Boss::AttackTypeCSelect, boss);
-	attackTypeSelector->AddNode(attackTypeCSelect);
+	std::function<bool()> attackTypeAvatarGatlingSelect =
+		std::bind(&Boss::AttackTypeAvatarGatlingSelect, boss);
+	attackTypeSelector->AddNode(attackTypeAvatarGatlingSelect);
 
-	std::function<bool()> attackTypeDSelect =
-		std::bind(&Boss::AttackTypeDSelect, boss);
-	attackTypeSelector->AddNode(attackTypeDSelect);
+	std::function<bool()> attackTypeAvatarGiantBulletSelect =
+		std::bind(&Boss::AttackTypeAvatarGiantBulletSelect, boss);
+	attackTypeSelector->AddNode(attackTypeAvatarGiantBulletSelect);
 
 
 	//攻撃状態動きセレクター
@@ -143,29 +143,29 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 
 
 	//攻撃セレクター
-	std::function<bool()> attackTypeA =
-		std::bind(&Boss::AttackTypeA, boss);
-	attackSelector->AddNode(attackTypeA);
+	std::function<bool()> attackTypeTracking =
+		std::bind(&Boss::AttackTypeTracking, boss);
+	attackSelector->AddNode(attackTypeTracking);
 
-	std::function<bool()> attackTypeA2 =
-		std::bind(&Boss::AttackTypeA2, boss);
-	attackSelector->AddNode(attackTypeA2);
+	std::function<bool()> attackTypeSuperGiantBullet =
+		std::bind(&Boss::AttackTypeSuperGiantBullet, boss);
+	attackSelector->AddNode(attackTypeSuperGiantBullet);
 
-	std::function<bool()> attackTypeA3 =
-		std::bind(&Boss::AttackTypeA3, boss);
-	attackSelector->AddNode(attackTypeA3);
+	std::function<bool()> attackTypeRotate =
+		std::bind(&Boss::AttackTypeRotate, boss);
+	attackSelector->AddNode(attackTypeRotate);
 
-	std::function<bool()> attackTypeB =
-		std::bind(&Boss::AttackTypeB, boss);
-	attackSelector->AddNode(attackTypeB);
+	std::function<bool()> attackTypeAvatarBodyBlow =
+		std::bind(&Boss::AttackTypeAvatarBodyBlow, boss);
+	attackSelector->AddNode(attackTypeAvatarBodyBlow);
 
-	std::function<bool()> attackTypeC =
-		std::bind(&Boss::AttackTypeC, boss);
-	attackSelector->AddNode(attackTypeC);
+	std::function<bool()> attackTypeAvatarGatling =
+		std::bind(&Boss::AttackTypeAvatarGatling, boss);
+	attackSelector->AddNode(attackTypeAvatarGatling);
 
-	std::function<bool()> attackTypeD =
-		std::bind(&Boss::AttackTypeD, boss);
-	attackSelector->AddNode(attackTypeD);
+	std::function<bool()> attackTypeAvatarGiantBullet =
+		std::bind(&Boss::AttackTypeAvatarGiantBullet, boss);
+	attackSelector->AddNode(attackTypeAvatarGiantBullet);
 
 
 	//待機状態動きセレクター

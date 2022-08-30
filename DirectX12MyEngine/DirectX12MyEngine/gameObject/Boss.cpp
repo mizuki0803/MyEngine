@@ -169,104 +169,104 @@ bool Boss::AttackTypeSelectStart()
 	return false;
 }
 
-bool Boss::AttackTypeASelect()
+bool Boss::AttackTypeTrackingSelect()
 {
 	//本体が攻撃状態でなければ抜ける
 	if (!isMainBodyAttackMode) { return false; }
 
-	//前回の攻撃内容がAだったら抜ける
-	if (preAttackType == AttackType::A) { return false; }
+	//前回の攻撃内容が追従だったら抜ける
+	if (preAttackType == AttackType::Tracking) { return false; }
 
 	//プレイヤー自機が画面左側にいたら抜ける
 	if (player->GetPosition().x <= 0) { return false; }
 
-	//攻撃内容Aをセット
-	attackType = AttackType::A;
+	//攻撃内容:追従をセット
+	attackType = AttackType::Tracking;
 	//1つ前の攻撃内容を更新
-	preAttackType = AttackType::A;
+	preAttackType = AttackType::Tracking;
 
 	return true;
 }
 
-bool Boss::AttackTypeA2Select()
+bool Boss::AttackTypeSuperGiantBulletSelect()
 {
 	//本体が攻撃状態でなければ抜ける
 	if (!isMainBodyAttackMode) { return false; }
 
-	//前回の攻撃内容がA2だったら抜ける
-	if (preAttackType == AttackType::A2) { return false; }
+	//前回の攻撃内容が超巨大弾だったら抜ける
+	if (preAttackType == AttackType::SuperGiantBullet) { return false; }
 
-	//攻撃内容Aをセット
-	attackType = AttackType::A2;
+	//攻撃内容:超巨大弾をセット
+	attackType = AttackType::SuperGiantBullet;
 	//1つ前の攻撃内容を更新
-	preAttackType = AttackType::A2;
+	preAttackType = AttackType::SuperGiantBullet;
 
 	return true;
 }
 
-bool Boss::AttackTypeA3Select()
+bool Boss::AttackTypeRotateSelect()
 {
 	//本体が攻撃状態でなければ抜ける
 	if (!isMainBodyAttackMode) { return false; }
 
-	//前回の攻撃内容がA3だったら抜ける
-	if (preAttackType == AttackType::A3) { return false; }
+	//前回の攻撃内容が回転だったら抜ける
+	if (preAttackType == AttackType::Rotate) { return false; }
 
-	//攻撃内容Aをセット
-	attackType = AttackType::A3;
+	//攻撃内容:回転をセット
+	attackType = AttackType::Rotate;
 	//1つ前の攻撃内容を更新
-	preAttackType = AttackType::A3;
+	preAttackType = AttackType::Rotate;
 
 	return true;
 }
 
-bool Boss::AttackTypeBSelect()
+bool Boss::AttackTypeAvatarBodyBlowSelect()
 {
 	//本体が攻撃状態でなら抜ける
 	if (isMainBodyAttackMode) { return false; }
 
-	//前回の攻撃内容がBだったら抜ける
-	if (preAttackType == AttackType::B) { return false; }
+	//前回の攻撃内容が分身体当たりだったら抜ける
+	if (preAttackType == AttackType::AvatarBodyBlow) { return false; }
 
 	//プレイヤー自機が画面右側にいたら抜ける
 	if (player->GetPosition().x <= 0) { return false; }
 
-	//攻撃内容Bをセット
-	attackType = AttackType::B;
+	//攻撃内容:分身体当たりをセット
+	attackType = AttackType::AvatarBodyBlow;
 	//1つ前の攻撃内容を更新
-	preAttackType = AttackType::B;
+	preAttackType = AttackType::AvatarBodyBlow;
 
 	return true;
 }
 
-bool Boss::AttackTypeCSelect()
+bool Boss::AttackTypeAvatarGatlingSelect()
 {
 	//本体が攻撃状態でなら抜ける
 	if (isMainBodyAttackMode) { return false; }
 
-	//前回の攻撃内容がCだったら抜ける
-	if (preAttackType == AttackType::C) { return false; }
+	//前回の攻撃内容が分身ガトリング砲だったら抜ける
+	if (preAttackType == AttackType::AvatarGatling) { return false; }
 
-	//攻撃内容Cをセット
-	attackType = AttackType::C;
+	//攻撃内容:分身ガトリング砲をセット
+	attackType = AttackType::AvatarGatling;
 	//1つ前の攻撃内容を更新
-	preAttackType = AttackType::C;
+	preAttackType = AttackType::AvatarGatling;
 
 	return true;
 }
 
-bool Boss::AttackTypeDSelect()
+bool Boss::AttackTypeAvatarGiantBulletSelect()
 {
 	//本体が攻撃状態でなら抜ける
 	if (isMainBodyAttackMode) { return false; }
 
-	//前回の攻撃内容がDだったら抜ける
-	if (preAttackType == AttackType::D) { return false; }
+	//前回の攻撃内容が分身巨大弾だったら抜ける
+	if (preAttackType == AttackType::AvatarGiantBullet) { return false; }
 
-	//攻撃内容Cをセット
-	attackType = AttackType::D;
+	//攻撃内容:分身巨大弾をセット
+	attackType = AttackType::AvatarGiantBullet;
 	//1つ前の攻撃内容を更新
-	preAttackType = AttackType::D;
+	preAttackType = AttackType::AvatarGiantBullet;
 
 	return true;
 }
@@ -298,72 +298,72 @@ bool Boss::AttackModeCount()
 	return true;
 }
 
-bool Boss::AttackTypeA()
+bool Boss::AttackTypeTracking()
 {
-	//攻撃内容がAでなければ抜ける
-	if (!(attackType == AttackType::A)) { return false; }
+	//攻撃内容が追従でなければ抜ける
+	if (!(attackType == AttackType::Tracking)) { return false; }
 
-	mainBody->AttackTypeA(player->GetWorldPos());
+	mainBody->AttackTypeTracking(player->GetWorldPos());
 
 	return true;
 }
 
-bool Boss::AttackTypeA2()
+bool Boss::AttackTypeSuperGiantBullet()
 {
-	//攻撃内容がA2でなければ抜ける
-	if (!(attackType == AttackType::A2)) { return false; }
+	//攻撃内容が超巨大弾でなければ抜ける
+	if (!(attackType == AttackType::SuperGiantBullet)) { return false; }
 
-	mainBody->AttackTypeA2();
+	mainBody->AttackTypeSuperGiantBullet();
 
 	return true;
 }
 
-bool Boss::AttackTypeA3()
+bool Boss::AttackTypeRotate()
 {
-	//攻撃内容がA3でなければ抜ける
-	if (!(attackType == AttackType::A3)) { return false; }
+	//攻撃内容が回転でなければ抜ける
+	if (!(attackType == AttackType::Rotate)) { return false; }
 
-	mainBody->AttackTypeA3();
+	mainBody->AttackTypeRotate();
 
 	return true;
 }
 
-bool Boss::AttackTypeB()
+bool Boss::AttackTypeAvatarBodyBlow()
 {
-	//攻撃内容がBでなければ抜ける
-	if (!(attackType == AttackType::B)) { return false; }
+	//攻撃内容が分身体当たりでなければ抜ける
+	if (!(attackType == AttackType::AvatarBodyBlow)) { return false; }
 
-	//本体と分身を攻撃内容Bで動かす
-	mainBody->AttackTypeB();
+	//本体と分身を攻撃内容:分身体当たりで動かす
+	mainBody->AttackTypeAvatarBodyBlow();
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
-		avatar->AttackTypeB(player->GetWorldPos());
+		avatar->AttackTypeAvatarBodyBlow(player->GetWorldPos());
 	}
 
 	return true;
 }
 
-bool Boss::AttackTypeC()
+bool Boss::AttackTypeAvatarGatling()
 {
-	//攻撃内容がCでなければ抜ける
-	if (!(attackType == AttackType::C)) { return false; }
+	//攻撃内容が分身ガトリング砲でなければ抜ける
+	if (!(attackType == AttackType::AvatarGatling)) { return false; }
 
-	//本体と分身を攻撃内容Cで動かす
-	mainBody->AttackTypeC(player->GetWorldPos());
+	//本体と分身を攻撃内容:分身ガトリング砲で動かす
+	mainBody->AttackTypeAvatarGatling(player->GetWorldPos());
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
-		avatar->AttackTypeC();
+		avatar->AttackTypeAvatarGatling();
 	}
 
 	return true;
 }
 
-bool Boss::AttackTypeD()
+bool Boss::AttackTypeAvatarGiantBullet()
 {
-	//攻撃内容がDでなければ抜ける
-	if (!(attackType == AttackType::D)) { return false; }
+	//攻撃内容が分身巨大弾でなければ抜ける
+	if (!(attackType == AttackType::AvatarGiantBullet)) { return false; }
 
-	//本体と分身を攻撃内容Dで動かす
+	//本体と分身を攻撃内容:分身巨大弾で動かす
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
-		avatar->AttackTypeD();
+		avatar->AttackTypeAvatarGiantBullet();
 	}
 
 	return true;
