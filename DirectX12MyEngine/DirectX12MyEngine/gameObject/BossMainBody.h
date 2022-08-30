@@ -162,7 +162,7 @@ private: //Ã“Iƒƒ“ƒo•Ï”
 	//“G’e‚Ìƒ‚ƒfƒ‹
 	static ObjModel* bulletModel;
 	//‘Ì—Í
-	static const int maxHP = 60;
+	static const int maxHP = 100;
 	//UŒ‚ó‘Ô‚ÌY²‰ñ“]
 	static const float attackModeRotY;
 	//‘Ò‹@ó‘Ô‚ÌY²‰ñ“]

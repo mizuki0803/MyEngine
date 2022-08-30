@@ -117,8 +117,15 @@ void Boss::DrawUI()
 
 void Boss::OnCollisionMainBody(const int damageNum)
 {
-	//分身が全て死んでいない限りダメージを受けない
-	if (!(avatars.size() == 0)) { return; }
+	//待機状態ならダメージを喰らう
+	const bool isWaitMode = (phase == Phase::Wait);
+	//分身が全て死んでいるならダメージを喰らう
+	const bool isAllAvatarDead = (avatars.size() == 0);
+	//y軸角度45度以下ならダメージを喰らう
+	const bool isDamageRota = (mainBody->GetRotation().y <= 45.0f);
+
+	//どれか一つでも項目を達成していなければダメージを受けないで抜ける
+	if (!(isWaitMode && isAllAvatarDead && isDamageRota)) { return; }
 
 	//本体にダメージ
 	mainBody->Damage(damageNum);
@@ -129,6 +136,14 @@ void Boss::OnCollisionMainBody(const int damageNum)
 
 void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum)
 {
+	//待機状態ならダメージを喰らう
+	const bool isWaitMode = (phase == Phase::Wait);
+	//y軸角度45度以下ならダメージを喰らう
+	const bool isDamageRota = (avatar->GetRotation().y <= 45.0f);
+
+	//どちらか一つでも項目を達成していなければダメージを受けないで抜ける
+	if (!(isWaitMode && isDamageRota)) { return; }
+
 	//衝突した分身にダメージ
 	avatar->Damage(damageNum);
 
