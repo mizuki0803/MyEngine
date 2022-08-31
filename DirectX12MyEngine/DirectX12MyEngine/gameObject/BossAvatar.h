@@ -50,8 +50,8 @@ public: //メンバ関数
 	/// <summary>
 	/// ダメージを喰らう
 	/// </summary>
-	/// <param name="damageNum">ダメージ量</param>
-	void Damage(int damageNum);
+	/// <param name="attackPower">攻撃力</param>
+	void Damage(int attackPower);
 
 	/// <summary>
 	/// 攻撃内容:分身体当たり
@@ -95,6 +95,7 @@ public: //メンバ関数
 	//getter
 	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
+	const int GetDamageNum() { return damageNum; }
 
 protected:
 	/// <summary>
@@ -168,7 +169,7 @@ protected: //静的メンバ変数
 	//敵弾のモデル
 	static ObjModel* bulletModel;
 	//体力
-	static const int maxHP = 25;
+	static const int maxHP = 1;
 	//攻撃状態のY軸回転
 	static const float attackModeRotY;
 	//待機状態のY軸回転
@@ -187,6 +188,8 @@ protected: //メンバ変数
 	int HP = maxHP;
 	//死亡フラグ
 	bool isDead = false;
+	//喰らうダメージ量
+	int damageNum;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
 	//ボス本体との親子関係上の基準座標

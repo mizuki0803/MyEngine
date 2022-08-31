@@ -54,14 +54,20 @@ BossMainBody* BossMainBody::Create(ObjModel* model, const Vector3& basePos)
 	return bossMainBody;
 }
 
-void BossMainBody::Damage(int damageNum)
+void BossMainBody::Damage(int attackPower)
 {
-	//引数の数字の分ダメージを喰らう
+	//引数の攻撃力をダメージ量にセット
+	damageNum = attackPower;
+
+	//ダメージを与える
 	HP -= damageNum;
 
 	//HPが0以下になったら死亡
 	if (HP <= 0) {
 		isDead = true;
+
+		//HPゲージバグを起こさないようマイナス分を0に調整
+		damageNum += HP;
 	}
 }
 

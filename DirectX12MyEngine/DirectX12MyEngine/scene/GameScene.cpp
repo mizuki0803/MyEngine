@@ -149,6 +149,13 @@ void GameScene::Update()
 		return healingItem->GetIsDead();
 		});
 
+	//死亡したボスの削除
+	if (boss) {
+		if (boss->GetIsDead()) {
+			boss.reset();
+		}
+	}
+
 
 	//敵発生コマンド更新
 	UpdateEnemySetCommands();
@@ -392,8 +399,8 @@ void GameScene::CollisionCheck3d()
 	}
 #pragma endregion
 
-	//ボス戦状態でなければこの先の処理は行わない
-	if (!isBossBattle) { return; }
+	//ボスの存在がなければこの先の処理は行わない
+	if (!boss) { return; }
 
 #pragma region 自機とボス分身の衝突判定
 	//自機座標
@@ -441,8 +448,8 @@ void GameScene::CollisionCheck3d()
 		//衝突していたら
 		if (isCollision) {
 			//ボスのコールバック関数を呼び出す
-			const int damageNum = 2;
-			boss->OnCollisionMainBody(damageNum);
+			const int attackPower = 2;
+			boss->OnCollisionMainBody(attackPower);
 			//自機弾のコールバック関数を呼び出す
 			bullet->OnCollision();
 
@@ -473,8 +480,8 @@ void GameScene::CollisionCheck3d()
 			//衝突していたら
 			if (isCollision) {
 				//ボスのコールバック関数を呼び出す
-				const int damageNum = 2;
-				boss->OnCollisionAvatar(bossAvatar.get(), damageNum);
+				const int attackPower = 2;
+				boss->OnCollisionAvatar(bossAvatar.get(), attackPower);
 				//自機弾のコールバック関数を呼び出す
 				bullet->OnCollision();
 

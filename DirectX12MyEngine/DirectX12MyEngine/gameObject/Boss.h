@@ -203,6 +203,7 @@ public: //ƒƒ“ƒoŠÖ”
 	const Phase& GetPhase() { return this->phase; }
 	BossMainBody* GetMainBody() { return mainBody.get(); }
 	const std::list<std::unique_ptr<BossAvatar>>& GetAvatars() { return avatars; };
+	const bool GetIsDead() { return isDead; }
 
 private: //ƒƒ“ƒoŠÖ”
 	/// <summary>

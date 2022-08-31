@@ -44,14 +44,20 @@ bool BossAvatar::Initialize()
 	return true;
 }
 
-void BossAvatar::Damage(int damageNum)
+void BossAvatar::Damage(int attackPower)
 {
-	//引数の数字の分ダメージを喰らう
+	//引数の攻撃力をダメージ量にセット
+	damageNum = attackPower;
+
+	//ダメージを与える
 	HP -= damageNum;
 
 	//HPが0以下になったら死亡
 	if (HP <= 0) {
 		isDead = true;
+
+		//HPゲージバグを起こさないようマイナス分を0に調整
+		damageNum += HP;
 	}
 }
 

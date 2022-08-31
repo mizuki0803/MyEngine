@@ -130,8 +130,9 @@ void Boss::OnCollisionMainBody(const int damageNum)
 	//本体にダメージ
 	mainBody->Damage(damageNum);
 
-	//ボス全体にダメージ
-	Damage(damageNum);
+	//ボス全体にダメージ(ボス本体が実際に喰らったダメージ量をセット)
+	const int mainBodyDamageNum = mainBody->GetDamageNum();
+	Damage(mainBodyDamageNum);
 }
 
 void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum)
@@ -150,8 +151,9 @@ void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum)
 	//分身が全滅したかチェック
 	CheckAllAvatarDead();
 
-	//ボス全体にダメージ
-	Damage(damageNum);
+	//ボス全体にダメージ(ボス分身が実際に喰らったダメージ量をセット)
+	const int avatarBodyDamageNum = avatar->GetDamageNum();
+	Damage(avatarBodyDamageNum);
 }
 
 bool Boss::Fall()
