@@ -88,8 +88,8 @@ void Boss::Update()
 	//HPバーフレーム更新
 	hpFrame->Update();
 
-	if (isDead) {
-		DebugText::GetInstance()->Print("BossDead", 100, 60);
+	if (phase == Phase::Dead) {
+		DebugText::GetInstance()->Print("BossDeadMode", 100, 60);
 	}
 
 	std::string hpNum = std::to_string(HP);
@@ -156,21 +156,21 @@ void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum)
 	Damage(avatarBodyDamageNum);
 }
 
-bool Boss::Fall()
+bool Boss::FallMode()
 {
 	//降下状態でなければ抜ける
 	if (!(phase == Phase::Fall)) { return false; }
 
 	//タイマーを更新
-	const float fallTime = 300;
-	fallTimer++;
-	const float time = fallTimer / fallTime;
+	const float fallModeTime = 300;
+	fallModeTimer++;
+	const float time = fallModeTimer / fallModeTime;
 
 	//ボス本体を降下させる
-	mainBody->Fall(time);
+	mainBody->FallMode(time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
-	if (fallTimer >= fallTime) {
+	if (fallModeTimer >= fallModeTime) {
 		phase = Phase::Attack;
 	}
 
@@ -498,16 +498,36 @@ bool Boss::WaitModeAvatarRota()
 	return true;
 }
 
+bool Boss::DeadMode()
+{
+	//死亡状態でなければ抜ける
+	if (!(phase == Phase::Dead)) { return false; }
+
+	//タイマーを更新
+	const float deadModeTime = 300;
+	deadModeTimer++;
+
+	//ボス本体に死亡時の動きをさせる
+	mainBody->DeadMode();
+
+	//タイマーが指定した時間になったら死亡フラグを立てる(削除)
+	if (deadModeTimer >= deadModeTime) {
+		isDead = true;
+	}
+
+	return true;
+}
+
 void Boss::Damage(const int damageNum)
 {
 	//引数の数字の分ダメージを喰らう
 	HP -= damageNum;
 
-	//HPが0以下になったら死亡
+	//HPが0以下になったら死亡状態にする
 	if (HP <= 0) {
 		HP = 0;
 
-		isDead = true;
+		phase = Phase::Dead;
 	}
 
 	//ダメージを喰らったのでHPバーの長さを変更する

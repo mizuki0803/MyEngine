@@ -55,9 +55,9 @@ void BossBehaviorTree::Root()
 void BossBehaviorTree::MakeTree(Boss* boss)
 {
 	//ルートノード
-	std::function<bool()> fall =
-		std::bind(&Boss::Fall, boss);
-	topSelector->AddNode(fall);
+	std::function<bool()> fallMode =
+		std::bind(&Boss::FallMode, boss);
+	topSelector->AddNode(fallMode);
 
 	std::function<bool()> attackModeSequence =
 		std::bind(&Sequencer::Sequence, attackModeSequencer.get());
@@ -66,6 +66,10 @@ void BossBehaviorTree::MakeTree(Boss* boss)
 	std::function<bool()> waitModeSequence =
 		std::bind(&Sequencer::Sequence, waitModeSequencer.get());
 	topSelector->AddNode(waitModeSequence);
+
+	std::function<bool()> deadMode =
+		std::bind(&Boss::DeadMode, boss);
+	topSelector->AddNode(deadMode);
 
 
 	//攻撃状態シーケンサー

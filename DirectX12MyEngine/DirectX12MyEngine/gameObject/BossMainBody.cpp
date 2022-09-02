@@ -71,7 +71,7 @@ void BossMainBody::Damage(int attackPower)
 	}
 }
 
-void BossMainBody::Fall(const float time)
+void BossMainBody::FallMode(const float time)
 {
 	//Šî€‚ÌˆÊ’u‚Ì^ã‚©‚ç~‚è‚Ä‚­‚é
 	Vector3 bornPos = basePos;
@@ -172,6 +172,13 @@ void BossMainBody::AttackEnd()
 	attackRotateShotCount = 0;
 	attackRotateMoveBeforePos = {};
 	attackRotateMpveAfterPos = {};
+}
+
+void BossMainBody::DeadMode()
+{
+	//X²‰ñ“]‚³‚¹‚é
+	Vector3 rotVel = { -0.1f, 0, 0 };
+	rotation += rotVel;
 }
 
 Vector3 BossMainBody::GetWorldPos()

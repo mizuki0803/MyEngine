@@ -52,10 +52,10 @@ public: //メンバ関数
 	void Damage(int attackPower);
 
 	/// <summary>
-	/// 降下
+	/// 降下状態
 	/// </summary>
 	/// <param name="time">イージング用(0～1)の数値</param>
-	void Fall(const float time);
+	void FallMode(const float time);
 
 	/// <summary>
 	/// 攻撃内容:追従
@@ -105,6 +105,11 @@ public: //メンバ関数
 	/// 基準位置に戻るときの出発座標を記録する、弾発射状態解除
 	/// </summary>
 	void AttackEnd();
+
+	/// <summary>
+	/// 死亡状態
+	/// </summary>
+	void DeadMode();
 
 	//getter
 	Vector3 GetWorldPos();

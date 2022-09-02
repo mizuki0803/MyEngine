@@ -81,9 +81,9 @@ public: //メンバ関数
 	void OnCollisionAvatar(BossAvatar* avatar, const int damageNum);
 
 	/// <summary>
-	/// 降下
+	/// 降下状態
 	/// </summary>
-	bool Fall();
+	bool FallMode();
 
 	/// <summary>
 	/// 攻撃内容設定を開始するか
@@ -199,6 +199,11 @@ public: //メンバ関数
 	/// </summary>
 	bool WaitModeAvatarRota();
 
+	/// <summary>
+	/// 死亡状態
+	/// </summary>
+	bool DeadMode();
+
 	//getter
 	const Phase& GetPhase() { return this->phase; }
 	BossMainBody* GetMainBody() { return mainBody.get(); }
@@ -247,8 +252,8 @@ private: //メンバ変数
 	bool isMainBodyAttackMode = false;
 	//行動
 	Phase phase = Phase::Fall;
-	//降下する時間タイマー
-	int32_t fallTimer = 0;
+	//降下状態時間タイマー
+	int32_t fallModeTimer = 0;
 	//攻撃内容
 	AttackType attackType = AttackType::None;
 	//1つ前に発動した攻撃内容
@@ -257,6 +262,8 @@ private: //メンバ変数
 	int32_t attackModeTimer = 0;
 	//待機状態時間タイマー
 	int32_t waitModeTimer = 0;
+	//死亡状態時間タイマー
+	int32_t deadModeTimer = 0;
 	//体力
 	int HP = 0;
 	//HPバー
