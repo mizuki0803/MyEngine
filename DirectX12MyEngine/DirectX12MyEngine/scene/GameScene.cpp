@@ -471,8 +471,8 @@ void GameScene::CollisionCheck3d()
 		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
 			//ボス分身座標
 			posB = bossAvatar->GetWorldPos();
-			//ボス分身半径
-			radiusB = bossAvatar->GetScale().x;
+			//ボス分身半径(親子構造の為、本体の大きさ×分身の大きさで正しい大きさが分かる)
+			radiusB = boss->GetMainBody()->GetScale().x * bossAvatar->GetScale().x;
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
@@ -715,12 +715,12 @@ void GameScene::BossBattleStart()
 	if (isBossBattle) { return; }
 
 	//自機がボスバトル開始とする座標まで進んだら開始
-	const float isBossBattleStartPos = 250;
+	const float isBossBattleStartPos = 5;
 	const bool isBossBattleStart = player->GetWorldPos().z >= isBossBattleStartPos;
 	if (!isBossBattleStart) { return; }
 
 	//ボス生成
-	const Vector3 bossBasePos = { 0, 3, 310 };
+	const Vector3 bossBasePos = { 0, 3, 65 };
 	boss.reset(Boss::Create(modelFighter.get(), modelFighter.get(), bossBasePos));
 
 	//レールカメラの前進を止める

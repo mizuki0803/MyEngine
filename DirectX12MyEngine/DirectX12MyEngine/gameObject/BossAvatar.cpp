@@ -30,7 +30,7 @@ GameScene* BossAvatar::gameScene = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
 const float BossAvatar::attackModeRotY = 180.0f;
 const float BossAvatar::waitModeRotY = 0.0f;
-const float BossAvatar::attackAvatarGatlingLength = 1.5f;
+const float BossAvatar::attackAvatarGatlingLength = 0.75f;
 
 bool BossAvatar::Initialize()
 {
@@ -236,7 +236,7 @@ void BossAvatar::AttackTypeAvatarGatlingShot()
 	if (fireTimer >= fireInterval) {
 		//弾を発射
 		const float bulletScale = 1.0f;
-		const float bulletSpeed = 1.0f;
+		const float bulletSpeed = 0.75f;
 		Fire(bulletScale, bulletSpeed);
 		//発射タイマーを初期化
 		fireTimer = 0;

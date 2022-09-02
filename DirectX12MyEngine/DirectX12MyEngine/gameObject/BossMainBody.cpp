@@ -49,7 +49,7 @@ BossMainBody* BossMainBody::Create(ObjModel* model, const Vector3& basePos)
 	bossMainBody->basePos = basePos;
 
 	//‘å‚«‚³‚ðƒZƒbƒg
-	bossMainBody->scale = { 1.5f, 1.5f, 1.5f };
+	bossMainBody->scale = { 4.5f, 4.5f, 4.5f };
 
 	return bossMainBody;
 }

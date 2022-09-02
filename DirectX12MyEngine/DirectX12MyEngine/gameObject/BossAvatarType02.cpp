@@ -44,7 +44,7 @@ void BossAvatarType02::AttackTypeAvatarBodyBlowLockon()
 
 		//飛ばす速度を確定させる
 		attackAvatarBodyBlowVelocity = attackAvatarBodyBlowLockonPos - GetWorldPos();
-		const float moveSpeed = 1.0f;
+		const float moveSpeed = 0.5f;
 		attackAvatarBodyBlowVelocity = attackAvatarBodyBlowVelocity.normalize() * moveSpeed;
 
 		//タイマー初期化
@@ -88,7 +88,7 @@ void BossAvatarType02::AttackTypeAvatarGiantBulletMove()
 	const float time = attackTimer / moveTime;
 
 	//発射位置に移動させる
-	const Vector3 movePos = { -21, 0, 0 };
+	const Vector3 movePos = { -6, 0, 0 };
 	position.x = Easing::OutQuad(basePos.x, movePos.x, time);
 	position.y = Easing::OutQuad(basePos.y, movePos.y, time);
 
