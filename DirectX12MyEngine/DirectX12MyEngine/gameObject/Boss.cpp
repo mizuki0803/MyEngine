@@ -37,16 +37,16 @@ bool Boss::Initialize(ObjModel* mainBodyModel, ObjModel* avatarModel, const Vect
 	mainBody.reset(BossMainBody::Create(mainBodyModel, position));
 	//ボス分身生成
 	std::unique_ptr<BossAvatarType01> newAvatarType01;
-	newAvatarType01.reset(BossAvatarType01::Create(avatarModel, mainBody.get(), { 1.5f, 0, 0 }));
+	newAvatarType01.reset(BossAvatarType01::Create(avatarModel, mainBody.get(), { 2, 0, 0 }));
 	avatars.push_back(std::move(newAvatarType01));
 	std::unique_ptr<BossAvatarType02> newAvatarType02;
-	newAvatarType02.reset(BossAvatarType02::Create(avatarModel, mainBody.get(), { -1.5f, 0, 0 }));
+	newAvatarType02.reset(BossAvatarType02::Create(avatarModel, mainBody.get(), { -2, 0, 0 }));
 	avatars.push_back(std::move(newAvatarType02));
 	std::unique_ptr<BossAvatarType03> newAvatarType03;
-	newAvatarType03.reset(BossAvatarType03::Create(avatarModel, mainBody.get(), { 0, 1.5f, 0 }));
+	newAvatarType03.reset(BossAvatarType03::Create(avatarModel, mainBody.get(), { 0, 2, 0 }));
 	avatars.push_back(std::move(newAvatarType03));
 	std::unique_ptr<BossAvatarType04> newAvatarType04;
-	newAvatarType04.reset(BossAvatarType04::Create(avatarModel, mainBody.get(), { 0, -1.5f, 0 }));
+	newAvatarType04.reset(BossAvatarType04::Create(avatarModel, mainBody.get(), { 0, -2, 0 }));
 	avatars.push_back(std::move(newAvatarType04));
 
 	//HPを本体とボス分身の合計で算出する

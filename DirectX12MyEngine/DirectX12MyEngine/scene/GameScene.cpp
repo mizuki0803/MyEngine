@@ -55,6 +55,8 @@ void GameScene::Initialize()
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
+	modelBossMainBody.reset(ObjModel::LoadFromOBJ("bossMainBody", true));
+	modelBossAvatar.reset(ObjModel::LoadFromOBJ("bossAvatar", true));
 
 	//自機に必要な情報をセット
 	Player::SetGameScene(this);
@@ -721,7 +723,7 @@ void GameScene::BossBattleStart()
 
 	//ボス生成
 	const Vector3 bossBasePos = { 0, 3, 65 };
-	boss.reset(Boss::Create(modelFighter.get(), modelFighter.get(), bossBasePos));
+	boss.reset(Boss::Create(modelBossMainBody.get(), modelBossAvatar.get(), bossBasePos));
 
 	//レールカメラの前進を止める
 	railCamera->SetIsAdvance(false);

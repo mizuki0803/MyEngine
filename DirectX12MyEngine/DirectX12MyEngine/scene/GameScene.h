@@ -121,6 +121,8 @@ private: //ƒƒ“ƒo•Ï”
 	std::unique_ptr<ObjModel> modelSkydome;
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
+	std::unique_ptr<ObjModel> modelBossMainBody;
+	std::unique_ptr<ObjModel> modelBossAvatar;
 
 	//©‹@
 	std::unique_ptr<Player> player;

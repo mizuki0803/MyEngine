@@ -30,7 +30,7 @@ GameScene* BossAvatar::gameScene = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
 const float BossAvatar::attackModeRotY = 180.0f;
 const float BossAvatar::waitModeRotY = 0.0f;
-const float BossAvatar::attackAvatarGatlingLength = 0.75f;
+const float BossAvatar::attackAvatarGatlingLength = 1.25f;
 
 bool BossAvatar::Initialize()
 {
