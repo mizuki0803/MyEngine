@@ -39,6 +39,8 @@ public: //静的メンバ関数
 
 	//setter
 	static void SetGameScene(GameScene* gameScene) { BossAvatar::gameScene = gameScene; }
+	static void SetAvatarModel(ObjModel* model) { BossAvatar::avatarModel = model; }
+	static void SetAvatarSleepModel(ObjModel* model) { BossAvatar::avatarSleepModel = model; }
 	static void SetBulletModel(ObjModel* model) { BossAvatar::bulletModel = model; }
 
 public: //メンバ関数
@@ -46,6 +48,11 @@ public: //メンバ関数
 	/// 初期化
 	/// </summary>
 	bool Initialize() override;
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Update() override;
 
 	/// <summary>
 	/// ダメージを喰らう
@@ -92,6 +99,11 @@ public: //メンバ関数
 	/// </summary>
 	void AttackEnd();
 
+	/// <summary>
+	/// 寝ている状態のモデルから起きている状態のモデルに変更
+	/// </summary>
+	void ChangeModel();
+
 	//getter
 	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
@@ -102,6 +114,11 @@ protected:
 	/// 弾発射
 	/// </summary>
 	void Fire(const float scale, const float bulletSpeed);
+
+	/// <summary>
+	/// ダメージを喰らった状態の色にする
+	/// </summary>
+	void DamageColorMode();
 
 	/// <summary>
 	/// 攻撃内容:分身体当たりのロックオン処理
@@ -166,10 +183,14 @@ protected:
 protected: //静的メンバ変数
 	//ゲームシーン
 	static GameScene* gameScene;
+	//分身のモデル
+	static ObjModel* avatarModel;
+	//分身の寝ている状態のモデル
+	static ObjModel* avatarSleepModel;
 	//敵弾のモデル
 	static ObjModel* bulletModel;
 	//体力
-	static const int maxHP = 1;
+	static const int maxHP = 15;
 	//攻撃状態のY軸回転
 	static const float attackModeRotY;
 	//待機状態のY軸回転
@@ -190,6 +211,10 @@ protected: //メンバ変数
 	bool isDead = false;
 	//喰らうダメージ量
 	int damageNum;
+	//ダメージ色フラグ
+	bool isDamageColor = false;
+	//ダメージ色にする時間タイマー
+	int32_t damageColorTimer = 0;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
 	//ボス本体との親子関係上の基準座標

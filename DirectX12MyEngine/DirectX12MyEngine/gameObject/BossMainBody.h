@@ -33,18 +33,24 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
 	/// <returns>ボス(本体)</returns>
-	static BossMainBody* Create(ObjModel* model, const Vector3& basePos);
+	static BossMainBody* Create(const Vector3& basePos);
 
 	//getter
 	static const int GetMaxHP() { return BossMainBody::maxHP; }
 
 	//setter
 	static void SetGameScene(GameScene* gameScene) { BossMainBody::gameScene = gameScene; }
+	static void SetBossMainBodyModel(ObjModel* model) { BossMainBody::mainBodyModel = model; }
+	static void SetBossMainBodySleepModel(ObjModel* model) { BossMainBody::mainBodySleepModel = model; }
 	static void SetBulletModel(ObjModel* model) { BossMainBody::bulletModel = model; }
 
 public: //メンバ関数
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Update() override;
+
 	/// <summary>
 	/// ダメージを喰らう
 	/// </summary>
@@ -111,6 +117,11 @@ public: //メンバ関数
 	/// </summary>
 	void DeadMode();
 
+	/// <summary>
+	/// 寝ている状態のモデルから起きている状態のモデルに変更
+	/// </summary>
+	void ChangeModel();
+
 	//getter
 	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
@@ -121,6 +132,11 @@ private: //メンバ関数
 	/// 弾発射
 	/// </summary>
 	void Fire(const float scale, const float bulletSpeed);
+
+	/// <summary>
+	/// ダメージを喰らった状態の色にする
+	/// </summary>
+	void DamageColorMode();
 
 	/// <summary>
 	/// 攻撃内容:追従のロックオン処理
@@ -165,10 +181,14 @@ private: //メンバ関数
 private: //静的メンバ変数
 	//ゲームシーン
 	static GameScene* gameScene;
+	//本体のモデル
+	static ObjModel* mainBodyModel;
+	//本体の寝ている状態のモデル
+	static ObjModel* mainBodySleepModel;
 	//敵弾のモデル
 	static ObjModel* bulletModel;
 	//体力
-	static const int maxHP = 1;
+	static const int maxHP = 60;
 	//攻撃状態のY軸回転
 	static const float attackModeRotY;
 	//待機状態のY軸回転
@@ -187,6 +207,10 @@ private: //メンバ変数
 	int HP = maxHP;
 	//喰らうダメージ量
 	int damageNum;
+	//ダメージ色フラグ
+	bool isDamageColor = false;
+	//ダメージ色にする時間タイマー
+	int32_t damageColorTimer = 0;
 	//死亡フラグ
 	bool isDead = false;
 	//弾発射タイマー

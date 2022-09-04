@@ -27,6 +27,8 @@ void (BossAvatar::* BossAvatar::attackTypeAvatarGiantBulletPhaseFuncTable[])() =
 
 
 GameScene* BossAvatar::gameScene = nullptr;
+ObjModel* BossAvatar::avatarModel = nullptr;
+ObjModel* BossAvatar::avatarSleepModel = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
 const float BossAvatar::attackModeRotY = 180.0f;
 const float BossAvatar::waitModeRotY = 0.0f;
@@ -44,6 +46,17 @@ bool BossAvatar::Initialize()
 	return true;
 }
 
+void BossAvatar::Update()
+{
+	//ダメージ色状態のみの処理
+	if (isDamageColor) {
+		DamageColorMode();
+	}
+
+	//オブジェクト更新
+	ObjObject3d::Update();
+}
+
 void BossAvatar::Damage(int attackPower)
 {
 	//引数の攻撃力をダメージ量にセット
@@ -59,6 +72,13 @@ void BossAvatar::Damage(int attackPower)
 		//HPゲージバグを起こさないようマイナス分を0に調整
 		damageNum += HP;
 	}
+
+	//ダメージ色状態にする
+	isDamageColor = true;
+	const XMFLOAT4 damageColor = { 1, 0, 0, 1 };
+	color = damageColor;
+	//ダメージ色状態タイマー初期化
+	damageColorTimer = 0;
 }
 
 void BossAvatar::AttackTypeAvatarBodyBlow(const Vector3& playerPosition)
@@ -128,6 +148,12 @@ void BossAvatar::AttackEnd()
 	attackAvatarGiantBulletRecoilAccel = { 0, 0, -0.05f };
 }
 
+void BossAvatar::ChangeModel()
+{
+	//起きている状態のモデルをセット
+	model = avatarModel;
+}
+
 Vector3 BossAvatar::GetWorldPos()
 {
 	//ワールド座標を入れる変数
@@ -150,6 +176,20 @@ void BossAvatar::Fire(const float scale, const float bulletSpeed)
 	std::unique_ptr<EnemyBullet> newBullet;
 	newBullet.reset(EnemyBullet::Create(bulletModel, GetWorldPos(), velocity, scale));
 	gameScene->AddEnemyBullet(std::move(newBullet));
+}
+
+void BossAvatar::DamageColorMode()
+{
+	//ダメージ色にする時間
+	const float damageColorTime = 10;
+	damageColorTimer++;
+
+	//タイマーが指定した時間になったらダメージ色状態を解除する
+	if (damageColorTimer >= damageColorTime) {
+		//色を元に戻す
+		isDamageColor = false;
+		color = { 1,1,1,1 };
+	}
 }
 
 void BossAvatar::AttackTypeAvatarBodyBlowShot()

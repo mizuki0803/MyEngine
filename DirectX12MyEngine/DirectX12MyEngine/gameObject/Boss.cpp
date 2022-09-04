@@ -13,7 +13,7 @@ const float Boss::waitModeTime = 480.0f;
 const float Boss::changeModeTime = 60.0f;
 const float Boss::returnBasePositionTime = 180.0f;
 
-Boss* Boss::Create(ObjModel* mainBodyModel, ObjModel* avatarModel, const Vector3& position)
+Boss* Boss::Create(const Vector3& position)
 {
 	//ボスのインスタンスを生成
 	Boss* boss = new Boss();
@@ -22,7 +22,7 @@ Boss* Boss::Create(ObjModel* mainBodyModel, ObjModel* avatarModel, const Vector3
 	}
 
 	// 初期化
-	if (!boss->Initialize(mainBodyModel, avatarModel, position)) {
+	if (!boss->Initialize(position)) {
 		delete boss;
 		assert(0);
 		return nullptr;
@@ -31,22 +31,22 @@ Boss* Boss::Create(ObjModel* mainBodyModel, ObjModel* avatarModel, const Vector3
 	return boss;
 }
 
-bool Boss::Initialize(ObjModel* mainBodyModel, ObjModel* avatarModel, const Vector3& position)
+bool Boss::Initialize(const Vector3& position)
 {
 	//本体生成
-	mainBody.reset(BossMainBody::Create(mainBodyModel, position));
+	mainBody.reset(BossMainBody::Create(position));
 	//ボス分身生成
 	std::unique_ptr<BossAvatarType01> newAvatarType01;
-	newAvatarType01.reset(BossAvatarType01::Create(avatarModel, mainBody.get(), { 2, 0, 0 }));
+	newAvatarType01.reset(BossAvatarType01::Create(mainBody.get(), { 2, 0, 0 }));
 	avatars.push_back(std::move(newAvatarType01));
 	std::unique_ptr<BossAvatarType02> newAvatarType02;
-	newAvatarType02.reset(BossAvatarType02::Create(avatarModel, mainBody.get(), { -2, 0, 0 }));
+	newAvatarType02.reset(BossAvatarType02::Create(mainBody.get(), { -2, 0, 0 }));
 	avatars.push_back(std::move(newAvatarType02));
 	std::unique_ptr<BossAvatarType03> newAvatarType03;
-	newAvatarType03.reset(BossAvatarType03::Create(avatarModel, mainBody.get(), { 0, 2, 0 }));
+	newAvatarType03.reset(BossAvatarType03::Create(mainBody.get(), { 0, 2, 0 }));
 	avatars.push_back(std::move(newAvatarType03));
 	std::unique_ptr<BossAvatarType04> newAvatarType04;
-	newAvatarType04.reset(BossAvatarType04::Create(avatarModel, mainBody.get(), { 0, -2, 0 }));
+	newAvatarType04.reset(BossAvatarType04::Create(mainBody.get(), { 0, -2, 0 }));
 	avatars.push_back(std::move(newAvatarType04));
 
 	//HPを本体とボス分身の合計で算出する
@@ -172,6 +172,11 @@ bool Boss::FallMode()
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (fallModeTimer >= fallModeTime) {
 		phase = Phase::Attack;
+
+		//分身のモデルを起きている状態のモデルに変更する
+		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+			avatar->ChangeModel();
+		}
 	}
 
 	return true;
@@ -548,6 +553,8 @@ void Boss::CheckAllAvatarDead()
 
 	//本体を攻撃状態にする
 	isMainBodyAttackMode = true;
+	//本体のモデルを起きている状態のモデルに変更する
+	mainBody->ChangeModel();
 	//本体は待機中なので、待機状態にしておく
 	phase = Phase::Wait;
 

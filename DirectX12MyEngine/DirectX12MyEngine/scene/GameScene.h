@@ -122,7 +122,9 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
 	std::unique_ptr<ObjModel> modelBossMainBody;
+	std::unique_ptr<ObjModel> modelBossMainBodySleep;
 	std::unique_ptr<ObjModel> modelBossAvatar;
+	std::unique_ptr<ObjModel> modelBossAvatarSleep;
 
 	//自機
 	std::unique_ptr<Player> player;
@@ -134,18 +136,20 @@ private: //メンバ変数
 	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
 	//敵発生コマンド
 	std::stringstream enemySetCommands;
-	//ボス
-	std::unique_ptr<Boss> boss;
-	//ボス戦中か
-	bool isBossBattle = false;
 	//待機中か
 	bool isWait = false;
 	//待機タイマー
 	int32_t waitTimer = 0;
+	//ボス
+	std::unique_ptr<Boss> boss;
+	//ボス戦中か
+	bool isBossBattle = false;
 	//天球
 	std::unique_ptr<Skydome> objSkydome;
 	//回復アイテム
 	std::list<std::unique_ptr<HealingItem>> healingItems;
+	//ステージクリアか
+	bool isStageClear = false;
 
 
 	//その他変数

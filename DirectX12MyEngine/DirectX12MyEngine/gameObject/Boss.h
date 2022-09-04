@@ -37,9 +37,8 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
 	/// <returns>ボス</returns>
-	static Boss* Create(ObjModel* mainBodyModel, ObjModel* avatarModel, const Vector3& position);
+	static Boss* Create(const Vector3& position);
 
 	//setter
 	static void SetPlayer(Player* player) { Boss::player = player; }
@@ -49,7 +48,7 @@ public: //メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <returns>成否</returns>
-	bool Initialize(ObjModel* mainBodyModel, ObjModel* avatarModel, const Vector3& position);
+	bool Initialize(const Vector3& position);
 
 	/// <summary>
 	/// 更新

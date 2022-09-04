@@ -10,9 +10,8 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
 	/// <returns>ボス(分身：タイプ02)</returns>
-	static BossAvatarType02* Create(ObjModel* model, ObjObject3d* parent, const Vector3& position);
+	static BossAvatarType02* Create(ObjObject3d* parent, const Vector3& position);
 
 public: //メンバ関数
 	/// <summary>

@@ -56,7 +56,9 @@ void GameScene::Initialize()
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
 	modelBossMainBody.reset(ObjModel::LoadFromOBJ("bossMainBody", true));
+	modelBossMainBodySleep.reset(ObjModel::LoadFromOBJ("bossMainBodySleep", true));
 	modelBossAvatar.reset(ObjModel::LoadFromOBJ("bossAvatar", true));
+	modelBossAvatarSleep.reset(ObjModel::LoadFromOBJ("bossAvatarSleep", true));
 
 	//自機に必要な情報をセット
 	Player::SetGameScene(this);
@@ -78,8 +80,12 @@ void GameScene::Initialize()
 	//ボスに必要な情報をセット
 	Boss::SetPlayer(player.get());
 	BossMainBody::SetGameScene(this);
+	BossMainBody::SetBossMainBodyModel(modelBossMainBody.get());
+	BossMainBody::SetBossMainBodySleepModel(modelBossMainBodySleep.get());
 	BossMainBody::SetBulletModel(modelSphere.get());
 	BossAvatar::SetGameScene(this);
+	BossAvatar::SetAvatarModel(modelBossAvatar.get());
+	BossAvatar::SetAvatarSleepModel(modelBossAvatarSleep.get());
 	BossAvatar::SetBulletModel(modelSphere.get());
 
 	//天球生成
@@ -155,6 +161,8 @@ void GameScene::Update()
 	if (boss) {
 		if (boss->GetIsDead()) {
 			boss.reset();
+			//ステージクリア
+			isStageClear = true;
 		}
 	}
 
@@ -204,8 +212,9 @@ void GameScene::Update()
 	//debugText->Print("GAME SCENE", 1000, 50);
 	std::string enemyNum = std::to_string(enemys.size());
 	DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 100, 200);
-	std::string healingItemNum = std::to_string(healingItems.size());
-	DebugText::GetInstance()->Print("HealingItemNum : " + healingItemNum, 100, 250);
+	if (isStageClear) {
+		DebugText::GetInstance()->Print("STAGE CLEAR", 100, 250);
+	}
 	/*std::string playerHP = std::to_string(player->GetHP());
 	if (!player->GetIsDead()) {
 		DebugText::GetInstance()->Print("PlayerHP : " + playerHP, 200, 200);
@@ -633,7 +642,7 @@ void GameScene::UpdateEnemySetCommands()
 			}
 			else if (type == Enemy::EnemyType::Cannon) {
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CannonEnemy::Create(modelFighter.get(), { x, y, z }));
+				newEnemy.reset(CannonEnemy::Create(modelSphere.get(), { x, y, z }));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::Circular) {
@@ -717,13 +726,13 @@ void GameScene::BossBattleStart()
 	if (isBossBattle) { return; }
 
 	//自機がボスバトル開始とする座標まで進んだら開始
-	const float isBossBattleStartPos = 5;
+	const float isBossBattleStartPos = 250;
 	const bool isBossBattleStart = player->GetWorldPos().z >= isBossBattleStartPos;
 	if (!isBossBattleStart) { return; }
 
 	//ボス生成
-	const Vector3 bossBasePos = { 0, 3, 65 };
-	boss.reset(Boss::Create(modelBossMainBody.get(), modelBossAvatar.get(), bossBasePos));
+	const Vector3 bossBasePos = { 0, 3, 310 };
+	boss.reset(Boss::Create(bossBasePos));
 
 	//レールカメラの前進を止める
 	railCamera->SetIsAdvance(false);

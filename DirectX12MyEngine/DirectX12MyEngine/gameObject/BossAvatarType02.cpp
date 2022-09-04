@@ -1,7 +1,7 @@
 #include "BossAvatarType02.h"
 #include "Easing.h"
 
-BossAvatarType02* BossAvatarType02::Create(ObjModel* model, ObjObject3d* parent, const Vector3& position)
+BossAvatarType02* BossAvatarType02::Create(ObjObject3d* parent, const Vector3& position)
 {
 	//ボス(分身：タイプ02)のインスタンスを生成
 	BossAvatarType02* bossAvatarType02 = new BossAvatarType02();
@@ -9,9 +9,9 @@ BossAvatarType02* BossAvatarType02::Create(ObjModel* model, ObjObject3d* parent,
 		return nullptr;
 	}
 
-	//モデルをセット
-	assert(model);
-	bossAvatarType02->model = model;
+	//寝ている状態のモデルをセット
+	assert(avatarSleepModel);
+	bossAvatarType02->model = avatarSleepModel;
 
 	// 初期化
 	if (!bossAvatarType02->Initialize()) {
