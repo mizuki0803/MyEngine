@@ -157,8 +157,9 @@ void GameScene::Update()
 		return healingItem->GetIsDead();
 		});
 
-	//死亡したボスの削除
+	
 	if (boss) {
+		//死亡したボスの解放
 		if (boss->GetIsDead()) {
 			boss.reset();
 			//ステージクリア
