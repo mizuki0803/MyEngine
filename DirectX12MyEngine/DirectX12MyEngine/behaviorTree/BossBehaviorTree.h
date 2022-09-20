@@ -33,9 +33,51 @@ private: //メンバ関数
 	/// <summary>
 	/// 木構造の作成
 	/// </summary>
-	void MakeTree(Boss* boss);
+	void MakeTree();
+
+	/// <summary>
+	/// 攻撃状態シーケンスノード
+	/// </summary>
+	void AttackModeSequenceNode();
+
+	/// <summary>
+	/// 攻撃内容セレクトノード
+	/// </summary>
+	void AttackTypeSelectNode();
+
+	/// <summary>
+	/// 攻撃状態動きセレクトノード
+	/// </summary>
+	void AttackModeActionSelectNode();
+
+	/// <summary>
+	/// 攻撃状態動き・回転対象セレクトノード
+	/// </summary>
+	void AttackModeRotaSelectNode();
+
+	/// <summary>
+	/// 攻撃状態動き・攻撃セレクトノード
+	/// </summary>
+	void AttackSelectNode();
+
+	/// <summary>
+	/// 待機状態シーケンスノード
+	/// </summary>
+	void WaitModeSequenceNode();
+
+	/// <summary>
+	/// 待機状態動きセレクトノード
+	/// </summary>
+	void WaitModeActionSelectNode();
+
+	/// <summary>
+	/// 待機状態動き・回転対象セレクトノード
+	/// </summary>
+	void WaitModeRotaSelectNode();
 
 private:
+	//ボス
+	Boss* boss = nullptr;
 	//セレクター
 	std::unique_ptr<Selector> topSelector;
 	//シーケンサー
