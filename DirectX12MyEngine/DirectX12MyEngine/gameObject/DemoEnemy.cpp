@@ -34,17 +34,6 @@ DemoEnemy* DemoEnemy::Create(ObjModel* model, const Vector3& position, const Vec
 	return demoEnemy;
 }
 
-bool DemoEnemy::Initialize()
-{
-	//3Dオブジェクトの初期化
-	if (!ObjObject3d::Initialize())
-	{
-		return false;
-	}
-
-	return true;
-}
-
 void DemoEnemy::Update()
 {
 	//行動

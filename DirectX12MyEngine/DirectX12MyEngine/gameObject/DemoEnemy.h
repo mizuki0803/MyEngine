@@ -22,11 +22,6 @@ public: //静的メンバ関数
 	static DemoEnemy* Create(ObjModel* model, const Vector3& position, const Vector3& velocity);
 
 public: //メンバ関数
-/// <summary>
-/// 初期化
-/// </summary>
-	bool Initialize() override;
-
 	/// <summary>
 	/// 更新
 	/// </summary>

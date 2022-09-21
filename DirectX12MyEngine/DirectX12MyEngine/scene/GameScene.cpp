@@ -55,6 +55,7 @@ void GameScene::Initialize()
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
+	modelEnemyFighter.reset(ObjModel::LoadFromOBJ("enemyFighter", true));
 	modelBossMainBody.reset(ObjModel::LoadFromOBJ("bossMainBody", true));
 	modelBossMainBodySleep.reset(ObjModel::LoadFromOBJ("bossMainBodySleep", true));
 	modelBossAvatar.reset(ObjModel::LoadFromOBJ("bossAvatar", true));
@@ -638,12 +639,12 @@ void GameScene::UpdateEnemySetCommands()
 				float velZ = (float)std::atof(word.c_str());
 
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(DemoEnemy::Create(modelSphere.get(), { x, y, z }, { velX, velY, velZ }));
+				newEnemy.reset(DemoEnemy::Create(modelEnemyFighter.get(), { x, y, z }, { velX, velY, velZ }));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::Cannon) {
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CannonEnemy::Create(modelSphere.get(), { x, y, z }));
+				newEnemy.reset(CannonEnemy::Create(modelEnemyFighter.get(), { x, y, z }));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::Circular) {
@@ -660,17 +661,17 @@ void GameScene::UpdateEnemySetCommands()
 				float rotSpeed = (float)std::atof(word.c_str());
 
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CircularEnemy::Create(modelSphere.get(), { x, y, z }, angle, length, rotSpeed));
+				newEnemy.reset(CircularEnemy::Create(modelEnemyFighter.get(), { x, y, z }, angle, length, rotSpeed));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::Fall) {
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(FallEnemy::Create(modelSphere.get(), { x, y, z }));
+				newEnemy.reset(FallEnemy::Create(modelEnemyFighter.get(), { x, y, z }));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::UpDown) {
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(UpDownEnemy::Create(modelSphere.get(), { x, y, z }));
+				newEnemy.reset(UpDownEnemy::Create(modelEnemyFighter.get(), { x, y, z }));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::ComeGo) {
@@ -699,7 +700,7 @@ void GameScene::UpdateEnemySetCommands()
 				int time = (int)std::atof(word.c_str());
 
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(ComeGoEnemy::Create(modelSphere.get(), { x, y, z }, { comeX, comeY, comeZ }, { goX, goY, goZ }, time));
+				newEnemy.reset(ComeGoEnemy::Create(modelEnemyFighter.get(), { x, y, z }, { comeX, comeY, comeZ }, { goX, goY, goZ }, time));
 				enemys.push_back(std::move(newEnemy));
 			}
 		}

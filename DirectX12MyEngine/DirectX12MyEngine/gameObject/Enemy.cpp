@@ -6,6 +6,23 @@ Player* Enemy::player = nullptr;
 GameScene* Enemy::gameScene = nullptr;
 ObjModel* Enemy::bulletModel = nullptr;
 
+bool Enemy::Initialize()
+{
+	//オブジェクト初期化
+	if (!ObjObject3d::Initialize()) {
+		return false;
+	}
+
+	//大きさ変更
+	const float scaleNum = 2;
+	scale = { scaleNum, scaleNum, scaleNum };
+
+	//回転
+	rotation.y = 180;
+
+	return true;
+}
+
 void Enemy::OnCollision()
 {
 	//死亡させる

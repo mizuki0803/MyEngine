@@ -30,6 +30,11 @@ public: //静的メンバ関数
 	static void SetBulletModel(ObjModel* model) { Enemy::bulletModel = model; }
 
 public: //メンバ関数
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <returns></returns>
+	bool Initialize() override;
 
 	/// <summary>
 	/// 衝突時コールバック関数
