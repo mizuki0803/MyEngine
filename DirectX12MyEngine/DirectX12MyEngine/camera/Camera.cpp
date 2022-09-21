@@ -149,7 +149,7 @@ void Camera::UpdateMatProjection()
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),				//上下画角60度
 		(float)WindowApp::window_width / WindowApp::window_height,	//アスペクト比（画面横幅 / 画面縦幅）
-		0.1f, 1000.0f							//前端、奥端
+		0.1f, 2000.0f							//前端、奥端
 	);
 }
 

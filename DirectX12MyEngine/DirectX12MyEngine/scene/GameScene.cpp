@@ -95,9 +95,9 @@ void GameScene::Initialize()
 	//回復アイテムに必要な情報をセット
 	HealingItem::SetPlayer(player.get());
 
-	std::unique_ptr<HealingItem> healingItem;
+	/*std::unique_ptr<HealingItem> healingItem;
 	healingItem.reset(HealingItem::Create(modelSphere.get(), { 0, 0, 35 }));
-	healingItems.push_back(std::move(healingItem));
+	healingItems.push_back(std::move(healingItem));*/
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(railCamera.get());
@@ -728,12 +728,12 @@ void GameScene::BossBattleStart()
 	if (isBossBattle) { return; }
 
 	//自機がボスバトル開始とする座標まで進んだら開始
-	const float isBossBattleStartPos = 250;
+	const float isBossBattleStartPos = 350;
 	const bool isBossBattleStart = player->GetWorldPos().z >= isBossBattleStartPos;
 	if (!isBossBattleStart) { return; }
 
 	//ボス生成
-	const Vector3 bossBasePos = { 0, 3, 310 };
+	const Vector3 bossBasePos = { 0, 3, 410 };
 	boss.reset(Boss::Create(bossBasePos));
 
 	//レールカメラの前進を止める
