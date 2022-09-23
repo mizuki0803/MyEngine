@@ -12,6 +12,7 @@
 #include "Enemy.h"
 #include "Boss.h"
 #include "Skydome.h"
+#include "Ground.h"
 #include "HealingItem.h"
 
 #include <sstream>
@@ -119,6 +120,7 @@ private: //メンバ変数
 
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;
+	std::unique_ptr<ObjModel> modelGround;
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
 	std::unique_ptr<ObjModel> modelEnemyFighter;
@@ -146,7 +148,9 @@ private: //メンバ変数
 	//ボス戦中か
 	bool isBossBattle = false;
 	//天球
-	std::unique_ptr<Skydome> objSkydome;
+	std::unique_ptr<Skydome> skydome;
+	//地面
+	std::unique_ptr<Ground> ground;
 	//回復アイテム
 	std::list<std::unique_ptr<HealingItem>> healingItems;
 	//ステージクリアか

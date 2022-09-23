@@ -53,6 +53,7 @@ void GameScene::Initialize()
 
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
+	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
 	modelEnemyFighter.reset(ObjModel::LoadFromOBJ("enemyFighter", true));
@@ -90,7 +91,10 @@ void GameScene::Initialize()
 	BossAvatar::SetBulletModel(modelSphere.get());
 
 	//天球生成
-	objSkydome.reset(Skydome::Create(modelSkydome.get()));
+	skydome.reset(Skydome::Create(modelSkydome.get()));
+
+	//地面生成
+	ground.reset(Ground::Create(modelGround.get()));
 
 	//回復アイテムに必要な情報をセット
 	HealingItem::SetPlayer(player.get());
@@ -181,7 +185,9 @@ void GameScene::Update()
 
 	//オブジェクト更新
 	//天球
-	objSkydome->Update();
+	skydome->Update();
+	//地面
+	ground->Update();
 	//自機
 	player->Update();
 	//自機弾
@@ -241,7 +247,9 @@ void GameScene::Draw()
 
 
 	//天球
-	objSkydome->Draw();
+	skydome->Draw();
+	//地面
+	ground->Draw();
 	//自機
 	player->Draw();
 	//自機弾

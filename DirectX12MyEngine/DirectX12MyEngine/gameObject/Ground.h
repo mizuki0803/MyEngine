@@ -2,15 +2,15 @@
 #include "ObjObject3d.h"
 
 /// <summary>
-/// 天球
+/// 地面
 /// </summary>
-class Skydome : public ObjObject3d 
+class Ground : public ObjObject3d
 {
 public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
-	/// <returns>天球</returns>
-	static Skydome* Create(ObjModel* model);
+	/// <returns>地面</returns>
+	static Ground* Create(ObjModel* model);
 };

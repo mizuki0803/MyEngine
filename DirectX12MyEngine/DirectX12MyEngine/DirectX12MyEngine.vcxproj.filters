@@ -111,6 +111,9 @@
     <Filter Include="ソース ファイル\gameObject\boss\bossAvatar">
       <UniqueIdentifier>{d23f1597-33f2-4e94-8915-89261bcb15f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\gameObject\ground">
+      <UniqueIdentifier>{a7dcd4e9-0bfd-4bed-b9a8-fb780aa5b741}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -295,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="gameObject\BossAvatar.cpp">
       <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\Ground.cpp">
+      <Filter>ソース ファイル\gameObject\ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -556,6 +562,9 @@
     </ClInclude>
     <ClInclude Include="gameObject\BossAvatarType04.h">
       <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Ground.h">
+      <Filter>ソース ファイル\gameObject\ground</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
