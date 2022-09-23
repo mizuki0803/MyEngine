@@ -15,12 +15,6 @@
     <Filter Include="ソース ファイル\effect\easing">
       <UniqueIdentifier>{c6e660ba-54dc-4d48-97bc-b082ef65c107}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\gameObject">
-      <UniqueIdentifier>{b67d9292-ad59-4417-a3dc-d812ac43c25d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\gameObject\player">
-      <UniqueIdentifier>{264db8fc-cf7f-437b-b663-55b0b39cf93f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\engine">
       <UniqueIdentifier>{53ffa37f-1ea0-4387-8e86-6d145eb43b0e}</UniqueIdentifier>
     </Filter>
@@ -81,37 +75,52 @@
     <Filter Include="ソース ファイル\engine\audio">
       <UniqueIdentifier>{09413795-d5d4-45bc-8323-652569859494}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\gameObject\enemy">
-      <UniqueIdentifier>{c8a38fb3-a895-41ae-b608-d0f8be4b6531}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\gameObject\skydome">
-      <UniqueIdentifier>{15e7c728-e790-4197-9590-3285af2ac863}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\gameObject\player\playerBullet">
-      <UniqueIdentifier>{ee3b6fa1-b71c-44f9-b1bd-b7de35a78813}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\gameObject\player\reticle">
-      <UniqueIdentifier>{611ab12d-7325-4303-8d97-261286818635}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\gameObject\item">
-      <UniqueIdentifier>{72877348-8d9b-4216-b491-41efadd351bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\gameObject\boss">
-      <UniqueIdentifier>{91203ab6-acd7-4054-abd2-437daabf050b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\gameObject\player\playerHPUI">
-      <UniqueIdentifier>{0b329883-8e13-471c-98e9-0f3c5cc050b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\gameObject\boss\bossHPUI">
-      <UniqueIdentifier>{70e1b55e-225f-4a10-9986-a9f713668e3c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\engine\behaviorTree">
       <UniqueIdentifier>{240114b8-f07a-420e-a5b4-fd60f15f402f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\gameObject\boss\bossAvatar">
+    <Filter Include="ソース ファイル\game">
+      <UniqueIdentifier>{15554410-dad2-4331-95b1-ff02d8edb5c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject">
+      <UniqueIdentifier>{b67d9292-ad59-4417-a3dc-d812ac43c25d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\player">
+      <UniqueIdentifier>{264db8fc-cf7f-437b-b663-55b0b39cf93f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\player\playerBullet">
+      <UniqueIdentifier>{ee3b6fa1-b71c-44f9-b1bd-b7de35a78813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\player\reticle">
+      <UniqueIdentifier>{611ab12d-7325-4303-8d97-261286818635}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\player\playerHPUI">
+      <UniqueIdentifier>{0b329883-8e13-471c-98e9-0f3c5cc050b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\enemy">
+      <UniqueIdentifier>{c8a38fb3-a895-41ae-b608-d0f8be4b6531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\item">
+      <UniqueIdentifier>{72877348-8d9b-4216-b491-41efadd351bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\boss">
+      <UniqueIdentifier>{91203ab6-acd7-4054-abd2-437daabf050b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\boss\bossHPUI">
+      <UniqueIdentifier>{70e1b55e-225f-4a10-9986-a9f713668e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\boss\bossAvatar">
       <UniqueIdentifier>{d23f1597-33f2-4e94-8915-89261bcb15f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\gameObject\ground">
+    <Filter Include="ソース ファイル\game\backgroundObject">
+      <UniqueIdentifier>{af84be94-5c76-4f0f-8f28-9941d9a96528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\backgroundObject\mountain">
+      <UniqueIdentifier>{2044d83a-bd7c-41b3-b323-a67519093254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\backgroundObject\skydome">
+      <UniqueIdentifier>{15e7c728-e790-4197-9590-3285af2ac863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\backgroundObject\ground">
       <UniqueIdentifier>{a7dcd4e9-0bfd-4bed-b9a8-fb780aa5b741}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -204,79 +213,79 @@
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Player.cpp">
-      <Filter>ソース ファイル\gameObject\player</Filter>
+      <Filter>ソース ファイル\game\gameObject\player</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\EnemyBullet.cpp">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Enemy.cpp">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Skydome.cpp">
-      <Filter>ソース ファイル\gameObject\skydome</Filter>
+      <Filter>ソース ファイル\game\backgroundObject\skydome</Filter>
     </ClCompile>
     <ClCompile Include="camera\RailCamera.cpp">
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Reticle3D.cpp">
-      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\reticle</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Reticle2D.cpp">
-      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\reticle</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Reticle.cpp">
-      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\reticle</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\CannonEnemy.cpp">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\DemoEnemy.cpp">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\CircularEnemy.cpp">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\FallEnemy.cpp">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\ComeGoEnemy.cpp">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\HomingBullet.cpp">
-      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\playerBullet</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\PlayerBullet.cpp">
-      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\playerBullet</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\StraightBullet.cpp">
-      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\playerBullet</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\PlayerHPBar.cpp">
-      <Filter>ソース ファイル\gameObject\player\playerHPUI</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\playerHPUI</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\UpDownEnemy.cpp">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\PlayerHPFrame.cpp">
-      <Filter>ソース ファイル\gameObject\player\playerHPUI</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\playerHPUI</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\HealingItem.cpp">
-      <Filter>ソース ファイル\gameObject\item</Filter>
+      <Filter>ソース ファイル\game\gameObject\item</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Boss.cpp">
-      <Filter>ソース ファイル\gameObject\boss</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\BossMainBody.cpp">
-      <Filter>ソース ファイル\gameObject\boss</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\BossHPFrame.cpp">
-      <Filter>ソース ファイル\gameObject\boss\bossHPUI</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossHPUI</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\BossHPBar.cpp">
-      <Filter>ソース ファイル\gameObject\boss\bossHPUI</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossHPUI</Filter>
     </ClCompile>
     <ClCompile Include="behaviorTree\BossBehaviorTree.cpp">
-      <Filter>ソース ファイル\gameObject\boss</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss</Filter>
     </ClCompile>
     <ClCompile Include="behaviorTree\Selector.cpp">
       <Filter>ソース ファイル\engine\behaviorTree</Filter>
@@ -285,22 +294,25 @@
       <Filter>ソース ファイル\engine\behaviorTree</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\BossAvatarType01.cpp">
-      <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\BossAvatarType02.cpp">
-      <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\BossAvatarType03.cpp">
-      <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\BossAvatarType04.cpp">
-      <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\BossAvatar.cpp">
-      <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Ground.cpp">
-      <Filter>ソース ファイル\gameObject\ground</Filter>
+      <Filter>ソース ファイル\game\backgroundObject\ground</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\Mountain.cpp">
+      <Filter>ソース ファイル\game\backgroundObject\mountain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -468,103 +480,106 @@
       <Filter>ソース ファイル\engine\math</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Player.h">
-      <Filter>ソース ファイル\gameObject\player</Filter>
+      <Filter>ソース ファイル\game\gameObject\player</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\EnemyBullet.h">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Enemy.h">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Skydome.h">
-      <Filter>ソース ファイル\gameObject\skydome</Filter>
+      <Filter>ソース ファイル\game\backgroundObject\skydome</Filter>
     </ClInclude>
     <ClInclude Include="camera\RailCamera.h">
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Reticle3D.h">
-      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\reticle</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Reticle2D.h">
-      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\reticle</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Reticle.h">
-      <Filter>ソース ファイル\gameObject\player\reticle</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\reticle</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\CannonEnemy.h">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\DemoEnemy.h">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\CircularEnemy.h">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\FallEnemy.h">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\ComeGoEnemy.h">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\HomingBullet.h">
-      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\playerBullet</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\PlayerBullet.h">
-      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\playerBullet</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\StraightBullet.h">
-      <Filter>ソース ファイル\gameObject\player\playerBullet</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\playerBullet</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\PlayerHPBar.h">
-      <Filter>ソース ファイル\gameObject\player\playerHPUI</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\playerHPUI</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\UpDownEnemy.h">
-      <Filter>ソース ファイル\gameObject\enemy</Filter>
+      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\PlayerHPFrame.h">
-      <Filter>ソース ファイル\gameObject\player\playerHPUI</Filter>
+      <Filter>ソース ファイル\game\gameObject\player\playerHPUI</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\HealingItem.h">
-      <Filter>ソース ファイル\gameObject\item</Filter>
+      <Filter>ソース ファイル\game\gameObject\item</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Boss.h">
-      <Filter>ソース ファイル\gameObject\boss</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\BossMainBody.h">
-      <Filter>ソース ファイル\gameObject\boss</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\BossHPFrame.h">
-      <Filter>ソース ファイル\gameObject\boss\bossHPUI</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossHPUI</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\BossHPBar.h">
-      <Filter>ソース ファイル\gameObject\boss\bossHPUI</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossHPUI</Filter>
     </ClInclude>
     <ClInclude Include="behaviorTree\Selector.h">
       <Filter>ソース ファイル\engine\behaviorTree</Filter>
     </ClInclude>
     <ClInclude Include="behaviorTree\BossBehaviorTree.h">
-      <Filter>ソース ファイル\gameObject\boss</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss</Filter>
     </ClInclude>
     <ClInclude Include="behaviorTree\Sequencer.h">
       <Filter>ソース ファイル\engine\behaviorTree</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\BossAvatar.h">
-      <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\BossAvatarType01.h">
-      <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\BossAvatarType02.h">
-      <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\BossAvatarType03.h">
-      <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\BossAvatarType04.h">
-      <Filter>ソース ファイル\gameObject\boss\bossAvatar</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Ground.h">
-      <Filter>ソース ファイル\gameObject\ground</Filter>
+      <Filter>ソース ファイル\game\backgroundObject\ground</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Mountain.h">
+      <Filter>ソース ファイル\game\backgroundObject\mountain</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

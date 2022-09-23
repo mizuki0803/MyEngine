@@ -281,11 +281,12 @@ void Player::Move()
 	position += move;
 
 	//à⁄ìÆå¿äEÇ©ÇÁèoÇ»Ç¢ÇÊÇ§Ç…Ç∑ÇÈ
-	const Vector2 moveLimit = { 10.0f, 5.0f };
-	position.x = max(position.x, -moveLimit.x);
-	position.x = min(position.x, +moveLimit.x);
-	position.y = max(position.y, -moveLimit.y);
-	position.y = min(position.y, +moveLimit.y);
+	const Vector2 moveLimitMax = { 10.0f, 6.0f };
+	const Vector2 moveLimitMin = { -10.0f, -4.0f };
+	position.x = max(position.x, moveLimitMin.x);
+	position.x = min(position.x, moveLimitMax.x);
+	position.y = max(position.y, moveLimitMin.y);
+	position.y = min(position.y, moveLimitMax.y);
 }
 
 void Player::Attack()

@@ -19,9 +19,6 @@ Ground* Ground::Create(ObjModel* model)
 	assert(model);
 	ground->model = model;
 
-	//座標をセット
-	ground->position = { 0, -15, 0 };
-
 	//大きさをセット
 	ground->scale = { 10, 10, 10 };
 

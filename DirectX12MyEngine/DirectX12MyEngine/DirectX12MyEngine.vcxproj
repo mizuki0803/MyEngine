@@ -193,6 +193,7 @@
     <ClCompile Include="gameObject\Ground.cpp" />
     <ClCompile Include="gameObject\HealingItem.cpp" />
     <ClCompile Include="gameObject\HomingBullet.cpp" />
+    <ClCompile Include="gameObject\Mountain.cpp" />
     <ClCompile Include="gameObject\Player.cpp" />
     <ClCompile Include="gameObject\PlayerBullet.cpp" />
     <ClCompile Include="gameObject\PlayerHPBar.cpp" />
@@ -347,6 +348,7 @@
     <ClInclude Include="gameObject\Ground.h" />
     <ClInclude Include="gameObject\HealingItem.h" />
     <ClInclude Include="gameObject\HomingBullet.h" />
+    <ClInclude Include="gameObject\Mountain.h" />
     <ClInclude Include="gameObject\Player.h" />
     <ClInclude Include="gameObject\PlayerBullet.h" />
     <ClInclude Include="gameObject\PlayerHPBar.h" />

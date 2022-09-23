@@ -11,9 +11,10 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Boss.h"
+#include "HealingItem.h"
 #include "Skydome.h"
 #include "Ground.h"
-#include "HealingItem.h"
+#include "Mountain.h"
 
 #include <sstream>
 
@@ -121,6 +122,7 @@ private: //メンバ変数
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;
 	std::unique_ptr<ObjModel> modelGround;
+	std::unique_ptr<ObjModel> modelMountain;
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
 	std::unique_ptr<ObjModel> modelEnemyFighter;
@@ -147,12 +149,14 @@ private: //メンバ変数
 	std::unique_ptr<Boss> boss;
 	//ボス戦中か
 	bool isBossBattle = false;
+	//回復アイテム
+	std::list<std::unique_ptr<HealingItem>> healingItems;
 	//天球
 	std::unique_ptr<Skydome> skydome;
 	//地面
 	std::unique_ptr<Ground> ground;
-	//回復アイテム
-	std::list<std::unique_ptr<HealingItem>> healingItems;
+	//背景用(山)
+	std::list<std::unique_ptr<Mountain>> mountains;
 	//ステージクリアか
 	bool isStageClear = false;
 

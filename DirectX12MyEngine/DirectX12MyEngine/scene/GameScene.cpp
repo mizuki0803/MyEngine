@@ -54,6 +54,7 @@ void GameScene::Initialize()
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
+	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
 	modelEnemyFighter.reset(ObjModel::LoadFromOBJ("enemyFighter", true));
@@ -90,18 +91,32 @@ void GameScene::Initialize()
 	BossAvatar::SetAvatarSleepModel(modelBossAvatarSleep.get());
 	BossAvatar::SetBulletModel(modelSphere.get());
 
-	//天球生成
-	skydome.reset(Skydome::Create(modelSkydome.get()));
-
-	//地面生成
-	ground.reset(Ground::Create(modelGround.get()));
-
 	//回復アイテムに必要な情報をセット
 	HealingItem::SetPlayer(player.get());
 
 	/*std::unique_ptr<HealingItem> healingItem;
 	healingItem.reset(HealingItem::Create(modelSphere.get(), { 0, 0, 35 }));
 	healingItems.push_back(std::move(healingItem));*/
+
+
+	//天球生成
+	skydome.reset(Skydome::Create(modelSkydome.get()));
+
+	//地面生成
+	ground.reset(Ground::Create(modelGround.get()));
+
+	//背景用(山)生成
+	for (int i = 0; i < 20; i++) {
+		std::unique_ptr<Mountain> newMountain;
+		newMountain.reset(Mountain::Create(modelMountain.get(), { -70, 0, 0 + (float)i * 40 }));
+		mountains.push_back(std::move(newMountain));
+	}
+	for (int i = 0; i < 20; i++) {
+		std::unique_ptr<Mountain> newMountain;
+		newMountain.reset(Mountain::Create(modelMountain.get(), { 70, 0, 0 + (float)i * 40 }));
+		mountains.push_back(std::move(newMountain));
+	}
+
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(railCamera.get());
@@ -162,7 +177,7 @@ void GameScene::Update()
 		return healingItem->GetIsDead();
 		});
 
-	
+
 	if (boss) {
 		//死亡したボスの解放
 		if (boss->GetIsDead()) {
@@ -184,10 +199,6 @@ void GameScene::Update()
 	railCamera->Update();
 
 	//オブジェクト更新
-	//天球
-	skydome->Update();
-	//地面
-	ground->Update();
 	//自機
 	player->Update();
 	//自機弾
@@ -209,6 +220,14 @@ void GameScene::Update()
 	//回復アイテム
 	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
 		healingItem->Update();
+	}
+	//天球
+	skydome->Update();
+	//地面
+	ground->Update();
+	//背景用(山)
+	for (const std::unique_ptr<Mountain>& mountain : mountains) {
+		mountain->Update();
 	}
 
 	//衝突判定管理
@@ -246,10 +265,6 @@ void GameScene::Draw()
 	///-------Object3d描画ここから-------///
 
 
-	//天球
-	skydome->Draw();
-	//地面
-	ground->Draw();
 	//自機
 	player->Draw();
 	//自機弾
@@ -271,6 +286,14 @@ void GameScene::Draw()
 	//回復アイテム
 	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
 		healingItem->Draw();
+	}
+	//天球
+	skydome->Draw();
+	//地面
+	ground->Draw();
+	//背景用(山)
+	for (const std::unique_ptr<Mountain>& mountain : mountains) {
+		mountain->Draw();
 	}
 
 	///-------Object3d描画ここまで-------///
@@ -741,7 +764,7 @@ void GameScene::BossBattleStart()
 	if (!isBossBattleStart) { return; }
 
 	//ボス生成
-	const Vector3 bossBasePos = { 0, 3, 410 };
+	const Vector3 bossBasePos = { 0, 20, 410 };
 	boss.reset(Boss::Create(bossBasePos));
 
 	//レールカメラの前進を止める

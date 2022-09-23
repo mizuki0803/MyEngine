@@ -5,7 +5,7 @@
 void RailCamera::Initialize()
 {
 	//‰ŠúÀ•W‚ğİ’è
-	position = { 0, 0, -30 };
+	position = { 0, 13, -30 };
 	//‰Šú‰ñ“]Šp‚ğİ’è
 	rotation = { 0, 0, 0 };
 
@@ -96,11 +96,12 @@ void RailCamera::Move()
 	position += velocity;
 
 	//ˆÚ“®ŒÀŠE‚©‚ço‚È‚¢‚æ‚¤‚É‚·‚é
-	const Vector2 moveLimit = { 15.0f, 7.5f };
-	position.x = max(position.x, -moveLimit.x);
-	position.x = min(position.x, +moveLimit.x);
-	position.y = max(position.y, -moveLimit.y);
-	position.y = min(position.y, +moveLimit.y);
+	const Vector2 moveLimitMin = { -15.0f, 8.0f };
+	const Vector2 moveLimitMax = { 15.0f, 23.0f };
+	position.x = max(position.x, moveLimitMin.x);
+	position.x = min(position.x, moveLimitMax.x);
+	position.y = max(position.y, moveLimitMin.y);
+	position.y = min(position.y, moveLimitMax.y);
 }
 
 void RailCamera::Knockback()
@@ -116,11 +117,12 @@ void RailCamera::Knockback()
 	position += velocity;
 
 	//ˆÚ“®ŒÀŠE‚©‚ço‚È‚¢‚æ‚¤‚É‚·‚é
-	const Vector2 moveLimit = { 15.0f, 7.5f };
-	position.x = max(position.x, -moveLimit.x);
-	position.x = min(position.x, +moveLimit.x);
-	position.y = max(position.y, -moveLimit.y);
-	position.y = min(position.y, +moveLimit.y);
+	const Vector2 moveLimitMin = { -15.0f, 8.0f };
+	const Vector2 moveLimitMax = { 15.0f, 23.0f };
+	position.x = max(position.x, moveLimitMin.x);
+	position.x = min(position.x, moveLimitMax.x);
+	position.y = max(position.y, moveLimitMin.y);
+	position.y = min(position.y, moveLimitMax.y);
 }
 
 void RailCamera::Shake()
