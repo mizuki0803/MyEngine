@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Input.h"
+#include "Easing.h"
 #include "GameScene.h"
 #include "StraightBullet.h"
 #include "HomingBullet.h"
@@ -32,7 +33,7 @@ Player* Player::Create(ObjModel* model)
 
 bool Player::Initialize()
 {
-	position = { 0 ,1 ,10 };
+	position = { 0 ,1 ,15 };
 	scale = { 1.5f, 1.5f, 1.5f };
 
 	//3Dオブジェクトの初期化
@@ -60,6 +61,9 @@ void Player::Update()
 {
 	//回転
 	Rotate();
+
+	//緊急回避
+	Roll();
 
 	//ダメージ状態ならノックバックする
 	if (isDamage) {
@@ -289,6 +293,47 @@ void Player::Move()
 	position.y = min(position.y, moveLimitMax.y);
 }
 
+void Player::Roll()
+{
+	Input* input = Input::GetInstance();
+
+	if (isRoll) {
+		//タイマーを更新
+		const float rollTime = 40;
+		rollTimer++;
+		const float time = rollTimer / rollTime;
+
+		//Z軸回転する
+		const float endRot = rollEndRot - rotation.y + swayZ;
+		rotation.z = Easing::OutBack(rollStartRot, endRot, time);
+
+		//タイマーが指定した時間になったら緊急回避終了
+		if (rollTimer >= rollTime) {
+			isRoll = false;
+		}
+	}
+	else {
+		//ダメージ状態なら緊急回避は発動できないで抜ける
+		if (isDamage) { return; }
+
+		//緊急回避キーを押していなければ抜ける
+		if (!(input->TriggerKey(DIK_RSHIFT) || input->TriggerKey(DIK_LSHIFT) || input->TriggerGamePadButton(Input::PAD_RB)
+			|| input->TriggerGamePadButton(Input::PAD_LB))) {
+			return;
+		}
+		//緊急回避状態にする
+		isRoll = true;
+		//タイマーを初期化
+		rollTimer = 0;
+		//緊急回避開始時のZ軸角度を記憶
+		rollStartRot = rotation.z;
+
+		//緊急回避終了時のZ軸角度をセット		
+		if (input->TriggerKey(DIK_RSHIFT) || input->TriggerGamePadButton(Input::PAD_RB)) { rollEndRot = -360; }		//右回転
+		else if (input->TriggerKey(DIK_LSHIFT) || input->TriggerGamePadButton(Input::PAD_LB)) { rollEndRot = 360; }	//左回転
+	}
+}
+
 void Player::Attack()
 {
 	Input* input = Input::GetInstance();
@@ -376,8 +421,8 @@ void Player::ShotHomingBullet()
 
 void Player::SetKnockback(const Vector3& subjectPos)
 {
-	//ノックバックする方向を決める(対象のワールド座標 - 自機のワールド座標)
-	knockbackVec = subjectPos - GetWorldPos();
+	//ノックバックする方向を決める(自機のワールド座標 - 対象のワールド座標)
+	knockbackVec = GetWorldPos() - subjectPos;
 	//ベクトルを正規化
 	knockbackVec.normalize();
 
@@ -394,7 +439,6 @@ void Player::Knockback()
 
 	//速度を作成
 	knockbackVel = knockbackVec;
-	knockbackVel.normalize();
 	//Z軸方向には移動しないようにする
 	knockbackVel.z = 0;
 	//ノックバック時間を速度にかけて減速っぽくする

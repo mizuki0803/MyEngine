@@ -334,55 +334,61 @@ void GameScene::CollisionCheck3d()
 	float radiusA, radiusB;
 
 #pragma region 自機と敵の衝突判定
-	//自機座標
-	posA = player->GetWorldPos();
-	//自機半径
-	radiusA = player->GetScale().x;
+	//自機が緊急回避をしていなければ判定する
+	if (!player->GetIsRoll()) {
+		//自機座標
+		posA = player->GetWorldPos();
+		//自機半径
+		radiusA = player->GetScale().x;
 
-	//自機と全ての敵の衝突判定
-	for (const std::unique_ptr<Enemy>& enemy : enemys) {
-		//敵座標
-		posB = enemy->GetWorldPos();
-		//敵半径
-		radiusB = enemy->GetScale().x;
+		//自機と全ての敵の衝突判定
+		for (const std::unique_ptr<Enemy>& enemy : enemys) {
+			//敵座標
+			posB = enemy->GetWorldPos();
+			//敵半径
+			radiusB = enemy->GetScale().x;
 
-		//球と球の衝突判定を行う
-		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
 
-		//衝突していたら
-		if (isCollision) {
-			//自機のダメージ用コールバック関数を呼び出す
-			player->OnCollisionDamage(posB);
-			//カメラをシェイクさせる
-			railCamera->ShakeStart();
+			//衝突していたら
+			if (isCollision) {
+				//自機のダメージ用コールバック関数を呼び出す
+				player->OnCollisionDamage(posB);
+				//カメラをシェイクさせる
+				railCamera->ShakeStart();
+			}
 		}
 	}
 #pragma endregion
 
 #pragma region 自機と敵弾の衝突判定
-	//自機座標
-	posA = player->GetWorldPos();
-	//自機半径
-	radiusA = player->GetScale().x;
+	//自機が緊急回避をしていなければ判定する
+	if (!player->GetIsRoll()) {
+		//自機座標
+		posA = player->GetWorldPos();
+		//自機半径
+		radiusA = player->GetScale().x;
 
-	//自機と全ての敵弾の衝突判定
-	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
-		//敵弾座標
-		posB = bullet->GetWorldPos();
-		//敵弾半径
-		radiusB = bullet->GetScale().x;
+		//自機と全ての敵弾の衝突判定
+		for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
+			//敵弾座標
+			posB = bullet->GetWorldPos();
+			//敵弾半径
+			radiusB = bullet->GetScale().x;
 
-		//球と球の衝突判定を行う
-		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
 
-		//衝突していたら
-		if (isCollision) {
-			//自機のダメージ用コールバック関数を呼び出す
-			player->OnCollisionDamage(posB);
-			//敵弾のコールバック関数を呼び出す
-			bullet->OnCollision();
-			//カメラをシェイクさせる
-			railCamera->ShakeStart();
+			//衝突していたら
+			if (isCollision) {
+				//自機のダメージ用コールバック関数を呼び出す
+				player->OnCollisionDamage(posB);
+				//敵弾のコールバック関数を呼び出す
+				bullet->OnCollision();
+				//カメラをシェイクさせる
+				railCamera->ShakeStart();
+			}
 		}
 	}
 #pragma endregion
@@ -447,28 +453,31 @@ void GameScene::CollisionCheck3d()
 	if (!boss) { return; }
 
 #pragma region 自機とボス分身の衝突判定
-	//自機座標
-	posA = player->GetWorldPos();
-	//自機半径
-	radiusA = player->GetScale().x;
+	//自機が緊急回避をしていなければ判定する
+	if (!player->GetIsRoll()) {
+		//自機座標
+		posA = player->GetWorldPos();
+		//自機半径
+		radiusA = player->GetScale().x;
 
-	//ボス分身のリストを持ってくる
-	const std::list<std::unique_ptr<BossAvatar>>& bossAvatars = boss->GetAvatars();
-	for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
-		//ボス分身座標
-		posB = bossAvatar->GetWorldPos();
-		//ボス分身半径
-		radiusB = bossAvatar->GetScale().x;
+		//ボス分身のリストを持ってくる
+		const std::list<std::unique_ptr<BossAvatar>>& bossAvatars = boss->GetAvatars();
+		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
+			//ボス分身座標
+			posB = bossAvatar->GetWorldPos();
+			//ボス分身半径
+			radiusB = bossAvatar->GetScale().x;
 
-		//球と球の衝突判定を行う
-		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
 
-		//衝突していたら
-		if (isCollision) {
-			//自機のダメージ用コールバック関数を呼び出す
-			player->OnCollisionDamage(posB);
-			//カメラをシェイクさせる
-			railCamera->ShakeStart();
+			//衝突していたら
+			if (isCollision) {
+				//自機のダメージ用コールバック関数を呼び出す
+				player->OnCollisionDamage(posB);
+				//カメラをシェイクさせる
+				railCamera->ShakeStart();
+			}
 		}
 	}
 #pragma endregion

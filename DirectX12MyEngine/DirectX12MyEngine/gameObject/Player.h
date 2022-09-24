@@ -61,6 +61,7 @@ public: //メンバ関数
 	const int GetHP() { return HP; }
 	const bool GetIsDamage() { return isDamage; }
 	const bool GetIsDead() { return isDead; }
+	const bool GetIsRoll() { return isRoll; }
 	const Vector3& GetKnockbackVel() { return knockbackVel; }
 	Reticle* GetReticle() { return reticle2.get(); }
 	const bool GetIsChargeShotMode() { return isChargeShotMode; }
@@ -85,6 +86,11 @@ private: //メンバ関数
 	/// 移動
 	/// </summary>
 	void Move();
+
+	/// <summary>
+	/// 移動
+	/// </summary>
+	void Roll();
 
 	/// <summary>
 	/// 攻撃
@@ -130,6 +136,14 @@ private: //メンバ変数
 	std::unique_ptr<PlayerHPFrame> hpFrame;
 	//ダメージフラグ
 	bool isDamage = false;
+	//緊急回避中か
+	bool isRoll = false;
+	//緊急回避用タイマー
+	int32_t rollTimer = 0;
+	//緊急回避開始時のZ軸角度
+	float rollStartRot = 0;
+	//緊急回避終了時のZ軸角度
+	float rollEndRot = 0;
 	//ノックバック用タイマー
 	int32_t knockbackTimer = 0;
 	//ノックバック方向
