@@ -40,6 +40,7 @@ public: //静的メンバ関数
 	//setter
 	static void SetGameScene(GameScene* gameScene) { BossAvatar::gameScene = gameScene; }
 	static void SetAvatarModel(ObjModel* model) { BossAvatar::avatarModel = model; }
+	static void SetAvatarDamageModel(ObjModel* model) { BossAvatar::avatarDamageModel = model; }
 	static void SetAvatarSleepModel(ObjModel* model) { BossAvatar::avatarSleepModel = model; }
 	static void SetBulletModel(ObjModel* model) { BossAvatar::bulletModel = model; }
 
@@ -59,6 +60,11 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="attackPower">攻撃力</param>
 	void Damage(int attackPower);
+
+	/// <summary>
+	/// HPが少ない状態のモデルに変更する
+	/// </summary>
+	void DamageModelChange();
 
 	/// <summary>
 	/// 攻撃内容:分身体当たり
@@ -185,6 +191,8 @@ protected: //静的メンバ変数
 	static GameScene* gameScene;
 	//分身のモデル
 	static ObjModel* avatarModel;
+	//HPが少ない状態のモデル
+	static ObjModel* avatarDamageModel;
 	//分身の寝ている状態のモデル
 	static ObjModel* avatarSleepModel;
 	//敵弾のモデル
@@ -215,6 +223,8 @@ protected: //メンバ変数
 	bool isDamageColor = false;
 	//ダメージ色にする時間タイマー
 	int32_t damageColorTimer = 0;
+	//HPが少ない状態のモデルか
+	bool isDamageModel = false;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
 	//ボス本体との親子関係上の基準座標

@@ -42,6 +42,7 @@ public: //静的メンバ関数
 	//setter
 	static void SetGameScene(GameScene* gameScene) { BossMainBody::gameScene = gameScene; }
 	static void SetBossMainBodyModel(ObjModel* model) { BossMainBody::mainBodyModel = model; }
+	static void SetBossMainBodyDamageModel(ObjModel* model) { BossMainBody::mainBodyDamageModel = model; }
 	static void SetBossMainBodySleepModel(ObjModel* model) { BossMainBody::mainBodySleepModel = model; }
 	static void SetBulletModel(ObjModel* model) { BossMainBody::bulletModel = model; }
 
@@ -56,6 +57,11 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="attackPower">攻撃力</param>
 	void Damage(int attackPower);
+
+	/// <summary>
+	/// HPが少ない状態のモデルに変更する
+	/// </summary>
+	void DamageModelChange();
 
 	/// <summary>
 	/// 降下状態
@@ -183,6 +189,8 @@ private: //静的メンバ変数
 	static GameScene* gameScene;
 	//本体のモデル
 	static ObjModel* mainBodyModel;
+	//HPが少ない状態のモデル
+	static ObjModel* mainBodyDamageModel;
 	//本体の寝ている状態のモデル
 	static ObjModel* mainBodySleepModel;
 	//敵弾のモデル
@@ -205,14 +213,16 @@ private: //メンバ変数
 	Vector3 basePos;
 	//体力
 	int HP = maxHP;
+	//死亡フラグ
+	bool isDead = false;
 	//喰らうダメージ量
 	int damageNum;
 	//ダメージ色フラグ
 	bool isDamageColor = false;
 	//ダメージ色にする時間タイマー
 	int32_t damageColorTimer = 0;
-	//死亡フラグ
-	bool isDead = false;
+	//HPが少ない状態のモデルか
+	bool isDamageModel = false;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
 	//基準位置に戻るときの出発座標

@@ -28,6 +28,7 @@ void (BossAvatar::* BossAvatar::attackTypeAvatarGiantBulletPhaseFuncTable[])() =
 
 GameScene* BossAvatar::gameScene = nullptr;
 ObjModel* BossAvatar::avatarModel = nullptr;
+ObjModel* BossAvatar::avatarDamageModel = nullptr;
 ObjModel* BossAvatar::avatarSleepModel = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
 const float BossAvatar::attackModeRotY = 180.0f;
@@ -73,12 +74,30 @@ void BossAvatar::Damage(int attackPower)
 		damageNum += HP;
 	}
 
+	//HPが少ない状態のモデルをセットする
+	DamageModelChange();
+
 	//ダメージ色状態にする
 	isDamageColor = true;
 	const XMFLOAT4 damageColor = { 1, 0, 0, 1 };
 	color = damageColor;
 	//ダメージ色状態タイマー初期化
 	damageColorTimer = 0;
+}
+
+void BossAvatar::DamageModelChange()
+{
+	//既にHPが少ない状態のモデルがセットされていたら抜ける
+	if (isDamageModel) { return; }
+
+	//HPが指定した値以下でないなら抜ける
+	const int modelChangeHP = maxHP / 2;
+	if (!(HP <= modelChangeHP)) { return; }
+
+	//HPが少ない状態のモデルをセットする
+	model = avatarDamageModel;
+	//HPが少ない状態のモデルがセットされている状態にする
+	isDamageModel = true;
 }
 
 void BossAvatar::AttackTypeAvatarBodyBlow(const Vector3& playerPosition)

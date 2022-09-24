@@ -23,6 +23,7 @@ void (BossMainBody::* BossMainBody::attackTypeRotatePhaseFuncTable[])() = {
 
 GameScene* BossMainBody::gameScene = nullptr;
 ObjModel* BossMainBody::mainBodyModel = nullptr;
+ObjModel* BossMainBody::mainBodyDamageModel = nullptr;
 ObjModel* BossMainBody::mainBodySleepModel = nullptr;
 ObjModel* BossMainBody::bulletModel = nullptr;
 const float BossMainBody::attackModeRotY = 180.0f;
@@ -83,12 +84,30 @@ void BossMainBody::Damage(int attackPower)
 		damageNum += HP;
 	}
 
+	//HPが少ない状態のモデルをセットする
+	DamageModelChange();
+
 	//ダメージ色状態にする
 	isDamageColor = true;
 	const XMFLOAT4 damageColor = { 1, 0, 0, 1 };
 	color = damageColor;
 	//ダメージ色状態タイマー初期化
 	damageColorTimer = 0;
+}
+
+void BossMainBody::DamageModelChange()
+{
+	//既にHPが少ない状態のモデルがセットされていたら抜ける
+	if (isDamageModel) { return; }
+
+	//HPが指定した値以下でないなら抜ける
+	const int modelChangeHP = maxHP / 2;
+	if (!(HP <= modelChangeHP)) { return; }
+
+	//HPが少ない状態のモデルをセットする
+	model = mainBodyDamageModel;
+	//HPが少ない状態のモデルがセットされている状態にする
+	isDamageModel = true;
 }
 
 void BossMainBody::FallMode(const float time)

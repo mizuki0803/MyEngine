@@ -59,8 +59,10 @@ void GameScene::Initialize()
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
 	modelEnemyFighter.reset(ObjModel::LoadFromOBJ("enemyFighter", true));
 	modelBossMainBody.reset(ObjModel::LoadFromOBJ("bossMainBody", true));
+	modelBossMainBodyDamage.reset(ObjModel::LoadFromOBJ("bossMainBodyDamage", true));
 	modelBossMainBodySleep.reset(ObjModel::LoadFromOBJ("bossMainBodySleep", true));
 	modelBossAvatar.reset(ObjModel::LoadFromOBJ("bossAvatar", true));
+	modelBossAvatarDamage.reset(ObjModel::LoadFromOBJ("bossAvatarDamage", true));
 	modelBossAvatarSleep.reset(ObjModel::LoadFromOBJ("bossAvatarSleep", true));
 
 	//自機に必要な情報をセット
@@ -84,10 +86,12 @@ void GameScene::Initialize()
 	Boss::SetPlayer(player.get());
 	BossMainBody::SetGameScene(this);
 	BossMainBody::SetBossMainBodyModel(modelBossMainBody.get());
+	BossMainBody::SetBossMainBodyDamageModel(modelBossMainBodyDamage.get());
 	BossMainBody::SetBossMainBodySleepModel(modelBossMainBodySleep.get());
 	BossMainBody::SetBulletModel(modelSphere.get());
 	BossAvatar::SetGameScene(this);
 	BossAvatar::SetAvatarModel(modelBossAvatar.get());
+	BossAvatar::SetAvatarDamageModel(modelBossAvatarDamage.get());
 	BossAvatar::SetAvatarSleepModel(modelBossAvatarSleep.get());
 	BossAvatar::SetBulletModel(modelSphere.get());
 
