@@ -86,6 +86,11 @@ public: //メンバ関数
 	/// </summary>
 	void BossBattleStart();
 
+	/// <summary>
+	/// ゲームオーバー
+	/// </summary>
+	void GameOver();
+
 private: //メンバ変数
 	//カメラ
 	std::unique_ptr<Camera> normalCamera;
@@ -161,7 +166,10 @@ private: //メンバ変数
 	std::list<std::unique_ptr<Mountain>> mountains;
 	//ステージクリアか
 	bool isStageClear = false;
-
+	//ゲームオーバーか
+	bool isGameOver = false;
+	//ゲームオーバータイマー
+	int32_t gameOverTimer = 0;
 
 	//その他変数
 	float soundVol = 0.1f;

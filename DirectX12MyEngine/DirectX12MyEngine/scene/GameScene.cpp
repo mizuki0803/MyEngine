@@ -98,9 +98,9 @@ void GameScene::Initialize()
 	//回復アイテムに必要な情報をセット
 	HealingItem::SetPlayer(player.get());
 
-	/*std::unique_ptr<HealingItem> healingItem;
+	std::unique_ptr<HealingItem> healingItem;
 	healingItem.reset(HealingItem::Create(modelSphere.get(), { 0, 0, 35 }));
-	healingItems.push_back(std::move(healingItem));*/
+	healingItems.push_back(std::move(healingItem));
 
 
 	//天球生成
@@ -181,7 +181,16 @@ void GameScene::Update()
 		return healingItem->GetIsDead();
 		});
 
+	//自機が墜落を開始したらゲームオーバー
+	if (!isGameOver) {
+		if (player->GetIsCrash()) {
+			player->SetIsCameraFollow(false);
+			player->SetPosition(player->GetWorldPos());
 
+			//ゲームオーバー
+			isGameOver = true;
+		}
+	}
 	if (boss) {
 		//死亡したボスの解放
 		if (boss->GetIsDead()) {
@@ -194,9 +203,10 @@ void GameScene::Update()
 
 	//敵発生コマンド更新
 	UpdateEnemySetCommands();
-
 	//ボスバトル開始判定処理
 	BossBattleStart();
+	//ゲームオーバー
+	GameOver();
 
 	//カメラ更新
 	normalCamera->Update();
@@ -337,66 +347,6 @@ void GameScene::CollisionCheck3d()
 	Vector3 posA, posB;
 	float radiusA, radiusB;
 
-#pragma region 自機と敵の衝突判定
-	//自機が緊急回避をしていなければ判定する
-	if (!player->GetIsRoll()) {
-		//自機座標
-		posA = player->GetWorldPos();
-		//自機半径
-		radiusA = player->GetScale().x;
-
-		//自機と全ての敵の衝突判定
-		for (const std::unique_ptr<Enemy>& enemy : enemys) {
-			//敵座標
-			posB = enemy->GetWorldPos();
-			//敵半径
-			radiusB = enemy->GetScale().x;
-
-			//球と球の衝突判定を行う
-			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
-
-			//衝突していたら
-			if (isCollision) {
-				//自機のダメージ用コールバック関数を呼び出す
-				player->OnCollisionDamage(posB);
-				//カメラをシェイクさせる
-				railCamera->ShakeStart();
-			}
-		}
-	}
-#pragma endregion
-
-#pragma region 自機と敵弾の衝突判定
-	//自機が緊急回避をしていなければ判定する
-	if (!player->GetIsRoll()) {
-		//自機座標
-		posA = player->GetWorldPos();
-		//自機半径
-		radiusA = player->GetScale().x;
-
-		//自機と全ての敵弾の衝突判定
-		for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
-			//敵弾座標
-			posB = bullet->GetWorldPos();
-			//敵弾半径
-			radiusB = bullet->GetScale().x;
-
-			//球と球の衝突判定を行う
-			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
-
-			//衝突していたら
-			if (isCollision) {
-				//自機のダメージ用コールバック関数を呼び出す
-				player->OnCollisionDamage(posB);
-				//敵弾のコールバック関数を呼び出す
-				bullet->OnCollision();
-				//カメラをシェイクさせる
-				railCamera->ShakeStart();
-			}
-		}
-	}
-#pragma endregion
-
 #pragma region 敵と自機弾の衝突判定
 	//全ての敵と全ての自機弾の衝突判定
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
@@ -427,28 +377,100 @@ void GameScene::CollisionCheck3d()
 	}
 #pragma endregion
 
+	//自機が死亡していたらこの先の処理は行わない
+	if (player->GetIsDead()) { return; }
+
+#pragma region 自機と敵の衝突判定
+	//自機が緊急回避をしていなければ判定する
+	if (!player->GetIsRoll()) {
+		//自機座標
+		posA = player->GetWorldPos();
+		//自機半径
+		radiusA = player->GetScale().x;
+
+		//自機と全ての敵の衝突判定
+		for (const std::unique_ptr<Enemy>& enemy : enemys) {
+			//自機がダメージ状態なら飛ばす
+			if (player->GetIsDamage()) { continue; }
+
+			//敵座標
+			posB = enemy->GetWorldPos();
+			//敵半径
+			radiusB = enemy->GetScale().x;
+
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+
+			//衝突していたら
+			if (isCollision) {
+				//自機のダメージ用コールバック関数を呼び出す
+				player->OnCollisionDamage(posB);
+				//カメラをシェイクさせる
+				railCamera->ShakeStart();
+			}
+		}
+	}
+#pragma endregion
+
+#pragma region 自機と敵弾の衝突判定
+	//自機が緊急回避をしていなければ判定する
+	if (!player->GetIsRoll()) {
+		//自機座標
+		posA = player->GetWorldPos();
+		//自機半径
+		radiusA = player->GetScale().x;
+
+		//自機と全ての敵弾の衝突判定
+		for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
+			//自機がダメージ状態なら飛ばす
+			if (player->GetIsDamage()) { continue; }
+
+			//敵弾座標
+			posB = bullet->GetWorldPos();
+			//敵弾半径
+			radiusB = bullet->GetScale().x;
+
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+
+			//衝突していたら
+			if (isCollision) {
+				//自機のダメージ用コールバック関数を呼び出す
+				player->OnCollisionDamage(posB);
+				//敵弾のコールバック関数を呼び出す
+				bullet->OnCollision();
+				//カメラをシェイクさせる
+				railCamera->ShakeStart();
+			}
+		}
+	}
+#pragma endregion
+
 #pragma region 自機と回復アイテムの衝突判定
-	//自機座標
-	posA = player->GetWorldPos();
-	//自機半径
-	radiusA = player->GetScale().x;
+	//自機が墜落状態でなければ判定する
+	if (!player->GetIsCrash()) {
+		//自機座標
+		posA = player->GetWorldPos();
+		//自機半径
+		radiusA = player->GetScale().x;
 
-	//自機と全ての回復アイテムの衝突判定
-	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
-		//回復アイテム座標
-		posB = healingItem->GetWorldPos();
-		//回復アイテム半径
-		radiusB = healingItem->GetScale().x;
+		//自機と全ての回復アイテムの衝突判定
+		for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
+			//回復アイテム座標
+			posB = healingItem->GetWorldPos();
+			//回復アイテム半径
+			radiusB = healingItem->GetScale().x;
 
-		//球と球の衝突判定を行う
-		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
 
-		//衝突していたら
-		if (isCollision) {
-			//自機の回復用コールバック関数を呼び出す
-			player->OnCollisionHeal();
-			//回復アイテムのコールバック関数を呼び出す
-			healingItem->OnCollision();
+			//衝突していたら
+			if (isCollision) {
+				//自機の回復用コールバック関数を呼び出す
+				player->OnCollisionHeal();
+				//回復アイテムのコールバック関数を呼び出す
+				healingItem->OnCollision();
+			}
 		}
 	}
 #pragma endregion
@@ -467,6 +489,9 @@ void GameScene::CollisionCheck3d()
 		//ボス分身のリストを持ってくる
 		const std::list<std::unique_ptr<BossAvatar>>& bossAvatars = boss->GetAvatars();
 		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
+			//自機がダメージ状態なら飛ばす
+			if (player->GetIsDamage()) { continue; }
+
 			//ボス分身座標
 			posB = bossAvatar->GetWorldPos();
 			//ボス分身半径
@@ -785,4 +810,19 @@ void GameScene::BossBattleStart()
 
 	//ボスバトル状態にする
 	isBossBattle = true;
+}
+
+void GameScene::GameOver()
+{
+	//ゲームオーバーでなければ抜ける
+	if (!player->GetIsDead()) { return; }
+
+	//タイマー更新
+	const float gameOverTime = 180;
+	gameOverTimer++;
+
+	//タイマーが指定した時間になったらゲームシーンをやり直す
+	if (gameOverTimer >= gameOverTime) {
+		SceneManager::GetInstance()->ChangeScene("GAME");
+	}
 }

@@ -16,18 +16,23 @@ void RailCamera::Initialize()
 
 void RailCamera::Update()
 {
-	Input* input = Input::GetInstance();
+	//自機が墜落状態でなければ通常レールカメラ
+	if (!player->GetIsCrash()) {
+		//回転
+		Rotate();
 
-	//回転
-	Rotate();
-
-	//プレイヤーがダメージ状態ならノックバックする
-	if (player->GetIsDamage()) {
-		Knockback();
+		//プレイヤーがダメージ状態ならノックバックする
+		if (player->GetIsDamage()) {
+			Knockback();
+		}
+		//ダメージ状態でないなら通常移動
+		else {
+			Move();
+		}
 	}
-	//ダメージ状態でないなら通常移動
+	//墜落状態
 	else {
-		Move();
+		Crash();
 	}
 
 	//回転　平行移動行列の計算
@@ -70,6 +75,22 @@ void RailCamera::ShakeStart()
 	shakeTimer = 0;
 	//シェイク状態にする
 	isShake = true;
+}
+
+void RailCamera::Crash()
+{
+	//X,Y座標は自機の少し上を追従する
+	position.x = player->GetWorldPos().x;
+	position.y = player->GetWorldPos().y + 3;
+
+	//Z軸回転する
+	const float rotSpeed = 2;
+	//自機が一回バウンドするまではZ方向に移動する
+	if (player->GetCrashBoundCount() == 0) { 
+		rotation.z += rotSpeed; 
+		position.z += 0.1f; 
+	}
+	else if (player->GetCrashBoundCount() == 1) { rotation.z -= rotSpeed; }
 }
 
 void RailCamera::Rotate()

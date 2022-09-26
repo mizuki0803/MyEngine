@@ -32,6 +32,11 @@ public: //ƒƒ“ƒoŠÖ”
 
 private: //ƒƒ“ƒoŠÖ”
 	/// <summary>
+	/// ’Ä—
+	/// </summary>
+	void Crash();
+
+	/// <summary>
 	/// ‰ñ“]
 	/// </summary>
 	void Rotate();

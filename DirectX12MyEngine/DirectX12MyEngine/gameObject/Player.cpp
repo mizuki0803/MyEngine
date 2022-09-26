@@ -59,19 +59,32 @@ bool Player::Initialize()
 
 void Player::Update()
 {
-	//回転
-	Rotate();
+	//死亡状態なら抜ける
+	if (isDead) { return; }
 
-	//緊急回避
-	Roll();
+	//墜落状態でなければ行動
+	if (!isCrash) {
+		//回転
+		Rotate();
 
-	//ダメージ状態ならノックバックする
-	if (isDamage) {
-		Knockback();
+		//緊急回避
+		Roll();
+
+		//ダメージ状態ならノックバックする
+		if (isDamage) {
+			Knockback();
+		}
+		//ダメージ状態でないなら通常移動
+		else {
+			Move();
+		}
+
+		//攻撃
+		Attack();
 	}
-	//ダメージ状態でないなら通常移動
+	//墜落状態
 	else {
-		Move();
+		Crash();
 	}
 
 	//オブジェクト更新
@@ -85,13 +98,22 @@ void Player::Update()
 	hpBar->Update();
 	//HPバーフレーム更新
 	hpFrame->Update();
+}
 
-	//攻撃
-	Attack();
+void Player::Draw()
+{
+	//死亡状態なら抜ける
+	if (isDead) { return; }
+
+	//オブジェクト描画
+	ObjObject3d::Draw();
 }
 
 void Player::DrawUI()
 {
+	//墜落状態なら抜ける
+	if (isCrash) { return; }
+
 	//レティクル描画
 	reticle->Draw();
 	reticle2->Draw();
@@ -104,9 +126,6 @@ void Player::DrawUI()
 
 void Player::OnCollisionDamage(const Vector3& subjectPos)
 {
-	//ダメージ状態なら抜ける
-	if (isDamage) { return; }
-
 	//ダメージを喰らう
 	Damage();
 
@@ -143,9 +162,9 @@ void Player::Damage()
 	//体力を減らす
 	HP -= 10;
 
-	//HPが0以下になったら死亡させる
+	//HPが0以下になったら墜落させる
 	if (HP <= 0) {
-		isDead = true;
+		isCrash = true;
 
 		//HPは0以下にならない
 		HP = 0;
@@ -155,6 +174,43 @@ void Player::Damage()
 
 	//ダメージ状態にする
 	isDamage = true;
+}
+
+void Player::Crash()
+{
+	//座標移動
+	//墜落加速度
+	Vector3 crashAccel = { 0, -0.01f, 0 };
+	crashVel += crashAccel;
+	position += crashVel;
+
+	//Y座標が0以下になったら
+	if (position.y <= 0) {
+		//座標は0以下にならない
+		position.y = 0;
+
+		//墜落バウンド回数を増加させる
+		crashBoundCount++;
+
+		//バウンドさせる
+		crashVel.y = 0.4f;
+	}
+
+	//墜落回転する
+	const float rotSpeed = 5;
+	//バウンドするまではZ軸左回転
+	if (crashBoundCount == 0) { rotation.z += rotSpeed; }
+	//1回バウンドしたらZ軸右回転 & Y軸回転
+	else if (crashBoundCount == 1) {
+		rotation.y -= rotSpeed / 5;
+		rotation.z -= rotSpeed; 
+	}
+
+	//墜落バウンド回数が2回に達したら死亡
+	const int maxCrashCount = 2;
+	if (crashBoundCount >= maxCrashCount) {
+		isDead = true;
+	}
 }
 
 void Player::Heal()
@@ -449,11 +505,12 @@ void Player::Knockback()
 	position += knockbackVel *= speed;
 
 	//移動限界から出ないようにする
-	const Vector2 moveLimit = { 10.0f, 5.0f };
-	position.x = max(position.x, -moveLimit.x);
-	position.x = min(position.x, +moveLimit.x);
-	position.y = max(position.y, -moveLimit.y);
-	position.y = min(position.y, +moveLimit.y);
+	const Vector2 moveLimitMax = { 10.0f, 6.0f };
+	const Vector2 moveLimitMin = { -10.0f, -4.0f };
+	position.x = max(position.x, moveLimitMin.x);
+	position.x = min(position.x, moveLimitMax.x);
+	position.y = max(position.y, moveLimitMin.y);
+	position.y = min(position.y, moveLimitMax.y);
 
 	//ノックバックが終了したらダメージ状態を解除する
 	if (knockbackTimer >= knockbackTime) {

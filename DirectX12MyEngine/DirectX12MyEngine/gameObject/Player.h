@@ -42,6 +42,11 @@ public: //メンバ関数
 	void Update() override;
 
 	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw() override;
+
+	/// <summary>
 	/// UI描画
 	/// </summary>
 	void DrawUI();
@@ -60,6 +65,8 @@ public: //メンバ関数
 	Vector3 GetWorldPos();
 	const int GetHP() { return HP; }
 	const bool GetIsDamage() { return isDamage; }
+	const bool GetIsCrash() { return isCrash; }
+	const int GetCrashBoundCount() { return crashBoundCount; }
 	const bool GetIsDead() { return isDead; }
 	const bool GetIsRoll() { return isRoll; }
 	const Vector3& GetKnockbackVel() { return knockbackVel; }
@@ -71,6 +78,11 @@ private: //メンバ関数
 	/// ダメージを喰らう
 	/// </summary>
 	void Damage();
+
+	/// <summary>
+	/// 墜落
+	/// </summary>
+	void Crash();
 
 	/// <summary>
 	/// 回復
@@ -125,7 +137,7 @@ private: //静的メンバ変数
 	//自機の回転限界
 	static const Vector2 rotLimit;
 	//最大体力
-	static const int maxHP = 100;
+	static const int maxHP = 101;
 
 private: //メンバ変数
 	//体力
@@ -136,6 +148,14 @@ private: //メンバ変数
 	std::unique_ptr<PlayerHPFrame> hpFrame;
 	//ダメージフラグ
 	bool isDamage = false;
+	//墜落中か
+	bool isCrash = false;
+	//墜落バウンド回数
+	int crashBoundCount = 0;
+	//墜落速度
+	Vector3 crashVel = { 0, 0, 0.2f };
+	//死亡フラグ
+	bool isDead = false;
 	//緊急回避中か
 	bool isRoll = false;
 	//緊急回避用タイマー
@@ -150,8 +170,6 @@ private: //メンバ変数
 	Vector3 knockbackVec;
 	//ノックバック速度
 	Vector3 knockbackVel;
-	//死亡フラグ
-	bool isDead = false;
 	//レティクル
 	std::unique_ptr<Reticle> reticle;
 	std::unique_ptr<Reticle> reticle2;
