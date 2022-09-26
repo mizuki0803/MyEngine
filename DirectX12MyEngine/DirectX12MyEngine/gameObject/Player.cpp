@@ -164,7 +164,7 @@ void Player::Damage()
 
 	//HPが0以下になったら墜落させる
 	if (HP <= 0) {
-		isCrash = true;
+		CrashStart();
 
 		//HPは0以下にならない
 		HP = 0;
@@ -176,11 +176,22 @@ void Player::Damage()
 	isDamage = true;
 }
 
+void Player::CrashStart()
+{
+	//カメラ追従を解除
+	SetIsCameraFollow(false);
+	//カメラ追従解除により、ローカル座標にワールド座標を代入
+	position = GetWorldPos();
+
+	//墜落状態にする
+	isCrash = true;
+}
+
 void Player::Crash()
 {
 	//座標移動
 	//墜落加速度
-	Vector3 crashAccel = { 0, -0.01f, 0 };
+	Vector3 crashAccel = { 0, -0.0075f, 0 };
 	crashVel += crashAccel;
 	position += crashVel;
 

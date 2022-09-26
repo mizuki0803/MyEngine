@@ -1,5 +1,6 @@
 #include "RailCamera.h"
 #include "Input.h"
+#include "Easing.h"
 #include "Player.h"
 
 void RailCamera::Initialize()
@@ -16,8 +17,8 @@ void RailCamera::Initialize()
 
 void RailCamera::Update()
 {
-	//自機が墜落状態でなければ通常レールカメラ
-	if (!player->GetIsCrash()) {
+	//墜落状態でなければ通常レールカメラ
+	if (!isCrash) {
 		//回転
 		Rotate();
 
@@ -69,6 +70,17 @@ void RailCamera::Update()
 	UpdateMatProjection();
 }
 
+void RailCamera::CrashStart()
+{
+	//墜落状態にする
+	isCrash = true;
+	//墜落状態のカメラ位置に移動する
+	isMoveCrashPos = true;
+
+	//墜落状態のカメラ位置に移動前の座標をセット
+	moveCrashBeforePos = position;
+}
+
 void RailCamera::ShakeStart()
 {
 	//シェイクタイマーをリセット
@@ -79,16 +91,35 @@ void RailCamera::ShakeStart()
 
 void RailCamera::Crash()
 {
-	//X,Y座標は自機の少し上を追従する
-	position.x = player->GetWorldPos().x;
-	position.y = player->GetWorldPos().y + 3;
+	//自機の少し上にカメラを移動させる
+	const Vector3 crashCameraPos = { player->GetWorldPos().x, player->GetWorldPos().y + 3, 0 };
+	if (isMoveCrashPos) {
+		//タイマーを更新
+		const float moveCrashPosTime = 40;
+		moveCrashPosTimer++;
+		const float time = moveCrashPosTimer / moveCrashPosTime;
+
+		position.x = Easing::OutQuad(moveCrashBeforePos.x, crashCameraPos.x, time);
+		position.y = Easing::OutQuad(moveCrashBeforePos.y, crashCameraPos.y, time);
+
+		//タイマーが指定した時間になったら緊急回避終了
+		if (moveCrashPosTimer >= moveCrashPosTime) {
+			isMoveCrashPos = false;
+		}
+	}
+	//移動終了後も同じ座標を追従し続ける
+	else {
+		//X,Y座標は自機の少し上を追従する
+		position.x = crashCameraPos.x;
+		position.y = crashCameraPos.y;
+	}
 
 	//Z軸回転する
-	const float rotSpeed = 2;
+	const float rotSpeed = 1.5f;
 	//自機が一回バウンドするまではZ方向に移動する
-	if (player->GetCrashBoundCount() == 0) { 
-		rotation.z += rotSpeed; 
-		position.z += 0.1f; 
+	if (player->GetCrashBoundCount() == 0) {
+		rotation.z += rotSpeed;
+		position.z += 0.1f;
 	}
 	else if (player->GetCrashBoundCount() == 1) { rotation.z -= rotSpeed; }
 }

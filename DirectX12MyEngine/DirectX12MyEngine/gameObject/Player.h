@@ -80,6 +80,11 @@ private: //ƒƒ“ƒoŠÖ”
 	void Damage();
 
 	/// <summary>
+	/// ’Ä—ŠJn
+	/// </summary>
+	void CrashStart();
+
+	/// <summary>
 	/// ’Ä—
 	/// </summary>
 	void Crash();

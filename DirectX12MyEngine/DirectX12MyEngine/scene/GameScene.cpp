@@ -184,8 +184,8 @@ void GameScene::Update()
 	//自機が墜落を開始したらゲームオーバー
 	if (!isGameOver) {
 		if (player->GetIsCrash()) {
-			player->SetIsCameraFollow(false);
-			player->SetPosition(player->GetWorldPos());
+			//レールカメラを墜落状態にする
+			railCamera->CrashStart();
 
 			//ゲームオーバー
 			isGameOver = true;

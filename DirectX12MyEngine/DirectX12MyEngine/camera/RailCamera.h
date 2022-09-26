@@ -22,6 +22,11 @@ public: //メンバ関数
 	void Update() override;
 
 	/// <summary>
+	/// 墜落開始
+	/// </summary>
+	void CrashStart();
+
+	/// <summary>
 	/// シェイク開始
 	/// </summary>
 	void ShakeStart();
@@ -65,6 +70,14 @@ private: //メンバ変数
 	Vector3 position = { 0, 0, 0 };
 	//前進するか
 	bool isAdvance = true;
+	//墜落状態か
+	bool isCrash = false;
+	//墜落状態のカメラ位置に移動するか
+	bool isMoveCrashPos = false;
+	//墜落状態のカメラ位置に移動タイマー
+	int32_t moveCrashPosTimer = 0;
+	//墜落状態のカメラ位置に移動前の座標
+	Vector3 moveCrashBeforePos;
 	//シェイクするか
 	bool isShake = false;
 	//カメラシェイク用タイマー
