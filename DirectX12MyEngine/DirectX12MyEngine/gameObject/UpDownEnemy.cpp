@@ -43,6 +43,15 @@ void UpDownEnemy::Update()
 	FrontOfScreenDelete();
 }
 
+void UpDownEnemy::OnCollision()
+{
+	//‘S“G‹¤’Ê‚ÌÕ“Ëˆ—
+	Enemy::OnCollision();
+
+	//íœ‚·‚é
+	isDelete = true;
+}
+
 void UpDownEnemy::UpBrake()
 {
 	//ã¸‚ğ—}‚¦‚é

@@ -45,6 +45,7 @@ public: //メンバ関数
 	Vector3 GetWorldPos();
 	Vector2 GetScreenPos();
 	bool GetIsDead() const { return isDead; }
+	bool GetIsDelete() const { return isDelete; }
 
 protected: //メンバ関数
 	/// <summary>
@@ -68,4 +69,6 @@ protected: //静的メンバ変数
 protected: //メンバ変数
 	//死亡フラグ
 	bool isDead = false;
+	//削除フラグ
+	bool isDelete = false;
 };

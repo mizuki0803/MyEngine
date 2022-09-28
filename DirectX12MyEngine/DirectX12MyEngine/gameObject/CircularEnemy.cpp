@@ -55,6 +55,15 @@ void CircularEnemy::Update()
 	FrontOfScreenDelete();
 }
 
+void CircularEnemy::OnCollision()
+{
+	//全敵共通の衝突処理
+	Enemy::OnCollision();
+
+	//削除する
+	isDelete = true;
+}
+
 void CircularEnemy::Move()
 {
 	//角度を弧度法に変換

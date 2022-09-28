@@ -4,7 +4,8 @@
 void (ComeGoEnemy::*ComeGoEnemy::actionFuncTable[])() = {
 	&ComeGoEnemy::Come,
 	&ComeGoEnemy::Attack,
-	&ComeGoEnemy::Go
+	&ComeGoEnemy::Go,
+	&ComeGoEnemy::Dead,
 };
 
 ComeGoEnemy* ComeGoEnemy::Create(ObjModel* model, const Vector3& startPos, const Vector3& comePos, const Vector3& goTargetPos, const int attackTime)
@@ -48,6 +49,15 @@ void ComeGoEnemy::Update()
 
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
+}
+
+void ComeGoEnemy::OnCollision()
+{
+	//全敵共通の衝突処理
+	Enemy::OnCollision();
+
+	//行動を死亡用にする
+	phase = Phase::Dead;
 }
 
 void ComeGoEnemy::Come()
@@ -105,6 +115,14 @@ void ComeGoEnemy::Go()
 
 	//イージングが終了したら削除する
 	if (goTimer >= goTime) {
-		isDead = true;
+		isDelete = true;
+	}
+}
+
+void ComeGoEnemy::Dead()
+{
+	position.y -= 0.1f;
+	if (position.y <= 0) {
+		isDelete = true;
 	}
 }

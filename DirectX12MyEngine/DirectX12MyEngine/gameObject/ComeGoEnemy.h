@@ -12,6 +12,7 @@ public:
 		Come,	//到着
 		Attack,	//攻撃
 		Go,		//出発
+		Dead,	//死亡
 	};
 
 public: //静的メンバ関数
@@ -31,6 +32,11 @@ public: //メンバ関数
 	/// </summary>
 	void Update() override;
 
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	void OnCollision() override;
+
 private: //メンバ関数
 	/// <summary>
 	/// 到着
@@ -46,6 +52,11 @@ private: //メンバ関数
 	/// 出発
 	/// </summary>
 	void Go();
+
+	/// <summary>
+	/// 死亡
+	/// </summary>
+	void Dead();
 
 private: //静的メンバ変数
 	//発射間隔

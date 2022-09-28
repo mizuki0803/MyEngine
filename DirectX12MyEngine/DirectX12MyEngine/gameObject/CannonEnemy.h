@@ -20,6 +20,11 @@ public: //メンバ関数
 	/// </summary>
 	void Update() override;
 
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	void OnCollision() override;
+
 private: //静的メンバ変数
 	//発射間隔
 	static const int fireInterval = 300;

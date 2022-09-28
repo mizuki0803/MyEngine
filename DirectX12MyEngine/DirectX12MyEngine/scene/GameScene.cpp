@@ -150,25 +150,25 @@ void GameScene::Update()
 		return bullet->GetIsDead();
 		});
 
-	//死亡した敵の削除前処理
-	for (const std::unique_ptr<Enemy>& enemy : enemys) {
-		//死亡していなければ飛ばす
-		if (!enemy->GetIsDead()) { continue; }
+	//死亡した敵の処理
+	//for (const std::unique_ptr<Enemy>& enemy : enemys) {
+	//	//死亡していなければ飛ばす
+	//	if (!enemy->GetIsDead()) { continue; }
 
-		//レティクルのロックオン対象だった場合、ロックオン解除
-		if (player->GetReticle()->GetReticle2D()->GetLockonEnemy() == enemy.get()) {
-			player->GetReticle()->GetReticle2D()->UnlockonEnemy();
-		}
-		//自機弾のホーミング対象だった場合、ホーミング解除
-		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-			if (bullet->GetEnemy() == enemy.get()) {
-				bullet->SetEnemy(nullptr);
-			}
-		}
-	}
-	//死亡した敵の削除
+	//	//レティクルのロックオン対象だった場合、ロックオン解除
+	//	if (player->GetReticle()->GetReticle2D()->GetLockonEnemy() == enemy.get()) {
+	//		player->GetReticle()->GetReticle2D()->UnlockonEnemy();
+	//	}
+	//	//自機弾のホーミング対象だった場合、ホーミング解除
+	//	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+	//		if (bullet->GetEnemy() == enemy.get()) {
+	//			bullet->SetEnemy(nullptr);
+	//		}
+	//	}
+	//}
+	//削除状態の敵の削除
 	enemys.remove_if([](std::unique_ptr<Enemy>& enemy) {
-		return enemy->GetIsDead();
+		return enemy->GetIsDelete();
 		});
 
 	//死亡した敵弾の削除
@@ -519,9 +519,9 @@ void GameScene::CollisionCheck3d()
 
 	//全て自機弾とボス本体の衝突判定
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-		//敵弾座標
+		//自機弾座標
 		posB = bullet->GetWorldPos();
-		//敵弾半径
+		//自機弾弾半径
 		radiusB = bullet->GetScale().x;
 
 		//球と球の衝突判定を行う
@@ -541,7 +541,7 @@ void GameScene::CollisionCheck3d()
 #pragma endregion
 
 #pragma region 自機弾とボス分身の衝突判定
-	//全ての敵と全ての自機弾の衝突判定
+	//全てのボス分身と全ての自機弾の衝突判定
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
 		//自機弾座標
 		posA = bullet->GetWorldPos();
@@ -593,7 +593,10 @@ void GameScene::CollisionCheck2d()
 
 		//レティクルと全ての敵の衝突判定
 		for (const std::unique_ptr<Enemy>& enemy : enemys) {
-			//敵のワールド座標が自機のワールド座標より手前にいたら判定しないで抜ける
+			//敵が死亡状態なら飛ばす
+			if (enemy->GetIsDead()) { continue; }
+
+			//敵のワールド座標が自機のワールド座標より手前にいたら判定しないで飛ばす
 			const float enemyToPlayerPosZ = enemy->GetWorldPos().z - player->GetWorldPos().z;
 			if (enemyToPlayerPosZ < 0) { continue; }
 

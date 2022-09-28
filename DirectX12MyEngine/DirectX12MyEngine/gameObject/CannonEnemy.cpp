@@ -43,3 +43,12 @@ void CannonEnemy::Update()
 	//画面外手前まで行ったら削除
 	FrontOfScreenDelete();
 }
+
+void CannonEnemy::OnCollision()
+{
+	//全敵共通の衝突処理
+	Enemy::OnCollision();
+
+	//削除する
+	isDelete = true;
+}

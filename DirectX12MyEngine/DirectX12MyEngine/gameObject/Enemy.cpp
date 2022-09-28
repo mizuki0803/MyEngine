@@ -92,6 +92,6 @@ void Enemy::FrontOfScreenDelete()
 	const Vector3 worldPos = GetWorldPos();
 
 	if (worldPos.z <= deletePos) {
-		isDead = true;
+		isDelete = true;
 	}
 }

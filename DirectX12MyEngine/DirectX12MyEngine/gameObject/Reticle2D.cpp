@@ -55,7 +55,7 @@ void Reticle2D::Update()
 void Reticle2D::LockonEnemy(Enemy* enemy)
 {
 	//ロックオン対象の敵をセットしておく
-	this->lockonEnemy = enemy;
+	lockonEnemy = enemy;
 	//ロックオンしたので色を変更する
 	color = lockonColor;
 	//ロックオン状態に設定
@@ -65,7 +65,7 @@ void Reticle2D::LockonEnemy(Enemy* enemy)
 void Reticle2D::UnlockonEnemy()
 {
 	//ロックオン対象の敵を解除しておく
-	this->lockonEnemy = nullptr;
+	lockonEnemy = nullptr;
 	//ロックオン解除したので色を戻す
 	color = normalColor;
 	//ロックオンしていない状態に設定

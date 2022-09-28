@@ -46,6 +46,15 @@ void FallEnemy::Update()
 	FrontOfScreenDelete();	
 }
 
+void FallEnemy::OnCollision()
+{
+	//全敵共通の衝突処理
+	Enemy::OnCollision();
+
+	//削除する
+	isDelete = true;
+}
+
 void FallEnemy::Fall()
 {
 	//イージングで降下する
