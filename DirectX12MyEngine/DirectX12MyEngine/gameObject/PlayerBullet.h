@@ -9,7 +9,7 @@ class Enemy;
 class PlayerBullet : public ObjObject3d
 {
 public: //enum
-	enum BulletType {
+	enum class BulletType {
 		None,		//未設定
 		Straight,	//直進弾
 		Homing,		//ホーミング弾

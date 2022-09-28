@@ -11,6 +11,7 @@ public:
 	enum class Phase {
 		Fall,	//降下
 		Attack,	//攻撃
+		Dead,	//死亡
 	};
 
 public: //静的メンバ関数
@@ -43,6 +44,11 @@ private: //メンバ関数
 	/// </summary>
 	void Attack();
 
+	/// <summary>
+	/// 死亡
+	/// </summary>
+	void Dead();
+
 private: //静的メンバ変数
 	//発射間隔
 	static const int fireInterval = 180;
@@ -58,4 +64,6 @@ private: //メンバ変数
 	int32_t fallTimer = 0;
 	//発射タイマー
 	int32_t fireTimer = 0;
+	//死亡時墜落速度
+	Vector3 crashVel = { 0, 0.05f, 0 };
 };

@@ -85,4 +85,6 @@ private: //メンバ変数
 	int attackTime = 0;
 	//発射タイマー
 	int32_t fireTimer = 0;
+	//死亡時墜落速度
+	Vector3 crashVel = { 0, 0.05f, 0.05f };
 };

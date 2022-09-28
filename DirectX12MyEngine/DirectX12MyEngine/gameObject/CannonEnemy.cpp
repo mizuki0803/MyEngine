@@ -1,6 +1,13 @@
 #include "CannonEnemy.h"
 #include "Player.h"
 
+void (CannonEnemy::* CannonEnemy::actionFuncTable[])() = {
+	&CannonEnemy::Attack,
+	&CannonEnemy::Dead,
+};
+
+ObjModel* CannonEnemy::breakModel = nullptr;
+
 CannonEnemy* CannonEnemy::Create(ObjModel* model, const Vector3& position)
 {
 	//敵のインスタンスを生成
@@ -28,14 +35,8 @@ CannonEnemy* CannonEnemy::Create(ObjModel* model, const Vector3& position)
 
 void CannonEnemy::Update()
 {
-	//発射タイマーカウントダウン
-	--fireTimer;
-	if (fireTimer <= 0) {
-		//弾を発射
-		Fire();
-		//発射タイマーを初期化
-		fireTimer = fireInterval;
-	}
+	//行動
+	(this->*actionFuncTable[static_cast<size_t>(phase)])();
 
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
@@ -49,6 +50,25 @@ void CannonEnemy::OnCollision()
 	//全敵共通の衝突処理
 	Enemy::OnCollision();
 
-	//削除する
-	isDelete = true;
+	//行動を死亡用にする
+	phase = Phase::Dead;
+
+	//破壊されたモデルに変更
+	model = breakModel;
+}
+
+void CannonEnemy::Attack()
+{
+	//発射タイマーカウントダウン
+	--fireTimer;
+	if (fireTimer <= 0) {
+		//弾を発射
+		Fire();
+		//発射タイマーを初期化
+		fireTimer = fireInterval;
+	}
+}
+
+void CannonEnemy::Dead()
+{
 }

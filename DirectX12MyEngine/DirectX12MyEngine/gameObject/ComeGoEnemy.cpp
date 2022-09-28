@@ -121,7 +121,19 @@ void ComeGoEnemy::Go()
 
 void ComeGoEnemy::Dead()
 {
-	position.y -= 0.1f;
+	//Z軸回転をしながら墜落する
+	const float rotSpeed = 2.0f;
+	rotation.z += rotSpeed;
+
+	//墜落するため、速度に加速度を加える
+	Vector3 crashAccel = { 0, -0.005f, 0 };
+	crashVel += crashAccel;
+	//落下する速度の最大値を設定
+	const float maxCrashSpeed = -0.2f;
+	if (crashVel.y <= maxCrashSpeed) { crashVel.y = maxCrashSpeed; }
+	position += crashVel;
+
+	//Y座標が0以下になったら削除
 	if (position.y <= 0) {
 		isDelete = true;
 	}

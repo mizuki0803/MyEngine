@@ -4,6 +4,7 @@
 void (UpDownEnemy::* UpDownEnemy::actionFuncTable[])() = {
 	&UpDownEnemy::UpBrake,
 	&UpDownEnemy::DownBrake,
+	&UpDownEnemy::Dead,
 };
 
 UpDownEnemy* UpDownEnemy::Create(ObjModel* model, const Vector3& position)
@@ -48,8 +49,8 @@ void UpDownEnemy::OnCollision()
 	//全敵共通の衝突処理
 	Enemy::OnCollision();
 
-	//削除する
-	isDelete = true;
+	//行動を死亡用にする
+	phase = Phase::Dead;
 }
 
 void UpDownEnemy::UpBrake()
@@ -79,5 +80,25 @@ void UpDownEnemy::DownBrake()
 	const float changePhaseVelY = 0.5f;
 	if (velocity.y >= changePhaseVelY) {
 		phase = Phase::UpBrake;
+	}
+}
+
+void UpDownEnemy::Dead()
+{
+	//X軸回転をしながら墜落する
+	const float rotSpeed = 1.0f;
+	rotation.x -= rotSpeed;
+
+	//墜落するため、速度に加速度を加える
+	Vector3 crashAccel = { 0, -0.01f, 0 };
+	crashVel += crashAccel;
+	//落下する速度の最大値を設定
+	const float maxCrashSpeed = -0.5f;
+	if (crashVel.y <= maxCrashSpeed) { crashVel.y = maxCrashSpeed; }
+	position += crashVel;
+
+	//Y座標が0以下になったら削除
+	if (position.y <= 0) {
+		isDelete = true;
 	}
 }

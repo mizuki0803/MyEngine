@@ -1,9 +1,10 @@
 #include "FallEnemy.h"
 #include "Easing.h"
 
-void (FallEnemy::* FallEnemy::actionFuncTable[])() = {
+void (FallEnemy::*FallEnemy::actionFuncTable[])() = {
 	&FallEnemy::Fall,
 	&FallEnemy::Attack,
+	&FallEnemy::Dead,
 };
 
 FallEnemy* FallEnemy::Create(ObjModel* model, const Vector3& position)
@@ -51,8 +52,8 @@ void FallEnemy::OnCollision()
 	//全敵共通の衝突処理
 	Enemy::OnCollision();
 
-	//削除する
-	isDelete = true;
+	//行動を死亡用にする
+	phase = Phase::Dead;
 }
 
 void FallEnemy::Fall()
@@ -81,5 +82,25 @@ void FallEnemy::Attack()
 		Fire();
 		//発射タイマーを初期化
 		fireTimer = fireInterval;
+	}
+}
+
+void FallEnemy::Dead()
+{
+	//X軸回転をしながら墜落する
+	const float rotSpeed = 0.5f;
+	rotation.x -= rotSpeed;
+
+	//墜落するため、速度に加速度を加える
+	Vector3 crashAccel = { 0, -0.005f, 0 };
+	crashVel += crashAccel;
+	//落下する速度の最大値を設定
+	const float maxCrashSpeed = -0.2f;
+	if (crashVel.y <= maxCrashSpeed) { crashVel.y = maxCrashSpeed; }
+	position += crashVel;
+
+	//Y座標が0以下になったら削除
+	if (position.y <= 0) {
+		isDelete = true;
 	}
 }

@@ -79,6 +79,8 @@ void GameScene::Initialize()
 	Enemy::SetGameScene(this);
 	Enemy::SetPlayer(player.get());
 	Enemy::SetBulletModel(modelSphere.get());
+	//各種類の敵に必要な情報をセット
+	CannonEnemy::SetBreakModel(modelSphere.get());
 	//敵配置スクリプトの読み込み
 	LoadEnemySetData();
 
@@ -151,21 +153,21 @@ void GameScene::Update()
 		});
 
 	//死亡した敵の処理
-	//for (const std::unique_ptr<Enemy>& enemy : enemys) {
-	//	//死亡していなければ飛ばす
-	//	if (!enemy->GetIsDead()) { continue; }
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
+		//死亡していなければ飛ばす
+		if (!enemy->GetIsDead()) { continue; }
 
-	//	//レティクルのロックオン対象だった場合、ロックオン解除
-	//	if (player->GetReticle()->GetReticle2D()->GetLockonEnemy() == enemy.get()) {
-	//		player->GetReticle()->GetReticle2D()->UnlockonEnemy();
-	//	}
-	//	//自機弾のホーミング対象だった場合、ホーミング解除
-	//	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-	//		if (bullet->GetEnemy() == enemy.get()) {
-	//			bullet->SetEnemy(nullptr);
-	//		}
-	//	}
-	//}
+		//レティクルのロックオン対象だった場合、ロックオン解除
+		if (player->GetReticle()->GetReticle2D()->GetLockonEnemy() == enemy.get()) {
+			player->GetReticle()->GetReticle2D()->UnlockonEnemy();
+		}
+		//自機弾のホーミング対象だった場合、ホーミング解除
+		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+			if (bullet->GetEnemy() == enemy.get()) {
+				bullet->SetEnemy(nullptr);
+			}
+		}
+	}
 	//削除状態の敵の削除
 	enemys.remove_if([](std::unique_ptr<Enemy>& enemy) {
 		return enemy->GetIsDelete();
