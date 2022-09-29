@@ -25,8 +25,14 @@ bool Enemy::Initialize()
 
 void Enemy::OnCollision()
 {
-	//€–S‚³‚¹‚é
-	isDead = true;
+	//€–Só‘Ô‚Å‚È‚¯‚ê‚Î€–S‚³‚¹‚é
+	if (!isDead) {
+		isDead = true;
+	}
+	//Šù‚É€–Só‘Ô‚Å€–S‰‰o’†‚Ì‚Æ‚«‚Ííœ‚·‚é
+	else {
+		isDelete = true;
+	}
 }
 
 Vector3 Enemy::GetWorldPos()

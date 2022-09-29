@@ -47,6 +47,9 @@ void CannonEnemy::Update()
 
 void CannonEnemy::OnCollision()
 {
+	//死亡しても削除しないモデル変更のため、死亡していたら抜ける
+	if (isDead) { return; }
+
 	//全敵共通の衝突処理
 	Enemy::OnCollision();
 
