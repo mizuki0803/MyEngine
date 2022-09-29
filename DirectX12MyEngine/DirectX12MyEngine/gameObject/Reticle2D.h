@@ -41,7 +41,7 @@ public: //ƒƒ“ƒoŠÖ”
 
 	//getter
 	const bool GetIsLockon() { return isLockon; }
-	Enemy* GetLockonEnemy() { return this->lockonEnemy; }
+	Enemy* GetLockonEnemy() { return lockonEnemy; }
 
 	//setter
 	void SetWorldPos3d(const Vector3& worldPos3d) { this->worldPos3d = worldPos3d; }

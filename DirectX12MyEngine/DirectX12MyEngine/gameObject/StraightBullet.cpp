@@ -49,5 +49,5 @@ void StraightBullet::Update()
 	rotation.x = XMConvertToDegrees(std::atan2(-velocityZ.y, velocityZ.z));
 
 	//3Dオブジェクトの更新
-	ObjObject3d::Update();
+	PlayerBullet::Update();
 }

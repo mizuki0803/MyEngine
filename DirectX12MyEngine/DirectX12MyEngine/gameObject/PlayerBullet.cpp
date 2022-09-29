@@ -13,6 +13,17 @@ bool PlayerBullet::Initialize()
 	return true;
 }
 
+void PlayerBullet::Update()
+{
+	//Y座標0以下になったら死亡
+	if (position.y <= 0) {
+		isDead = true;
+	}
+
+	//オブジェクト更新
+	ObjObject3d::Update();
+}
+
 void PlayerBullet::OnCollision()
 {
 	//死亡させる

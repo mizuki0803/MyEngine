@@ -414,6 +414,7 @@ void Player::Attack()
 			//ホーミング弾に切り替わる時間
 			const int32_t changeModeTime = 60;
 			if (chargeTimer >= changeModeTime) {
+				//チャージショット状態にする
 				isChargeShotMode = true;
 			}
 

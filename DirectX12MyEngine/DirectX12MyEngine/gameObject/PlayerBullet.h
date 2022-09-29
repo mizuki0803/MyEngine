@@ -22,6 +22,11 @@ public: //メンバ関数
 	bool Initialize() override;
 
 	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update() override;
+
+	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	void OnCollision();
