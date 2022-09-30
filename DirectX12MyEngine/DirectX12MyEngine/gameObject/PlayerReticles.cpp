@@ -65,13 +65,6 @@ void PlayerReticles::LockonEnemy(Enemy* enemy)
 
 void PlayerReticles::UnlockonEnemy()
 {
-	//レティクルがチャージ状態なら
-	if (farReticle->GetReticle2D()->GetIsChargeMode()) {
-		//レティクルを再びチャージ状態開始状態にする
-		nearReticle->GetReticle2D()->ChargeModeStart();
-		farReticle->GetReticle2D()->ChargeModeStart();
-	}
-
 	//ロックオンを解除
 	farReticle->GetReticle2D()->UnlockonEnemy();
 }

@@ -143,9 +143,10 @@ void GameScene::Update()
 		if (!bullet->GetIsDead()) { continue; }
 
 		//レティクルがロックオン中だった場合、ホーミング弾がロックオン以外の敵に当たってしまう可能性もあるのでロックオン解除しておく
-		if (bullet->GetBulletType() == PlayerBullet::BulletType::Homing) {
-			player->GetReticles()->UnlockonEnemy();
-		}
+		if (!(bullet->GetBulletType() == PlayerBullet::BulletType::Homing)) { continue; }
+		if (!player->GetReticles()->GetIsLockon()) { continue; }
+
+		player->GetReticles()->UnlockonEnemy();
 	}
 	//死亡した自機弾の削除
 	playerBullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {

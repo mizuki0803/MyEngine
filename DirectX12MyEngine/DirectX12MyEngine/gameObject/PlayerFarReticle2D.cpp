@@ -30,9 +30,7 @@ PlayerFarReticle2D* PlayerFarReticle2D::Create(UINT texNumber, const Vector2& si
 void PlayerFarReticle2D::Update()
 {
 	//チャージ状態の挙動
-	if (isChargeMode) {
-		ChargeMode();
-	}
+	ChargeMode();
 
 	//敵をロックオンしているときの移動
 	if (isLockon) {
@@ -69,6 +67,8 @@ void PlayerFarReticle2D::ChargeModeEnd()
 	beforeChangeSize = size;
 	//色を通常時の色に戻す
 	color = normalColor;
+	//チャージ状態を終了
+	isChargeMode = false;
 	//チャージ状態開始状態を終了させておく
 	isChargeModeStart = false;
 	//チャージ状態終了状態にする
@@ -99,23 +99,19 @@ void PlayerFarReticle2D::UnlockonEnemy()
 	isBackPos = true;
 	//元の位置(自機追従)に戻すタイマーを初期化
 	backTimer = 0;
-
-	//チャージ状態ならこの先の処理を行わない
-	if (isChargeMode) { return; }
-
 	//ロックオン解除したので色を通常色に戻す
 	color = normalColor;
 }
 
 void PlayerFarReticle2D::ChargeMode()
 {
-	if (isChargeModeEnd) {
-		ChargeModeEndSizeChange();
-	}
-	else if (isChargeModeStart) {
+	if (isChargeModeStart) {
 		ChargeModeStartSizeChange();
 	}
-	else {
+	else if (isChargeModeEnd) {
+		ChargeModeEndSizeChange();
+	}
+	else  if (isChargeMode) {
 		ChargeModeSizeChange();
 	}
 }
@@ -153,8 +149,6 @@ void PlayerFarReticle2D::ChargeModeEndSizeChange()
 	if (chargeTimer >= chargeModeEndTime) {
 		//チャージ状態終了状態を終了
 		isChargeModeEnd = false;
-		//チャージ状態を終了
-		isChargeMode = false;
 	}
 }
 
