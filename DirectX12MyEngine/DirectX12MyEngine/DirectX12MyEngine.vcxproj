@@ -196,8 +196,13 @@
     <ClCompile Include="gameObject\Mountain.cpp" />
     <ClCompile Include="gameObject\Player.cpp" />
     <ClCompile Include="gameObject\PlayerBullet.cpp" />
+    <ClCompile Include="gameObject\PlayerFarReticle.cpp" />
+    <ClCompile Include="gameObject\PlayerFarReticle2D.cpp" />
     <ClCompile Include="gameObject\PlayerHPBar.cpp" />
     <ClCompile Include="gameObject\PlayerHPFrame.cpp" />
+    <ClCompile Include="gameObject\PlayerNearReticle.cpp" />
+    <ClCompile Include="gameObject\PlayerNearReticle2D.cpp" />
+    <ClCompile Include="gameObject\PlayerReticles.cpp" />
     <ClCompile Include="gameObject\Reticle.cpp" />
     <ClCompile Include="gameObject\Reticle3D.cpp" />
     <ClCompile Include="gameObject\Reticle2D.cpp" />
@@ -351,8 +356,13 @@
     <ClInclude Include="gameObject\Mountain.h" />
     <ClInclude Include="gameObject\Player.h" />
     <ClInclude Include="gameObject\PlayerBullet.h" />
+    <ClInclude Include="gameObject\PlayerFarReticle.h" />
+    <ClInclude Include="gameObject\PlayerFarReticle2D.h" />
     <ClInclude Include="gameObject\PlayerHPBar.h" />
     <ClInclude Include="gameObject\PlayerHPFrame.h" />
+    <ClInclude Include="gameObject\PlayerNearReticle.h" />
+    <ClInclude Include="gameObject\PlayerNearReticle2D.h" />
+    <ClInclude Include="gameObject\PlayerReticles.h" />
     <ClInclude Include="gameObject\Reticle.h" />
     <ClInclude Include="gameObject\Reticle3D.h" />
     <ClInclude Include="gameObject\Reticle2D.h" />

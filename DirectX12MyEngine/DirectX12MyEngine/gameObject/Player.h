@@ -1,7 +1,7 @@
 #pragma once
 #include "ObjObject3d.h"
 #include "PlayerBullet.h"
-#include "Reticle.h"
+#include "PlayerReticles.h"
 #include "PlayerHPBar.h"
 #include "PlayerHPFrame.h"
 #include <memory>
@@ -70,7 +70,7 @@ public: //メンバ関数
 	const bool GetIsDead() { return isDead; }
 	const bool GetIsRoll() { return isRoll; }
 	const Vector3& GetKnockbackVel() { return knockbackVel; }
-	Reticle* GetReticle() { return reticle2.get(); }
+	PlayerReticles* GetReticles() { return reticles.get(); }
 	const bool GetIsChargeShotMode() { return isChargeShotMode; }
 
 private: //メンバ関数
@@ -176,8 +176,7 @@ private: //メンバ変数
 	//ノックバック速度
 	Vector3 knockbackVel;
 	//レティクル
-	std::unique_ptr<Reticle> reticle;
-	std::unique_ptr<Reticle> reticle2;
+	std::unique_ptr<PlayerReticles> reticles;
 	//直進弾の発射待機中か
 	bool isStraightShotWait = false;
 	//直進弾の発射待機タイマー

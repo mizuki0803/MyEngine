@@ -144,7 +144,7 @@ void GameScene::Update()
 
 		//レティクルがロックオン中だった場合、ホーミング弾がロックオン以外の敵に当たってしまう可能性もあるのでロックオン解除しておく
 		if (bullet->GetBulletType() == PlayerBullet::BulletType::Homing) {
-			player->GetReticle()->GetReticle2D()->UnlockonEnemy();
+			player->GetReticles()->UnlockonEnemy();
 		}
 	}
 	//死亡した自機弾の削除
@@ -158,8 +158,8 @@ void GameScene::Update()
 		if (!enemy->GetIsDead()) { continue; }
 
 		//レティクルのロックオン対象だった場合、ロックオン解除
-		if (player->GetReticle()->GetReticle2D()->GetLockonEnemy() == enemy.get()) {
-			player->GetReticle()->GetReticle2D()->UnlockonEnemy();
+		if (player->GetReticles()->GetLockonEnemy() == enemy.get()) {
+			player->GetReticles()->UnlockonEnemy();
 		}
 		//自機弾のホーミング対象だった場合、ホーミング解除
 		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
@@ -586,12 +586,12 @@ void GameScene::CollisionCheck2d()
 	//プレイヤーがチャージショット状態なら
 	if (player->GetIsChargeShotMode()) {
 		//レティクルがロックオン状態なら抜ける
-		if (player->GetReticle()->GetReticle2D()->GetIsLockon()) { return; }
+		if (player->GetReticles()->GetIsLockon()) { return; }
 
 		//レティクル座標
-		posA = player->GetReticle()->GetReticle2D()->GetPosition();
+		posA = player->GetReticles()->GetFarReticleScreenPosition();
 		//レティクル半径
-		radiusA = player->GetReticle()->GetReticle2D()->GetSize().x;
+		radiusA = player->GetReticles()->GetFarReticleSize();
 
 		//レティクルと全ての敵の衝突判定
 		for (const std::unique_ptr<Enemy>& enemy : enemys) {
@@ -617,7 +617,7 @@ void GameScene::CollisionCheck2d()
 			//衝突していたら
 			if (isCollision) {
 				//レティクルのロックオン対象を確定させる
-				player->GetReticle()->GetReticle2D()->LockonEnemy(enemy.get());
+				player->GetReticles()->LockonEnemy(enemy.get());
 			}
 		}
 	}

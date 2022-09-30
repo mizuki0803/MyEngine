@@ -123,6 +123,9 @@
     <Filter Include="ソース ファイル\game\backgroundObject\ground">
       <UniqueIdentifier>{a7dcd4e9-0bfd-4bed-b9a8-fb780aa5b741}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\player\reticle\PlayerReticle">
+      <UniqueIdentifier>{342f19ad-6fc4-411a-85e2-a379e79df9bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -313,6 +316,21 @@
     </ClCompile>
     <ClCompile Include="gameObject\Mountain.cpp">
       <Filter>ソース ファイル\game\backgroundObject\mountain</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\PlayerFarReticle2D.cpp">
+      <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\PlayerNearReticle.cpp">
+      <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\PlayerNearReticle2D.cpp">
+      <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\PlayerReticles.cpp">
+      <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\PlayerFarReticle.cpp">
+      <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -580,6 +598,21 @@
     </ClInclude>
     <ClInclude Include="gameObject\Mountain.h">
       <Filter>ソース ファイル\game\backgroundObject\mountain</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\PlayerFarReticle.h">
+      <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\PlayerFarReticle2D.h">
+      <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\PlayerNearReticle.h">
+      <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\PlayerNearReticle2D.h">
+      <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\PlayerReticles.h">
+      <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -27,22 +27,6 @@ public: //メンバ関数
 	/// </summary>
 	void Update() override;
 
-	/// <summary>
-	/// 敵ロックオン
-	/// </summary>
-	/// <param name="enemy">ロックオン対象の敵</param>
-	void LockonEnemy(Enemy* enemy);
-
-	/// <summary>
-	/// 敵ロックオン解除
-	/// </summary>
-	void UnlockonEnemy();
-
-
-	//getter
-	const bool GetIsLockon() { return isLockon; }
-	Enemy* GetLockonEnemy() { return lockonEnemy; }
-
 	//setter
 	void SetWorldPos3d(const Vector3& worldPos3d) { this->worldPos3d = worldPos3d; }
 	void SetMatViewProjection(const XMMATRIX& matView, const XMMATRIX& matProjection) {
@@ -50,36 +34,21 @@ public: //メンバ関数
 		this->matProjection = matProjection;
 	}
 
-private: //メンバ変数
+protected: //メンバ変数
 	/// <summary>
-	/// ロックオン時の移動
+	/// 通常移動
 	/// </summary>
-	void MoveLockon();
+	virtual void Move();
 
-	/// <summary>
-	/// ロックオンではないときの移動
-	/// </summary>
-	void MoveNotLockon();
-
-private: //静的メンバ変数
+protected: //静的メンバ変数
 	//通常時の色
 	static const XMFLOAT4 normalColor;
-	//ロックオン時の色
-	static const XMFLOAT4 lockonColor;
 
-private:
+protected:
 	//3Dレティクルのワールド座標
 	Vector3 worldPos3d = {};
 	//ビュー行列
 	XMMATRIX matView = {};
 	//プロジェクション行列
 	XMMATRIX matProjection = {};
-	//敵
-	Enemy* lockonEnemy = nullptr;
-	//ロックオンしているか
-	bool isLockon = false;
-	//レティクルを元の位置(自機追従)に戻すか
-	bool isBackPos = false;
-	//レティクルを元の位置(自機追従)に戻すタイマー
-	float backTimer = 0;
 };

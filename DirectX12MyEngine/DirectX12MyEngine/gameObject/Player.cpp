@@ -42,9 +42,7 @@ bool Player::Initialize()
 	}
 
 	//レティクルを生成
-	reticle.reset(Reticle::Create(1, 15.0f, { 100, 100 }));
-	reticle2.reset(Reticle::Create(1, 25.0f, { 50, 50 }));
-
+	reticles.reset(PlayerReticles::Create());
 
 	//HPバー生成
 	const Vector2 hpBarPosition = { 20, 20 };
@@ -91,8 +89,7 @@ void Player::Update()
 	ObjObject3d::Update();
 
 	//レティクル更新
-	reticle->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
-	reticle2->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
+	reticles->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
 
 	//HPバー更新
 	hpBar->Update();
@@ -115,8 +112,7 @@ void Player::DrawUI()
 	if (isCrash) { return; }
 
 	//レティクル描画
-	reticle->Draw();
-	reticle2->Draw();
+	reticles->Draw();
 
 	//HPバーフレーム描画
 	hpFrame->Draw();
@@ -214,7 +210,7 @@ void Player::Crash()
 	//1回バウンドしたらZ軸右回転 & Y軸回転
 	else if (crashBoundCount == 1) {
 		rotation.y -= rotSpeed / 5;
-		rotation.z -= rotSpeed; 
+		rotation.z -= rotSpeed;
 	}
 
 	//墜落バウンド回数が2回に達したら死亡
@@ -406,13 +402,23 @@ void Player::Attack()
 	Input* input = Input::GetInstance();
 	//発射キーを押したら
 	if (input->PushKey(DIK_SPACE) || input->PushGamePadButton(Input::PAD_B)) {
+		//ホーミング弾に切り替わる時間
+		const int32_t changeModeTime = 50;
 		//チャージ時間を加算
 		chargeTimer++;
 
+		//レティクルがチャージ状態でないとき && レティクルがロックオン状態でないとき
+		if (!reticles->GetIsChargeMode() && !reticles->GetIsLockon()) {
+			//タイマーが指定した時間になったら
+			if (chargeTimer >= changeModeTime) {
+				//レティクルをチャージ状態にする
+				reticles->ChargeModeStart();
+			}
+		}
+
 		//チャージ未完了時
 		if (!isChargeShotMode) {
-			//ホーミング弾に切り替わる時間
-			const int32_t changeModeTime = 60;
+			//タイマーが指定した時間になったら
 			if (chargeTimer >= changeModeTime) {
 				//チャージショット状態にする
 				isChargeShotMode = true;
@@ -444,6 +450,11 @@ void Player::Attack()
 		if (isChargeShotMode) {
 			//ホーミング弾発射
 			ShotHomingBullet();
+
+			//レティクルが敵をロックオンしていなければ、発射と同時にチャージ状態終了
+			if (!reticles->GetIsLockon()) {
+				reticles->ChargeModeEnd();
+			}
 		}
 
 		//次に発射ボタンを押した時にすぐ発射できるよう直進弾の発射待機をリセット
@@ -463,7 +474,7 @@ void Player::ShotStraightBullet()
 	//弾の速度を設定
 	const float bulletSpeed = 5;
 	//自機からレティクルへのベクトルに合わせて飛ばす
-	Vector3 velocity = reticle->GetReticle3D()->GetWorldPos() - GetWorldPos();
+	Vector3 velocity = reticles->GetNearReticleWorldPos() - GetWorldPos();
 	velocity = velocity.normalize() * bulletSpeed;
 
 	//直進弾を生成
@@ -478,12 +489,12 @@ void Player::ShotHomingBullet()
 	Vector3 shotPos = GetWorldPos();
 
 	//自機からレティクルへのベクトルに合わせて飛ばす
-	Vector3 velocity = reticle->GetReticle3D()->GetWorldPos() - GetWorldPos();
+	Vector3 velocity = reticles->GetNearReticleWorldPos() - GetWorldPos();
 	velocity.normalize();
 
 	//ホーミング弾を生成
 	std::unique_ptr<PlayerBullet> newBullet;
-	newBullet.reset(HomingBullet::Create(bulletModel, shotPos, velocity, reticle2->GetReticle2D()->GetLockonEnemy()));
+	newBullet.reset(HomingBullet::Create(bulletModel, shotPos, velocity, reticles->GetLockonEnemy()));
 	gameScene->AddPlayerBullet(std::move(newBullet));
 }
 
