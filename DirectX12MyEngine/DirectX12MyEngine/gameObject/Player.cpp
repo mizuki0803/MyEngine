@@ -332,17 +332,41 @@ void Player::Rotate()
 	rotation += rot;
 
 	//角度の限界値からはみ出さない
-	rotation.x = max(rotation.x, -rotLimit.x);
-	rotation.x = min(rotation.x, +rotLimit.x);
 	rotation.y = max(rotation.y, -rotLimit.y);
 	rotation.y = min(rotation.y, +rotLimit.y);
+	rotation.x = max(rotation.x, -rotLimit.x);
+	//地面に自機がめり込まむワールドY座標
+	const float groundPos = 8.0f;
+	//地面にめり込まないようにする場合の角度限界値処理
+	if (GetWorldPos().y <= groundPos) {
+		//ワールドY座標の限界値
+		const float moveLimitWorldY = 4.0f;
+		//地面から角度制限開始座標までの割合を計算
+		const float raito = (GetWorldPos().y - moveLimitWorldY) / (groundPos - moveLimitWorldY);		
+
+		//割合値が0以上の場合
+		if (raito >= 0) {
+			//地面に近づくほど傾かないようにする(通常の角度制限値 * 地面に近い割合)
+			const float groundRotLimit = rotLimit.x * raito;
+			rotation.x = min(rotation.x, groundRotLimit);
+		}
+		//0未満の場合
+		else {
+			//下方向に傾かないようにする
+			rotation.x = min(rotation.x, 0);
+		}
+	}
+	//地面にめり込むワールドY座標と関係ない場所にいる場合は通常通りの角度制限を行う
+	else {
+		rotation.x = min(rotation.x, +rotLimit.x);
+	}
 }
 
 void Player::Move()
 {
 	//自機が傾いている角度に移動させる
 	Vector3 move = { 0, 0, 0 };
-	const float moveSpeed = 0.15f;
+	const float moveSpeed = 0.1f;
 	move.x = moveSpeed * (rotation.y / rotLimit.y);
 	move.y = moveSpeed * -(rotation.x / rotLimit.x);
 	position += move;

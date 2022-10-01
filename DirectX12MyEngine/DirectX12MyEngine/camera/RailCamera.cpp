@@ -137,7 +137,7 @@ void RailCamera::Move()
 	//ˆÚ“®‘¬“x
 	Vector3 velocity;
 	//ƒJƒƒ‰‚ªŒX‚¢‚Ä‚¢‚éŠp“x‚ÉˆÚ“®‚³‚¹‚é
-	const float moveSpeed = 1.2f;
+	const float moveSpeed = 0.8f;
 	const Vector2 rotLimit = Player::GetRotLimit();
 	velocity.x = moveSpeed * (rotation.y / rotLimit.y);
 	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
