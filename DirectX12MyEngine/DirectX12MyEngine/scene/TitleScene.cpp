@@ -48,9 +48,11 @@ void TitleScene::Initialize()
 	lightGroup->SetCircleShadowActive(0, true);
 
 
+	ParticleManager::LoadTexture(1, "effect1.png");
+	ParticleManager::LoadTexture(2, "debugFont.png");
 	//パーティクル生成
 	ParticleManager::SetCamera(camera.get());
-	particleMan.reset(ParticleManager::Create());
+	particleMan.reset(ParticleManager::Create(1));
 
 	//スプライト共通部分のインスタンスを取得
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
@@ -405,32 +407,34 @@ void TitleScene::Update()
 
 
 	//色
-	const XMFLOAT4 purple = { 1.0f, 0.0f, 1.0f, 0.8f }; //紫
-	const XMFLOAT4 lightBlue = { 0.0f, 1.0f, 1.0f, 0.8f }; //水色
+	const XMFLOAT4 purple = { 1.0f, 0.1f, 1.0f, 1.0f }; //紫
+	const XMFLOAT4 lightBlue = { 0.1f, 1.0f, 1.0f, 0.0f }; //水色
 	//パーティクル更新
-	for (int i = 0; i < 10; i++)
+	if (input->PushKey(DIK_SPACE))
 	{
-		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
-		const float md_pos = 10.0f;
-		XMFLOAT3 pos{};
-		pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		//X,Y,Z全て[-0.05f, +0.05f]でランダムに分布
-		const float md_vel = 0.1f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-		//重力に見立ててYのみ[-0.001f, 0]でランダムに分布
-		XMFLOAT3 acc{};
-		const float md_acc = 0.001f;
-		acc.y = -(float)rand() / RAND_MAX * md_acc;
+		for (int i = 0; i < 10; i++)
+		{
+			//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
+			const float md_pos = 10.0f;
+			XMFLOAT3 pos{};
+			pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+			pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+			pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+			//X,Y,Z全て[-0.05f, +0.05f]でランダムに分布
+			const float md_vel = 0.1f;
+			XMFLOAT3 vel{};
+			vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			//重力に見立ててYのみ[-0.001f, 0]でランダムに分布
+			XMFLOAT3 acc{};
+			const float md_acc = 0.001f;
+			acc.y = -(float)rand() / RAND_MAX * md_acc;
 
-		//追加
-		particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, purple, lightBlue);
+			//追加
+			particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, purple, lightBlue);
+		}
 	}
-
 
 	//カメラのアングルを変更する
 	if (input->PushKey(DIK_LEFT) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN))
@@ -533,7 +537,7 @@ void TitleScene::Draw()
 
 
 	//パーティクル描画
-	//particleMan->Draw();
+	particleMan->Draw();
 
 
 	///-------パーティクル描画ここまで-------///

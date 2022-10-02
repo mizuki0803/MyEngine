@@ -21,6 +21,10 @@ private: // エイリアス
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
+	//テクスチャの最大枚数
+	static const int SRVCount = 512;
+
+public:
 	//頂点データ構造体
 	struct VertexPos
 	{
@@ -72,7 +76,7 @@ public:
 	/// </summary>
 	/// <param name="dev">デバイス</param>
 	/// <param name="cmdList">コマンドリスト</param>
-	static void ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
+	static void ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, const std::string& directoryPath = "Resources/");
 
 	/// <summary>
 	/// パイプライン生成
@@ -93,18 +97,13 @@ public:
 	/// 生成処理
 	/// </summary>
 	/// <returns>ParticleManager</returns>
-	static ParticleManager* Create();
-
-	/// <summary>
-	/// パーティクルの形生成
-	/// </summary>
-	static void CreateModel();
+	static ParticleManager* Create(UINT texNumber);
 
 	/// <summary>
 	/// 画像読み込み
 	/// </summary>
 	/// <returns>成否</returns>
-	static bool LoadTexture();
+	static bool LoadTexture(UINT texNumber, const std::string& filename);
 
 	/// <summary>
 	/// パーティクルの情報をセット
@@ -119,6 +118,11 @@ public:
 	/// <param name="end_color">色終了値</param>
 	void Add(const int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel,
 		const float start_scale, const float end_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color);
+
+	/// <summary>
+	/// パーティクルの形生成
+	/// </summary>
+	bool CreateModel(UINT texNumber);
 
 	/// <summary>
 	/// 初期化
@@ -142,8 +146,6 @@ public:
 private:
 	//デバイス
 	static ID3D12Device* dev;
-	//デスクリプタ1つ分のサイズ
-	static UINT descHandleIncrementSize;
 	//コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList;
 	//パイプラインセット
@@ -151,10 +153,9 @@ private:
 	//テクスチャ用デスクリプタヒープの生成
 	static ComPtr<ID3D12DescriptorHeap> descHeap;
 	//テクスチャリソース(テクスチャバッファ)の配列
-	static ComPtr<ID3D12Resource> texBuff;
-	//デスクリプタヒープの先頭ハンドルを取得
-	static CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
-	static CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
+	static ComPtr<ID3D12Resource> texBuff[SRVCount];
+	//テクスチャ格納ディレクトリ
+	static std::string directoryPath;
 	//頂点数
 	static const int vertexCount = 1024;
 	//頂点データ配列
@@ -163,12 +164,14 @@ private:
 	static Camera* camera;
 
 private:
-	////頂点バッファの生成
-	static ComPtr<ID3D12Resource> vertBuff;
-	////頂点バッファビューの作成
-	static D3D12_VERTEX_BUFFER_VIEW vbView;
+	//頂点バッファの生成
+	ComPtr<ID3D12Resource> vertBuff;
+	//頂点バッファビューの作成
+	D3D12_VERTEX_BUFFER_VIEW vbView;
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuff;
+	//テクスチャ番号
+	UINT texNumber = 0;
 	//パーティクル配列
 	std::forward_list<Particle> particles;
 };
