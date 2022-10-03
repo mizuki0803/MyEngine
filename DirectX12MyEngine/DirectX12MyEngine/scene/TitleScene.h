@@ -3,7 +3,7 @@
 #include "Sprite.h"
 #include "ObjObject3d.h"
 #include "FbxObject3d.h"
-#include "ParticleManager.h"
+//#include "ParticleManager.h"
 #include "LightGroup.h"
 #include "Camera.h"
 #include "CollisionShape.h"
@@ -72,7 +72,7 @@ private: //メンバ変数
 	float circleShadowFactorAngle[2] = { 0.0f, 0.5f };
 
 	//パーティクル
-	std::unique_ptr<ParticleManager> particleMan;
+	//std::unique_ptr<ParticleManager> particleMan;
 
 	//スプライト
 	std::unique_ptr<Sprite> sprite;

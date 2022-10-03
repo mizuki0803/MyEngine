@@ -175,6 +175,7 @@
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="collision\CollisionShape.cpp" />
     <ClCompile Include="effect\Easing.cpp" />
+    <ClCompile Include="effect\ParticleEmitter.cpp" />
     <ClCompile Include="gameObject\Boss.cpp" />
     <ClCompile Include="gameObject\BossAvatar.cpp" />
     <ClCompile Include="gameObject\BossAvatarType01.cpp" />
@@ -335,6 +336,7 @@
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionShape.h" />
     <ClInclude Include="effect\Easing.h" />
+    <ClInclude Include="effect\ParticleEmitter.h" />
     <ClInclude Include="gameObject\Boss.h" />
     <ClInclude Include="gameObject\BossAvatar.h" />
     <ClInclude Include="gameObject\BossAvatarType01.h" />

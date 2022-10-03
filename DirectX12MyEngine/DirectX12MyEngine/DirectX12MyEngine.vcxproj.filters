@@ -111,20 +111,23 @@
     <Filter Include="ソース ファイル\game\gameObject\boss\bossAvatar">
       <UniqueIdentifier>{d23f1597-33f2-4e94-8915-89261bcb15f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\backgroundObject">
-      <UniqueIdentifier>{af84be94-5c76-4f0f-8f28-9941d9a96528}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\game\backgroundObject\mountain">
-      <UniqueIdentifier>{2044d83a-bd7c-41b3-b323-a67519093254}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\game\backgroundObject\skydome">
-      <UniqueIdentifier>{15e7c728-e790-4197-9590-3285af2ac863}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\game\backgroundObject\ground">
-      <UniqueIdentifier>{a7dcd4e9-0bfd-4bed-b9a8-fb780aa5b741}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\game\gameObject\player\reticle\PlayerReticle">
       <UniqueIdentifier>{342f19ad-6fc4-411a-85e2-a379e79df9bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameEffect">
+      <UniqueIdentifier>{1f5924bd-0223-4358-91db-9e601e19a795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\backgroundObject">
+      <UniqueIdentifier>{af84be94-5c76-4f0f-8f28-9941d9a96528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\backgroundObject\mountain">
+      <UniqueIdentifier>{2044d83a-bd7c-41b3-b323-a67519093254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\backgroundObject\skydome">
+      <UniqueIdentifier>{15e7c728-e790-4197-9590-3285af2ac863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\backgroundObject\ground">
+      <UniqueIdentifier>{a7dcd4e9-0bfd-4bed-b9a8-fb780aa5b741}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +228,7 @@
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Skydome.cpp">
-      <Filter>ソース ファイル\game\backgroundObject\skydome</Filter>
+      <Filter>ソース ファイル\game\gameObject\backgroundObject\skydome</Filter>
     </ClCompile>
     <ClCompile Include="camera\RailCamera.cpp">
       <Filter>ソース ファイル\engine\camera</Filter>
@@ -312,10 +315,10 @@
       <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Ground.cpp">
-      <Filter>ソース ファイル\game\backgroundObject\ground</Filter>
+      <Filter>ソース ファイル\game\gameObject\backgroundObject\ground</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\Mountain.cpp">
-      <Filter>ソース ファイル\game\backgroundObject\mountain</Filter>
+      <Filter>ソース ファイル\game\gameObject\backgroundObject\mountain</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\PlayerFarReticle2D.cpp">
       <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
@@ -331,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="gameObject\PlayerFarReticle.cpp">
       <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
+    </ClCompile>
+    <ClCompile Include="effect\ParticleEmitter.cpp">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -507,7 +513,7 @@
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Skydome.h">
-      <Filter>ソース ファイル\game\backgroundObject\skydome</Filter>
+      <Filter>ソース ファイル\game\gameObject\backgroundObject\skydome</Filter>
     </ClInclude>
     <ClInclude Include="camera\RailCamera.h">
       <Filter>ソース ファイル\engine\camera</Filter>
@@ -594,10 +600,10 @@
       <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Ground.h">
-      <Filter>ソース ファイル\game\backgroundObject\ground</Filter>
+      <Filter>ソース ファイル\game\gameObject\backgroundObject\ground</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\Mountain.h">
-      <Filter>ソース ファイル\game\backgroundObject\mountain</Filter>
+      <Filter>ソース ファイル\game\gameObject\backgroundObject\mountain</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\PlayerFarReticle.h">
       <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
@@ -613,6 +619,9 @@
     </ClInclude>
     <ClInclude Include="gameObject\PlayerReticles.h">
       <Filter>ソース ファイル\game\gameObject\player\reticle\PlayerReticle</Filter>
+    </ClInclude>
+    <ClInclude Include="effect\ParticleEmitter.h">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

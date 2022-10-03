@@ -404,6 +404,10 @@ bool ParticleManager::LoadTexture(UINT texNumber, const std::string& filename)
 void ParticleManager::Add(const int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel,
 	const float start_scale, const float end_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color)
 {
+	//パーティクルの要素数が頂点数以上なら追加できないようにする
+	UINT particleNum = (UINT)std::distance(particles.begin(), particles.end());
+	if (particleNum >= vertexCount) { return; }
+
 	//リストに要素を追加
 	particles.emplace_front();
 	//追加した要素の参照
@@ -496,10 +500,16 @@ void ParticleManager::Update()
 		}
 	);
 
-
+	//万が一のときのために更新回数を数える
+	int UpdateNum = 0;
 	//全パーティクル更新
 	for (std::forward_list<Particle>::iterator it = particles.begin();
 		it != particles.end(); it++) {
+		//更新回数をカウント
+		UpdateNum++;
+		//更新回数が頂点数を越えたら強制終了
+		if (UpdateNum > vertexCount) { break; }
+
 		//経過フレーム数をカウント
 		it->frame++;
 		//速度に加速度を加算
@@ -532,9 +542,16 @@ void ParticleManager::Update()
 	VertexPos* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
+		//万が一のときのために反映回数を数える
+		int vertBuffNum = 0;
 		//パーティクルの情報を1つずつ反映
 		for (std::forward_list<Particle>::iterator it = particles.begin();
 			it != particles.end(); it++) {
+			//反映回数をカウント
+			vertBuffNum++;
+			//反映回数が頂点数を越えたら強制終了
+			if (vertBuffNum > vertexCount) { break; }
+
 			//座標
 			vertMap->pos = it->position;
 			//スケール
@@ -575,6 +592,10 @@ void ParticleManager::Draw()
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
 	);
 
+	//パーティクルの要素数を取得
+	UINT particleNum = (UINT)std::distance(particles.begin(), particles.end());
+	if (particleNum > vertexCount) { particleNum = vertexCount; }
+
 	//描画コマンド
-	cmdList->DrawInstanced((UINT)std::distance(particles.begin(), particles.end()), 1, 0, 0);
+	cmdList->DrawInstanced(particleNum, 1, 0, 0);
 }
