@@ -49,6 +49,19 @@ public: //メンバ関数
 	/// </summary>
 	void DemoEffect2();
 
+	/// <summary>
+	/// 自機のジェット噴射演出
+	/// </summary>
+	/// <param name="matWorld">自機ワールド行列</param>
+	void PlayerJet(const XMMATRIX& matWorld);
+
+	/// <summary>
+	/// チャージショット演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">大きさ</param>
+	void ChargeShot(const Vector3& position, const float size);
+
 private: //メンバ変数
 	//パーティクルマネージャー
 	std::unique_ptr<ParticleManager> particleManager;

@@ -28,7 +28,7 @@ public:
 	//頂点データ構造体
 	struct VertexPos
 	{
-		XMFLOAT3 pos;	//xyz座標
+		Vector3 pos;	//xyz座標
 		float scale;	//スケール
 		XMFLOAT4 color;	//色
 	};
@@ -43,15 +43,12 @@ public:
 	//パーティクル1粒
 	struct Particle
 	{
-		//DirectX::を省略
-		using XMFLOAT3 = DirectX::XMFLOAT3;
-
 		//座標
-		XMFLOAT3 position = {};
+		Vector3 position = {};
 		//速度
-		XMFLOAT3 velocity = {};
+		Vector3 velocity = {};
 		//加速度
-		XMFLOAT3 accel = {};
+		Vector3 accel = {};
 		//現在フレーム
 		int frame = 0;
 		//終了フレーム
@@ -116,7 +113,7 @@ public:
 	/// <param name="end_scale">スケール終了値</param>
 	/// <param name="start_color">色初期値</param>
 	/// <param name="end_color">色終了値</param>
-	void Add(const int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel,
+	void Add(const int life, const Vector3& position, const Vector3& velocity, const Vector3& accel,
 		const float start_scale, const float end_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color);
 
 	/// <summary>

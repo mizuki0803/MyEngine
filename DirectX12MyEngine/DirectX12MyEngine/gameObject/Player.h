@@ -115,6 +115,11 @@ private: //メンバ関数
 	void Attack();
 
 	/// <summary>
+	/// 弾発射座標を更新
+	/// </summary>
+	void UpdateBulletShotPos();
+
+	/// <summary>
 	/// 直進弾発射
 	/// </summary>
 	void ShotStraightBullet();
@@ -139,6 +144,8 @@ private: //静的メンバ変数
 	static GameScene* gameScene;
 	//自機弾のモデル
 	static ObjModel* bulletModel;
+	//ホーミング弾の大きさ
+	static const float homingBulletSize;
 	//自機の回転限界
 	static const Vector2 rotLimit;
 	//最大体力
@@ -177,6 +184,8 @@ private: //メンバ変数
 	Vector3 knockbackVel;
 	//レティクル
 	std::unique_ptr<PlayerReticles> reticles;
+	//弾発射座標
+	Vector3 bulletShotPos;
 	//直進弾の発射待機中か
 	bool isStraightShotWait = false;
 	//直進弾の発射待機タイマー

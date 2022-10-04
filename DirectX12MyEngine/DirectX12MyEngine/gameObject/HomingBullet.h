@@ -12,7 +12,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>ホーミング弾</returns>
-	static HomingBullet* Create(ObjModel* model, const Vector3& position, const Vector3& velocity, Enemy* enemy);
+	static HomingBullet* Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float size, Enemy* enemy);
 
 	/// <summary>
 	/// 初期化

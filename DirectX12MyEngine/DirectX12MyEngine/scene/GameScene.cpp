@@ -5,6 +5,7 @@
 #include "SpriteCommon.h"
 #include "DebugText.h"
 #include "Easing.h"
+#include "ParticleEmitter.h"
 #include "DemoEnemy.h"
 #include "CannonEnemy.h"
 #include "CircularEnemy.h"
@@ -40,6 +41,9 @@ void GameScene::Initialize()
 	lightGroup->SetPointLightActive(2, false);
 	//lightGroup->SetSpotLightActive(0, true);
 	lightGroup->SetCircleShadowActive(0, true);
+
+	//パーティクル生成
+	ParticleManager::SetCamera(railCamera.get());
 
 	//スプライト共通部分のインスタンスを取得
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
@@ -122,7 +126,6 @@ void GameScene::Initialize()
 		newMountain.reset(Mountain::Create(modelMountain.get(), { 70, 0, 0 + (float)i * 40 }));
 		mountains.push_back(std::move(newMountain));
 	}
-
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(railCamera.get());
@@ -247,6 +250,9 @@ void GameScene::Update()
 		mountain->Update();
 	}
 
+	//パーティクル更新
+	ParticleEmitter::GetInstance()->Update();
+
 	//衝突判定管理
 	CollisionCheck3d();
 	CollisionCheck2d();
@@ -281,11 +287,11 @@ void GameScene::Draw()
 	ObjObject3d::DrawPrev();
 	///-------Object3d描画ここから-------///
 
-
 	//自機
 	player->Draw();
 	//自機弾
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		if (!(bullet->GetBulletType() == PlayerBullet::BulletType::Straight)) { continue; }
 		bullet->Draw();
 	}
 	//敵
@@ -316,6 +322,16 @@ void GameScene::Draw()
 	///-------Object3d描画ここまで-------///
 
 
+	//パーティクル共通コマンド
+	ParticleManager::DrawPrev();
+	///-------パーティクル描画ここから-------///
+
+	//パーティクル描画
+	ParticleEmitter::GetInstance()->DrawAll();
+
+	///-------パーティクル描画ここまで-------///
+
+
 	//スプライト共通コマンド
 	SpriteCommon::GetInstance()->DrawPrev();
 	///-------スプライト描画ここから-------///
@@ -328,20 +344,7 @@ void GameScene::Draw()
 		boss->DrawUI();
 	}
 
-
 	///-------スプライト描画ここまで-------///
-
-
-	//パーティクル共通コマンド
-	//ParticleManager::DrawPrev();
-	///-------パーティクル描画ここから-------///
-
-
-	//パーティクル描画
-	//particleMan->Draw();
-
-
-	///-------パーティクル描画ここまで-------///
 }
 
 void GameScene::CollisionCheck3d()

@@ -411,7 +411,7 @@ void TitleScene::Update()
 	//パーティクル更新
 	if (input->PushKey(DIK_SPACE))
 	{
-		ParticleEmitter::GetInstance()->DemoEffect();
+		//ParticleEmitter::GetInstance()->PlayerJet({5, 5, 0});
 
 		//for (int i = 0; i < 10; i++)
 		//{
@@ -440,7 +440,7 @@ void TitleScene::Update()
 	}
 	if (input->PushKey(DIK_T))
 	{
-		ParticleEmitter::GetInstance()->DemoEffect2();
+		//ParticleEmitter::GetInstance()->ChargeShot({ 5, 5, 0 });
 	}
 
 	//カメラのアングルを変更する
@@ -486,8 +486,8 @@ void TitleScene::Update()
 	debugText->Print("TITLE SCENE", 1000, 50);
 
 	//デバッグ出力
-	sprintf_s(str, "%f, %f\n", input->GetPadLStickAngle(), input->GetPadRStickAngle());
-	OutputDebugStringA(str);
+	/*sprintf_s(str, "%f, %f\n", input->GetPadLStickAngle(), input->GetPadRStickAngle());
+	OutputDebugStringA(str);*/
 
 	if (input->TriggerKey(DIK_RETURN))
 	{

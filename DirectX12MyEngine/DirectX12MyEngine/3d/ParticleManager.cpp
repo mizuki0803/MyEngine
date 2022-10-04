@@ -401,7 +401,7 @@ bool ParticleManager::LoadTexture(UINT texNumber, const std::string& filename)
 	return true;
 }
 
-void ParticleManager::Add(const int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel,
+void ParticleManager::Add(const int life, const Vector3& position, const Vector3& velocity, const Vector3& accel,
 	const float start_scale, const float end_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color)
 {
 	//パーティクルの要素数が頂点数以上なら追加できないようにする

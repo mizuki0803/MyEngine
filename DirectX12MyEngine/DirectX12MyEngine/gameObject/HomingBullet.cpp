@@ -1,8 +1,9 @@
 #include "HomingBullet.h"
 #include "Easing.h"
 #include "Enemy.h"
+#include "ParticleEmitter.h"
 
-HomingBullet* HomingBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity, Enemy* enemy)
+HomingBullet* HomingBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float size, Enemy* enemy)
 {
 	//ホーミング弾のインスタンスを生成
 	HomingBullet* homingBullet = new HomingBullet();
@@ -29,6 +30,9 @@ HomingBullet* HomingBullet::Create(ObjModel* model, const Vector3& position, con
 
 	//速度をセット
 	homingBullet->velocity = velocity;
+
+	//サイズをセット
+	homingBullet->scale = { size, size, size };
 
 	//追従対象の敵をセット
 	homingBullet->enemy = enemy;
@@ -82,4 +86,8 @@ void HomingBullet::Update()
 
 	//3Dオブジェクトの更新
 	PlayerBullet::Update();
+
+	//チャージショット演出用パーティクル生成
+	const float size = scale.x;
+	ParticleEmitter::GetInstance()->ChargeShot(GetWorldPos(), size);
 }

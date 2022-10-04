@@ -4,9 +4,11 @@
 #include "GameScene.h"
 #include "StraightBullet.h"
 #include "HomingBullet.h"
+#include "ParticleEmitter.h"
 
 GameScene* Player::gameScene = nullptr;
 ObjModel* Player::bulletModel = nullptr;
+const float Player::homingBulletSize = 2.0f;
 const Vector2 Player::rotLimit = { 35.0f, 25.0f };
 
 Player* Player::Create(ObjModel* model)
@@ -95,6 +97,9 @@ void Player::Update()
 	hpBar->Update();
 	//HPバーフレーム更新
 	hpFrame->Update();
+
+	//自機のジェット噴射演出用パーティクル生成
+	ParticleEmitter::GetInstance()->PlayerJet(matWorld);
 }
 
 void Player::Draw()
@@ -342,12 +347,12 @@ void Player::Rotate()
 		//ワールドY座標の限界値
 		const float moveLimitWorldY = 4.0f;
 		//地面から角度制限開始座標までの割合を計算
-		const float raito = (GetWorldPos().y - moveLimitWorldY) / (groundPos - moveLimitWorldY);		
+		const float ratio = (GetWorldPos().y - moveLimitWorldY) / (groundPos - moveLimitWorldY);
 
 		//割合値が0以上の場合
-		if (raito >= 0) {
+		if (ratio >= 0) {
 			//地面に近づくほど傾かないようにする(通常の角度制限値 * 地面に近い割合)
-			const float groundRotLimit = rotLimit.x * raito;
+			const float groundRotLimit = rotLimit.x * ratio;
 			rotation.x = min(rotation.x, groundRotLimit);
 		}
 		//0未満の場合
@@ -424,6 +429,10 @@ void Player::Roll()
 void Player::Attack()
 {
 	Input* input = Input::GetInstance();
+
+	//弾発射座標を更新
+	UpdateBulletShotPos();
+
 	//発射キーを押したら
 	if (input->PushKey(DIK_SPACE) || input->PushGamePadButton(Input::PAD_B)) {
 		//ホーミング弾に切り替わる時間
@@ -467,6 +476,17 @@ void Player::Attack()
 			isStraightShotWait = true;
 			straightShotWaitTimer = waitTime;
 		}
+		//チャージ完了時
+		else {
+			//チャージショット演出用パーティクルの大きさを決める(チャージした時間で大きくなる)
+			float sizeRatio = (float)(chargeTimer - changeModeTime) / 5;
+			//最大比率1.0を越えない
+			if (sizeRatio >= 1.0f) { sizeRatio = 1.0f; }
+			float size = homingBulletSize * sizeRatio;
+
+			//チャージショット演出用パーティクル生成
+			ParticleEmitter::GetInstance()->ChargeShot(bulletShotPos, size);
+		}
 	}
 	//発射キーを離したら
 	else if (input->ReleaseKey(DIK_SPACE) || input->ReleaseGamePadButton(Input::PAD_B)) {
@@ -490,6 +510,25 @@ void Player::Attack()
 	}
 }
 
+void Player::UpdateBulletShotPos()
+{
+	//自機の中心座標からの距離
+	const Vector3 distancePos = { 0, -0.3f, 4.0f };
+	//平行移動行列の計算
+	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
+
+	//ワールド行列の合成
+	XMMATRIX bulletShotMatWorld;
+	bulletShotMatWorld = XMMatrixIdentity();	//変形をリセット
+	bulletShotMatWorld *= matTrans;	//ワールド行列に平行移動を反映
+
+	//自機オブジェクトのワールド行列をかける
+	bulletShotMatWorld *= matWorld;
+
+	//弾発射座標を取得
+	bulletShotPos = { bulletShotMatWorld.r[3].m128_f32[0], bulletShotMatWorld.r[3].m128_f32[1], bulletShotMatWorld.r[3].m128_f32[2] };
+}
+
 void Player::ShotStraightBullet()
 {
 	//発射位置を自機のワールド座標に設定
@@ -503,7 +542,7 @@ void Player::ShotStraightBullet()
 
 	//直進弾を生成
 	std::unique_ptr<PlayerBullet> newBullet;
-	newBullet.reset(StraightBullet::Create(bulletModel, shotPos, velocity));
+	newBullet.reset(StraightBullet::Create(bulletModel, bulletShotPos, velocity));
 	gameScene->AddPlayerBullet(std::move(newBullet));
 }
 
@@ -518,7 +557,7 @@ void Player::ShotHomingBullet()
 
 	//ホーミング弾を生成
 	std::unique_ptr<PlayerBullet> newBullet;
-	newBullet.reset(HomingBullet::Create(bulletModel, shotPos, velocity, reticles->GetLockonEnemy()));
+	newBullet.reset(HomingBullet::Create(bulletModel, bulletShotPos, velocity, homingBulletSize, reticles->GetLockonEnemy()));
 	gameScene->AddPlayerBullet(std::move(newBullet));
 }
 
