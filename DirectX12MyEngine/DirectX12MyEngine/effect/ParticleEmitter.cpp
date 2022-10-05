@@ -11,18 +11,21 @@ void ParticleEmitter::Initialize()
 {
 	//パーティクルマネージャー生成
 	particleManager.reset(ParticleManager::Create(1));
+	particleA.reset(ParticleManager::Create(2));
 }
 
 void ParticleEmitter::Update()
 {
 	//パーティクルマネージャー更新
 	particleManager->Update();
+	particleA->Update();
 }
 
 void ParticleEmitter::DrawAll()
 {
 	//パーティクルマネージャー描画
 	particleManager->Draw();
+	particleA->Draw();
 }
 
 void ParticleEmitter::DemoEffect()
@@ -31,7 +34,7 @@ void ParticleEmitter::DemoEffect()
 	const XMFLOAT4 purple = { 1.0f, 0.1f, 1.0f, 1.0f }; //紫
 	const XMFLOAT4 lightBlue = { 0.1f, 1.0f, 1.0f, 1.0f }; //水色
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 100; i++) {
 		int life = 0;
 		life = (rand() % 200) + 10;
 		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
@@ -62,7 +65,7 @@ void ParticleEmitter::DemoEffect2()
 	const XMFLOAT4 red = { 1.0f, 0.1f, 0.1f, 1.0f }; //紫
 	const XMFLOAT4 green = { 0.1f, 1.0f, 0.1f, 1.0f }; //水色
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 100; i++) {
 		int life = 0;
 		life = (rand() % 200) + 10;
 		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
@@ -83,7 +86,7 @@ void ParticleEmitter::DemoEffect2()
 		acc.y = -(float)rand() / RAND_MAX * md_acc;
 
 		//追加
-		particleManager->Add(life, pos, vel, acc, 1.0f, 0.0f, red, green);
+		particleA->Add(life, pos, vel, acc, 1.0f, 0.0f, red, green);
 	}
 }
 
@@ -129,9 +132,9 @@ void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld)
 		const float md_acc = 0.008f;
 		acc.z = -(float)rand() / RAND_MAX * md_acc;
 		float startScale = (float)rand() / RAND_MAX * 0.2f + 2.0f;
-		float endScale2 = 0;
+		float endScale = 0;
 		//追加
-		particleManager->Add(5, pos, vel, acc, startScale, endScale2, startColor, endColor);
+		particleManager->Add(5, pos, vel, acc, startScale, endScale, startColor, endColor);
 	}
 }
 
@@ -153,4 +156,34 @@ void ParticleEmitter::ChargeShot(const Vector3& position, const float size)
 		//追加
 		particleManager->Add(2, position, vel, acc, startScale, endScale, startColor, endColor);
 	}
+}
+
+void ParticleEmitter::ChargeShotDead(const Vector3& position)
+{
+	//色
+	const XMFLOAT4 startColor = { 0.04f, 0.1f, 0.04f, 1.0f }; //濃い緑
+	const XMFLOAT4 endColor = { 0.0f, 0.0f, 0.0f, 1.0f }; //無色
+
+	//速度、加速度は0
+	Vector3 vel{};
+	Vector3 acc{};
+
+	for (int i = 0; i < 25; i++) {
+		//生存時間
+		int life = (rand() % 30) + 40;
+		//大きさをランダムに分布
+		const float size = 15.0f;
+		const float md_scale = 10.0f;
+		float startScale = (float)rand() / RAND_MAX * md_scale + (size * 2 / 7) - md_scale / 2;
+		float endScale = (float)rand() / RAND_MAX * md_scale + (size * 2) - md_scale / 2;
+		//追加
+		particleManager->Add(life, position, vel, acc, startScale, endScale, startColor, endColor);
+	}
+}
+
+void ParticleEmitter::AllDelete()
+{
+	//全パーティクルの削除
+	particleManager->AllDelete();
+	particleA->AllDelete();
 }

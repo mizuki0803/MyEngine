@@ -137,6 +137,11 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 全削除
+	/// </summary>
+	void AllDelete();
+
 	//setter
 	static void SetCamera(Camera* camera) { ParticleManager::camera = camera; }
 
@@ -156,7 +161,7 @@ private:
 	//頂点数
 	static const int vertexCount = 1024;
 	//頂点データ配列
-	static VertexPos vertices[vertexCount];
+	VertexPos vertices[vertexCount];
 	//カメラ
 	static Camera* camera;
 

@@ -409,9 +409,9 @@ void TitleScene::Update()
 	//const XMFLOAT4 purple = { 1.0f, 0.1f, 1.0f, 1.0f }; //紫
 	//const XMFLOAT4 lightBlue = { 0.1f, 1.0f, 1.0f, 0.0f }; //水色
 	//パーティクル更新
-	if (input->PushKey(DIK_SPACE))
+	if (input->PushKey(DIK_SPACE) || input->PushGamePadButton(Input::PAD_B))
 	{
-		//ParticleEmitter::GetInstance()->PlayerJet({5, 5, 0});
+		ParticleEmitter::GetInstance()->DemoEffect();
 
 		//for (int i = 0; i < 10; i++)
 		//{
@@ -438,9 +438,13 @@ void TitleScene::Update()
 		//	particleMan->Add(life, pos, vel, acc, 1.0f, 0.0f, purple, lightBlue);
 		//}
 	}
-	if (input->PushKey(DIK_T))
+	if (input->PushKey(DIK_T) || input->PushGamePadButton(Input::PAD_A))
 	{
-		//ParticleEmitter::GetInstance()->ChargeShot({ 5, 5, 0 });
+		ParticleEmitter::GetInstance()->DemoEffect2();
+	}
+	if (input->TriggerKey(DIK_X) || input->TriggerGamePadButton(Input::PAD_X))
+	{
+		ParticleEmitter::GetInstance()->AllDelete();
 	}
 
 	//カメラのアングルを変更する
@@ -494,6 +498,7 @@ void TitleScene::Update()
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("GAME");
 		Audio::GetInstance()->StopWave("BGM.wav");
+		ParticleEmitter::GetInstance()->AllDelete();
 	}
 }
 

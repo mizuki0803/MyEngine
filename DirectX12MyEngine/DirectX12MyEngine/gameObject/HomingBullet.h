@@ -24,6 +24,17 @@ public: //静的メンバ関数
 	/// </summary>
 	void Update() override;
 
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	void OnCollision() override;
+
+private: //メンバ関数
+	/// <summary>
+	/// 地面に衝突したとき
+	/// </summary>
+	void CollisionGround() override;
+
 private: //静的メンバ変数
 	//寿命時間
 	static const int32_t lifeTime = 240;

@@ -62,7 +62,20 @@ public: //メンバ関数
 	/// <param name="size">大きさ</param>
 	void ChargeShot(const Vector3& position, const float size);
 
+	/// <summary>
+	/// チャージショット死亡演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	void ChargeShotDead(const Vector3& position);
+
+	/// <summary>
+	/// 全削除
+	/// </summary>
+	void AllDelete();
+
 private: //メンバ変数
 	//パーティクルマネージャー
 	std::unique_ptr<ParticleManager> particleManager;
+	//パーティクルマネージャー
+	std::unique_ptr<ParticleManager> particleA;
 };

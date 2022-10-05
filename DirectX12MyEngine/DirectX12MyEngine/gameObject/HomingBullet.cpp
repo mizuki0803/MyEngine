@@ -91,3 +91,23 @@ void HomingBullet::Update()
 	const float size = scale.x;
 	ParticleEmitter::GetInstance()->ChargeShot(GetWorldPos(), size);
 }
+
+void HomingBullet::OnCollision()
+{
+	//全弾共通処理
+	PlayerBullet::OnCollision();
+
+	//チャージショット死亡演出用パーティクル生成
+	ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos());
+}
+
+void HomingBullet::CollisionGround()
+{
+	//Y座標0以下になったら死亡
+	if (position.y <= 0) {
+		isDead = true;
+
+		//チャージショット死亡演出用パーティクル生成
+		ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos());
+	}
+}

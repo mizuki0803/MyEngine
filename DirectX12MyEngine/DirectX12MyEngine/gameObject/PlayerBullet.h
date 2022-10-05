@@ -29,7 +29,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	void OnCollision();
+	virtual void OnCollision();
 
 	//getter
 	Vector3 GetWorldPos();
@@ -38,6 +38,12 @@ public: //メンバ関数
 	Enemy* GetEnemy() { return enemy; }
 
 	void SetEnemy(Enemy* enemy) { this->enemy = enemy; }
+
+protected: //メンバ関数
+	/// <summary>
+	/// 地面に衝突したとき
+	/// </summary>
+	virtual void CollisionGround();
 
 protected: //メンバ変数
 	//弾の種類

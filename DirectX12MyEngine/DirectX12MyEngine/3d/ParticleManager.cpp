@@ -34,7 +34,7 @@ Camera* ParticleManager::camera = nullptr;
 //std::vector<unsigned short> ParticleManager::indices;
 //ParticleManager::Material ParticleManager::material;
 
-ParticleManager::VertexPos ParticleManager::vertices[vertexCount];
+//ParticleManager::VertexPos ParticleManager::vertices[vertexCount];
 //unsigned short ParticleManager::indices[indexCount];
 
 //XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();
@@ -598,4 +598,10 @@ void ParticleManager::Draw()
 
 	//描画コマンド
 	cmdList->DrawInstanced(particleNum, 1, 0, 0);
+}
+
+void ParticleManager::AllDelete()
+{
+	//要素の全削除
+	particles.clear();
 }

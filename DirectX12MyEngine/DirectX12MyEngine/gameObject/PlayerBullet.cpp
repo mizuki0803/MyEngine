@@ -15,10 +15,8 @@ bool PlayerBullet::Initialize()
 
 void PlayerBullet::Update()
 {
-	//Y座標0以下になったら死亡
-	if (position.y <= 0) {
-		isDead = true;
-	}
+	//地面に触れたとき
+	CollisionGround();
 
 	//オブジェクト更新
 	ObjObject3d::Update();
@@ -40,4 +38,12 @@ Vector3 PlayerBullet::GetWorldPos()
 	worldPos.z = matWorld.r[3].m128_f32[2];
 
 	return worldPos;
+}
+
+void PlayerBullet::CollisionGround()
+{
+	//Y座標0以下になったら死亡
+	if (position.y <= 0) {
+		isDead = true;
+	}
 }
