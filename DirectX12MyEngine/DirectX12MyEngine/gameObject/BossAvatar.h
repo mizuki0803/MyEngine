@@ -113,6 +113,7 @@ public: //メンバ関数
 	//getter
 	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
+	const bool GetIsDelete() { return isDelete; }
 	const int GetDamageNum() { return damageNum; }
 
 protected:
@@ -186,6 +187,16 @@ protected:
 	/// </summary>
 	void Stay();
 
+	/// <summary>
+	/// 死亡時の処理
+	/// </summary>
+	void Dead();
+
+	/// <summary>
+	/// 死亡したときの動き
+	/// </summary>
+	virtual void DeadAction();
+
 protected: //静的メンバ変数
 	//ゲームシーン
 	static GameScene* gameScene;
@@ -217,6 +228,8 @@ protected: //メンバ変数
 	int HP = maxHP;
 	//死亡フラグ
 	bool isDead = false;
+	//削除フラグ
+	bool isDelete = false;
 	//喰らうダメージ量
 	int damageNum;
 	//ダメージ色フラグ
@@ -251,4 +264,6 @@ protected: //メンバ変数
 	Vector3 attackAvatarGiantBulletRecoilVelocity = { 0, 0, 2 };
 	//攻撃内容:分身巨大弾で使う反動加速度
 	Vector3 attackAvatarGiantBulletRecoilAccel = { 0, 0, -0.05f };
+	//死亡時墜落速度
+	Vector3 crashVel = { 0, 0, 0 };
 };

@@ -40,6 +40,7 @@ bool BossAvatar::Initialize()
 	//大きさは本体の3/4
 	scale = { 0.75f, 0.75f, 0.75f };
 
+	//オブジェクト初期化
 	if (!ObjObject3d::Initialize()) {
 		return false;
 	}
@@ -52,6 +53,11 @@ void BossAvatar::Update()
 	//ダメージ色状態のみの処理
 	if (isDamageColor) {
 		DamageColorMode();
+	}
+
+	//死亡時の動き
+	if (isDead) {
+		DeadAction();
 	}
 
 	//オブジェクト更新
@@ -68,7 +74,7 @@ void BossAvatar::Damage(int attackPower)
 
 	//HPが0以下になったら死亡
 	if (HP <= 0) {
-		isDead = true;
+		Dead();
 
 		//HPゲージバグを起こさないようマイナス分を0に調整
 		damageNum += HP;
@@ -374,4 +380,36 @@ void BossAvatar::AttackTypeAvatarGiantBulletRecoil()
 
 void BossAvatar::Stay()
 {
+}
+
+void BossAvatar::Dead()
+{
+	//死亡状態にする
+	isDead = true;
+
+	//死亡しているのに親に合わせて回転などをしてしまうと違和感があるので、親子構造を解除する
+	//親子構造解除に伴い、座標と大きさを設定し直す
+	position = GetWorldPos();
+	scale = { matWorld.r[0].m128_f32[0], matWorld.r[1].m128_f32[1], matWorld.r[2].m128_f32[2] };
+	parent = nullptr;
+}
+
+void BossAvatar::DeadAction()
+{
+	//X軸回転をしながら墜落する
+	const float rotSpeed = 1.0f;
+	rotation.x += rotSpeed;
+
+	//墜落するため、速度に加速度を加える
+	Vector3 crashAccel = { 0, -0.005f, 0 };
+	crashVel += crashAccel;
+	//落下する速度の最大値を設定
+	const float maxCrashSpeed = -0.4f;
+	if (crashVel.y <= maxCrashSpeed) { crashVel.y = maxCrashSpeed; }
+	position += crashVel;
+
+	//Y座標が0以下になったら削除
+	if (GetWorldPos().y <= 0) {
+		isDelete = true;
+	}
 }

@@ -71,7 +71,7 @@ void Boss::Update()
 {
 	//死亡した分身の削除
 	avatars.remove_if([](std::unique_ptr<BossAvatar>& avatar) {
-		return avatar->GetIsDead();
+		return avatar->GetIsDelete();
 		});
 
 	//ビヘイビアツリーによる行動遷移
@@ -137,6 +137,9 @@ void Boss::OnCollisionMainBody(const int damageNum)
 
 void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum)
 {
+	//分身が既に死亡していたら抜ける
+	if (avatar->GetIsDead()) { return; }
+
 	//待機状態ならダメージを喰らう
 	const bool isWaitMode = (phase == Phase::Wait);
 	//y軸角度45度以下ならダメージを喰らう
@@ -358,6 +361,9 @@ bool Boss::AttackTypeAvatarBodyBlow()
 	//本体と分身を攻撃内容:分身体当たりで動かす
 	mainBody->AttackTypeAvatarBodyBlow();
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		//分身が既に死亡していたら飛ばす
+		if (avatar->GetIsDead()) { continue; }
+
 		avatar->AttackTypeAvatarBodyBlow(player->GetWorldPos());
 	}
 
@@ -372,6 +378,9 @@ bool Boss::AttackTypeAvatarGatling()
 	//本体と分身を攻撃内容:分身ガトリング砲で動かす
 	mainBody->AttackTypeAvatarGatling(player->GetWorldPos());
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		//分身が既に死亡していたら飛ばす
+		if (avatar->GetIsDead()) { continue; }
+
 		avatar->AttackTypeAvatarGatling();
 	}
 
@@ -385,6 +394,9 @@ bool Boss::AttackTypeAvatarGiantBullet()
 
 	//本体と分身を攻撃内容:分身巨大弾で動かす
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		//分身が既に死亡していたら飛ばす
+		if (avatar->GetIsDead()) { continue; }
+
 		avatar->AttackTypeAvatarGiantBullet();
 	}
 
@@ -421,6 +433,9 @@ bool Boss::AttackModeAvatarRota()
 
 	//攻撃状態にするため分身を回転させる
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		//分身が既に死亡していたら飛ばす
+		if (avatar->GetIsDead()) { continue; }
+
 		avatar->ChangeAttackMode(time);
 	}
 
@@ -461,6 +476,9 @@ bool Boss::ReturnBasePosition()
 	//基準位置に戻す
 	mainBody->ReturnBasePosition(time);
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		//分身が既に死亡していたら飛ばす
+		if (avatar->GetIsDead()) { continue; }
+
 		avatar->ReturnBasePosition(time);
 	}
 
@@ -497,6 +515,9 @@ bool Boss::WaitModeAvatarRota()
 
 	//待機状態にするため分身を回転させる
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		//分身が既に死亡していたら飛ばす
+		if (avatar->GetIsDead()) { continue; }
+
 		avatar->ChangeWaitMode(time);
 	}
 
@@ -569,6 +590,9 @@ void Boss::AttackEnd()
 	//攻撃状態終了するので必要な情報をセット
 	mainBody->AttackEnd();
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		//分身が既に死亡していたら飛ばす
+		if (avatar->GetIsDead()) { continue; }
+
 		avatar->AttackEnd();
 	}
 }

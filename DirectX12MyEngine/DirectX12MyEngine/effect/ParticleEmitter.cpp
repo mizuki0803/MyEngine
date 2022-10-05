@@ -174,7 +174,7 @@ void ParticleEmitter::ChargeShotDead(const Vector3& position)
 		//‘å‚«‚³‚ðƒ‰ƒ“ƒ_ƒ€‚É•ª•z
 		const float size = 15.0f;
 		const float md_scale = 10.0f;
-		float startScale = (float)rand() / RAND_MAX * md_scale + (size * 2 / 7) - md_scale / 2;
+		float startScale = 0;
 		float endScale = (float)rand() / RAND_MAX * md_scale + (size * 2) - md_scale / 2;
 		//’Ç‰Á
 		particleManager->Add(life, position, vel, acc, startScale, endScale, startColor, endColor);

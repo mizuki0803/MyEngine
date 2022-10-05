@@ -15,6 +15,11 @@ public: //静的メンバ関数
 
 public: //メンバ関数
 	/// <summary>
+	/// 初期化
+	/// </summary>
+	bool Initialize() override;
+
+	/// <summary>
 	/// 攻撃内容:分身体当たりのロックオン処理
 	/// </summary>
 	void AttackTypeAvatarBodyBlowLockon() override;
@@ -33,4 +38,10 @@ public: //メンバ関数
 	/// 攻撃内容:分身巨大弾の移動させる処理
 	/// </summary>
 	void AttackTypeAvatarGiantBulletMove() override;
+
+private: //メンバ関数
+	/// <summary>
+	/// 死亡したときの動き
+	/// </summary>
+	void DeadAction() override;
 };
