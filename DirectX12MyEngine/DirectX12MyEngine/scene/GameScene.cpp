@@ -250,12 +250,12 @@ void GameScene::Update()
 		mountain->Update();
 	}
 
-	//パーティクル更新
-	ParticleEmitter::GetInstance()->Update();
-
 	//衝突判定管理
 	CollisionCheck3d();
 	CollisionCheck2d();
+
+	//パーティクル更新
+	ParticleEmitter::GetInstance()->Update();
 
 	//デバックテキスト
 	//X座標,Y座標,縮尺を指定して表示
