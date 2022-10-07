@@ -1,6 +1,6 @@
 #include "BossHPBar.h"
 
-BossHPBar* BossHPBar::Create(UINT texNumber, const Vector2 position, const int maxHP)
+BossHPBar* BossHPBar::Create(UINT texNumber, const Vector2& position, const int maxHP)
 {
 	//HPバーのインスタンスを生成
 	BossHPBar* bossHPBar = new BossHPBar();

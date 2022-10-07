@@ -3,7 +3,7 @@
 
 const XMFLOAT4 PlayerFarReticle2D::chargeLockonColor = { 0.9f, 0.1f, 0.1f, 1 };
 
-PlayerFarReticle2D* PlayerFarReticle2D::Create(UINT texNumber, const Vector2& size)
+PlayerFarReticle2D* PlayerFarReticle2D::Create(UINT texNumber, const Vector2& normalSize, const Vector2& chargeModeSize)
 {
 	//自機付属の2Dレティクル(遠)のインスタンスを生成
 	PlayerFarReticle2D* playerFarReticle2D = new PlayerFarReticle2D();
@@ -19,10 +19,13 @@ PlayerFarReticle2D* PlayerFarReticle2D::Create(UINT texNumber, const Vector2& si
 	}
 
 	//大きさをセット
-	playerFarReticle2D->size = size;
+	playerFarReticle2D->size = normalSize;
 
 	//通常時の大きさを記録しておく
-	playerFarReticle2D->normalSize = size;
+	playerFarReticle2D->normalSize = normalSize;
+
+	//チャージ時の大きさを記録しておく
+	playerFarReticle2D->chargeModeSize = chargeModeSize;
 
 	return playerFarReticle2D;
 }
@@ -124,8 +127,8 @@ void PlayerFarReticle2D::ChargeModeStartSizeChange()
 	const float time = chargeTimer / chargeModeEndTime;
 
 	//大きさを大きくする
-	size.x = Easing::OutQuad(beforeChangeSize.x, 100, time);
-	size.y = Easing::OutQuad(beforeChangeSize.y, 100, time);
+	size.x = Easing::OutQuad(beforeChangeSize.x, chargeModeSize.x, time);
+	size.y = Easing::OutQuad(beforeChangeSize.y, chargeModeSize.y, time);
 
 	//タイマーが指定した時間になったら緊急回避終了
 	if (chargeTimer >= chargeModeEndTime) {
@@ -154,11 +157,14 @@ void PlayerFarReticle2D::ChargeModeEndSizeChange()
 
 void PlayerFarReticle2D::ChargeModeSizeChange()
 {
+	//チャージ状態時の大きさを小さく変更していく速さ
 	Vector2 sizeChangeSpeed = { 1, 1 };
 	size -= sizeChangeSpeed;
 
-	if (size.x <= 80) {
-		size = { 100, 100 };
+	//一定ラインまで小さくなったらチャージ時の大きさに戻す
+	const float chargeModeSizeMin = 80.0f;
+	if (size.x <= chargeModeSizeMin) {
+		size = chargeModeSize;
 	}
 }
 

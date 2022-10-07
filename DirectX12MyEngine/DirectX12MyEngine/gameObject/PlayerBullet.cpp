@@ -42,8 +42,9 @@ Vector3 PlayerBullet::GetWorldPos()
 
 void PlayerBullet::CollisionGround()
 {
-	//YÀ•W0ˆÈ‰º‚É‚È‚Á‚½‚ç€–S
-	if (position.y <= 0) {
-		isDead = true;
-	}
+	//YÀ•W0ˆÈ‰º‚Å‚È‚¯‚ê‚Î”²‚¯‚é
+	if (position.y > 0) { return; }
+
+	//€–S
+	isDead = true;
 }

@@ -165,11 +165,11 @@ void GameScene::Update()
 		if (player->GetReticles()->GetLockonEnemy() == enemy.get()) {
 			player->GetReticles()->UnlockonEnemy();
 		}
-		//自機弾のホーミング対象だった場合、ホーミング解除
 		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-			if (bullet->GetEnemy() == enemy.get()) {
-				bullet->SetEnemy(nullptr);
-			}
+			//自機弾のホーミング対象だった場合
+			if (bullet->GetEnemy() != enemy.get()) { continue; }
+			//ホーミング解除
+			bullet->SetEnemy(nullptr);
 		}
 	}
 	//削除状態の敵の削除
@@ -369,16 +369,15 @@ void GameScene::CollisionCheck3d()
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
 
-			//衝突していたら
-			if (isCollision) {
-				//敵のコールバック関数を呼び出す
-				enemy->OnCollision();
-				//自機弾のコールバック関数を呼び出す
-				bullet->OnCollision();
+			//敵のコールバック関数を呼び出す
+			enemy->OnCollision();
+			//自機弾のコールバック関数を呼び出す
+			bullet->OnCollision();
 
-				break;
-			}
+			break;
 		}
 	}
 #pragma endregion
@@ -406,14 +405,13 @@ void GameScene::CollisionCheck3d()
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
 
-			//衝突していたら
-			if (isCollision) {
-				//自機のダメージ用コールバック関数を呼び出す
-				player->OnCollisionDamage(posB);
-				//カメラをシェイクさせる
-				railCamera->ShakeStart();
-			}
+			//自機のダメージ用コールバック関数を呼び出す
+			player->OnCollisionDamage(posB);
+			//カメラをシェイクさせる
+			railCamera->ShakeStart();
 		}
 	}
 #pragma endregion
@@ -438,16 +436,15 @@ void GameScene::CollisionCheck3d()
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
 
-			//衝突していたら
-			if (isCollision) {
-				//自機のダメージ用コールバック関数を呼び出す
-				player->OnCollisionDamage(posB);
-				//敵弾のコールバック関数を呼び出す
-				bullet->OnCollision();
-				//カメラをシェイクさせる
-				railCamera->ShakeStart();
-			}
+			//自機のダメージ用コールバック関数を呼び出す
+			player->OnCollisionDamage(posB);
+			//敵弾のコールバック関数を呼び出す
+			bullet->OnCollision();
+			//カメラをシェイクさせる
+			railCamera->ShakeStart();
 		}
 	}
 #pragma endregion
@@ -469,14 +466,13 @@ void GameScene::CollisionCheck3d()
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
 
-			//衝突していたら
-			if (isCollision) {
-				//自機の回復用コールバック関数を呼び出す
-				player->OnCollisionHeal();
-				//回復アイテムのコールバック関数を呼び出す
-				healingItem->OnCollision();
-			}
+			//自機の回復用コールバック関数を呼び出す
+			player->OnCollisionHeal();
+			//回復アイテムのコールバック関数を呼び出す
+			healingItem->OnCollision();
 		}
 	}
 #pragma endregion
@@ -505,14 +501,13 @@ void GameScene::CollisionCheck3d()
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
 
-			//衝突していたら
-			if (isCollision) {
-				//自機のダメージ用コールバック関数を呼び出す
-				player->OnCollisionDamage(posB);
-				//カメラをシェイクさせる
-				railCamera->ShakeStart();
-			}
+			//自機のダメージ用コールバック関数を呼び出す
+			player->OnCollisionDamage(posB);
+			//カメラをシェイクさせる
+			railCamera->ShakeStart();
 		}
 	}
 #pragma endregion
@@ -532,17 +527,16 @@ void GameScene::CollisionCheck3d()
 
 		//球と球の衝突判定を行う
 		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+		//衝突していなければ飛ばす
+		if (!isCollision) { continue; }
 
-		//衝突していたら
-		if (isCollision) {
-			//ボスのコールバック関数を呼び出す
-			const int attackPower = 2;
-			boss->OnCollisionMainBody(attackPower);
-			//自機弾のコールバック関数を呼び出す
-			bullet->OnCollision();
+		//ボスのコールバック関数を呼び出す
+		const int attackPower = 2;
+		boss->OnCollisionMainBody(attackPower);
+		//自機弾のコールバック関数を呼び出す
+		bullet->OnCollision();
 
-			break;
-		}
+		break;
 	}
 #pragma endregion
 
@@ -564,17 +558,16 @@ void GameScene::CollisionCheck3d()
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
 
-			//衝突していたら
-			if (isCollision) {
-				//ボスのコールバック関数を呼び出す
-				const int attackPower = 2;
-				boss->OnCollisionAvatar(bossAvatar.get(), attackPower);
-				//自機弾のコールバック関数を呼び出す
-				bullet->OnCollision();
+			//ボスのコールバック関数を呼び出す
+			const int attackPower = 2;
+			boss->OnCollisionAvatar(bossAvatar.get(), attackPower);
+			//自機弾のコールバック関数を呼び出す
+			bullet->OnCollision();
 
-				break;
-			}
+			break;
 		}
 	}
 #pragma endregion
@@ -617,12 +610,11 @@ void GameScene::CollisionCheck2d()
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckCircleToCircle(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
 
-			//衝突していたら
-			if (isCollision) {
-				//レティクルのロックオン対象を確定させる
-				player->GetReticles()->LockonEnemy(enemy.get());
-			}
+			//レティクルのロックオン対象を確定させる
+			player->GetReticles()->LockonEnemy(enemy.get());
 		}
 	}
 #pragma endregion

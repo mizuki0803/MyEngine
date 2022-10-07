@@ -12,5 +12,5 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>ボス用HPバーフレーム</returns>
-	static BossHPFrame* Create(UINT texNumber, const Vector2 position);
+	static BossHPFrame* Create(UINT texNumber, const Vector2& position);
 };

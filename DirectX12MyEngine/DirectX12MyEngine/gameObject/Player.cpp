@@ -205,17 +205,17 @@ void Player::Crash()
 		crashBoundCount++;
 
 		//バウンドさせる
-		crashVel.y = 0.4f;
+		const float boundStartVel = 0.4f;
+		crashVel.y = boundStartVel;
 	}
 
 	//墜落回転する
-	const float rotSpeed = 5;
+	const Vector3 rotSpeed = { 0, 1, 5 };
 	//バウンドするまではZ軸左回転
-	if (crashBoundCount == 0) { rotation.z += rotSpeed; }
+	if (crashBoundCount == 0) { rotation.z += rotSpeed.z; }
 	//1回バウンドしたらZ軸右回転 & Y軸回転
 	else if (crashBoundCount == 1) {
-		rotation.y -= rotSpeed / 5;
-		rotation.z -= rotSpeed;
+		rotation -= rotSpeed;
 	}
 
 	//墜落バウンド回数が2回に達したら死亡
@@ -228,7 +228,8 @@ void Player::Crash()
 void Player::Heal()
 {
 	//体力を増やす
-	HP += 10;
+	const int healNum = 10;
+	HP += healNum;
 
 	//HPは最大HP以上にならない
 	if (HP >= maxHP) {
@@ -389,6 +390,7 @@ void Player::Roll()
 {
 	Input* input = Input::GetInstance();
 
+	//緊急回避時の動き
 	if (isRoll) {
 		//タイマーを更新
 		const float rollTime = 40;
@@ -404,6 +406,7 @@ void Player::Roll()
 			isRoll = false;
 		}
 	}
+	//緊急回避可能時
 	else {
 		//ダメージ状態なら緊急回避は発動できないで抜ける
 		if (isDamage) { return; }
@@ -420,9 +423,10 @@ void Player::Roll()
 		//緊急回避開始時のZ軸角度を記憶
 		rollStartRot = rotation.z;
 
-		//緊急回避終了時のZ軸角度をセット		
-		if (input->TriggerKey(DIK_RSHIFT) || input->TriggerGamePadButton(Input::PAD_RB)) { rollEndRot = -360; }		//右回転
-		else if (input->TriggerKey(DIK_LSHIFT) || input->TriggerGamePadButton(Input::PAD_LB)) { rollEndRot = 360; }	//左回転
+		//緊急回避終了時のZ軸角度をセット
+		const float rotAmount = 360; //回転量
+		if (input->TriggerKey(DIK_RSHIFT) || input->TriggerGamePadButton(Input::PAD_RB)) { rollEndRot = -rotAmount; }		//右回転
+		else if (input->TriggerKey(DIK_LSHIFT) || input->TriggerGamePadButton(Input::PAD_LB)) { rollEndRot = rotAmount; }	//左回転
 	}
 }
 
@@ -433,81 +437,96 @@ void Player::Attack()
 	//弾発射座標を更新
 	UpdateBulletShotPos();
 
-	//発射キーを押したら
+	//攻撃ボタンを押したら
 	if (input->PushKey(DIK_SPACE) || input->PushGamePadButton(Input::PAD_B)) {
-		//ホーミング弾に切り替わる時間
-		const int32_t changeModeTime = 50;
-		//チャージ時間を加算
-		chargeTimer++;
-
-		//レティクルがチャージ状態でないとき && レティクルがロックオン状態でないとき
-		if (!reticles->GetIsChargeMode() && !reticles->GetIsLockon()) {
-			//タイマーが指定した時間になったら
-			if (chargeTimer >= changeModeTime) {
-				//レティクルをチャージ状態にする
-				reticles->ChargeModeStart();
-			}
-		}
-
-		//チャージ未完了時
-		if (!isChargeShotMode) {
-			//タイマーが指定した時間になったら
-			if (chargeTimer >= changeModeTime) {
-				//チャージショット状態にする
-				isChargeShotMode = true;
-			}
-
-			//直進弾発射待機処理
-			if (isStraightShotWait) {
-				straightShotWaitTimer--;
-				if (straightShotWaitTimer <= 0) {
-					//待機終了
-					isStraightShotWait = false;
-				}
-				return;
-			}
-
-			//直進弾発射
-			ShotStraightBullet();
-
-			//直進弾発射待ち時間を設定
-			const int32_t waitTime = 10;
-			//待機開始
-			isStraightShotWait = true;
-			straightShotWaitTimer = waitTime;
-		}
-		//チャージ完了時
-		else {
-			//チャージショット演出用パーティクルの大きさを決める(チャージした時間で大きくなる)
-			float sizeRatio = (float)(chargeTimer - changeModeTime) / 5;
-			//最大比率1.0を越えない
-			if (sizeRatio >= 1.0f) { sizeRatio = 1.0f; }
-			float size = homingBulletSize * sizeRatio;
-
-			//チャージショット演出用パーティクル生成
-			ParticleEmitter::GetInstance()->ChargeShot(bulletShotPos, size);
-		}
+		//攻撃ボタンを押しているときの処理
+		PushAttackButton();
 	}
-	//発射キーを離したら
+	//攻撃ボタンを離したら
 	else if (input->ReleaseKey(DIK_SPACE) || input->ReleaseGamePadButton(Input::PAD_B)) {
-		//チャージ完了時
-		if (isChargeShotMode) {
-			//ホーミング弾発射
-			ShotHomingBullet();
+		//攻撃ボタンを離したときの処理
+		ReleaseAttackButton();
+	}
+}
 
-			//レティクルが敵をロックオンしていなければ、発射と同時にチャージ状態終了
-			if (!reticles->GetIsLockon()) {
-				reticles->ChargeModeEnd();
-			}
+void Player::PushAttackButton()
+{
+	//ホーミング弾に切り替わる時間
+	const int32_t changeModeTime = 50;
+	//チャージ時間を加算
+	chargeTimer++;
+
+	//レティクルがチャージ状態でないとき && レティクルがロックオン状態でないとき
+	if (!reticles->GetIsChargeMode() && !reticles->GetIsLockon()) {
+		//タイマーが指定した時間になったら
+		if (chargeTimer >= changeModeTime) {
+			//レティクルをチャージ状態にする
+			reticles->ChargeModeStart();
+		}
+	}
+
+	//チャージ未完了時
+	if (!isChargeShotMode) {
+		//タイマーが指定した時間になったら
+		if (chargeTimer >= changeModeTime) {
+			//チャージショット状態にする
+			isChargeShotMode = true;
 		}
 
-		//次に発射ボタンを押した時にすぐ発射できるよう直進弾の発射待機をリセット
-		isStraightShotWait = false;
-		straightShotWaitTimer = 0;
-		//チャージショット状態をリセット
-		isChargeShotMode = false;
-		chargeTimer = 0;
+		//直進弾発射待機処理
+		if (isStraightShotWait) {
+			straightShotWaitTimer--;
+			if (straightShotWaitTimer <= 0) {
+				//待機終了
+				isStraightShotWait = false;
+			}
+			return;
+		}
+
+		//直進弾発射
+		ShotStraightBullet();
+
+		//直進弾発射待ち時間を設定
+		const int32_t waitTime = 10;
+		//待機開始
+		isStraightShotWait = true;
+		straightShotWaitTimer = waitTime;
 	}
+	//チャージ完了時
+	else {
+		//チャージ演出が最大の大きさになるまでのフレーム数
+		const int maxRatioFrame = 5;
+		//チャージショット演出用パーティクルの大きさを決める(チャージした時間で大きくなる)
+		float sizeRatio = (float)(chargeTimer - changeModeTime) / maxRatioFrame;
+		//最大比率1.0を越えない
+		const float maxRatio = 1.0f;
+		if (sizeRatio >= maxRatio) { sizeRatio = maxRatio; }
+		const float particleSize = homingBulletSize * sizeRatio;
+
+		//チャージショット演出用パーティクル生成
+		ParticleEmitter::GetInstance()->ChargeShot(bulletShotPos, particleSize);
+	}
+}
+
+void Player::ReleaseAttackButton()
+{
+	//チャージ完了時
+	if (isChargeShotMode) {
+		//ホーミング弾発射
+		ShotHomingBullet();
+
+		//レティクルが敵をロックオンしていなければ、発射と同時にチャージ状態終了
+		if (!reticles->GetIsLockon()) {
+			reticles->ChargeModeEnd();
+		}
+	}
+
+	//次に発射ボタンを押した時にすぐ発射できるよう直進弾の発射待機をリセット
+	isStraightShotWait = false;
+	straightShotWaitTimer = 0;
+	//チャージショット状態をリセット
+	isChargeShotMode = false;
+	chargeTimer = 0;
 }
 
 void Player::UpdateBulletShotPos()

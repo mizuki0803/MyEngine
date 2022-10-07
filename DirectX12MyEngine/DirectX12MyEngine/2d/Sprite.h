@@ -44,7 +44,7 @@ public: //メンバ関数
 	/// <param name="isFlipX">左右反転するか</param>
 	/// <param name="isFlipY">上下反転するか</param>
 	/// <returns>Sprite</returns>
-	static Sprite* Create(UINT texNumber, Vector2 anchorpoint = { 0.5f, 0.5f }, bool isFlipX = false, bool isFlipY = false);
+	static Sprite* Create(UINT texNumber, const Vector2& anchorpoint = { 0.5f, 0.5f }, bool isFlipX = false, bool isFlipY = false);
 
 	/// <summary>
 	/// 初期化
@@ -54,7 +54,7 @@ public: //メンバ関数
 	/// <param name="isFlipX">左右反転するか</param>
 	/// <param name="isFlipY">上下反転するか</param>
 	/// <returns>成否</returns>
-	virtual bool Initialize(UINT texNumber, Vector2 anchorpoint, bool isFlipX, bool isFlipY);
+	virtual bool Initialize(UINT texNumber, const Vector2& anchorpoint, bool isFlipX, bool isFlipY);
 
 	/// <summary>
 	/// 頂点バッファの転送

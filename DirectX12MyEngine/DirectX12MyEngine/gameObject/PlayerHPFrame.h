@@ -12,5 +12,5 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>プレイヤー用HPバーフレーム</returns>
-	static PlayerHPFrame* Create(UINT texNumber, const Vector2 position);
+	static PlayerHPFrame* Create(UINT texNumber, const Vector2& position);
 };

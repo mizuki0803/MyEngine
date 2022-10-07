@@ -1,6 +1,6 @@
 #include "BossHPFrame.h"
 
-BossHPFrame* BossHPFrame::Create(UINT texNumber, const Vector2 position)
+BossHPFrame* BossHPFrame::Create(UINT texNumber, const Vector2& position)
 {
 	//HPバーフレームのインスタンスを生成
 	BossHPFrame* bossHPFrame = new BossHPFrame();

@@ -1,6 +1,6 @@
 #include "PlayerHPFrame.h"
 
-PlayerHPFrame* PlayerHPFrame::Create(UINT texNumber, const Vector2 position)
+PlayerHPFrame* PlayerHPFrame::Create(UINT texNumber, const Vector2& position)
 {
 	//HPバーフレームのインスタンスを生成
 	PlayerHPFrame* playerHPFrame = new PlayerHPFrame();

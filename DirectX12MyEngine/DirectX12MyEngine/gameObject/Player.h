@@ -115,6 +115,16 @@ private: //メンバ関数
 	void Attack();
 
 	/// <summary>
+	/// 攻撃ボタンを押しているときの処理
+	/// </summary>
+	void PushAttackButton();
+
+	/// <summary>
+	/// 攻撃ボタンを離したときの処理
+	/// </summary>
+	void ReleaseAttackButton();
+
+	/// <summary>
 	/// 弾発射座標を更新
 	/// </summary>
 	void UpdateBulletShotPos();

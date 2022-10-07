@@ -12,7 +12,7 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>プレイヤー用HPバー</returns>
-	static PlayerHPBar* Create(UINT texNumber, const Vector2 position, const int maxHP);
+	static PlayerHPBar* Create(UINT texNumber, const Vector2& position, const int maxHP);
 
 public: //メンバ関数
 	/// <summary>

@@ -1,7 +1,7 @@
 #include "PlayerHPBar.h"
 #include "Easing.h"
 
-PlayerHPBar* PlayerHPBar::Create(UINT texNumber, const Vector2 position, const int maxHP)
+PlayerHPBar* PlayerHPBar::Create(UINT texNumber, const Vector2& position, const int maxHP)
 {
 	//HPバーのインスタンスを生成
 	PlayerHPBar* playerHPBar = new PlayerHPBar();
@@ -28,8 +28,7 @@ PlayerHPBar* PlayerHPBar::Create(UINT texNumber, const Vector2 position, const i
 void PlayerHPBar::Update()
 {
 	//長さ変更状態のときのみ長さ変更
-	if (isChangeLength)
-	{
+	if (isChangeLength) {
 		ChangeLength();
 	}
 
@@ -66,8 +65,7 @@ void PlayerHPBar::ChangeLength()
 	texSize = size;
 
 	//タイマーが指定した時間になったら
-	if (changeLengthTimer >= changeTime)
-	{
+	if (changeLengthTimer >= changeTime) {
 		//長さ変更終了
 		isChangeLength = false;
 	}

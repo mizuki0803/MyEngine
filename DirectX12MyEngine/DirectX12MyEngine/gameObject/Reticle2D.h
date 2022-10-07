@@ -20,7 +20,7 @@ public: //ƒƒ“ƒoŠÖ”
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
-	bool Initialize(UINT texNumber, Vector2 anchorpoint, bool isFlipX, bool isFlipY) override;
+	bool Initialize(UINT texNumber, const Vector2& anchorpoint, bool isFlipX, bool isFlipY) override;
 
 	/// <summary>
 	/// XV

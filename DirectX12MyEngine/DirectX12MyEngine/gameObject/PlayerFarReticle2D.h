@@ -13,7 +13,7 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>自機付属の2Dレティクル(遠)</returns>
-	static PlayerFarReticle2D* Create(UINT texNumber, const Vector2& size);
+	static PlayerFarReticle2D* Create(UINT texNumber, const Vector2& normalSize, const Vector2& chargeModeSize);
 
 public: //メンバ関数
 	/// <summary>
@@ -93,6 +93,8 @@ private: //静的メンバ変数
 private:
 	//通常時の大きさ
 	Vector2 normalSize;
+	//チャージ時の大きさ
+	Vector2 chargeModeSize;
 	//チャージ状態か
 	bool isChargeMode = false;
 	//チャージ状態開始状態か

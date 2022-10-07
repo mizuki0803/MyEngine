@@ -22,16 +22,16 @@ bool PlayerReticles::Initialize()
 {
 	//レティクルを生成
 	nearReticle.reset(PlayerNearReticle::Create(1, 15.0f, { 100, 100 }));
-	farReticle.reset(PlayerFarReticle::Create(1, 25.0f, { 50, 50 }));
+	farReticle.reset(PlayerFarReticle::Create(1, 25.0f, { 50, 50 }, { 100, 100 }));
 
-    return true;
+	return true;
 }
 
 void PlayerReticles::Update(const XMMATRIX& matWorld, const XMMATRIX& matView, const XMMATRIX& matProjection)
 {
-    //レティクル更新
+	//レティクル更新
 	nearReticle->Update(matWorld, matView, matProjection);
-    farReticle->Update(matWorld, matView, matProjection);
+	farReticle->Update(matWorld, matView, matProjection);
 }
 
 void PlayerReticles::Draw()

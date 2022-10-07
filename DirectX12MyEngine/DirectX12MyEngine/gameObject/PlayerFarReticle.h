@@ -13,13 +13,13 @@ public:
 	/// </summary>
 	/// <param name="texNumber">テクスチャ番号</param>
 	/// <returns>自機付属の2Dレティクル(遠)簡易作成クラス</returns>
-	static PlayerFarReticle* Create(UINT texNumber, float distance, const Vector2& size);
+	static PlayerFarReticle* Create(UINT texNumber, float distance, const Vector2& normalSize, const Vector2& chargeModeSize);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	bool Initialize(UINT texNumber, float distance, const Vector2& size);
+	bool Initialize(UINT texNumber, float distance, const Vector2& normalSize, const Vector2& chargeModeSize);
 
 	/// <summary>
 	/// 更新

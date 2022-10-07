@@ -103,11 +103,11 @@ void HomingBullet::OnCollision()
 
 void HomingBullet::CollisionGround()
 {
-	//Y座標0以下になったら死亡
-	if (position.y <= 0) {
-		isDead = true;
+	//Y座標0以下でなければ抜ける
+	if (position.y > 0) { return; }
 
-		//チャージショット死亡演出用パーティクル生成
-		ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos());
-	}
+	//死亡
+	isDead = true;
+	//チャージショット死亡演出用パーティクル生成
+	ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos());
 }
