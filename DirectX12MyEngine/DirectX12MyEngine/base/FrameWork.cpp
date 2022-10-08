@@ -83,7 +83,7 @@ void FrameWork::Initialize()
 	//パーティクル共通初期化処理
 	ParticleManager::ParticleManagerCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	ParticleManager::LoadTexture(1, "effect1.png");
-	ParticleManager::LoadTexture(2, "debugFont.png");
+	ParticleManager::LoadTexture(2, "effect2.png");
 	//パーティクルエミッター初期化
 	ParticleEmitter::GetInstance()->Initialize();
 }

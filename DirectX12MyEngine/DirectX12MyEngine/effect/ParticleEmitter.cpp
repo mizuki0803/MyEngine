@@ -181,6 +181,43 @@ void ParticleEmitter::ChargeShotDead(const Vector3& position)
 	}
 }
 
+void ParticleEmitter::Explosion(const Vector3& position)
+{
+	for (int j = 0; j < 7; j++) {
+		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
+		const float md_pos = 3.0f;
+		Vector3 pos = position;
+		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.y += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+
+		for (int i = 0; i < 10; i++) {
+			//生存時間
+			int life = (rand() % 30) + 40;
+			//X,Y,Z全て[-0.05f, +0.05f]でランダムに分布
+			const float md_vel = 0.15f;
+			Vector3 vel{};
+			vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			Vector3 acc{};
+
+			const float md_scale = 3.0f;
+			float startScale = 3.0f + (float)rand() / RAND_MAX * md_scale - md_scale / 2.0f;
+			float endScale = 5.0f + (float)rand() / RAND_MAX * md_scale - md_scale / 2.0f;
+			//色
+			const XMFLOAT4 startColor = { 1.0f, 0.25f, 0.2f, 1.0f }; //濃い緑
+			const XMFLOAT4 endColor = { 0, 0, 0, 1.0f }; //無色
+			//追加
+			particleA->Add(life, pos, vel, acc, startScale, endScale, startColor, endColor);
+		}
+	}
+}
+
+void ParticleEmitter::BlackSmoke(const Vector3& position)
+{
+}
+
 void ParticleEmitter::AllDelete()
 {
 	//全パーティクルの削除

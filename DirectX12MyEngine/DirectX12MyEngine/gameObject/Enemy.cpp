@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "GameScene.h"
+#include "ParticleEmitter.h"
 
 Player* Enemy::player = nullptr;
 GameScene* Enemy::gameScene = nullptr;
@@ -33,6 +34,9 @@ void Enemy::OnCollision()
 	else {
 		isDelete = true;
 	}
+
+	//爆発演出用パーティクル生成
+	ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
 }
 
 Vector3 Enemy::GetWorldPos()

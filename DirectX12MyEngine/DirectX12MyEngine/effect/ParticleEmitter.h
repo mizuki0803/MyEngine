@@ -69,6 +69,18 @@ public: //メンバ関数
 	void ChargeShotDead(const Vector3& position);
 
 	/// <summary>
+	/// 爆発演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	void Explosion(const Vector3& position);
+
+	/// <summary>
+	/// 黒煙演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	void BlackSmoke(const Vector3& position);
+
+	/// <summary>
 	/// 全削除
 	/// </summary>
 	void AllDelete();
