@@ -3,6 +3,7 @@
 #include "DirectXBase.h"
 #include <DirectXMath.h>
 #include <forward_list>
+#include <functional>
 #include "Camera.h"
 #include "PipelineSet.h"
 
@@ -59,6 +60,8 @@ public:
 		float s_scale = 1.0f;
 		//最終値
 		float e_scale = 0.0f;
+		//スケール変更速さ
+		std::function<float(const float, const float, const float)> easing_scale;
 		//色
 		XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		//色初期値
@@ -73,7 +76,7 @@ public:
 	/// </summary>
 	/// <param name="dev">デバイス</param>
 	/// <param name="cmdList">コマンドリスト</param>
-	static void ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, const std::string& directoryPath = "Resources/effect/");
+	static void ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, const std::string& directoryPath = "Resources/particle/");
 
 	/// <summary>
 	/// パイプライン生成
@@ -111,10 +114,11 @@ public:
 	/// <param name="accel">加速度</param>
 	/// <param name="start_scale">スケール初期値</param>
 	/// <param name="end_scale">スケール終了値</param>
+	/// <param name="easing_scale">イージングスケール変更</param>
 	/// <param name="start_color">色初期値</param>
 	/// <param name="end_color">色終了値</param>
 	void Add(const int life, const Vector3& position, const Vector3& velocity, const Vector3& accel,
-		const float start_scale, const float end_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color);
+		const float start_scale, const float end_scale, std::function<float(const float, const float, const float)> easing_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color);
 
 	/// <summary>
 	/// パーティクルの形生成

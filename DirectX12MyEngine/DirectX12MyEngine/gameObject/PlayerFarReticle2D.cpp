@@ -207,7 +207,7 @@ void PlayerFarReticle2D::Move()
 		const float maxTime = 60;
 		backTimer++;
 		float time = backTimer / maxTime;
-		position = Easing::Lerp(position, screenPosition, time);
+		position = Easing::LerpVec2(position, screenPosition, time);
 
 		//Lerp‚ªI‚í‚é‚ÆŽ©‹@’Ç]‚É–ß‚Á‚Ä‚¢‚é
 		if (backTimer >= maxTime) {

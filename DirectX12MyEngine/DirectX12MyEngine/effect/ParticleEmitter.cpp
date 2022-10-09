@@ -1,4 +1,7 @@
 #include "ParticleEmitter.h"
+#include "Easing.h"
+#include <functional>
+#include <d3dx12.h>
 
 ParticleEmitter* ParticleEmitter::GetInstance()
 {
@@ -9,23 +12,26 @@ ParticleEmitter* ParticleEmitter::GetInstance()
 
 void ParticleEmitter::Initialize()
 {
+	//テクスチャ全読み込み
+	LoadTexture();
+
 	//パーティクルマネージャー生成
-	particleManager.reset(ParticleManager::Create(1));
-	particleA.reset(ParticleManager::Create(2));
+	circleParticle.reset(ParticleManager::Create(1));
+	explosionParticle.reset(ParticleManager::Create(2));
 }
 
 void ParticleEmitter::Update()
 {
 	//パーティクルマネージャー更新
-	particleManager->Update();
-	particleA->Update();
+	circleParticle->Update();
+	explosionParticle->Update();
 }
 
 void ParticleEmitter::DrawAll()
 {
 	//パーティクルマネージャー描画
-	particleManager->Draw();
-	particleA->Draw();
+	circleParticle->Draw();
+	explosionParticle->Draw();
 }
 
 void ParticleEmitter::DemoEffect()
@@ -54,8 +60,12 @@ void ParticleEmitter::DemoEffect()
 		const float md_acc = 0.001f;
 		acc.y = -(float)rand() / RAND_MAX * md_acc;
 
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerp =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1 , std::placeholders::_2, std::placeholders::_3);
+
 		//追加
-		particleManager->Add(life, pos, vel, acc, 1.0f, 0.0f, purple, lightBlue);
+		circleParticle->Add(life, pos, vel, acc, 1.0f, 0.0f, lerp, purple, lightBlue);
 	}
 }
 
@@ -85,8 +95,12 @@ void ParticleEmitter::DemoEffect2()
 		const float md_acc = 0.001f;
 		acc.y = -(float)rand() / RAND_MAX * md_acc;
 
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerp =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
 		//追加
-		particleA->Add(life, pos, vel, acc, 1.0f, 0.0f, red, green);
+		explosionParticle->Add(life, pos, vel, acc, 1.0f, 0.0f, lerp, red, green);
 	}
 }
 
@@ -117,8 +131,11 @@ void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld)
 		acc.z = -(float)rand() / RAND_MAX * md_acc;
 		float startScale = (float)rand() / RAND_MAX * 0.1f + 0.5f;
 		float endScale = 0;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerp =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		//追加
-		particleManager->Add(5, pos, vel, acc, startScale, endScale, startColor, endColor);
+		circleParticle->Add(5, pos, vel, acc, startScale, endScale, lerp, startColor, endColor);
 	}
 
 	//パーティクル(大)生成
@@ -133,8 +150,11 @@ void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld)
 		acc.z = -(float)rand() / RAND_MAX * md_acc;
 		float startScale = (float)rand() / RAND_MAX * 0.2f + 2.0f;
 		float endScale = 0;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerp =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		//追加
-		particleManager->Add(5, pos, vel, acc, startScale, endScale, startColor, endColor);
+		circleParticle->Add(5, pos, vel, acc, startScale, endScale, lerp,startColor, endColor);
 	}
 }
 
@@ -153,8 +173,12 @@ void ParticleEmitter::ChargeShot(const Vector3& position, const float size)
 		const float md_scale = 2.8f;
 		float startScale = (float)rand() / RAND_MAX * md_scale + (size * 2 / 7) - md_scale / 2;
 		float endScale = (float)rand() / RAND_MAX * md_scale + (size * 2) - md_scale / 2;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerp =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
 		//追加
-		particleManager->Add(2, position, vel, acc, startScale, endScale, startColor, endColor);
+		circleParticle->Add(2, position, vel, acc, startScale, endScale, lerp, startColor, endColor);
 	}
 }
 
@@ -176,26 +200,37 @@ void ParticleEmitter::ChargeShotDead(const Vector3& position)
 		const float md_scale = 10.0f;
 		float startScale = 0;
 		float endScale = (float)rand() / RAND_MAX * md_scale + (size * 2) - md_scale / 2;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerp =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
 		//追加
-		particleManager->Add(life, position, vel, acc, startScale, endScale, startColor, endColor);
+		circleParticle->Add(life, position, vel, acc, startScale, endScale, lerp, startColor, endColor);
 	}
 }
 
 void ParticleEmitter::Explosion(const Vector3& position)
 {
-	for (int j = 0; j < 7; j++) {
+	for (int j = 0; j < 6; j++) {
 		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
-		const float md_pos = 3.0f;
+		const float md_pos = 2.0f;
 		Vector3 pos = position;
 		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 30; i++) {
 			//生存時間
-			int life = (rand() % 30) + 40;
+			int life = (rand() % 30) + 10;
+
+			//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
+			const float md_pos2 = 0.8f;
+			pos.x += (float)rand() / RAND_MAX * md_pos2 - md_pos2 / 2.0f;
+			pos.y += (float)rand() / RAND_MAX * md_pos2 - md_pos2 / 2.0f;
+			pos.z += (float)rand() / RAND_MAX * md_pos2 - md_pos2 / 2.0f;
+
 			//X,Y,Z全て[-0.05f, +0.05f]でランダムに分布
-			const float md_vel = 0.15f;
+			const float md_vel = 0.05f;
 			Vector3 vel{};
 			vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
@@ -203,13 +238,19 @@ void ParticleEmitter::Explosion(const Vector3& position)
 			Vector3 acc{};
 
 			const float md_scale = 3.0f;
-			float startScale = 3.0f + (float)rand() / RAND_MAX * md_scale - md_scale / 2.0f;
-			float endScale = 5.0f + (float)rand() / RAND_MAX * md_scale - md_scale / 2.0f;
+			float startScale = 0.3f;
+			float endScale = 4.0f + (float)rand() / RAND_MAX * md_scale - md_scale / 2.0f;
+			//大きさ変更のイージング
+			std::function<float(const float, const float, const float) > outQuint =
+				std::bind(&Easing::OutQuart, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 			//色
-			const XMFLOAT4 startColor = { 1.0f, 0.25f, 0.2f, 1.0f }; //濃い緑
+			const float md_green = 0.2f;
+			const float green = 0.2f + (float)rand() / RAND_MAX * md_green;
+			const XMFLOAT4 startColor = { 0.9f, green, 0.1f, 1.0f }; //濃い緑
 			const XMFLOAT4 endColor = { 0, 0, 0, 1.0f }; //無色
+
 			//追加
-			particleA->Add(life, pos, vel, acc, startScale, endScale, startColor, endColor);
+			explosionParticle->Add(life, pos, vel, acc, startScale, endScale, outQuint, startColor, endColor);
 		}
 	}
 }
@@ -221,6 +262,13 @@ void ParticleEmitter::BlackSmoke(const Vector3& position)
 void ParticleEmitter::AllDelete()
 {
 	//全パーティクルの削除
-	particleManager->AllDelete();
-	particleA->AllDelete();
+	circleParticle->AllDelete();
+	explosionParticle->AllDelete();
+}
+
+void ParticleEmitter::LoadTexture()
+{
+	//テクスチャ全読み込み
+	ParticleManager::LoadTexture(1, "effect1.png");
+	ParticleManager::LoadTexture(2, "effect2.png");
 }

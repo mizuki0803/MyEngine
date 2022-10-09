@@ -2,17 +2,17 @@
 #include <cmath>
 
 //ìôë¨íºê¸â^ìÆ
-float Easing::Lerp(const float start, const float end, const float time)
+float Easing::LerpFloat(const float start, const float end, const float time)
 {
 	return start * (1.0f - time) + end * time;
 }
 
-Vector3 Easing::Lerp(const Vector3& v1, const Vector3& v2, float time)
+Vector3 Easing::LerpVec3(const Vector3& v1, const Vector3& v2, float time)
 {
 	return v1 + time * (v2 - v1);
 }
 
-Vector2 Easing::Lerp(const Vector2& v1, const Vector2& v2, float time)
+Vector2 Easing::LerpVec2(const Vector2& v1, const Vector2& v2, float time)
 {
 	return v1 + time * (v2 - v1);
 }
@@ -28,7 +28,7 @@ Vector3 Easing::Slerp(const Vector3& v1, const Vector3& v2, float time)
 	float sinThitaFrom = sinf((1 - time) * angle);
 	float sinThitaTo = sinf(time * angle);
 
-	float lengthLerp = Lerp(v1.length(), v2.length(), time);
+	float lengthLerp = LerpFloat(v1.length(), v2.length(), time);
 	Vector3 slerpVec = (sinThitaFrom * start + sinThitaTo * end) / sinThita;
 	
 

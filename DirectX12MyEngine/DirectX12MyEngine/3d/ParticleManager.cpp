@@ -402,7 +402,7 @@ bool ParticleManager::LoadTexture(UINT texNumber, const std::string& filename)
 }
 
 void ParticleManager::Add(const int life, const Vector3& position, const Vector3& velocity, const Vector3& accel,
-	const float start_scale, const float end_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color)
+	const float start_scale, const float end_scale, std::function<float(const float, const float, const float)> easing_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color)
 {
 	//パーティクルの要素数が頂点数以上なら追加できないようにする
 	UINT particleNum = (UINT)std::distance(particles.begin(), particles.end());
@@ -419,6 +419,7 @@ void ParticleManager::Add(const int life, const Vector3& position, const Vector3
 	p.num_frame = life;
 	p.s_scale = start_scale;
 	p.e_scale = end_scale;
+	p.easing_scale = easing_scale;
 	p.scale = start_scale;
 	p.s_color = start_color;
 	p.e_color = end_color;
@@ -520,9 +521,9 @@ void ParticleManager::Update()
 		//進行度を0～1の範囲に換算
 		float f = (float)it->num_frame / it->frame;
 
-		//スケールの線形補間
-		it->scale = (it->e_scale - it->s_scale) / f;
-		it->scale += it->s_scale;
+		//スケールのイージング補間
+		const float time = (float)it->frame / it->num_frame;
+		it->scale = it->easing_scale(it->s_scale, it->e_scale, time);
 
 		//色の線形補間
 		it->color.x = (it->e_color.x - it->s_color.x) / f;

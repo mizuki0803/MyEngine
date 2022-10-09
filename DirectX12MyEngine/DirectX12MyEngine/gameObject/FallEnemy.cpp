@@ -1,5 +1,6 @@
 #include "FallEnemy.h"
 #include "Easing.h"
+#include "ParticleEmitter.h"
 
 void (FallEnemy::*FallEnemy::actionFuncTable[])() = {
 	&FallEnemy::Fall,
@@ -102,5 +103,8 @@ void FallEnemy::Dead()
 	//Y座標が0以下になったら削除
 	if (position.y <= 0) {
 		isDelete = true;
+
+		//爆発演出用パーティクル生成
+		ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
 	}
 }

@@ -1,5 +1,6 @@
 #include "UpDownEnemy.h"
 #include "Player.h"
+#include "ParticleEmitter.h"
 
 void (UpDownEnemy::* UpDownEnemy::actionFuncTable[])() = {
 	&UpDownEnemy::UpBrake,
@@ -100,5 +101,8 @@ void UpDownEnemy::Dead()
 	//Y座標が0以下になったら削除
 	if (position.y <= 0) {
 		isDelete = true;
+
+		//爆発演出用パーティクル生成
+		ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
 	}
 }

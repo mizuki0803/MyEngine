@@ -1,5 +1,6 @@
 #include "ComeGoEnemy.h"
 #include "Easing.h"
+#include "ParticleEmitter.h"
 
 void (ComeGoEnemy::*ComeGoEnemy::actionFuncTable[])() = {
 	&ComeGoEnemy::Come,
@@ -136,5 +137,8 @@ void ComeGoEnemy::Dead()
 	//Y座標が0以下になったら削除
 	if (position.y <= 0) {
 		isDelete = true;
+
+		//爆発演出用パーティクル生成
+		ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
 	}
 }

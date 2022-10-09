@@ -116,7 +116,7 @@ void BossMainBody::FallMode(const float time)
 	Vector3 bornPos = basePos;
 	const float fallNum = 70;
 	bornPos.y = basePos.y + fallNum;
-	position = Easing::Lerp(bornPos, basePos, time);
+	position = Easing::LerpVec3(bornPos, basePos, time);
 }
 
 void BossMainBody::AttackTypeTracking(const Vector3& playerPosition)
@@ -186,7 +186,7 @@ void BossMainBody::ChangeWaitMode(const float time)
 void BossMainBody::ReturnBasePosition(const float time)
 {
 	//äÓèÄÇÃç¿ïWÇ…ñﬂÇ∑
-	position = Easing::Lerp(returnStartPos, basePos, time);
+	position = Easing::LerpVec3(returnStartPos, basePos, time);
 }
 
 void BossMainBody::AttackEnd()

@@ -6,9 +6,9 @@ class Easing
 {
 public:
 	//“™‘¬’¼ü‰^“®
-	static float Lerp(const float start, const float end, const float time);
-	static Vector3 Lerp(const Vector3& v1, const Vector3& v2, float time);
-	static Vector2 Lerp(const Vector2& v1, const Vector2& v2, float time);
+	static float LerpFloat(const float start, const float end, const float time);
+	static Vector3 LerpVec3(const Vector3& v1, const Vector3& v2, float time);
+	static Vector2 LerpVec2(const Vector2& v1, const Vector2& v2, float time);
 
 	//‹…–ÊüŒ`•âŠÔ
 	static Vector3 Slerp(const Vector3& v1, const Vector3& v2, float time);

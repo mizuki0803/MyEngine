@@ -85,9 +85,15 @@ public: //メンバ関数
 	/// </summary>
 	void AllDelete();
 
+private: //メンバ関数
+	/// <summary>
+	/// テクスチャ読み込み
+	/// </summary>
+	void LoadTexture();
+
 private: //メンバ変数
-	//パーティクルマネージャー
-	std::unique_ptr<ParticleManager> particleManager;
-	//パーティクルマネージャー
-	std::unique_ptr<ParticleManager> particleA;
+	//パーティクルマネージャー(丸)
+	std::unique_ptr<ParticleManager> circleParticle;
+	//パーティクルマネージャー(爆発)
+	std::unique_ptr<ParticleManager> explosionParticle;
 };
