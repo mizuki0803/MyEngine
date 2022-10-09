@@ -37,6 +37,11 @@ public: //メンバ関数
 	bool Initialize() override;
 
 	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update() override;
+
+	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	virtual void OnCollision();
@@ -44,6 +49,7 @@ public: //メンバ関数
 	//getter
 	Vector3 GetWorldPos();
 	Vector2 GetScreenPos();
+	bool GetIsCollisionFrame() { return isCollisionFrame; }
 	bool GetIsDead() const { return isDead; }
 	bool GetIsDelete() const { return isDelete; }
 
@@ -67,6 +73,8 @@ protected: //静的メンバ変数
 	static ObjModel* bulletModel;
 
 protected: //メンバ変数
+	//当たり判定が作用したフレームか
+	bool isCollisionFrame = false;
 	//死亡フラグ
 	bool isDead = false;
 	//削除フラグ

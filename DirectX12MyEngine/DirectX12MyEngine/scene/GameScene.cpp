@@ -6,6 +6,7 @@
 #include "DebugText.h"
 #include "Easing.h"
 #include "ParticleEmitter.h"
+#include "HomingBullet.h"
 #include "DemoEnemy.h"
 #include "CannonEnemy.h"
 #include "CircularEnemy.h"
@@ -378,6 +379,39 @@ void GameScene::CollisionCheck3d()
 			bullet->OnCollision();
 
 			break;
+		}
+	}
+#pragma endregion
+
+#pragma region 敵と死亡したホーミング弾破裂の衝突判定
+	//全ての敵と全ての自機弾の衝突判定
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//ホーミング弾でなければ飛ばす
+		if (!(bullet->GetBulletType() == PlayerBullet::BulletType::Homing)) { continue; }
+		//死亡していなければ飛ばす
+		if (!bullet->GetIsDead()) { continue; }
+
+		//死亡した自機弾座標
+		posA = bullet->GetWorldPos();
+		//死亡した自機弾の破裂判定半径
+		radiusA = HomingBullet::GetBlastSize();
+
+		for (const std::unique_ptr<Enemy>& enemy : enemys) {
+			//既にこのフレームで自機弾との当たり判定が作用していたら飛ばす
+			if (enemy->GetIsCollisionFrame()) { continue; }
+
+			//敵座標
+			posB = enemy->GetWorldPos();
+			//敵半径
+			radiusB = enemy->GetScale().x;
+
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
+
+			//敵のコールバック関数を呼び出す
+			enemy->OnCollision();
 		}
 	}
 #pragma endregion

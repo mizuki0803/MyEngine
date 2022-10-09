@@ -48,8 +48,8 @@ void CircularEnemy::Update()
 	//移動
 	Move();
 
-	//3Dオブジェクトの更新
-	ObjObject3d::Update();
+	//オブジェクトの更新
+	Enemy::Update();
 
 	//画面外手前まで行ったら削除
 	FrontOfScreenDelete();

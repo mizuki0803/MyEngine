@@ -66,7 +66,7 @@ public: //メンバ関数
 	/// チャージショット死亡演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
-	void ChargeShotDead(const Vector3& position);
+	void ChargeShotDead(const Vector3& position, const float size);
 
 	/// <summary>
 	/// 爆発演出

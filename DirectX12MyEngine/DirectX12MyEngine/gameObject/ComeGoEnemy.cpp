@@ -48,8 +48,8 @@ void ComeGoEnemy::Update()
 	//行動
 	(this->*actionFuncTable[static_cast<size_t>(phase)])();
 
-	//3Dオブジェクトの更新
-	ObjObject3d::Update();
+	//オブジェクトの更新
+	Enemy::Update();
 }
 
 void ComeGoEnemy::OnCollision()

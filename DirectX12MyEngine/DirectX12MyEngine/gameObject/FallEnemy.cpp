@@ -41,8 +41,8 @@ void FallEnemy::Update()
 	//行動
 	(this->*actionFuncTable[static_cast<size_t>(phase)])();
 
-	//3Dオブジェクトの更新
-	ObjObject3d::Update();
+	//オブジェクトの更新
+	Enemy::Update();
 
 	//画面外手前まで行ったら削除
 	FrontOfScreenDelete();	

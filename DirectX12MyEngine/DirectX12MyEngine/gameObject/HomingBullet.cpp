@@ -3,6 +3,8 @@
 #include "Enemy.h"
 #include "ParticleEmitter.h"
 
+const float HomingBullet::blastSize = 16.0f;
+
 HomingBullet* HomingBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float size, Enemy* enemy)
 {
 	//ホーミング弾のインスタンスを生成
@@ -98,7 +100,7 @@ void HomingBullet::OnCollision()
 	PlayerBullet::OnCollision();
 
 	//チャージショット死亡演出用パーティクル生成
-	ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos());
+	ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos(), blastSize);
 }
 
 void HomingBullet::CollisionGround()
@@ -109,5 +111,5 @@ void HomingBullet::CollisionGround()
 	//死亡
 	isDead = true;
 	//チャージショット死亡演出用パーティクル生成
-	ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos());
+	ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos(), blastSize);
 }

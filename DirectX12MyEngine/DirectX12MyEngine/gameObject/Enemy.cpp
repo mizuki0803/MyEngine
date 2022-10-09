@@ -24,6 +24,17 @@ bool Enemy::Initialize()
 	return true;
 }
 
+void Enemy::Update()
+{
+	//当たり判定が作用したのは前フレームになるので、falseに戻しておく
+	if (isCollisionFrame) {
+		isCollisionFrame = false;
+	}
+
+	//オブジェクト更新
+	ObjObject3d::Update();
+}
+
 void Enemy::OnCollision()
 {
 	//死亡状態でなければ死亡させる
@@ -34,6 +45,9 @@ void Enemy::OnCollision()
 	else {
 		isDelete = true;
 	}
+
+	//当たり判定がこのフレームで作用した
+	isCollisionFrame = true;
 
 	//爆発演出用パーティクル生成
 	ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
