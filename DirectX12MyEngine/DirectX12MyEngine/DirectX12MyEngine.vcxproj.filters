@@ -152,7 +152,7 @@
     <ClCompile Include="scene\GameScene.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
     </ClCompile>
-    <ClCompile Include="scene\TitleScene.cpp">
+    <ClCompile Include="scene\DebugScene.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -476,7 +476,7 @@
     <ClInclude Include="light\SpotLight.h">
       <Filter>ソース ファイル\engine\light</Filter>
     </ClInclude>
-    <ClInclude Include="scene\TitleScene.h">
+    <ClInclude Include="scene\DebugScene.h">
       <Filter>ソース ファイル\engine\scene</Filter>
     </ClInclude>
     <ClInclude Include="scene\GameScene.h">

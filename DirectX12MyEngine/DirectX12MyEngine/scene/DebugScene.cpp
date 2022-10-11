@@ -1,4 +1,4 @@
-#include "TitleScene.h"
+#include "DebugScene.h"
 #include "SceneManager.h"
 #include "Input.h"
 #include "Audio.h"
@@ -14,7 +14,7 @@
 using namespace DirectX;
 
 
-void TitleScene::Initialize()
+void DebugScene::Initialize()
 {
 	//オーディオのインスタンスを取得
 	Audio* audio = Audio::GetInstance();
@@ -134,7 +134,7 @@ void TitleScene::Initialize()
 	ray.dir = XMVectorSet(0, -1, 0, 0);		//下向き
 }
 
-void TitleScene::Update()
+void DebugScene::Update()
 {
 	//入力のインスタンスを取得
 	Input* input = Input::GetInstance();
@@ -502,7 +502,7 @@ void TitleScene::Update()
 	}
 }
 
-void TitleScene::Draw()
+void DebugScene::Draw()
 {
 	//背景スプライト共通コマンド
 	SpriteCommon::GetInstance()->DrawPrev();

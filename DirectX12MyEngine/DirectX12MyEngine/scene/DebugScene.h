@@ -3,16 +3,15 @@
 #include "Sprite.h"
 #include "ObjObject3d.h"
 #include "FbxObject3d.h"
-//#include "ParticleManager.h"
 #include "LightGroup.h"
 #include "Camera.h"
 #include "CollisionShape.h"
 #include "Collision.h"
 
 /// <summary>
-/// タイトルシーン
+/// デバッグシーン
 /// </summary>
-class TitleScene :public BaseScene
+class DebugScene :public BaseScene
 {
 private: // エイリアス
 // Microsoft::WRL::を省略
@@ -70,9 +69,6 @@ private: //メンバ変数
 	float circleShadowDir[3] = { 0, -1, 0 };
 	float circleShadowAtten[3] = { 0.5f, 0.6f, 0.0f };
 	float circleShadowFactorAngle[2] = { 0.0f, 0.5f };
-
-	//パーティクル
-	//std::unique_ptr<ParticleManager> particleMan;
 
 	//スプライト
 	std::unique_ptr<Sprite> sprite;

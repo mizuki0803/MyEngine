@@ -218,7 +218,7 @@
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="scene\BaseScene.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
-    <ClCompile Include="scene\TitleScene.cpp" />
+    <ClCompile Include="scene\DebugScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />
@@ -382,7 +382,7 @@
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="scene\BaseScene.h" />
     <ClInclude Include="scene\GameScene.h" />
-    <ClInclude Include="scene\TitleScene.h" />
+    <ClInclude Include="scene\DebugScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

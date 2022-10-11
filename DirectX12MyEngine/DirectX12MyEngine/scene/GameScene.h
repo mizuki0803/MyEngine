@@ -92,8 +92,6 @@ public: //メンバ関数
 	void GameOver();
 
 private: //メンバ変数
-	//カメラ
-	std::unique_ptr<Camera> normalCamera;
 	//レールカメラ
 	std::unique_ptr<RailCamera> railCamera;
 

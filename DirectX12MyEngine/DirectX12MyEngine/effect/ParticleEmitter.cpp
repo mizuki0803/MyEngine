@@ -160,10 +160,11 @@ void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld)
 
 void ParticleEmitter::ChargeShot(const Vector3& position, const float size)
 {
+	//生存時間
+	const int life = 2;
 	//色
 	const XMFLOAT4 startColor = { 0.1f, 1.0f, 0.05f, 1.0f }; //濃い緑
 	const XMFLOAT4 endColor = { 0.1f, 0.4f, 0.05f, 1.0f }; //薄い緑
-
 	//速度、加速度は0
 	Vector3 vel{};
 	Vector3 acc{};
@@ -178,7 +179,7 @@ void ParticleEmitter::ChargeShot(const Vector3& position, const float size)
 			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
 		//追加
-		circleParticle->Add(2, position, vel, acc, startScale, endScale, lerp, startColor, endColor);
+		circleParticle->Add(life, position, vel, acc, startScale, endScale, lerp, startColor, endColor);
 	}
 }
 

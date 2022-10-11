@@ -1,6 +1,7 @@
 #include "BossAvatar.h"
 #include "Easing.h"
 #include "GameScene.h"
+#include "ParticleEmitter.h"
 
 void (BossAvatar::* BossAvatar::attackTypeAvatarBodyBlowPhaseFuncTable[])() = {
 	&BossAvatar::AttackTypeAvatarBodyBlowLockon,
@@ -411,5 +412,8 @@ void BossAvatar::DeadAction()
 	//Y座標が0以下になったら削除
 	if (GetWorldPos().y <= 0) {
 		isDelete = true;
+
+		//爆発演出用パーティクル生成
+		ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
 	}
 }

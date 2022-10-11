@@ -1,5 +1,6 @@
 #include "BossAvatarType03.h"
 #include "Easing.h"
+#include "ParticleEmitter.h"
 
 BossAvatarType03* BossAvatarType03::Create(ObjObject3d* parent, const Vector3& position)
 {
@@ -142,5 +143,8 @@ void BossAvatarType03::DeadAction()
 	//Y座標が0以下になったら削除
 	if (GetWorldPos().y <= 0) {
 		isDelete = true;
+
+		//爆発演出用パーティクル生成
+		ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
 	}
 }

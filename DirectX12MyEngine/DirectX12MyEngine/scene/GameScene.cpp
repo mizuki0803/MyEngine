@@ -23,8 +23,6 @@ using namespace DirectX;
 void GameScene::Initialize()
 {
 	//カメラ初期化
-	normalCamera.reset(new Camera());
-	normalCamera->Initialize();
 	railCamera.reset(new RailCamera());
 	railCamera->Initialize();
 
@@ -216,7 +214,6 @@ void GameScene::Update()
 	GameOver();
 
 	//カメラ更新
-	normalCamera->Update();
 	railCamera->Update();
 
 	//オブジェクト更新
