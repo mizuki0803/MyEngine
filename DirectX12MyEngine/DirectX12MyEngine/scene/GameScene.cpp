@@ -41,9 +41,6 @@ void GameScene::Initialize()
 	//lightGroup->SetSpotLightActive(0, true);
 	lightGroup->SetCircleShadowActive(0, true);
 
-	//パーティクル生成
-	ParticleManager::SetCamera(railCamera.get());
-
 	//スプライト共通部分のインスタンスを取得
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 	//スプライト用テクスチャ読み込み
@@ -130,6 +127,9 @@ void GameScene::Initialize()
 	ObjObject3d::SetCamera(railCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
+
+	//パーティクルにカメラをセット
+	ParticleManager::SetCamera(railCamera.get());
 }
 
 void GameScene::Update()

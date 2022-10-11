@@ -3,13 +3,10 @@
 #include "Sprite.h"
 #include "ObjObject3d.h"
 #include "LightGroup.h"
-#include "RailCamera.h"
+#include "TitleCamera.h"
 #include "CollisionShape.h"
 #include "Collision.h"
-#include "Player.h"
-#include "Enemy.h"
-#include "Boss.h"
-#include "HealingItem.h"
+#include "TitlePlayer.h"
 #include "Skydome.h"
 #include "Ground.h"
 #include "Mountain.h"
@@ -17,9 +14,9 @@
 #include <sstream>
 
 /// <summary>
-/// ゲームシーン
+/// タイトルシーン
 /// </summary>
-class GameScene :public BaseScene
+class TitleScene :public BaseScene
 {
 private: // エイリアス
 // Microsoft::WRL::を省略
@@ -47,51 +44,15 @@ public: //メンバ関数
 	/// </summary>
 	void Draw() override;
 
+private: //メンバ関数
 	/// <summary>
-	/// 3Dオブジェクトの衝突判定
+	/// 出撃開始
 	/// </summary>
-	void CollisionCheck3d();
-
-	/// <summary>
-	/// 2Dオブジェクトの衝突判定
-	/// </summary>
-	void CollisionCheck2d();
-
-	/// <summary>
-	/// 自機弾を追加する
-	/// </summary>
-	/// <param name="playerBullet">自機弾</param>
-	void AddPlayerBullet(std::unique_ptr<PlayerBullet> playerBullet);
-
-	/// <summary>
-	/// 敵弾を追加する
-	/// </summary>
-	/// <param name="enemyBullet">敵弾</param>
-	void AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet);
-
-	/// <summary>
-	/// 敵発生データ読み込み
-	/// </summary>
-	void LoadEnemySetData();
-
-	/// <summary>
-	/// 敵発生コマンドの更新
-	/// </summary>
-	void UpdateEnemySetCommands();
-
-	/// <summary>
-	/// ボスバトル開始判定処理
-	/// </summary>
-	void BossBattleStart();
-
-	/// <summary>
-	/// ゲームオーバー
-	/// </summary>
-	void GameOver();
+	void SortieStart();
 
 private: //メンバ変数
-	//レールカメラ
-	std::unique_ptr<RailCamera> railCamera;
+	//カメラ
+	std::unique_ptr<TitleCamera> titleCamera;
 
 	//ライト
 	std::unique_ptr<LightGroup> lightGroup;
@@ -126,46 +87,15 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelMountain;
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
-	std::unique_ptr<ObjModel> modelEnemyFighter;
-	std::unique_ptr<ObjModel> modelBossMainBody;
-	std::unique_ptr<ObjModel> modelBossMainBodyDamage;
-	std::unique_ptr<ObjModel> modelBossMainBodySleep;
-	std::unique_ptr<ObjModel> modelBossAvatar;
-	std::unique_ptr<ObjModel> modelBossAvatarDamage;
-	std::unique_ptr<ObjModel> modelBossAvatarSleep;
 
-	//自機
-	std::unique_ptr<Player> player;
-	//自機弾
-	std::list<std::unique_ptr<PlayerBullet>> playerBullets;
-	//敵
-	std::list<std::unique_ptr<Enemy>> enemys;
-	//敵弾
-	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
-	//敵発生コマンド
-	std::stringstream enemySetCommands;
-	//待機中か
-	bool isWait = false;
-	//待機タイマー
-	int32_t waitTimer = 0;
-	//ボス
-	std::unique_ptr<Boss> boss;
-	//ボス戦中か
-	bool isBossBattle = false;
-	//回復アイテム
-	std::list<std::unique_ptr<HealingItem>> healingItems;
+	//タイトルシーン用自機
+	std::unique_ptr<TitlePlayer> player;
 	//天球
 	std::unique_ptr<Skydome> skydome;
 	//地面
 	std::unique_ptr<Ground> ground;
 	//背景用(山)
 	std::list<std::unique_ptr<Mountain>> mountains;
-	//ステージクリアか
-	bool isStageClear = false;
-	//ゲームオーバーか
-	bool isGameOver = false;
-	//ゲームオーバータイマー
-	int32_t gameOverTimer = 0;
 
 	//その他変数
 	float soundVol = 0.1f;

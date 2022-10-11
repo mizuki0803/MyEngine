@@ -172,6 +172,7 @@
     <ClCompile Include="behaviorTree\Sequencer.cpp" />
     <ClCompile Include="camera\Camera.cpp" />
     <ClCompile Include="camera\RailCamera.cpp" />
+    <ClCompile Include="camera\TitleCamera.cpp" />
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="collision\CollisionShape.cpp" />
     <ClCompile Include="effect\Easing.cpp" />
@@ -210,6 +211,7 @@
     <ClCompile Include="gameObject\Skydome.cpp" />
     <ClCompile Include="gameObject\StraightBullet.cpp" />
     <ClCompile Include="gameObject\FallEnemy.cpp" />
+    <ClCompile Include="gameObject\TitlePlayer.cpp" />
     <ClCompile Include="gameObject\UpDownEnemy.cpp" />
     <ClCompile Include="input\Input.cpp" />
     <ClCompile Include="light\LightGroup.cpp" />
@@ -219,6 +221,7 @@
     <ClCompile Include="scene\BaseScene.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\DebugScene.cpp" />
+    <ClCompile Include="scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />
@@ -333,6 +336,7 @@
     <ClInclude Include="behaviorTree\Sequencer.h" />
     <ClInclude Include="camera\Camera.h" />
     <ClInclude Include="camera\RailCamera.h" />
+    <ClInclude Include="camera\TitleCamera.h" />
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionShape.h" />
     <ClInclude Include="effect\Easing.h" />
@@ -371,6 +375,7 @@
     <ClInclude Include="gameObject\Skydome.h" />
     <ClInclude Include="gameObject\StraightBullet.h" />
     <ClInclude Include="gameObject\FallEnemy.h" />
+    <ClInclude Include="gameObject\TitlePlayer.h" />
     <ClInclude Include="gameObject\UpDownEnemy.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="light\CircleShadow.h" />
@@ -383,6 +388,7 @@
     <ClInclude Include="scene\BaseScene.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\DebugScene.h" />
+    <ClInclude Include="scene\TitleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
