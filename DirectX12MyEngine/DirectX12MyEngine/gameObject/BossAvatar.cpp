@@ -79,6 +79,9 @@ void BossAvatar::Damage(int attackPower)
 
 		//HPゲージバグを起こさないようマイナス分を0に調整
 		damageNum += HP;
+
+		//爆発演出用パーティクル生成
+		ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
 	}
 
 	//HPが少ない状態のモデルをセットする

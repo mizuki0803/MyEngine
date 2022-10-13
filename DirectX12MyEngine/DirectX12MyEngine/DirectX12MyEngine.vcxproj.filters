@@ -141,11 +141,17 @@
     <Filter Include="ソース ファイル\game\gameCamera">
       <UniqueIdentifier>{df672015-bdb5-40c6-ad7c-80ed7791721e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\gameCamera\railCamara">
-      <UniqueIdentifier>{9ef5f395-c78d-47bf-bb18-9c7b37930d92}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\game\gameCamera\titleCamera">
       <UniqueIdentifier>{1a02560a-41bf-4c67-8339-695abe2047b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameUI">
+      <UniqueIdentifier>{4966a211-7b76-4a1f-a768-ba511eac497d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameUI\sprite">
+      <UniqueIdentifier>{0bd8aac3-b847-4526-b82e-a661c1216963}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameCamera\gameCamara">
+      <UniqueIdentifier>{9ef5f395-c78d-47bf-bb18-9c7b37930d92}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -359,11 +365,14 @@
     <ClCompile Include="gameObject\TitlePlayer.cpp">
       <Filter>ソース ファイル\game\gameObject\titleScene\titlePlayer</Filter>
     </ClCompile>
-    <ClCompile Include="camera\RailCamera.cpp">
-      <Filter>ソース ファイル\game\gameCamera\railCamara</Filter>
+    <ClCompile Include="camera\GameCamera.cpp">
+      <Filter>ソース ファイル\game\gameCamera\gameCamara</Filter>
     </ClCompile>
     <ClCompile Include="camera\TitleCamera.cpp">
       <Filter>ソース ファイル\game\gameCamera\titleCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\NumberSprite.cpp">
+      <Filter>ソース ファイル\game\gameUI\sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -590,9 +599,6 @@
     <ClInclude Include="gameObject\Boss.h">
       <Filter>ソース ファイル\game\gameObject\gameScene\boss</Filter>
     </ClInclude>
-    <ClInclude Include="gameObject\BossMainBody.h">
-      <Filter>ソース ファイル\game\gameObject\gameScene\boss</Filter>
-    </ClInclude>
     <ClInclude Include="gameObject\BossHPFrame.h">
       <Filter>ソース ファイル\game\gameObject\gameScene\boss\bossHPUI</Filter>
     </ClInclude>
@@ -653,11 +659,17 @@
     <ClInclude Include="gameObject\TitlePlayer.h">
       <Filter>ソース ファイル\game\gameObject\titleScene\titlePlayer</Filter>
     </ClInclude>
-    <ClInclude Include="camera\RailCamera.h">
-      <Filter>ソース ファイル\game\gameCamera\railCamara</Filter>
+    <ClInclude Include="camera\GameCamera.h">
+      <Filter>ソース ファイル\game\gameCamera\gameCamara</Filter>
     </ClInclude>
     <ClInclude Include="camera\TitleCamera.h">
       <Filter>ソース ファイル\game\gameCamera\titleCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\NumberSprite.h">
+      <Filter>ソース ファイル\game\gameUI\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\BossMainBody.h">
+      <Filter>ソース ファイル\game\gameObject\gameScene\boss</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

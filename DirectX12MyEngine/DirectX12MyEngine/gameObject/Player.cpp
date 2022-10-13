@@ -62,30 +62,8 @@ void Player::Update()
 	//死亡状態なら抜ける
 	if (isDead) { return; }
 
-	//墜落状態でなければ行動
-	if (!isCrash) {
-		//回転
-		Rotate();
-
-		//緊急回避
-		Roll();
-
-		//ダメージ状態ならノックバックする
-		if (isDamage) {
-			Knockback();
-		}
-		//ダメージ状態でないなら通常移動
-		else {
-			Move();
-		}
-
-		//攻撃
-		Attack();
-	}
-	//墜落状態
-	else {
-		Crash();
-	}
+	//行動
+	Action();
 
 	//オブジェクト更新
 	ObjObject3d::Update();
@@ -115,6 +93,8 @@ void Player::DrawUI()
 {
 	//墜落状態なら抜ける
 	if (isCrash) { return; }
+	//ステージクリア状態なら抜ける
+	if (isStageClearMode) { return; }
 
 	//レティクル描画
 	reticles->Draw();
@@ -146,6 +126,31 @@ void Player::OnCollisionHeal()
 	hpBar->SetChangeLength(HP);
 }
 
+void Player::StageClearModeStart()
+{
+	//カメラ追従を解除
+	SetIsCameraFollow(false);
+	//カメラ追従解除により、ローカル座標にワールド座標を代入
+	position = GetWorldPos();
+
+	//ステージクリア移動を右か左か決める
+	if (position.x < 0) { isStageClearMoveRight = false; }
+	else { isStageClearMoveRight = true; }
+
+	//初期速度をセット
+	stageClearMoveVelocity = { 0.2f, 0, 0.2f };
+	//回転速度をセット
+	stageClearMoveRotVel = -10.0f;
+	//左側移動時のためマイナスを渡す
+	if (!isStageClearMoveRight) {
+		stageClearMoveVelocity.x = -stageClearMoveVelocity.x;
+		stageClearMoveRotVel = -stageClearMoveRotVel;
+	}
+
+	//ステージクリア後の動きをする
+	isStageClearMode = true;
+}
+
 Vector3 Player::GetWorldPos()
 {
 	//ワールド座標を入れる変数
@@ -156,6 +161,38 @@ Vector3 Player::GetWorldPos()
 	worldPos.z = matWorld.r[3].m128_f32[2];
 
 	return worldPos;
+}
+
+void Player::Action()
+{
+	//ステージクリア状態
+	if (isStageClearMode) {
+		StageClearAction();
+	}
+	//墜落状態
+	else if (isCrash) {
+		Crash();
+	}
+	//それ以外
+	else {
+		//回転
+		Rotate();
+
+		//緊急回避
+		Roll();
+
+		//ダメージ状態ならノックバックする
+		if (isDamage) {
+			Knockback();
+		}
+		//ダメージ状態でないなら通常移動
+		else {
+			Move();
+		}
+
+		//攻撃
+		Attack();
+	}
 }
 
 void Player::Damage()
@@ -621,5 +658,31 @@ void Player::Knockback()
 	if (knockbackTimer >= knockbackTime) {
 		isDamage = false;
 		color = { 1,1,1,1 };
+	}
+}
+
+void Player::StageClearAction()
+{
+	if (stageClearModePhase == StageClearModePhase::SideMove) {
+		//加速度を設定
+		Vector3 accel = { 0.003f, 0, 0.002f };
+		//回転加速度をセット
+		float rotAccel = 0.005f;
+		const float maxRot = 360 + 65;
+		//左側移動時の設定
+		if (!isStageClearMoveRight) { accel.x = -accel.x;  rotAccel = -rotAccel; }
+
+		//速度に加速度を加算
+		stageClearMoveVelocity += accel;
+		//座標を移動
+		position += stageClearMoveVelocity;
+
+		//回転速度に加速度を加算
+		stageClearMoveRotVel += rotAccel;
+		//Z軸回転
+		rotation.z += stageClearMoveRotVel;
+		//角度制限をつける
+		rotation.z = min(rotation.z, maxRot);
+		rotation.z = max(rotation.z, -maxRot);
 	}
 }

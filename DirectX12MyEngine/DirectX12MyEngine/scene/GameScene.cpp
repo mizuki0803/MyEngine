@@ -23,8 +23,8 @@ using namespace DirectX;
 void GameScene::Initialize()
 {
 	//カメラ初期化
-	railCamera.reset(new RailCamera());
-	railCamera->Initialize();
+	gameCamera.reset(new GameCamera());
+	gameCamera->Initialize();
 
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
@@ -73,7 +73,7 @@ void GameScene::Initialize()
 	player->SetIsCameraFollow(true);
 
 	//レールカメラに自機のポインタをセット
-	railCamera->SetPlayer(player.get());
+	gameCamera->SetPlayer(player.get());
 
 	//全敵に必要な情報をセット
 	Enemy::SetGameScene(this);
@@ -124,12 +124,12 @@ void GameScene::Initialize()
 	}
 
 	//objオブジェクトにカメラをセット
-	ObjObject3d::SetCamera(railCamera.get());
+	ObjObject3d::SetCamera(gameCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
 	//パーティクルにカメラをセット
-	ParticleManager::SetCamera(railCamera.get());
+	ParticleManager::SetCamera(gameCamera.get());
 }
 
 void GameScene::Update()
@@ -139,82 +139,19 @@ void GameScene::Update()
 	//デバッグテキストのインスタンスを取得
 	DebugText* debugText = DebugText::GetInstance();
 
-	//死亡した自機弾の削除前処理
-	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-		//死亡していなければ飛ばす
-		if (!bullet->GetIsDead()) { continue; }
-
-		//レティクルがロックオン中だった場合、ホーミング弾がロックオン以外の敵に当たってしまう可能性もあるのでロックオン解除しておく
-		if (!(bullet->GetBulletType() == PlayerBullet::BulletType::Homing)) { continue; }
-		if (!player->GetReticles()->GetIsLockon()) { continue; }
-
-		player->GetReticles()->UnlockonEnemy();
-	}
-	//死亡した自機弾の削除
-	playerBullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
-		return bullet->GetIsDead();
-		});
-
-	//死亡した敵の処理
-	for (const std::unique_ptr<Enemy>& enemy : enemys) {
-		//死亡していなければ飛ばす
-		if (!enemy->GetIsDead()) { continue; }
-
-		//レティクルのロックオン対象だった場合、ロックオン解除
-		if (player->GetReticles()->GetLockonEnemy() == enemy.get()) {
-			player->GetReticles()->UnlockonEnemy();
-		}
-		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-			//自機弾のホーミング対象だった場合
-			if (bullet->GetEnemy() != enemy.get()) { continue; }
-			//ホーミング解除
-			bullet->SetEnemy(nullptr);
-		}
-	}
-	//削除状態の敵の削除
-	enemys.remove_if([](std::unique_ptr<Enemy>& enemy) {
-		return enemy->GetIsDelete();
-		});
-
-	//死亡した敵弾の削除
-	enemyBullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
-		return bullet->GetIsDead();
-		});
-
-	//死亡した回復アイテムの削除
-	healingItems.remove_if([](std::unique_ptr<HealingItem>& healingItem) {
-		return healingItem->GetIsDead();
-		});
-
-	//自機が墜落を開始したらゲームオーバー
-	if (!isGameOver) {
-		if (player->GetIsCrash()) {
-			//レールカメラを墜落状態にする
-			railCamera->CrashStart();
-
-			//ゲームオーバー
-			isGameOver = true;
-		}
-	}
-	if (boss) {
-		//死亡したボスの解放
-		if (boss->GetIsDead()) {
-			boss.reset();
-			//ステージクリア
-			isStageClear = true;
-		}
-	}
-
-
+	//オブジェクト解放
+	ObjectRelease();
 	//敵発生コマンド更新
 	UpdateEnemySetCommands();
 	//ボスバトル開始判定処理
 	BossBattleStart();
+	//ステージクリア
+	StageClear();
 	//ゲームオーバー
 	GameOver();
 
 	//カメラ更新
-	railCamera->Update();
+	gameCamera->Update();
 
 	//オブジェクト更新
 	//自機
@@ -345,6 +282,63 @@ void GameScene::Draw()
 	///-------スプライト描画ここまで-------///
 }
 
+void GameScene::ObjectRelease()
+{
+	//死亡した自機弾の削除前処理
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//死亡していなければ飛ばす
+		if (!bullet->GetIsDead()) { continue; }
+
+		//レティクルがロックオン中だった場合、ホーミング弾がロックオン以外の敵に当たってしまう可能性もあるのでロックオン解除しておく
+		if (!(bullet->GetBulletType() == PlayerBullet::BulletType::Homing)) { continue; }
+		if (!player->GetReticles()->GetIsLockon()) { continue; }
+
+		player->GetReticles()->UnlockonEnemy();
+	}
+	//死亡した自機弾の削除
+	playerBullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
+		return bullet->GetIsDead();
+		});
+
+	//死亡した敵の処理
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
+		//死亡していなければ飛ばす
+		if (!enemy->GetIsDead()) { continue; }
+
+		//レティクルのロックオン対象だった場合、ロックオン解除
+		if (player->GetReticles()->GetLockonEnemy() == enemy.get()) {
+			player->GetReticles()->UnlockonEnemy();
+		}
+		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+			//自機弾のホーミング対象だった場合
+			if (bullet->GetEnemy() != enemy.get()) { continue; }
+			//ホーミング解除
+			bullet->SetEnemy(nullptr);
+		}
+	}
+	//削除状態の敵の削除
+	enemys.remove_if([](std::unique_ptr<Enemy>& enemy) {
+		return enemy->GetIsDelete();
+		});
+
+	//死亡した敵弾の削除
+	enemyBullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
+		return bullet->GetIsDead();
+		});
+
+	//死亡した回復アイテムの削除
+	healingItems.remove_if([](std::unique_ptr<HealingItem>& healingItem) {
+		return healingItem->GetIsDead();
+		});
+
+	//削除状態のボスの削除
+	if (boss) {
+		if (boss->GetIsDelete()) {
+			boss.reset();
+		}
+	}
+}
+
 void GameScene::CollisionCheck3d()
 {
 	//判定対象の座標
@@ -375,6 +369,7 @@ void GameScene::CollisionCheck3d()
 			//自機弾のコールバック関数を呼び出す
 			bullet->OnCollision();
 
+			//弾は一つの敵しか倒せないのでenemyループを抜ける
 			break;
 		}
 	}
@@ -442,7 +437,7 @@ void GameScene::CollisionCheck3d()
 			//自機のダメージ用コールバック関数を呼び出す
 			player->OnCollisionDamage(posB);
 			//カメラをシェイクさせる
-			railCamera->ShakeStart();
+			gameCamera->ShakeStart();
 		}
 	}
 #pragma endregion
@@ -475,7 +470,7 @@ void GameScene::CollisionCheck3d()
 			//敵弾のコールバック関数を呼び出す
 			bullet->OnCollision();
 			//カメラをシェイクさせる
-			railCamera->ShakeStart();
+			gameCamera->ShakeStart();
 		}
 	}
 #pragma endregion
@@ -538,7 +533,7 @@ void GameScene::CollisionCheck3d()
 			//自機のダメージ用コールバック関数を呼び出す
 			player->OnCollisionDamage(posB);
 			//カメラをシェイクさせる
-			railCamera->ShakeStart();
+			gameCamera->ShakeStart();
 		}
 	}
 #pragma endregion
@@ -838,23 +833,49 @@ void GameScene::BossBattleStart()
 	boss.reset(Boss::Create(bossBasePos));
 
 	//レールカメラの前進を止める
-	railCamera->SetIsAdvance(false);
+	gameCamera->SetIsAdvance(false);
 
 	//ボスバトル状態にする
 	isBossBattle = true;
 }
 
+void GameScene::StageClear()
+{
+	//ステージクリアでないとき
+	if (!isStageClear) {
+		//そもそもボスがいなければ抜ける
+		if (!boss) { return; }
+		//ボスが死亡していなければ抜ける
+		if (!boss->GetIsDead()) { return; }
+
+		//ステージクリア
+		isStageClear = true;
+		//自機をステージクリアの動きに変更
+		player->StageClearModeStart();
+	}
+}
+
 void GameScene::GameOver()
 {
-	//ゲームオーバーでなければ抜ける
-	if (!player->GetIsDead()) { return; }
+	//ゲームオーバーでないとき
+	if (!isGameOver) {
+		//自機が墜落状態でなければ抜ける
+		if (!player->GetIsCrash()) { return; }
 
-	//タイマー更新
-	const float gameOverTime = 180;
-	gameOverTimer++;
+		//ゲームオーバー
+		isGameOver = true;
+		//カメラを墜落状態にする
+		gameCamera->CrashStart();
+	}
+	//ゲームオーバーのとき
+	else {
+		//タイマー更新
+		const float gameOverTime = 180;
+		gameOverTimer++;
 
-	//タイマーが指定した時間になったらゲームシーンをやり直す
-	if (gameOverTimer >= gameOverTime) {
-		SceneManager::GetInstance()->ChangeScene("GAME");
+		//タイマーが指定した時間になったらゲームシーンをやり直す
+		if (gameOverTimer >= gameOverTime) {
+			SceneManager::GetInstance()->ChangeScene("GAME");
+		}
 	}
 }

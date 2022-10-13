@@ -15,6 +15,13 @@ class GameScene;
 /// </summary>
 class Player : public ObjObject3d
 {
+public:
+	//ステージクリア後行動フェーズ
+	enum class StageClearModePhase {
+		SideMove,	//横旋回移動
+		Dead,		//死亡
+	};
+
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
@@ -61,6 +68,11 @@ public: //メンバ関数
 	/// </summary>
 	void OnCollisionHeal();
 
+	/// <summary>
+	/// ステージクリア後の動きを開始する
+	/// </summary>
+	void StageClearModeStart();
+
 	//getter
 	Vector3 GetWorldPos();
 	const int GetHP() { return HP; }
@@ -74,6 +86,11 @@ public: //メンバ関数
 	const bool GetIsChargeShotMode() { return isChargeShotMode; }
 
 private: //メンバ関数
+	/// <summary>
+	/// 行動
+	/// </summary>
+	void Action();
+
 	/// <summary>
 	/// ダメージを喰らう
 	/// </summary>
@@ -149,6 +166,11 @@ private: //メンバ関数
 	/// </summary>
 	void Knockback();
 
+	/// <summary>
+	/// ステージクリア後の動き
+	/// </summary>
+	void StageClearAction();
+
 private: //静的メンバ変数
 	//ゲームシーン
 	static GameScene* gameScene;
@@ -208,4 +230,14 @@ private: //メンバ変数
 	bool isRotZRight = true;
 	//z軸ゆらゆら回転用
 	float swayZ = 0.0f;
+	//ステージクリア後の動きをするか
+	bool isStageClearMode = false;
+	//ステージクリア後行動
+	StageClearModePhase stageClearModePhase = StageClearModePhase::SideMove;
+	//ステージクリア移動方向が右か
+	bool isStageClearMoveRight = true;
+	//ステージクリア移動速度
+	Vector3 stageClearMoveVelocity;
+	//ステージクリア移動回転速度
+	float stageClearMoveRotVel;
 };

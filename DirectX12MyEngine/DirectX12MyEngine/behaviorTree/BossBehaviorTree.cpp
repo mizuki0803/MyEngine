@@ -30,6 +30,7 @@ bool BossBehaviorTree::Initialize(Boss* boss)
 	topSelector.reset(Selector::Create());
 	attackModeSequencer.reset(Sequencer::Create());
 	waitModeSequencer.reset(Sequencer::Create());
+	deadModeSelector.reset(Selector::Create());
 	attackTypeSelector.reset(Selector::Create());
 	attackModeActionSelector.reset(Selector::Create());
 	attackModeRotaSelector.reset(Selector::Create());
@@ -75,10 +76,12 @@ void BossBehaviorTree::MakeTree()
 	WaitModeSequenceNode();
 
 
-	//死亡状態
-	std::function<bool()> deadMode =
-		std::bind(&Boss::DeadMode, boss);
-	topSelector->AddNode(deadMode);
+	//死亡状態セレクター
+	std::function<bool()> deadModeSelect =
+		std::bind(&Selector::Select, deadModeSelector.get());
+	topSelector->AddNode(deadModeSelect);
+	//死亡状態セレクトノード
+	DeadModeSelectNode();
 }
 
 void BossBehaviorTree::AttackModeSequenceNode()
@@ -279,4 +282,20 @@ void BossBehaviorTree::WaitModeRotaSelectNode()
 	std::function<bool()> waitModeAvatarRota =
 		std::bind(&Boss::WaitModeAvatarRota, boss);
 	waitModeRotaSelector->AddNode(waitModeAvatarRota);
+}
+
+void BossBehaviorTree::DeadModeSelectNode()
+{
+	//死亡状態セレクトノード
+
+	//死亡爆発
+	std::function<bool()> deadExplosion =
+		std::bind(&Boss::DeadExplosion, boss);
+	deadModeSelector->AddNode(deadExplosion);
+
+
+	//死亡落下
+	std::function<bool()> deadFall =
+		std::bind(&Boss::DeadFall, boss);
+	deadModeSelector->AddNode(deadFall);
 }

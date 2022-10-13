@@ -1,9 +1,9 @@
-#include "RailCamera.h"
+#include "GameCamera.h"
 #include "Input.h"
 #include "Easing.h"
 #include "Player.h"
 
-void RailCamera::Initialize()
+void GameCamera::Initialize()
 {
 	//初期座標を設定
 	position = { 0, 13, -30 };
@@ -15,26 +15,10 @@ void RailCamera::Initialize()
 	UpdateMatProjection();
 }
 
-void RailCamera::Update()
+void GameCamera::Update()
 {
-	//墜落状態でなければ通常レールカメラ
-	if (!isCrash) {
-		//回転
-		Rotate();
-
-		//プレイヤーがダメージ状態ならノックバックする
-		if (player->GetIsDamage()) {
-			Knockback();
-		}
-		//ダメージ状態でないなら通常移動
-		else {
-			Move();
-		}
-	}
-	//墜落状態
-	else {
-		Crash();
-	}
+	//カメラ動き
+	CameraAction();
 
 	//回転　平行移動行列の計算
 	DirectX::XMMATRIX matRot, matTrans;
@@ -70,7 +54,7 @@ void RailCamera::Update()
 	UpdateMatProjection();
 }
 
-void RailCamera::CrashStart()
+void GameCamera::CrashStart()
 {
 	//墜落状態にする
 	isCrash = true;
@@ -81,7 +65,7 @@ void RailCamera::CrashStart()
 	moveCrashBeforePos = position;
 }
 
-void RailCamera::ShakeStart()
+void GameCamera::ShakeStart()
 {
 	//シェイクタイマーをリセット
 	shakeTimer = 0;
@@ -89,7 +73,29 @@ void RailCamera::ShakeStart()
 	isShake = true;
 }
 
-void RailCamera::Crash()
+void GameCamera::CameraAction()
+{
+	//墜落状態
+	if (isCrash) {
+		Crash();
+	}
+	//それ以外
+	else {
+		//回転
+		Rotate();
+
+		//プレイヤーがダメージ状態ならノックバックする
+		if (player->GetIsDamage()) {
+			Knockback();
+		}
+		//ダメージ状態でないなら通常移動
+		else {
+			Move();
+		}
+	}
+}
+
+void GameCamera::Crash()
 {
 	//自機の少し上にカメラを移動させる
 	const Vector3 crashCameraPos = { player->GetWorldPos().x, player->GetWorldPos().y + 3, 0 };
@@ -124,7 +130,7 @@ void RailCamera::Crash()
 	else if (player->GetCrashBoundCount() == 1) { rotation.z -= rotSpeed; }
 }
 
-void RailCamera::Rotate()
+void GameCamera::Rotate()
 {
 	//回転(レールカメラに追従している自機の傾きを利用する)
 	rotation.x = player->GetRotation().x / 5;
@@ -132,7 +138,7 @@ void RailCamera::Rotate()
 	rotation.z = -player->GetRotation().y / 10;
 }
 
-void RailCamera::Move()
+void GameCamera::Move()
 {
 	//移動速度
 	Vector3 velocity;
@@ -156,7 +162,7 @@ void RailCamera::Move()
 	position.y = min(position.y, moveLimitMax.y);
 }
 
-void RailCamera::Knockback()
+void GameCamera::Knockback()
 {
 	//自機にあわせてカメラをノックバックさせる
 	const float speed = 1.6f;
@@ -177,7 +183,7 @@ void RailCamera::Knockback()
 	position.y = min(position.y, moveLimitMax.y);
 }
 
-void RailCamera::Shake()
+void GameCamera::Shake()
 {
 	//シェイクする時間を設定
 	const float shakeTime = 20;

@@ -213,11 +213,24 @@ void BossMainBody::AttackEnd()
 	attackRotateMpveAfterPos = {};
 }
 
-void BossMainBody::DeadMode()
+void BossMainBody::DeadFall()
 {
-	//X軸回転させる
-	Vector3 rotVel = { -0.5f, 0, 0 };
-	rotation += rotVel;
+	//X軸回転をしながら墜落する
+	const float rotSpeed = 1.0f;
+	rotation.x += rotSpeed;
+
+	//墜落するため、速度に加速度を加える
+	Vector3 crashAccel = { 0, -0.005f, 0 };
+	deadFallVel += crashAccel;
+	//落下する速度の最大値を設定
+	const float maxCrashSpeed = -0.6f;
+	if (deadFallVel.y <= maxCrashSpeed) { deadFallVel.y = maxCrashSpeed; }
+	position += deadFallVel;
+
+	//Y座標が0以下になったら削除
+	if (GetWorldPos().y <= 0) {
+		isDelete = true;
+	}
 }
 
 void BossMainBody::ChangeModel()

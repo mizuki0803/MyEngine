@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -171,7 +171,7 @@
     <ClCompile Include="behaviorTree\Selector.cpp" />
     <ClCompile Include="behaviorTree\Sequencer.cpp" />
     <ClCompile Include="camera\Camera.cpp" />
-    <ClCompile Include="camera\RailCamera.cpp" />
+    <ClCompile Include="camera\GameCamera.cpp" />
     <ClCompile Include="camera\TitleCamera.cpp" />
     <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="collision\CollisionShape.cpp" />
@@ -196,6 +196,7 @@
     <ClCompile Include="gameObject\HealingItem.cpp" />
     <ClCompile Include="gameObject\HomingBullet.cpp" />
     <ClCompile Include="gameObject\Mountain.cpp" />
+    <ClCompile Include="gameObject\NumberSprite.cpp" />
     <ClCompile Include="gameObject\Player.cpp" />
     <ClCompile Include="gameObject\PlayerBullet.cpp" />
     <ClCompile Include="gameObject\PlayerFarReticle.cpp" />
@@ -335,7 +336,7 @@
     <ClInclude Include="behaviorTree\Selector.h" />
     <ClInclude Include="behaviorTree\Sequencer.h" />
     <ClInclude Include="camera\Camera.h" />
-    <ClInclude Include="camera\RailCamera.h" />
+    <ClInclude Include="camera\GameCamera.h" />
     <ClInclude Include="camera\TitleCamera.h" />
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\CollisionShape.h" />
@@ -360,6 +361,7 @@
     <ClInclude Include="gameObject\HealingItem.h" />
     <ClInclude Include="gameObject\HomingBullet.h" />
     <ClInclude Include="gameObject\Mountain.h" />
+    <ClInclude Include="gameObject\NumberSprite.h" />
     <ClInclude Include="gameObject\Player.h" />
     <ClInclude Include="gameObject\PlayerBullet.h" />
     <ClInclude Include="gameObject\PlayerFarReticle.h" />

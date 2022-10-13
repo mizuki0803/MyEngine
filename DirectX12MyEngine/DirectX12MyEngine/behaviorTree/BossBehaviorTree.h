@@ -75,6 +75,11 @@ private: //メンバ関数
 	/// </summary>
 	void WaitModeRotaSelectNode();
 
+	/// <summary>
+	/// 死亡状態セレクトノード
+	/// </summary>
+	void DeadModeSelectNode();
+
 private:
 	//ボス
 	Boss* boss = nullptr;
@@ -84,6 +89,8 @@ private:
 	std::unique_ptr<Sequencer> attackModeSequencer;
 	//シーケンサー
 	std::unique_ptr<Sequencer> waitModeSequencer;
+	//セレクター
+	std::unique_ptr<Selector> deadModeSelector;
 	//セレクター
 	std::unique_ptr<Selector> attackTypeSelector;
 	//セレクター

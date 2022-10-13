@@ -119,9 +119,9 @@ public: //メンバ関数
 	void AttackEnd();
 
 	/// <summary>
-	/// 死亡状態
+	/// 死亡落下
 	/// </summary>
-	void DeadMode();
+	void DeadFall();
 
 	/// <summary>
 	/// 寝ている状態のモデルから起きている状態のモデルに変更
@@ -131,6 +131,7 @@ public: //メンバ関数
 	//getter
 	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
+	const bool GetIsDelete() { return isDelete; }
 	const int GetDamageNum() { return damageNum; }
 
 private: //メンバ関数
@@ -215,6 +216,8 @@ private: //メンバ変数
 	int HP = maxHP;
 	//死亡フラグ
 	bool isDead = false;
+	//削除フラグ
+	bool isDelete = false;
 	//喰らうダメージ量
 	int damageNum;
 	//ダメージ色フラグ
@@ -241,4 +244,6 @@ private: //メンバ変数
 	Vector3 attackRotateMoveBeforePos;
 	//攻撃内容:回転で移動後座標
 	Vector3 attackRotateMpveAfterPos;
+	//死亡時落下速度
+	Vector3 deadFallVel;
 };

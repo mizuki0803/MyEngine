@@ -3,7 +3,7 @@
 #include "Sprite.h"
 #include "ObjObject3d.h"
 #include "LightGroup.h"
-#include "RailCamera.h"
+#include "GameCamera.h"
 #include "CollisionShape.h"
 #include "Collision.h"
 #include "Player.h"
@@ -48,6 +48,11 @@ public: //メンバ関数
 	void Draw() override;
 
 	/// <summary>
+	/// オブジェクトの解放
+	/// </summary>
+	void ObjectRelease();
+
+	/// <summary>
 	/// 3Dオブジェクトの衝突判定
 	/// </summary>
 	void CollisionCheck3d();
@@ -85,13 +90,18 @@ public: //メンバ関数
 	void BossBattleStart();
 
 	/// <summary>
+	/// ステージクリア
+	/// </summary>
+	void StageClear();
+
+	/// <summary>
 	/// ゲームオーバー
 	/// </summary>
 	void GameOver();
 
 private: //メンバ変数
 	//レールカメラ
-	std::unique_ptr<RailCamera> railCamera;
+	std::unique_ptr<GameCamera> gameCamera;
 
 	//ライト
 	std::unique_ptr<LightGroup> lightGroup;

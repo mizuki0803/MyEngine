@@ -22,7 +22,7 @@ public:
 		Dead,	//死亡
 	};
 
-	//行動フェーズ
+	//攻撃種類
 	enum class AttackType {
 		None,				//未設定
 		Tracking,			//追従
@@ -199,15 +199,21 @@ public: //メンバ関数
 	bool WaitModeAvatarRota();
 
 	/// <summary>
-	/// 死亡状態
+	/// 死亡爆発
 	/// </summary>
-	bool DeadMode();
+	bool DeadExplosion();
+
+	/// <summary>
+	/// 死亡落下
+	/// </summary>
+	bool DeadFall();
 
 	//getter
 	const Phase& GetPhase() { return this->phase; }
 	BossMainBody* GetMainBody() { return mainBody.get(); }
 	const std::list<std::unique_ptr<BossAvatar>>& GetAvatars() { return avatars; };
 	const bool GetIsDead() { return isDead; }
+	const bool GetIsDelete() { return isDelete; }
 
 private: //メンバ関数
 	/// <summary>
@@ -263,6 +269,10 @@ private: //メンバ変数
 	int32_t waitModeTimer = 0;
 	//死亡状態時間タイマー
 	int32_t deadModeTimer = 0;
+	//爆発演出発生タイマー
+	int32_t explosionTimer = 0;
+	//爆発発生回数
+	int32_t explosionCount = 0;
 	//体力
 	int HP = 0;
 	//HPバー
@@ -271,4 +281,6 @@ private: //メンバ変数
 	std::unique_ptr<BossHPFrame> hpFrame;
 	//死亡フラグ
 	bool isDead = false;
+	//削除フラグ
+	bool isDelete = false;
 };

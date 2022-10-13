@@ -6,6 +6,7 @@
 #include "BossAvatarType02.h"
 #include "BossAvatarType03.h"
 #include "BossAvatarType04.h"
+#include "ParticleEmitter.h"
 
 Player* Boss::player = nullptr;
 const float Boss::attackModeTime = 600.0f;
@@ -119,13 +120,11 @@ void Boss::OnCollisionMainBody(const int damageNum)
 {
 	//待機状態ならダメージを喰らう
 	const bool isWaitMode = (phase == Phase::Wait);
-	//分身が全て死んでいるならダメージを喰らう
-	const bool isAllAvatarDead = (avatars.size() == 0);
 	//y軸角度45度以下ならダメージを喰らう
 	const bool isDamageRota = (mainBody->GetRotation().y <= 45.0f);
 
-	//どれか一つでも項目を達成していなければダメージを受けないで抜ける
-	if (!(isWaitMode && isAllAvatarDead && isDamageRota)) { return; }
+	//本体が攻撃状態ならダメージを喰らうを追加し、どれか一つでも項目を達成していなければダメージを受けないで抜ける
+	if (!(isMainBodyAttackMode && isWaitMode && isDamageRota)) { return; }
 
 	//本体にダメージ
 	mainBody->Damage(damageNum);
@@ -524,21 +523,57 @@ bool Boss::WaitModeAvatarRota()
 	return true;
 }
 
-bool Boss::DeadMode()
+bool Boss::DeadExplosion()
+{
+	//死亡状態でなければ抜ける
+	if (!(phase == Phase::Dead)) { return false; }
+	//既に爆発回数が十分なら抜ける
+	const int explosionNum = 9;
+	if (explosionCount >= explosionNum) { return false; }
+
+	//爆発演出発生タイマー更新
+	const float explosionTime = 20;
+	explosionTimer++;
+	if (explosionTimer >= explosionTime) {
+		//爆発演出用パーティクル生成
+		Vector3 particlePos = mainBody->GetWorldPos();
+		const float distance = 5.0f;
+		particlePos.x += (float)rand() / RAND_MAX * distance - distance / 2.0f;
+		particlePos.y += (float)rand() / RAND_MAX * distance - distance / 2.0f;
+		particlePos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
+		ParticleEmitter::GetInstance()->Explosion(particlePos);
+
+		//タイマー初期化
+		explosionTimer = 0;
+		//爆発演出回数更新
+		explosionCount++;
+		
+		//爆発が指定回数に達したら死亡フラグを立てる
+		if (explosionCount >= explosionNum) { isDead = true; }
+	}
+
+	return true;
+}
+
+bool Boss::DeadFall()
 {
 	//死亡状態でなければ抜ける
 	if (!(phase == Phase::Dead)) { return false; }
 
-	//タイマーを更新
-	const float deadModeTime = 300;
-	deadModeTimer++;
+	//ボス本体に死亡時落下をさせる
+	mainBody->DeadFall();
 
-	//ボス本体に死亡時の動きをさせる
-	mainBody->DeadMode();
+	//本体が削除状態なら削除
+	if (mainBody->GetIsDelete()) {
+		isDelete = true;
 
-	//タイマーが指定した時間になったら死亡フラグを立てる(削除)
-	if (deadModeTimer >= deadModeTime) {
-		isDead = true;
+		//爆発演出用パーティクル生成
+		Vector3 particlePos = mainBody->GetWorldPos();
+		const float distance = 5.0f;
+		particlePos.x += (float)rand() / RAND_MAX * distance - distance / 2.0f;
+		particlePos.y += (float)rand() / RAND_MAX * distance - distance / 2.0f;
+		particlePos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
+		ParticleEmitter::GetInstance()->Explosion(particlePos);
 	}
 
 	return true;

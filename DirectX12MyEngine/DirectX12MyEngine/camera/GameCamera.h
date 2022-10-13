@@ -6,9 +6,9 @@
 class Player;
 
 /// <summary>
-/// レールカメラ
+/// ゲームカメラ
 /// </summary>
-class RailCamera : public Camera
+class GameCamera : public Camera
 {
 public: //メンバ関数
 	/// <summary>
@@ -36,6 +36,11 @@ public: //メンバ関数
 	void SetIsAdvance(const bool isAdvance) { this->isAdvance = isAdvance; }
 
 private: //メンバ関数
+	/// <summary>
+	/// カメラ動き
+	/// </summary>
+	void CameraAction();
+
 	/// <summary>
 	/// 墜落
 	/// </summary>
