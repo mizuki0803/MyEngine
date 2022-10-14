@@ -82,6 +82,10 @@ void BossMainBody::Damage(int attackPower)
 
 		//HPゲージバグを起こさないようマイナス分を0に調整
 		damageNum += HP;
+
+		//死亡時の座標と角度を記憶しておく
+		deadPos = position;
+		deadRota = rotation;
 	}
 
 	//HPが少ない状態のモデルをセットする
@@ -213,17 +217,32 @@ void BossMainBody::AttackEnd()
 	attackRotateMpveAfterPos = {};
 }
 
+void BossMainBody::DeadBasePosBack(const float time)
+{
+	//イージング用比率が1を越えていたら抜ける
+	if (time > 1.0f) { return; }
+
+	//イージングで座標と角度を基準に戻す
+	position.x = Easing::OutQuad(deadPos.x, basePos.x, time);
+	position.y = Easing::OutQuad(deadPos.y, basePos.y, time);
+	position.z = Easing::OutQuad(deadPos.z, basePos.z, time);
+
+	rotation.x = Easing::OutQuad(deadRota.x, 0, time);
+	rotation.y = Easing::OutQuad(deadRota.y, 0, time);
+	rotation.z = Easing::OutQuad(deadRota.z, 0, time);
+}
+
 void BossMainBody::DeadFall()
 {
 	//X軸回転をしながら墜落する
-	const float rotSpeed = 1.0f;
+	const float rotSpeed = 0.5f;
 	rotation.x += rotSpeed;
 
 	//墜落するため、速度に加速度を加える
-	Vector3 crashAccel = { 0, -0.005f, 0 };
+	Vector3 crashAccel = { 0, -0.0025f, 0 };
 	deadFallVel += crashAccel;
 	//落下する速度の最大値を設定
-	const float maxCrashSpeed = -0.6f;
+	const float maxCrashSpeed = -0.15f;
 	if (deadFallVel.y <= maxCrashSpeed) { deadFallVel.y = maxCrashSpeed; }
 	position += deadFallVel;
 

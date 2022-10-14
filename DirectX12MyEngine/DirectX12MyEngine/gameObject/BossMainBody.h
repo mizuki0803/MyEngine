@@ -119,6 +119,11 @@ public: //ƒƒ“ƒoŠÖ”
 	void AttackEnd();
 
 	/// <summary>
+	/// €–SŒãŠî€ˆÊ’u‚É–ß‚é
+	/// </summary>
+	void DeadBasePosBack(const float time);
+
+	/// <summary>
 	/// €–S—‰º
 	/// </summary>
 	void DeadFall();
@@ -244,6 +249,10 @@ private: //ƒƒ“ƒo•Ï”
 	Vector3 attackRotateMoveBeforePos;
 	//UŒ‚“à—e:‰ñ“]‚ÅˆÚ“®ŒãÀ•W
 	Vector3 attackRotateMpveAfterPos;
+	//€–S‚ÌÀ•W
+	Vector3 deadPos;
+	//€–S‚ÌŠp“x
+	Vector3 deadRota;
 	//€–S—‰º‘¬“x
 	Vector3 deadFallVel;
 };

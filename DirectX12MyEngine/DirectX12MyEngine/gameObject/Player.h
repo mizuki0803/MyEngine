@@ -19,7 +19,9 @@ public:
 	//ステージクリア後行動フェーズ
 	enum class StageClearModePhase {
 		SideMove,	//横旋回移動
-		Dead,		//死亡
+		Return,		//旋回帰還
+		Up,			//上昇
+		Stay,		//停止
 	};
 
 public: //静的メンバ関数
@@ -73,8 +75,15 @@ public: //メンバ関数
 	/// </summary>
 	void StageClearModeStart();
 
+	/// <summary>
+	/// 帰還を開始する
+	/// </summary>
+	/// <param name="cameraPos">カメラ座標</param>
+	void ReturnStart(const Vector3& cameraPos);
+
 	//getter
 	Vector3 GetWorldPos();
+	XMMATRIX GetMatWorld() { return matWorld; }
 	const int GetHP() { return HP; }
 	const bool GetIsDamage() { return isDamage; }
 	const bool GetIsCrash() { return isCrash; }
@@ -84,6 +93,7 @@ public: //メンバ関数
 	const Vector3& GetKnockbackVel() { return knockbackVel; }
 	PlayerReticles* GetReticles() { return reticles.get(); }
 	const bool GetIsChargeShotMode() { return isChargeShotMode; }
+	StageClearModePhase GetStageClearModePhase() { return stageClearModePhase; }
 
 private: //メンバ関数
 	/// <summary>
@@ -167,9 +177,24 @@ private: //メンバ関数
 	void Knockback();
 
 	/// <summary>
-	/// ステージクリア後の動き
+	/// ステージクリア後の横移動
 	/// </summary>
-	void StageClearAction();
+	void StageClearSideMove();
+
+	/// <summary>
+	/// ステージクリア後の帰還
+	/// </summary>
+	void StageClearReturn();
+	
+	/// <summary>
+	/// ステージクリア後の上昇
+	/// </summary>
+	void StageClearUp();
+
+	/// <summary>
+	/// ステージクリア後の停止
+	/// </summary>
+	void StageClearStay();
 
 private: //静的メンバ変数
 	//ゲームシーン
@@ -182,6 +207,8 @@ private: //静的メンバ変数
 	static const Vector2 rotLimit;
 	//最大体力
 	static const int maxHP = 101;
+	//ステージクリア後行動遷移
+	static void (Player::* stageClearActionFuncTable[])();
 
 private: //メンバ変数
 	//体力
@@ -234,10 +261,16 @@ private: //メンバ変数
 	bool isStageClearMode = false;
 	//ステージクリア後行動
 	StageClearModePhase stageClearModePhase = StageClearModePhase::SideMove;
+	//ステージクリア後に使用するタイマー
+	int32_t stageClearModeTimer = 0;
 	//ステージクリア移動方向が右か
 	bool isStageClearMoveRight = true;
 	//ステージクリア移動速度
 	Vector3 stageClearMoveVelocity;
-	//ステージクリア移動回転速度
-	float stageClearMoveRotVel;
+	//ステージクリア時角度
+	Vector3 stageClearRota;
+	//ステージクリア後に使用するカメラホーミング用座標
+	Vector3 stageClearCameraPos;
+	//カメラホーミング用座標
+	Vector3 cameraHomingPos;
 };

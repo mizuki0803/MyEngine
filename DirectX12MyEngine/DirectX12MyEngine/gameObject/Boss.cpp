@@ -528,13 +528,13 @@ bool Boss::DeadExplosion()
 	//死亡状態でなければ抜ける
 	if (!(phase == Phase::Dead)) { return false; }
 	//既に爆発回数が十分なら抜ける
-	const int explosionNum = 9;
+	const int explosionNum = 12;
 	if (explosionCount >= explosionNum) { return false; }
 
 	//爆発演出発生タイマー更新
 	const float explosionTime = 20;
 	explosionTimer++;
-	if (explosionTimer >= explosionTime) {
+	if ((explosionTimer % (int)explosionTime) == 0) {
 		//爆発演出用パーティクル生成
 		Vector3 particlePos = mainBody->GetWorldPos();
 		const float distance = 5.0f;
@@ -543,14 +543,19 @@ bool Boss::DeadExplosion()
 		particlePos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
 		ParticleEmitter::GetInstance()->Explosion(particlePos);
 
-		//タイマー初期化
-		explosionTimer = 0;
 		//爆発演出回数更新
 		explosionCount++;
 		
 		//爆発が指定回数に達したら死亡フラグを立てる
 		if (explosionCount >= explosionNum) { isDead = true; }
 	}
+
+	//イージング用に0～1の値を算出する
+	const float backTime = 180;
+	float time = explosionTimer / backTime;
+	time = min(time, 1.0f);
+	//ボス本体を基準の位置に戻す
+	mainBody->DeadBasePosBack(time);
 
 	return true;
 }

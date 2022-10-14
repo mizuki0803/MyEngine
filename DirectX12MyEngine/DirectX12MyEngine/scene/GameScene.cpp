@@ -334,6 +334,11 @@ void GameScene::ObjectRelease()
 	//削除状態のボスの削除
 	if (boss) {
 		if (boss->GetIsDelete()) {
+			//自機を帰還させる
+			player->ReturnStart(gameCamera->GetPosition());
+			//カメラのボス本体情報を解除させる
+			gameCamera->BossDelete();
+
 			boss.reset();
 		}
 	}
@@ -606,7 +611,7 @@ void GameScene::CollisionCheck2d()
 	float radiusA, radiusB;
 
 #pragma region レティクルと敵の衝突判定
-	//プレイヤーがチャージショット状態なら
+	//自機がチャージショット状態なら
 	if (player->GetIsChargeShotMode()) {
 		//レティクルがロックオン状態なら抜ける
 		if (player->GetReticles()->GetIsLockon()) { return; }
@@ -829,7 +834,8 @@ void GameScene::BossBattleStart()
 	if (!isBossBattleStart) { return; }
 
 	//ボス生成
-	const Vector3 bossBasePos = { 0, 20, 410 };
+	const float distance = 60;
+	const Vector3 bossBasePos = { 0, 20, isBossBattleStartPos + distance };
 	boss.reset(Boss::Create(bossBasePos));
 
 	//レールカメラの前進を止める
@@ -852,6 +858,8 @@ void GameScene::StageClear()
 		isStageClear = true;
 		//自機をステージクリアの動きに変更
 		player->StageClearModeStart();
+		//カメラをステージクリアの動きに変更
+		gameCamera->StageClearModeStart(boss->GetMainBody());
 	}
 }
 
