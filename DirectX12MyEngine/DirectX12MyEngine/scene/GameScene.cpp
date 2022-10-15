@@ -335,7 +335,7 @@ void GameScene::ObjectRelease()
 	if (boss) {
 		if (boss->GetIsDelete()) {
 			//自機を帰還させる
-			player->ReturnStart(gameCamera->GetPosition());
+			player->StageClearReturnStart(gameCamera->GetPosition());
 			//カメラのボス本体情報を解除させる
 			gameCamera->BossDelete();
 
@@ -860,6 +860,16 @@ void GameScene::StageClear()
 		player->StageClearModeStart();
 		//カメラをステージクリアの動きに変更
 		gameCamera->StageClearModeStart(boss->GetMainBody());
+	}
+	//ステージクリア後
+	else {
+		//自機のステージクリア後行動が停止でなければ抜ける
+		if (!(player->GetStageClearModePhase() == Player::StageClearModePhase::Stay)) { return; }
+		//指定の入力をしなければ抜ける
+		if (!(Input::GetInstance()->TriggerKey(DIK_SPACE) || Input::GetInstance()->TriggerGamePadButton(Input::PAD_B))) { return; }
+
+		//自機のステージクリア後ブーストを開始する
+		player->StageClearBoostStart();
 	}
 }
 

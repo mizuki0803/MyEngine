@@ -22,6 +22,7 @@ public:
 		Return,		//旋回帰還
 		Up,			//上昇
 		Stay,		//停止
+		Boost,		//ブースト
 	};
 
 public: //静的メンバ関数
@@ -76,10 +77,15 @@ public: //メンバ関数
 	void StageClearModeStart();
 
 	/// <summary>
-	/// 帰還を開始する
+	/// ステージクリア後の帰還を開始する
 	/// </summary>
 	/// <param name="cameraPos">カメラ座標</param>
-	void ReturnStart(const Vector3& cameraPos);
+	void StageClearReturnStart(const Vector3& cameraPos);
+
+	/// <summary>
+	/// ステージクリア後のブーストを開始する
+	/// </summary>
+	void StageClearBoostStart();
 
 	//getter
 	Vector3 GetWorldPos();
@@ -195,6 +201,11 @@ private: //メンバ関数
 	/// ステージクリア後の停止
 	/// </summary>
 	void StageClearStay();
+
+	/// <summary>
+	/// ステージクリア後のブースト
+	/// </summary>
+	void StageClearBoost();
 
 private: //静的メンバ変数
 	//ゲームシーン

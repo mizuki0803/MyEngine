@@ -15,11 +15,12 @@ class GameCamera : public Camera
 public:
 	//ステージクリア後行動フェーズ
 	enum class StageClearModePhase {
-		BossLook,	//ボスの方向を向く
-		FrontLock,	//正面の方向を向く
-		PlayerLock,	//自機の方向を向く
-		PlayerZoom,	//自機をズーム
-		None,		//デバッグ用なにもしない
+		BossLook,		//ボスの方向を向く
+		FrontLock,		//正面の方向を向く
+		PlayerLock,		//自機の方向を向く
+		PlayerZoom,		//自機をズーム
+		PlayerFollow,	//自機を追従(実際はなにもしない)
+		PlayerSideMove,	//自機横に移動
 	};
 
 public: //メンバ関数
@@ -113,9 +114,14 @@ private: //メンバ関数
 	void StageClearPlayerZoom();
 
 	/// <summary>
-	/// ステージクリア後のデバッグ用なにもしない
+	/// ステージクリア後の自機追従する行動
 	/// </summary>
-	void StageClearNone();
+	void StageClearPlayerFollow();
+
+	/// <summary>
+	/// ステージクリア後の自機横に移動する行動
+	/// </summary>
+	void StageClearPlayerSideMove();
 
 
 private: //静的メンバ変数

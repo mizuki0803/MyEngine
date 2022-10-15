@@ -11,6 +11,7 @@ void (Player::* Player::stageClearActionFuncTable[])() = {
 	&Player::StageClearReturn,
 	&Player::StageClearUp,
 	&Player::StageClearStay,
+	&Player::StageClearBoost,
 };
 
 GameScene* Player::gameScene = nullptr;
@@ -157,7 +158,7 @@ void Player::StageClearModeStart()
 	isStageClearMode = true;
 }
 
-void Player::ReturnStart(const Vector3& cameraPos)
+void Player::StageClearReturnStart(const Vector3& cameraPos)
 {
 	//カメラ座標を取得
 	stageClearCameraPos = cameraPos;
@@ -173,6 +174,12 @@ void Player::ReturnStart(const Vector3& cameraPos)
 
 	//タイマー初期化
 	stageClearModeTimer = 0;
+}
+
+void Player::StageClearBoostStart()
+{
+	//ブースト状態にする
+	stageClearModePhase = StageClearModePhase::Boost;
 }
 
 Vector3 Player::GetWorldPos()
@@ -433,11 +440,11 @@ void Player::Rotate()
 void Player::Move()
 {
 	//自機が傾いている角度に移動させる
-	Vector3 move = { 0, 0, 0 };
+	Vector3 velocity = { 0, 0, 0 };
 	const float moveSpeed = 0.1f;
-	move.x = moveSpeed * (rotation.y / rotLimit.y);
-	move.y = moveSpeed * -(rotation.x / rotLimit.x);
-	position += move;
+	velocity.x = moveSpeed * (rotation.y / rotLimit.y);
+	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
+	position += velocity;
 
 	//移動限界から出ないようにする
 	const Vector2 moveLimitMax = { 10.0f, 6.0f };
@@ -750,7 +757,7 @@ void Player::StageClearReturn()
 	float maxRotZ = (360 * 3 + downward);
 	//左側移動時の設定
 	if (!isStageClearMoveRight) { maxRotZ = -maxRotZ; }
-	rotation.z = Easing::OutQuart(stageClearRota.z, maxRotZ, time);
+	rotation.z = Easing::OutQuad(stageClearRota.z, maxRotZ, time);
 
 	//カメラより後ろへいったら次のフェーズへ
 	if (position.z <= stageClearCameraPos.z) {
@@ -827,5 +834,14 @@ void Player::StageClearStay()
 	Vector3 velocity = Easing::LerpVec3(stageClearMoveVelocity, { 0, 0, 0 }, time);
 
 	//だんだん減速
+	position += velocity;
+}
+
+void Player::StageClearBoost()
+{
+	//ブースト移動
+	//自機が傾いている角度に移動させる
+	Vector3 velocity = { 0, 0, 1.0f };
+	velocity = MatrixTransformDirection(velocity, matWorld);
 	position += velocity;
 }
