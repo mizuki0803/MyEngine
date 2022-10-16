@@ -156,6 +156,9 @@
     <Filter Include="ソース ファイル\game\gameUI\UI">
       <UniqueIdentifier>{02f9b831-4f51-49ae-aa20-96b13f37dcf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameUI\sprite\texture">
+      <UniqueIdentifier>{990af374-0968-4b6f-8cc7-a84d3ae480d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -378,6 +381,15 @@
       <Filter>ソース ファイル\game\gameUI\sprite</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\EnemyDefeatCounter.cpp">
+      <Filter>ソース ファイル\game\gameUI\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\SpriteTexture.cpp">
+      <Filter>ソース ファイル\game\gameUI\sprite\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\StageResultFrameSprite.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\StageResultUI.cpp">
       <Filter>ソース ファイル\game\gameUI\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -679,6 +691,15 @@
     </ClInclude>
     <ClInclude Include="gameObject\EnemyDefeatCounter.h">
       <Filter>ソース ファイル\game\gameUI\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\StageResultUI.h">
+      <Filter>ソース ファイル\game\gameUI\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\SpriteTexture.h">
+      <Filter>ソース ファイル\game\gameUI\sprite\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\StageResultFrameSprite.h">
+      <Filter>ソース ファイル\game\gameUI\sprite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

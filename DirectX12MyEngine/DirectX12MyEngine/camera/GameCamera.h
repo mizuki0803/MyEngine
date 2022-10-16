@@ -21,6 +21,7 @@ public:
 		PlayerZoom,		//自機をズーム
 		PlayerFollow,	//自機を追従(実際はなにもしない)
 		PlayerSideMove,	//自機横に移動
+		PlayerKeepLock,	//自機の方向をずっと向く
 	};
 
 public: //メンバ関数
@@ -61,6 +62,7 @@ public: //メンバ関数
 	//setter
 	void SetPlayer(Player* player) { this->player = player; }
 	void SetIsAdvance(const bool isAdvance) { this->isAdvance = isAdvance; }
+	StageClearModePhase GetStageClearModePhase() { return stageClearModePhase; }
 
 private: //メンバ関数
 	/// <summary>
@@ -122,6 +124,11 @@ private: //メンバ関数
 	/// ステージクリア後の自機横に移動する行動
 	/// </summary>
 	void StageClearPlayerSideMove();
+
+	/// <summary>
+	/// ステージクリア後の自機の方向をずっと向く行動
+	/// </summary>
+	void StageClearPlayerKeepLock();
 
 
 private: //静的メンバ変数

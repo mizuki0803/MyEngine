@@ -1,4 +1,5 @@
 #include "PlayerReticles.h"
+#include "SpriteTexture.h"
 
 PlayerReticles* PlayerReticles::Create()
 {
@@ -21,8 +22,8 @@ PlayerReticles* PlayerReticles::Create()
 bool PlayerReticles::Initialize()
 {
 	//ÉåÉeÉBÉNÉãÇê∂ê¨
-	nearReticle.reset(PlayerNearReticle::Create(1, 15.0f, { 100, 100 }));
-	farReticle.reset(PlayerFarReticle::Create(1, 25.0f, { 50, 50 }, { 100, 100 }));
+	nearReticle.reset(PlayerNearReticle::Create(SpriteTexture::Reticle, 15.0f, { 100, 100 }));
+	farReticle.reset(PlayerFarReticle::Create(SpriteTexture::Reticle, 25.0f, { 50, 50 }, { 100, 100 }));
 
 	return true;
 }

@@ -39,7 +39,7 @@ void FbxModel::CreateBuffers(ID3D12Device* device)
 
 	//頂点インデックス全体のサイズ
 	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short)) *
-		indices.size();
+		static_cast<UINT>(indices.size());
 	//インデックスバッファ生成
 	result = device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),

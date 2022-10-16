@@ -23,7 +23,7 @@ using namespace DirectX;
 
 void GameScene::Initialize()
 {
-	//カメラ初期化
+	//ゲームカメラ初期化
 	gameCamera.reset(new GameCamera());
 	gameCamera->Initialize();
 
@@ -41,15 +41,6 @@ void GameScene::Initialize()
 	lightGroup->SetPointLightActive(2, false);
 	//lightGroup->SetSpotLightActive(0, true);
 	lightGroup->SetCircleShadowActive(0, true);
-
-	//スプライト共通部分のインスタンスを取得
-	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
-	//スプライト用テクスチャ読み込み
-	spriteCommon->LoadTexture(1, "reticle.png");
-	spriteCommon->LoadTexture(2, "HPGaugeIn.png");
-	spriteCommon->LoadTexture(3, "HPGaugeOut.png");
-	spriteCommon->LoadTexture(4, "bossHPGaugeIn.png");
-	spriteCommon->LoadTexture(5, "bossHPGaugeOut.png");
 
 
 	//objからモデルデータを読み込む
@@ -73,7 +64,7 @@ void GameScene::Initialize()
 	player.reset(Player::Create(modelFighter.get()));
 	player->SetIsCameraFollow(true);
 
-	//レールカメラに自機のポインタをセット
+	//ゲームカメラに自機のポインタをセット
 	gameCamera->SetPlayer(player.get());
 
 	//全敵に必要な情報をセット
@@ -128,6 +119,7 @@ void GameScene::Initialize()
 	ObjObject3d::SetCamera(gameCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
+
 
 	//パーティクルにカメラをセット
 	ParticleManager::SetCamera(gameCamera.get());
@@ -187,6 +179,12 @@ void GameScene::Update()
 	//背景用(山)
 	for (const std::unique_ptr<Mountain>& mountain : mountains) {
 		mountain->Update();
+	}
+
+	//スプライト更新
+	//ステージリザルトUI
+	if (stageResultUI) {
+		stageResultUI->Update();
 	}
 
 	//衝突判定管理
@@ -285,6 +283,11 @@ void GameScene::Draw()
 	//ボスのUI描画
 	if (boss) {
 		boss->DrawUI();
+	}
+
+	//ステージリザルトUI
+	if (stageResultUI) {
+		stageResultUI->Draw();
 	}
 
 	///-------スプライト描画ここまで-------///
@@ -846,7 +849,7 @@ void GameScene::BossBattleStart()
 	const Vector3 bossBasePos = { 0, 20, isBossBattleStartPos + distance };
 	boss.reset(Boss::Create(bossBasePos));
 
-	//レールカメラの前進を止める
+	//カメラの前進を止める
 	gameCamera->SetIsAdvance(false);
 
 	//ボスバトル状態にする
@@ -873,13 +876,37 @@ void GameScene::StageClear()
 	}
 	//ステージクリア後
 	else {
+		//ステージリザルト
+		StageResult();
+	}
+}
+
+void GameScene::StageResult()
+{
+	//ステージリザルトUIのインスタンスがないとき
+	if (!stageResultUI) {
+		//カメラのステージクリア後行動が自機横に移動でなければ抜ける
+		if (!(gameCamera->GetStageClearModePhase() == GameCamera::StageClearModePhase::PlayerSideMove)) { return; }
 		//自機のステージクリア後行動が停止でなければ抜ける
 		if (!(player->GetStageClearModePhase() == Player::StageClearModePhase::Stay)) { return; }
+
+		//ステージリザルトUI生成
+		stageResultUI.reset(StageResultUI::Create(EnemyDefeatCounter::GetDefeatCount(), false));
+	}
+	//ステージリザルトUIのインスタンスがあるとき
+	else {
+		//リザルト表示が完了していなければ抜ける
+		if (!stageResultUI->GetIsResultEnd()) { return; }
+		//カメラのステージクリア後行動が自機の方向をずっと向くでなければ抜ける
+		if (!(gameCamera->GetStageClearModePhase() == GameCamera::StageClearModePhase::PlayerKeepLock)) { return; }
 		//指定の入力をしなければ抜ける
 		if (!(Input::GetInstance()->TriggerKey(DIK_SPACE) || Input::GetInstance()->TriggerGamePadButton(Input::PAD_B))) { return; }
 
 		//自機のステージクリア後ブーストを開始する
 		player->StageClearBoostStart();
+
+		//ステージリザルトUIの削除
+		stageResultUI.reset();
 	}
 }
 

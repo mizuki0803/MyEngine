@@ -11,6 +11,7 @@ void (GameCamera::* GameCamera::stageClearCameraActionFuncTable[])() = {
 	&GameCamera::StageClearPlayerZoom,
 	&GameCamera::StageClearPlayerFollow,
 	&GameCamera::StageClearPlayerSideMove,
+	&GameCamera::StageClearPlayerKeepLock,
 };
 
 void GameCamera::Initialize()
@@ -433,9 +434,6 @@ void GameCamera::StageClearPlayerSideMove()
 	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
 	rotation.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
 
-	//タイマーが指定した時間以上なら抜ける
-	if (stageClearModeTimer >= moveTime) { return; }
-
 	//タイマー更新
 	stageClearModeTimer++;
 	float time = stageClearModeTimer / moveTime;
@@ -458,4 +456,20 @@ void GameCamera::StageClearPlayerSideMove()
 	position.x = Easing::OutQuad(stageClearMoveBeforePos.x, playerSide.x, time);
 	position.y = Easing::OutQuad(stageClearMoveBeforePos.y, playerSide.y, time);
 	position.z = Easing::OutQuad(stageClearMoveBeforePos.z, playerSide.z, time);
+
+	//指定した時間になったら次のフェーズへ
+	if (stageClearModeTimer >= moveTime) {
+		stageClearModePhase = StageClearModePhase::PlayerKeepLock;
+	}
+}
+
+void GameCamera::StageClearPlayerKeepLock()
+{
+	//自機の方向を向く
+	const Vector3 playerCameraVec = player->GetWorldPos() - position;
+	rotation.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
+	XMMATRIX matRot;
+	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
+	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
+	rotation.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
 }

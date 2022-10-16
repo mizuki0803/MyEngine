@@ -70,9 +70,6 @@ private: //メンバ変数
 	float circleShadowAtten[3] = { 0.5f, 0.6f, 0.0f };
 	float circleShadowFactorAngle[2] = { 0.0f, 0.5f };
 
-	//スプライト
-	std::unique_ptr<Sprite> sprite;
-
 	//モデルデータ
 	std::unique_ptr<ObjModel> modelMan;
 	std::unique_ptr<ObjModel> modelSkydome;

@@ -53,24 +53,6 @@ void DebugScene::Initialize()
 	ParticleManager::SetCamera(camera.get());
 	//particleMan.reset(ParticleManager::Create(1));
 
-	//スプライト共通部分のインスタンスを取得
-	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
-	//スプライト用テクスチャ読み込み
-	spriteCommon->LoadTexture(1, "background.png");
-	//spriteCommon->LoadTexture(2, "mario.jpg");
-
-	//スプライト生成
-	sprite.reset(Sprite::Create(1, {0, 0}));
-
-	//スプライト座標移動
-	//sprite->SetPosition({ 0, 0 });
-	//スプライトサイズ変更
-	//sprite->SetSize({ 1280, 720 });
-	//スプライトテクスチャサイズ変更
-	//sprite->SetTexSize({ 1280, 720 });
-	//スプライト色変更
-	//sprite->SetColor({ 1, 1, 1, 0.5f });
-
 
 	//objからモデルデータを読み込む
 	modelMan.reset(ObjModel::LoadFromOBJ("man"));
@@ -208,15 +190,6 @@ void DebugScene::Update()
 		Vector3 pos = objMan->GetPosition();
 		pos.y -= 0.1f;
 		objMan->SetPosition(pos);
-	}
-
-
-	//モデル変更とスプライト変化
-	if (input->PushKey(DIK_SPACE))
-	{
-		float rot = sprite->GetRotation();
-		rot++;
-		sprite->SetRotation(rot);
 	}
 
 	//キー入力でプレイヤーの位置を変更
@@ -479,9 +452,6 @@ void DebugScene::Update()
 	fbxObject1->Update();
 
 
-	//スプライト更新
-	sprite->Update();
-
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
@@ -508,8 +478,6 @@ void DebugScene::Draw()
 	SpriteCommon::GetInstance()->DrawPrev();
 	///-------背景スプライト描画ここから-------///
 
-
-	sprite->Draw();
 	
 	dxbase->ClearDepthBuffer();
 	

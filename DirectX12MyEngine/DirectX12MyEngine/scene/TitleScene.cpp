@@ -27,16 +27,6 @@ void TitleScene::Initialize()
 	//lightGroup->SetSpotLightActive(0, true);
 	lightGroup->SetCircleShadowActive(0, true);
 
-	//スプライト共通部分のインスタンスを取得
-	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
-	//スプライト用テクスチャ読み込み
-	spriteCommon->LoadTexture(1, "reticle.png");
-	spriteCommon->LoadTexture(2, "HPGaugeIn.png");
-	spriteCommon->LoadTexture(3, "HPGaugeOut.png");
-	spriteCommon->LoadTexture(4, "bossHPGaugeIn.png");
-	spriteCommon->LoadTexture(5, "bossHPGaugeOut.png");
-
-
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));

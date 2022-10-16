@@ -123,11 +123,14 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;$(ProjectDir)math;$(ProjectDir)behaviorTree;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>DirectXTex.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+      <AdditionalOptions>/IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,6 +143,7 @@
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)camera;$(ProjectDir)collision;$(ProjectDir)effect;$(ProjectDir)input;$(ProjectDir)light;$(ProjectDir)scene;$(ProjectDir)gameObject;$(ProjectDir)math;$(ProjectDir)behaviorTree;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,6 +151,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>DirectXTex.lib;libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+      <AdditionalOptions>/IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -211,6 +217,9 @@
     <ClCompile Include="gameObject\Reticle3D.cpp" />
     <ClCompile Include="gameObject\Reticle2D.cpp" />
     <ClCompile Include="gameObject\Skydome.cpp" />
+    <ClCompile Include="gameObject\SpriteTexture.cpp" />
+    <ClCompile Include="gameObject\StageResultFrameSprite.cpp" />
+    <ClCompile Include="gameObject\StageResultUI.cpp" />
     <ClCompile Include="gameObject\StraightBullet.cpp" />
     <ClCompile Include="gameObject\FallEnemy.cpp" />
     <ClCompile Include="gameObject\TitlePlayer.cpp" />
@@ -373,6 +382,9 @@
     <ClInclude Include="gameObject\PlayerNearReticle.h" />
     <ClInclude Include="gameObject\PlayerNearReticle2D.h" />
     <ClInclude Include="gameObject\PlayerReticles.h" />
+    <ClInclude Include="gameObject\SpriteTexture.h" />
+    <ClInclude Include="gameObject\StageResultFrameSprite.h" />
+    <ClInclude Include="gameObject\StageResultUI.h" />
     <ClInclude Include="gameObject\Reticle.h" />
     <ClInclude Include="gameObject\Reticle3D.h" />
     <ClInclude Include="gameObject\Reticle2D.h" />
