@@ -153,6 +153,9 @@
     <Filter Include="ソース ファイル\game\gameCamera\gameCamara">
       <UniqueIdentifier>{9ef5f395-c78d-47bf-bb18-9c7b37930d92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameUI\UI">
+      <UniqueIdentifier>{02f9b831-4f51-49ae-aa20-96b13f37dcf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\Audio.cpp">
@@ -373,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="gameObject\NumberSprite.cpp">
       <Filter>ソース ファイル\game\gameUI\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\EnemyDefeatCounter.cpp">
+      <Filter>ソース ファイル\game\gameUI\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -670,6 +676,9 @@
     </ClInclude>
     <ClInclude Include="gameObject\BossMainBody.h">
       <Filter>ソース ファイル\game\gameObject\gameScene\boss</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\EnemyDefeatCounter.h">
+      <Filter>ソース ファイル\game\gameUI\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

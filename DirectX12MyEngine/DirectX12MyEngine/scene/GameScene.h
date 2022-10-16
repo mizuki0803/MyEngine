@@ -176,8 +176,4 @@ private: //メンバ変数
 	bool isGameOver = false;
 	//ゲームオーバータイマー
 	int32_t gameOverTimer = 0;
-
-	//その他変数
-	float soundVol = 0.1f;
-	char str[100];
 };

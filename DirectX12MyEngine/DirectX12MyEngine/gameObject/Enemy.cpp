@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "GameScene.h"
+#include "EnemyDefeatCounter.h"
 #include "ParticleEmitter.h"
 
 Player* Enemy::player = nullptr;
@@ -40,6 +41,9 @@ void Enemy::OnCollision()
 	//€–Só‘Ô‚Å‚È‚¯‚ê‚Î€–S‚³‚¹‚é
 	if (!isDead) {
 		isDead = true;
+
+		//“|‚µ‚½”ƒJƒEƒ“ƒ^[‚ğ‘‚â‚·
+		EnemyDefeatCounter::AddCounter();
 	}
 	//Šù‚É€–Só‘Ô‚Å€–S‰‰o’†‚Ì‚Æ‚«‚Ííœ‚·‚é
 	else {

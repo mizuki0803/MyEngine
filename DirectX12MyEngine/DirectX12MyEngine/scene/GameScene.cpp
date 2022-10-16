@@ -13,6 +13,7 @@
 #include "FallEnemy.h"
 #include "UpDownEnemy.h"
 #include "ComeGoEnemy.h"
+#include "EnemyDefeatCounter.h"
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -112,7 +113,7 @@ void GameScene::Initialize()
 	ground.reset(Ground::Create(modelGround.get()));
 
 	//背景用(山)生成
-	for (int i = 0; i < 20; i++) {
+	/*for (int i = 0; i < 20; i++) {
 		std::unique_ptr<Mountain> newMountain;
 		newMountain.reset(Mountain::Create(modelMountain.get(), { -70, 0, 0 + (float)i * 40 }));
 		mountains.push_back(std::move(newMountain));
@@ -121,7 +122,7 @@ void GameScene::Initialize()
 		std::unique_ptr<Mountain> newMountain;
 		newMountain.reset(Mountain::Create(modelMountain.get(), { 70, 0, 0 + (float)i * 40 }));
 		mountains.push_back(std::move(newMountain));
-	}
+	}*/
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
@@ -130,6 +131,9 @@ void GameScene::Initialize()
 
 	//パーティクルにカメラをセット
 	ParticleManager::SetCamera(gameCamera.get());
+
+	//敵を倒した数カウンターリセット
+	EnemyDefeatCounter::CounterReset();
 }
 
 void GameScene::Update()
@@ -195,6 +199,10 @@ void GameScene::Update()
 	//デバックテキスト
 	//X座標,Y座標,縮尺を指定して表示
 	//debugText->Print("GAME SCENE", 1000, 50);
+	std::string enemyDefeat = std::to_string(EnemyDefeatCounter::GetDefeatCount());
+	DebugText::GetInstance()->Print("EnemyDefeatCount : " + enemyDefeat, 100, 160);
+	std::string highScore = std::to_string(EnemyDefeatCounter::GetHighScore());
+	DebugText::GetInstance()->Print("HighScore : " + highScore, 100, 180);
 	std::string enemyNum = std::to_string(enemys.size());
 	DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 100, 200);
 	if (isStageClear) {
@@ -860,6 +868,8 @@ void GameScene::StageClear()
 		player->StageClearModeStart();
 		//カメラをステージクリアの動きに変更
 		gameCamera->StageClearModeStart(boss->GetMainBody());
+		//ハイスコア更新
+		EnemyDefeatCounter::CheckHighScore();
 	}
 	//ステージクリア後
 	else {

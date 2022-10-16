@@ -6,6 +6,7 @@
 #include "BossAvatarType02.h"
 #include "BossAvatarType03.h"
 #include "BossAvatarType04.h"
+#include "EnemyDefeatCounter.h"
 #include "ParticleEmitter.h"
 
 Player* Boss::player = nullptr;
@@ -547,7 +548,13 @@ bool Boss::DeadExplosion()
 		explosionCount++;
 		
 		//爆発が指定回数に達したら死亡フラグを立てる
-		if (explosionCount >= explosionNum) { isDead = true; }
+		if (explosionCount >= explosionNum) { 
+			isDead = true; 
+
+			//倒した数カウンターを増やす(本体 + 分身数)
+			const int defeatNum = 5;
+			EnemyDefeatCounter::AddCounter(defeatNum);
+		}
 	}
 
 	//イージング用に0～1の値を算出する
