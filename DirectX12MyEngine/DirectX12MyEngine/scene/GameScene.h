@@ -13,6 +13,7 @@
 #include "Skydome.h"
 #include "Ground.h"
 #include "Mountain.h"
+#include "StageClearText.h"
 #include "StageResultUI.h"
 
 #include <sstream>
@@ -101,6 +102,16 @@ public: //メンバ関数
 	void StageResult();
 
 	/// <summary>
+	/// ステージクリアテキスト生成と解放
+	/// </summary>
+	void StageClearTextCreateAndRelease();
+
+	/// <summary>
+	/// ステージリザルトUI生成と解放
+	/// </summary>
+	void StageResultUICreateAndRelease();
+
+	/// <summary>
 	/// ゲームオーバー
 	/// </summary>
 	void GameOver();
@@ -176,6 +187,8 @@ private: //メンバ変数
 	std::unique_ptr<Ground> ground;
 	//背景用(山)
 	std::list<std::unique_ptr<Mountain>> mountains;
+	//ステージクリアテキスト
+	std::unique_ptr<StageClearText> stageClearText;
 	//ステージリザルトUI
 	std::unique_ptr<StageResultUI> stageResultUI;
 	//ステージクリアか

@@ -182,6 +182,10 @@ void GameScene::Update()
 	}
 
 	//スプライト更新
+	//ステージクリアテキスト
+	if (stageClearText) {
+		stageClearText->Update();
+	}
 	//ステージリザルトUI
 	if (stageResultUI) {
 		stageResultUI->Update();
@@ -277,14 +281,16 @@ void GameScene::Draw()
 	SpriteCommon::GetInstance()->DrawPrev();
 	///-------スプライト描画ここから-------///
 
-	//自機のUI描画
+	//自機のUI
 	player->DrawUI();
-
-	//ボスのUI描画
+	//ボスのUI
 	if (boss) {
 		boss->DrawUI();
 	}
-
+	//ステージクリアテキスト
+	if (stageClearText) {
+		stageClearText->Draw();
+	}
 	//ステージリザルトUI
 	if (stageResultUI) {
 		stageResultUI->Draw();
@@ -321,7 +327,23 @@ void GameScene::ObjectRelease()
 			player->GetReticles()->UnlockonEnemy();
 		}
 		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-			//自機弾のホーミング対象だった場合
+			//ホーミング弾でなければ飛ばす
+			if (bullet->GetBulletType() != PlayerBullet::BulletType::Homing) { continue; }
+			//自機弾のホーミング対象でなければ飛ばす
+			if (bullet->GetEnemy() != enemy.get()) { continue; }
+			//ホーミング解除
+			bullet->SetEnemy(nullptr);
+		}
+	}
+	//削除状態の敵の前処理
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
+		//削除状態でなければ飛ばす
+		if (!enemy->GetIsDelete()) { continue; }
+
+		for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+			//ホーミング弾でなければ飛ばす
+			if (bullet->GetBulletType() != PlayerBullet::BulletType::Homing) { continue; }
+			//自機弾のホーミング対象でなければ飛ばす
 			if (bullet->GetEnemy() != enemy.get()) { continue; }
 			//ホーミング解除
 			bullet->SetEnemy(nullptr);
@@ -883,6 +905,35 @@ void GameScene::StageClear()
 
 void GameScene::StageResult()
 {
+	//ステージクリアテキスト生成と解放
+	StageClearTextCreateAndRelease();
+	
+	//ステージリザルトUI生成と解放
+	StageResultUICreateAndRelease();
+}
+
+void GameScene::StageClearTextCreateAndRelease()
+{
+	//ステージクリアテキストのインスタンスがないとき
+	if (!stageClearText) {
+		//カメラのステージクリア後行動が自機をズームでなければ抜ける
+		if (!(gameCamera->GetStageClearModePhase() == GameCamera::StageClearModePhase::PlayerZoom)) { return; }
+
+		//ステージクリアテキスト生成
+		stageClearText.reset(StageClearText::Create());
+	}
+	//ステージクリアテキストのインスタンスがあるとき
+	else {
+		//カメラのステージクリア後行動が自機の方向をずっと向くでなければ抜ける
+		if (!(gameCamera->GetStageClearModePhase() == GameCamera::StageClearModePhase::PlayerFollow)) { return; }
+
+		//ステージクリアテキストの解放
+		stageClearText.reset();
+	}
+}
+
+void GameScene::StageResultUICreateAndRelease()
+{
 	//ステージリザルトUIのインスタンスがないとき
 	if (!stageResultUI) {
 		//カメラのステージクリア後行動が自機横に移動でなければ抜ける
@@ -905,7 +956,7 @@ void GameScene::StageResult()
 		//自機のステージクリア後ブーストを開始する
 		player->StageClearBoostStart();
 
-		//ステージリザルトUIの削除
+		//ステージリザルトUIの解放
 		stageResultUI.reset();
 	}
 }

@@ -11,6 +11,7 @@ public: //テクスチャ名
 		PlayerHPGaugeOut,	//自機HPバーフレーム
 		BossHPGaugeIn,		//ボスHPバー
 		BossHPGaugeOut,		//ボスHPバーフレーム
+		ResultFrame,		//リザルトUIの枠(背景)
 	};
 
 

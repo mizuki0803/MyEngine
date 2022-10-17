@@ -386,10 +386,10 @@
     <ClCompile Include="gameObject\SpriteTexture.cpp">
       <Filter>ソース ファイル\game\gameUI\sprite\texture</Filter>
     </ClCompile>
-    <ClCompile Include="gameObject\StageResultFrameSprite.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="gameObject\StageResultUI.cpp">
+      <Filter>ソース ファイル\game\gameUI\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\StageClearText.cpp">
       <Filter>ソース ファイル\game\gameUI\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -698,8 +698,8 @@
     <ClInclude Include="gameObject\SpriteTexture.h">
       <Filter>ソース ファイル\game\gameUI\sprite\texture</Filter>
     </ClInclude>
-    <ClInclude Include="gameObject\StageResultFrameSprite.h">
-      <Filter>ソース ファイル\game\gameUI\sprite</Filter>
+    <ClInclude Include="gameObject\StageClearText.h">
+      <Filter>ソース ファイル\game\gameUI\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -26,8 +26,11 @@ bool StageResultUI::Initialize(const int enemyDefeatNum)
 	this->enemyDefeatNum = enemyDefeatNum;
 
 	//枠スプライト生成
-	const Vector2 frameSize = { 800, 400 };
-	frameSprite.reset(StageResultFrameSprite::Create(SpriteTexture::Reticle, { 640, 350 }, frameSize, frameSize));
+	frameSprite.reset(Sprite::Create(SpriteTexture::ResultFrame));
+	frameSprite->SetPosition({ 640, 380 });
+	const Vector2 frameSize = { 800, 550 };
+	frameSprite->SetSize(frameSize);
+	frameSprite->SetTexSize(frameSize);
 
 	//桁数を取得
 	int defeatNum = enemyDefeatNum;

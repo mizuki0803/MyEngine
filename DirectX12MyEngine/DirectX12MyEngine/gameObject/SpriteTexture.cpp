@@ -14,4 +14,5 @@ void SpriteTexture::TextureLoad()
 	spriteCommon->LoadTexture(TextureName::PlayerHPGaugeOut, "HPGaugeOut.png");
 	spriteCommon->LoadTexture(TextureName::BossHPGaugeIn, "bossHPGaugeIn.png");
 	spriteCommon->LoadTexture(TextureName::BossHPGaugeOut, "bossHPGaugeOut.png");
+	spriteCommon->LoadTexture(TextureName::ResultFrame, "resultFrame.png");
 }

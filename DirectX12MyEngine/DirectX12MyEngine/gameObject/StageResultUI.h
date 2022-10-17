@@ -1,6 +1,5 @@
 #pragma once
 #include "NumberSprite.h"
-#include "StageResultFrameSprite.h"
 #include <vector>
 #include <memory>
 
@@ -49,7 +48,7 @@ private: //メンバ関数
 
 private: //メンバ変数
 	//枠スプライト
-	std::unique_ptr<StageResultFrameSprite> frameSprite;
+	std::unique_ptr<Sprite> frameSprite;
 	//数字スプライト
 	std::vector<std::unique_ptr<NumberSprite>> numberSprites;
 	//取得用撃破数
