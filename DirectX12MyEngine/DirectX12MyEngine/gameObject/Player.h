@@ -100,6 +100,7 @@ public: //メンバ関数
 	PlayerReticles* GetReticles() { return reticles.get(); }
 	const bool GetIsChargeShotMode() { return isChargeShotMode; }
 	StageClearModePhase GetStageClearModePhase() { return stageClearModePhase; }
+	const bool GetIsStageClearModeCompletion() { return isStageClearModeCompletion; }
 
 private: //メンバ関数
 	/// <summary>
@@ -284,4 +285,6 @@ private: //メンバ変数
 	Vector3 stageClearCameraPos;
 	//カメラホーミング用座標
 	Vector3 cameraHomingPos;
+	//ステージクリア後の行動が完了したか
+	bool isStageClearModeCompletion = false;
 };

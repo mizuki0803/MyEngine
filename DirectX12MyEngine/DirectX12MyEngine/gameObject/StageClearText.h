@@ -38,6 +38,11 @@ private: //メンバ関数
 	/// </summary>
 	void UpdateDisplayNum();
 
+	/// <summary>
+	/// 文字を画面外に移動
+	/// </summary>
+	void TextMove();
+
 
 private: //静的メンバ変数
 	static const int textNum = 4;
@@ -51,4 +56,6 @@ private: //メンバ変数
 	int displayTextNum = 0;
 	//表示用タイマー
 	int32_t displayTimer = 0;
+	//移動用タイマー
+	int32_t moveTimer = 0;
 };

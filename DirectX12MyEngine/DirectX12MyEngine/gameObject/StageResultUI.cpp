@@ -26,9 +26,10 @@ bool StageResultUI::Initialize(const int enemyDefeatNum)
 	this->enemyDefeatNum = enemyDefeatNum;
 
 	//枠スプライト生成
-	frameSprite.reset(Sprite::Create(SpriteTexture::ResultFrame));
-	frameSprite->SetPosition({ 640, 380 });
-	const Vector2 frameSize = { 800, 550 };
+	frameSprite.reset(Sprite::Create(SpriteTexture::DefeatNumText));
+	const Vector2 framePos = { 640, 300 };
+	frameSprite->SetPosition(framePos);
+	const Vector2 frameSize = { 500, 100 };
 	frameSprite->SetSize(frameSize);
 	frameSprite->SetTexSize(frameSize);
 
@@ -43,7 +44,7 @@ bool StageResultUI::Initialize(const int enemyDefeatNum)
 	for (int i = 0; i < enemyDefeatNumDigit; i++) {
 		std::unique_ptr<NumberSprite> newNumberSprite;
 		const Vector2 size = { 32, 48 };
-		const Vector2 pos = { 640 - (i * size.x), 300 };
+		const Vector2 pos = { framePos.x + 150 - (i * size.x), framePos.y };
 		newNumberSprite.reset(NumberSprite::Create(SpriteTexture::Number, pos, size, size));
 		numberSprites.push_back(std::move(newNumberSprite));
 	}
@@ -81,12 +82,18 @@ void StageResultUI::UpdateDisplayNum()
 	//リザルトを表示し終えていたら抜ける
 	if (isResultEnd) { return; }
 
+	//更新開始する時間
+	const int updateStartTime = 30;
+	//タイマー更新
+	updateDisplayNumTimer++;
+
+	//タイマーが更新開始時間より小さいなら抜ける
+	if (updateDisplayNumTimer < updateStartTime) { return; }
+
 	//更新する時間
 	const int updateMinTime = 120;
 	const float updateTime = (float)(updateMinTime + (enemyDefeatNum / 10));
-	//タイマー更新
-	updateDisplayNumTimer++;
-	const float time = updateDisplayNumTimer / updateTime;
+	const float time = (updateDisplayNumTimer - updateStartTime) / updateTime;
 
 	//表示用撃破数を増やしていく
 	enemyDefeatDisplayNum = (int)Easing::LerpFloat(0, (float)enemyDefeatNum, time);
@@ -104,7 +111,7 @@ void StageResultUI::UpdateDisplayNum()
 	UpdateNumberSprite();
 
 	//タイマーが指定した時間になったら抜ける
-	if (updateDisplayNumTimer >= updateTime) {
+	if ((updateDisplayNumTimer - updateStartTime) >= updateTime) {
 		//リザルト表示が完了したことにする
 		isResultEnd = true;
 	}

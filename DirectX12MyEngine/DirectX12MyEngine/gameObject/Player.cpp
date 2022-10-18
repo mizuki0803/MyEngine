@@ -845,4 +845,17 @@ void Player::StageClearBoost()
 	Vector3 velocity = { 0, 0, 1.0f };
 	velocity = MatrixTransformDirection(velocity, matWorld);
 	position += velocity;
+
+	//ステージクリア後の行動が完了していたら抜ける
+	if (isStageClearModeCompletion) { return; }
+
+	//タイマー更新
+	const float stageClearModeCompletionTime = 300;
+	stageClearModeTimer++;
+
+	//タイマーが指定した時間に以下なら抜ける
+	if (stageClearModeTimer < stageClearModeCompletionTime) { return; }
+
+	//ステージクリア後の行動が完了したことにする
+	isStageClearModeCompletion = true;
 }

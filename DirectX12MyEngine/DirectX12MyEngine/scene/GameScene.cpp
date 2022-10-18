@@ -199,25 +199,27 @@ void GameScene::Update()
 	ParticleEmitter::GetInstance()->Update();
 
 	//デバックテキスト
-	//X座標,Y座標,縮尺を指定して表示
-	//debugText->Print("GAME SCENE", 1000, 50);
-	std::string enemyDefeat = std::to_string(EnemyDefeatCounter::GetDefeatCount());
-	DebugText::GetInstance()->Print("EnemyDefeatCount : " + enemyDefeat, 100, 160);
-	std::string highScore = std::to_string(EnemyDefeatCounter::GetHighScore());
-	DebugText::GetInstance()->Print("HighScore : " + highScore, 100, 180);
-	std::string enemyNum = std::to_string(enemys.size());
-	DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 100, 200);
-	if (isStageClear) {
-		DebugText::GetInstance()->Print("STAGE CLEAR", 100, 250);
+	{
+		
+		//X座標,Y座標,縮尺を指定して表示
+		//debugText->Print("GAME SCENE", 1000, 50);
+		/*std::string enemyDefeat = std::to_string(EnemyDefeatCounter::GetDefeatCount());
+		DebugText::GetInstance()->Print("EnemyDefeatCount : " + enemyDefeat, 100, 160);
+		std::string highScore = std::to_string(EnemyDefeatCounter::GetHighScore());
+		DebugText::GetInstance()->Print("HighScore : " + highScore, 100, 180);
+		std::string enemyNum = std::to_string(enemys.size());
+		DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 100, 200);
+		if (isStageClear) {
+			DebugText::GetInstance()->Print("STAGE CLEAR", 100, 250);
+		}*/
+		/*std::string playerHP = std::to_string(player->GetHP());
+		if (!player->GetIsDead()) {
+			DebugText::GetInstance()->Print("PlayerHP : " + playerHP, 200, 200);
+		}
+		else {
+			DebugText::GetInstance()->Print("PlayerDead", 200, 200);
+		}*/
 	}
-	/*std::string playerHP = std::to_string(player->GetHP());
-	if (!player->GetIsDead()) {
-		DebugText::GetInstance()->Print("PlayerHP : " + playerHP, 200, 200);
-	}
-	else {
-		DebugText::GetInstance()->Print("PlayerDead", 200, 200);
-	}*/
-
 
 	if (input->TriggerKey(DIK_RETURN))
 	{
@@ -910,6 +912,10 @@ void GameScene::StageResult()
 	
 	//ステージリザルトUI生成と解放
 	StageResultUICreateAndRelease();
+
+	//タイトルシーンに戻る
+	ReturnTitleScene();
+
 }
 
 void GameScene::StageClearTextCreateAndRelease()
@@ -959,6 +965,15 @@ void GameScene::StageResultUICreateAndRelease()
 		//ステージリザルトUIの解放
 		stageResultUI.reset();
 	}
+}
+
+void GameScene::ReturnTitleScene()
+{
+	//自機のステージクリア後行動が完了していなければ抜ける
+	if (!player->GetIsStageClearModeCompletion()) { return; }
+
+	//タイトルシーンへ
+	SceneManager::GetInstance()->ChangeScene("TITLE");
 }
 
 void GameScene::GameOver()

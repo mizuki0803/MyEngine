@@ -150,7 +150,7 @@ void TitleScene::SortieStart()
 	//既に出撃していたら抜ける
 	if (player->GetIsSortie()) { return; }
 	//スペースキーを押していなければ抜ける
-	if (!Input::GetInstance()->TriggerKey(DIK_SPACE)) { return; }
+	if (!(Input::GetInstance()->TriggerKey(DIK_SPACE) || Input::GetInstance()->TriggerGamePadButton(Input::PAD_B))) { return; }
 
 	//自機とカメラを出撃状態にする
 	player->SetIsSortie(true);

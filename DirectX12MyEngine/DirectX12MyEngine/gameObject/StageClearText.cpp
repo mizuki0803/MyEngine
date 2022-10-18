@@ -23,16 +23,16 @@ bool StageClearText::Initialize()
 {
 	//ステージ名スプライト生成
 	stageNameSprite.reset(Sprite::Create(SpriteTexture::PlayerHPGaugeOut));
-	stageNameSprite->SetPosition({640, 200});
+	stageNameSprite->SetPosition({ 640, 200 });
 
 	//文字数の分、文字スプライト生成
 	for (int i = 0; i < textNum; i++) {
-		textSprites[i].reset(Sprite::Create(SpriteTexture::Number));
-		const Vector2 size = { 100, 100 };
-		const Vector2 texSize = { 32, 48 };
+		textSprites[i].reset(Sprite::Create(SpriteTexture::StageClearText));
+		const Vector2 size = { 200, 200 };
+		const Vector2 texSize = { 155, 155 };
 		const Vector2 leftTop = { i * texSize.x, 0 };
-		const float distance = 120;
-		const Vector2 centerPos = { 640, 350 };
+		const float distance = size.x;
+		const Vector2 centerPos = { 640, 400 };
 		const Vector2 pos = { centerPos.x + ((i % 2) * distance) - (distance / 2), centerPos.y + ((i / 2) * distance) - (distance / 2) };
 		textSprites[i]->SetPosition(pos);
 		textSprites[i]->SetSize(size);
@@ -45,8 +45,17 @@ bool StageClearText::Initialize()
 
 void StageClearText::Update()
 {
-	//表示する文字数を増やす
-	UpdateDisplayNum();
+	//全文字を表示していなければ
+	if (displayTextNum < textNum) {
+		//表示する文字数を増やす
+		UpdateDisplayNum();
+	}
+	//表示していたら
+	else {
+		//テキストを画面外に移動させる
+		TextMove();
+	}
+
 
 	//ステージ名スプライト更新
 	stageNameSprite->Update();
@@ -68,9 +77,6 @@ void StageClearText::Draw()
 
 void StageClearText::UpdateDisplayNum()
 {
-	//既に全文字を表示していたら抜ける
-	if (displayTextNum >= textNum) { return; }
-
 	//表示を開始する時間
 	const int displayTime = 60;
 	//タイマー更新
@@ -88,4 +94,27 @@ void StageClearText::UpdateDisplayNum()
 
 	//表示する文字数を増やす
 	displayTextNum++;
+}
+
+void StageClearText::TextMove()
+{
+	//移動を開始する時間
+	const int moveStartTime = 120;
+	//タイマー更新
+	moveTimer++;
+
+	//タイマーが開始時間より小さいなら抜ける
+	if (moveTimer < moveStartTime) { return; }
+
+	//文字を画面外に移動させる
+	const float moveSpeed = 80.0f;
+
+	for (int i = 0; i < textNum; i++) {
+		Vector2 velocity = { moveSpeed, 0 };
+		//左側の文字は左、右側の文字は右に移動
+		if ((i % 2) == 0) { velocity.x = -velocity.x; }
+		Vector2 pos = textSprites[i]->GetPosition();
+		pos += velocity;
+		textSprites[i]->SetPosition(pos);
+	}
 }

@@ -361,7 +361,7 @@ void GameCamera::StageClearPlayerLock()
 void GameCamera::StageClearPlayerZoom()
 {
 	//ズームする時間
-	const float zoomTime = 200;
+	const float zoomTime = 300;
 	//タイマー更新
 	stageClearModeTimer++;
 	const float time = stageClearModeTimer / zoomTime;
@@ -380,9 +380,9 @@ void GameCamera::StageClearPlayerZoom()
 	Vector3 playerBack = { playerBackMatWorld.r[3].m128_f32[0], playerBackMatWorld.r[3].m128_f32[1], playerBackMatWorld.r[3].m128_f32[2] };
 
 	//自機の後ろにズームする
-	position.x = Easing::InOutQuint(stageClearMoveBeforePos.x, playerBack.x, time);
-	position.y = Easing::InOutQuint(stageClearMoveBeforePos.y, playerBack.y, time);
-	position.z = Easing::InOutQuint(stageClearMoveBeforePos.z, playerBack.z, time);
+	position.x = Easing::InOutQuad(stageClearMoveBeforePos.x, playerBack.x, time);
+	position.y = Easing::InOutQuad(stageClearMoveBeforePos.y, playerBack.y, time);
+	position.z = Easing::InOutQuad(stageClearMoveBeforePos.z, playerBack.z, time);
 
 	//自機の方向を向く
 	const Vector3 playerCameraVec = player->GetWorldPos() - position;

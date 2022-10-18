@@ -112,6 +112,11 @@ public: //メンバ関数
 	void StageResultUICreateAndRelease();
 
 	/// <summary>
+	/// タイトルシーンに戻る処理
+	/// </summary>
+	void ReturnTitleScene();
+
+	/// <summary>
 	/// ゲームオーバー
 	/// </summary>
 	void GameOver();
