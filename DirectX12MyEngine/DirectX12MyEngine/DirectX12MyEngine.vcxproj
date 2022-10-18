@@ -203,6 +203,7 @@
     <ClCompile Include="gameObject\HealingItem.cpp" />
     <ClCompile Include="gameObject\HomingBullet.cpp" />
     <ClCompile Include="gameObject\Mountain.cpp" />
+    <ClCompile Include="gameObject\MultiHitUI.cpp" />
     <ClCompile Include="gameObject\NumberSprite.cpp" />
     <ClCompile Include="gameObject\Player.cpp" />
     <ClCompile Include="gameObject\PlayerBullet.cpp" />
@@ -372,6 +373,7 @@
     <ClInclude Include="gameObject\HealingItem.h" />
     <ClInclude Include="gameObject\HomingBullet.h" />
     <ClInclude Include="gameObject\Mountain.h" />
+    <ClInclude Include="gameObject\MultiHitUI.h" />
     <ClInclude Include="gameObject\NumberSprite.h" />
     <ClInclude Include="gameObject\Player.h" />
     <ClInclude Include="gameObject\PlayerBullet.h" />

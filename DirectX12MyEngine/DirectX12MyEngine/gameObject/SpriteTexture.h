@@ -11,6 +11,8 @@ public: //テクスチャ名
 		PlayerHPGaugeOut,	//自機HPバーフレーム
 		BossHPGaugeIn,		//ボスHPバー
 		BossHPGaugeOut,		//ボスHPバーフレーム
+		HitPlusText,		//HIT+テキスト
+		HitPlusNumber,		//HIT+数字
 		StageClearText,		//ステージクリアテキスト(攻略完了)
 		DefeatNumText,		//撃破数のテキストと枠
 	};

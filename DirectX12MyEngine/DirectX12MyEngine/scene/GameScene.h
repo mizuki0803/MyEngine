@@ -13,6 +13,7 @@
 #include "Skydome.h"
 #include "Ground.h"
 #include "Mountain.h"
+#include "MultiHitUI.h"
 #include "StageClearText.h"
 #include "StageResultUI.h"
 
@@ -192,6 +193,8 @@ private: //メンバ変数
 	std::unique_ptr<Ground> ground;
 	//背景用(山)
 	std::list<std::unique_ptr<Mountain>> mountains;
+	//一撃で複数体処理用のUI
+	std::list<std::unique_ptr<MultiHitUI>> multiHitUIs;
 	//ステージクリアテキスト
 	std::unique_ptr<StageClearText> stageClearText;
 	//ステージリザルトUI

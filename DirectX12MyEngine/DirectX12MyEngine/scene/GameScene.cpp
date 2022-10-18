@@ -180,8 +180,14 @@ void GameScene::Update()
 	for (const std::unique_ptr<Mountain>& mountain : mountains) {
 		mountain->Update();
 	}
+	//3D衝突判定管理
+	CollisionCheck3d();
 
 	//スプライト更新
+	//複数体処理用UI 
+	for (const std::unique_ptr<MultiHitUI>& multiHitUI : multiHitUIs) {
+		multiHitUI->Update();
+	}
 	//ステージクリアテキスト
 	if (stageClearText) {
 		stageClearText->Update();
@@ -190,9 +196,7 @@ void GameScene::Update()
 	if (stageResultUI) {
 		stageResultUI->Update();
 	}
-
-	//衝突判定管理
-	CollisionCheck3d();
+	//2D衝突判定管理
 	CollisionCheck2d();
 
 	//パーティクル更新
@@ -200,7 +204,7 @@ void GameScene::Update()
 
 	//デバックテキスト
 	{
-		
+
 		//X座標,Y座標,縮尺を指定して表示
 		//debugText->Print("GAME SCENE", 1000, 50);
 		/*std::string enemyDefeat = std::to_string(EnemyDefeatCounter::GetDefeatCount());
@@ -288,6 +292,10 @@ void GameScene::Draw()
 	//ボスのUI
 	if (boss) {
 		boss->DrawUI();
+	}
+	//複数体処理用UI 
+	for (const std::unique_ptr<MultiHitUI>& multiHitUI : multiHitUIs) {
+		multiHitUI->Draw();
 	}
 	//ステージクリアテキスト
 	if (stageClearText) {
@@ -377,6 +385,11 @@ void GameScene::ObjectRelease()
 			boss.reset();
 		}
 	}
+
+	//死亡した複数体処理用UIの削除
+	multiHitUIs.remove_if([](std::unique_ptr<MultiHitUI>& multiHitUI) {
+		return multiHitUI->GetIsDead();
+		});
 }
 
 void GameScene::CollisionCheck3d()
@@ -428,6 +441,9 @@ void GameScene::CollisionCheck3d()
 		//死亡した自機弾の破裂判定半径
 		radiusA = HomingBullet::GetBlastSize();
 
+		//一撃で倒した敵の数
+		int hitNum = 0;
+
 		for (const std::unique_ptr<Enemy>& enemy : enemys) {
 			//既にこのフレームで自機弾との当たり判定が作用していたら飛ばす
 			if (enemy->GetIsCollisionFrame()) { continue; }
@@ -442,9 +458,20 @@ void GameScene::CollisionCheck3d()
 			//衝突していなければ飛ばす
 			if (!isCollision) { continue; }
 
+			//まだ死亡していない(この被弾で死亡する)場合は一撃で倒した敵の数を増やす
+			if (!enemy->GetIsDead()) { hitNum++; }
+
 			//敵のコールバック関数を呼び出す
 			enemy->OnCollision();
 		}
+
+		//一撃で倒した敵の数が0なら飛ばす
+		if (hitNum == 0) { continue; }
+
+		//複数体撃破用UI生成
+		std::unique_ptr<MultiHitUI> newMultiHitUI;
+		newMultiHitUI.reset(MultiHitUI::Create(posA, gameCamera.get(), hitNum));
+		multiHitUIs.push_back(std::move(newMultiHitUI));
 	}
 #pragma endregion
 
@@ -909,7 +936,7 @@ void GameScene::StageResult()
 {
 	//ステージクリアテキスト生成と解放
 	StageClearTextCreateAndRelease();
-	
+
 	//ステージリザルトUI生成と解放
 	StageResultUICreateAndRelease();
 
