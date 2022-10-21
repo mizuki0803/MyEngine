@@ -1,5 +1,5 @@
 #include "MultiHitUI.h"
-#include "SpriteTexture.h"
+#include "SpriteTextureLoader.h"
 #include "Easing.h"
 #include <DirectXMath.h>
 
@@ -34,7 +34,7 @@ bool MultiHitUI::Initialize(const Vector3& position, Camera* camera, const int e
 	Vector2 hitScreenPos = GetScreenPos(hitWorldPos, camera);
 
 	//枠スプライト生成
-	hitTextSprite.reset(Sprite::Create(SpriteTexture::HitPlusText));
+	hitTextSprite.reset(Sprite::Create(SpriteTextureLoader::HitPlusText));
 	const Vector2 hitTextPos = { hitScreenPos.x + 25, hitScreenPos.y };
 	hitTextSprite->SetPosition(hitTextPos);
 	const Vector2 hitTextSize = { 150, 37.5 };
@@ -55,7 +55,7 @@ bool MultiHitUI::Initialize(const Vector3& position, Camera* camera, const int e
 		const Vector2 size = { 36, 36 };
 		const Vector2 texSize = { 48, 48 };
 		const Vector2 pos = { hitTextPos.x + 48 + ((hitNumDigit - i) * size.x), hitTextPos.y };
-		newNumberSprite.reset(NumberSprite::Create(SpriteTexture::HitPlusNumber, pos, size, texSize));
+		newNumberSprite.reset(NumberSprite::Create(SpriteTextureLoader::HitPlusNumber, pos, size, texSize));
 		//割る数
 		int divisionNum = 1;
 		//桁数分10を乗算する(1,10,100,...)

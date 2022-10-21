@@ -1,5 +1,5 @@
 #include "FrameWork.h"
-#include "SpriteTexture.h"
+#include "SpriteTextureLoader.h"
 #include "ObjObject3d.h"
 #include "FbxLoader.h"
 #include "FbxObject3d.h"
@@ -53,11 +53,11 @@ void FrameWork::Initialize()
 	spriteCommon = SpriteCommon::GetInstance();
 	spriteCommon->Initialize(dxbase->GetDevice(), dxbase->GetCmdList(), win->window_width, win->window_height);
 	//スプライトテクスチャ全読み込み
-	SpriteTexture::TextureLoad();
+	SpriteTextureLoader::TextureLoad();
 
 	//デバッグテキスト初期化
 	debugText = DebugText::GetInstance();
-	debugText->Initialize(SpriteTexture::DebugFont);
+	debugText->Initialize(SpriteTextureLoader::DebugFont);
 
 	//Object3d共通初期化処理
 	PostEffect::PostEffectCommon(dxbase->GetDevice(), dxbase->GetCmdList());

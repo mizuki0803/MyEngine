@@ -1,5 +1,5 @@
 #include "StageResultUI.h"
-#include "SpriteTexture.h"
+#include "SpriteTextureLoader.h"
 #include "Easing.h"
 
 StageResultUI* StageResultUI::Create(const int enemyDefeatNum, bool isHighScore)
@@ -26,7 +26,7 @@ bool StageResultUI::Initialize(const int enemyDefeatNum)
 	this->enemyDefeatNum = enemyDefeatNum;
 
 	//枠スプライト生成
-	frameSprite.reset(Sprite::Create(SpriteTexture::DefeatNumText));
+	frameSprite.reset(Sprite::Create(SpriteTextureLoader::DefeatNumText));
 	const Vector2 framePos = { 640, 300 };
 	frameSprite->SetPosition(framePos);
 	const Vector2 frameSize = { 500, 100 };
@@ -45,7 +45,7 @@ bool StageResultUI::Initialize(const int enemyDefeatNum)
 		std::unique_ptr<NumberSprite> newNumberSprite;
 		const Vector2 size = { 32, 48 };
 		const Vector2 pos = { framePos.x + 150 - (i * size.x), framePos.y };
-		newNumberSprite.reset(NumberSprite::Create(SpriteTexture::Number, pos, size, size));
+		newNumberSprite.reset(NumberSprite::Create(SpriteTextureLoader::Number, pos, size, size));
 		numberSprites.push_back(std::move(newNumberSprite));
 	}
 

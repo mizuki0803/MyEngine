@@ -2,7 +2,7 @@
 #include "Input.h"
 #include "Easing.h"
 #include "GameScene.h"
-#include "SpriteTexture.h"
+#include "SpriteTextureLoader.h"
 #include "StraightBullet.h"
 #include "HomingBullet.h"
 #include "ParticleEmitter.h"
@@ -57,11 +57,11 @@ bool Player::Initialize()
 
 	//HPバー生成
 	const Vector2 hpBarPosition = { 20, 20 };
-	hpBar.reset(PlayerHPBar::Create(SpriteTexture::PlayerHPGaugeIn, hpBarPosition, maxHP));
+	hpBar.reset(PlayerHPBar::Create(SpriteTextureLoader::PlayerHPGaugeIn, hpBarPosition, maxHP));
 	//HPバーフレーム生成
 	const float posDiff = 3.0f;	//HPバーの座標との差分
 	const Vector2 hpFramePosition = { hpBarPosition.x - posDiff, hpBarPosition.y - posDiff };
-	hpFrame.reset(PlayerHPFrame::Create(SpriteTexture::PlayerHPGaugeOut, hpFramePosition));
+	hpFrame.reset(PlayerHPFrame::Create(SpriteTextureLoader::PlayerHPGaugeOut, hpFramePosition));
 
 	return true;
 }

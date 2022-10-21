@@ -1,5 +1,5 @@
 #include "StageClearText.h"
-#include "SpriteTexture.h"
+#include "SpriteTextureLoader.h"
 
 StageClearText* StageClearText::Create()
 {
@@ -22,12 +22,12 @@ StageClearText* StageClearText::Create()
 bool StageClearText::Initialize()
 {
 	//ステージ名スプライト生成
-	stageNameSprite.reset(Sprite::Create(SpriteTexture::PlayerHPGaugeOut));
+	stageNameSprite.reset(Sprite::Create(SpriteTextureLoader::PlayerHPGaugeOut));
 	stageNameSprite->SetPosition({ 640, 200 });
 
 	//文字数の分、文字スプライト生成
 	for (int i = 0; i < textNum; i++) {
-		textSprites[i].reset(Sprite::Create(SpriteTexture::StageClearText));
+		textSprites[i].reset(Sprite::Create(SpriteTextureLoader::StageClearText));
 		const Vector2 size = { 200, 200 };
 		const Vector2 texSize = { 155, 155 };
 		const Vector2 leftTop = { i * texSize.x, 0 };

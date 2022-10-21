@@ -1,6 +1,9 @@
 #pragma once
 
-class SpriteTexture
+/// <summary>
+/// スプライトテクスチャ読み込みクラス
+/// </summary>
+class SpriteTextureLoader
 {
 public: //テクスチャ名
 	enum TextureName {

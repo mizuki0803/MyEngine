@@ -160,6 +160,7 @@
     <ClCompile Include="2d\PostEffect.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
     <ClCompile Include="2d\SpriteCommon.cpp" />
+    <ClCompile Include="2d\SpriteTextureLoader.cpp" />
     <ClCompile Include="3d\FbxLoader.cpp" />
     <ClCompile Include="3d\FbxModel.cpp" />
     <ClCompile Include="3d\FbxObject3d.cpp" />
@@ -218,7 +219,6 @@
     <ClCompile Include="gameObject\Reticle3D.cpp" />
     <ClCompile Include="gameObject\Reticle2D.cpp" />
     <ClCompile Include="gameObject\Skydome.cpp" />
-    <ClCompile Include="gameObject\SpriteTexture.cpp" />
     <ClCompile Include="gameObject\StageClearText.cpp" />
     <ClCompile Include="gameObject\StageResultUI.cpp" />
     <ClCompile Include="gameObject\StraightBullet.cpp" />
@@ -328,6 +328,7 @@
     <ClInclude Include="2d\PostEffect.h" />
     <ClInclude Include="2d\Sprite.h" />
     <ClInclude Include="2d\SpriteCommon.h" />
+    <ClInclude Include="2d\SpriteTextureLoader.h" />
     <ClInclude Include="3d\FbxLoader.h" />
     <ClInclude Include="3d\FbxModel.h" />
     <ClInclude Include="3d\FbxObject3d.h" />
@@ -384,7 +385,6 @@
     <ClInclude Include="gameObject\PlayerNearReticle.h" />
     <ClInclude Include="gameObject\PlayerNearReticle2D.h" />
     <ClInclude Include="gameObject\PlayerReticles.h" />
-    <ClInclude Include="gameObject\SpriteTexture.h" />
     <ClInclude Include="gameObject\StageClearText.h" />
     <ClInclude Include="gameObject\StageResultUI.h" />
     <ClInclude Include="gameObject\Reticle.h" />

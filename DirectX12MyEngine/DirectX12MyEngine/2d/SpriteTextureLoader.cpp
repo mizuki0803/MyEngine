@@ -1,7 +1,7 @@
-#include "SpriteTexture.h"
+#include "SpriteTextureLoader.h"
 #include "SpriteCommon.h"
 
-void SpriteTexture::TextureLoad()
+void SpriteTextureLoader::TextureLoad()
 {
 	//スプライト共通部分のインスタンスを取得
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();

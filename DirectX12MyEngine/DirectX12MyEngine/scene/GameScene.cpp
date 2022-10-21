@@ -104,16 +104,16 @@ void GameScene::Initialize()
 	ground.reset(Ground::Create(modelGround.get()));
 
 	//背景用(山)生成
-	/*for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 20; i++) {
 		std::unique_ptr<Mountain> newMountain;
-		newMountain.reset(Mountain::Create(modelMountain.get(), { -70, 0, 0 + (float)i * 40 }));
+		newMountain.reset(Mountain::Create(modelMountain.get(), { -75, 0, 0 + (float)i * 40 }));
 		mountains.push_back(std::move(newMountain));
 	}
 	for (int i = 0; i < 20; i++) {
 		std::unique_ptr<Mountain> newMountain;
-		newMountain.reset(Mountain::Create(modelMountain.get(), { 70, 0, 0 + (float)i * 40 }));
+		newMountain.reset(Mountain::Create(modelMountain.get(), { 75, 0, 0 + (float)i * 40 }));
 		mountains.push_back(std::move(newMountain));
-	}*/
+	}
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
@@ -1017,8 +1017,11 @@ void GameScene::GameOver()
 	}
 	//ゲームオーバーのとき
 	else {
+		//自機が死亡していなければ抜ける
+		if (!player->GetIsDead()) { return; }
+
 		//タイマー更新
-		const float gameOverTime = 180;
+		const float gameOverTime = 120;
 		gameOverTimer++;
 
 		//タイマーが指定した時間になったらゲームシーンをやり直す

@@ -1,6 +1,6 @@
 #include "Boss.h"
 #include "Input.h"
-#include "SpriteTexture.h"
+#include "SpriteTextureLoader.h"
 #include "DebugText.h"
 #include "Player.h"
 #include "BossAvatarType01.h"
@@ -58,11 +58,11 @@ bool Boss::Initialize(const Vector3& position)
 
 	//HPバー生成
 	const Vector2 hpBarPosition = { 20, 120 };
-	hpBar.reset(BossHPBar::Create(SpriteTexture::BossHPGaugeIn, hpBarPosition, maxHP));
+	hpBar.reset(BossHPBar::Create(SpriteTextureLoader::BossHPGaugeIn, hpBarPosition, maxHP));
 	//HPバーフレーム生成
 	const float posDiff = 3.0f;	//HPバーの座標との差分
 	const Vector2 hpFramePosition = { hpBarPosition.x - posDiff, hpBarPosition.y - posDiff };
-	hpFrame.reset(BossHPFrame::Create(SpriteTexture::BossHPGaugeOut, hpFramePosition));
+	hpFrame.reset(BossHPFrame::Create(SpriteTextureLoader::BossHPGaugeOut, hpFramePosition));
 
 	//ビヘイビアツリー生成
 	behaviorTree.reset(BossBehaviorTree::Create(this));

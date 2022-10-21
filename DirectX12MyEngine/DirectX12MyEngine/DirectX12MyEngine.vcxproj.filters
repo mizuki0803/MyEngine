@@ -144,20 +144,14 @@
     <Filter Include="ソース ファイル\game\gameCamera\titleCamera">
       <UniqueIdentifier>{1a02560a-41bf-4c67-8339-695abe2047b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\gameUI">
-      <UniqueIdentifier>{4966a211-7b76-4a1f-a768-ba511eac497d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\game\gameUI\sprite">
-      <UniqueIdentifier>{0bd8aac3-b847-4526-b82e-a661c1216963}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\game\gameCamera\gameCamara">
       <UniqueIdentifier>{9ef5f395-c78d-47bf-bb18-9c7b37930d92}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\gameUI\UI">
-      <UniqueIdentifier>{02f9b831-4f51-49ae-aa20-96b13f37dcf4}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\game\gameSprite">
+      <UniqueIdentifier>{4966a211-7b76-4a1f-a768-ba511eac497d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\gameUI\sprite\texture">
-      <UniqueIdentifier>{990af374-0968-4b6f-8cc7-a84d3ae480d1}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\game\gameSprite\UI">
+      <UniqueIdentifier>{02f9b831-4f51-49ae-aa20-96b13f37dcf4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -377,23 +371,23 @@
     <ClCompile Include="camera\TitleCamera.cpp">
       <Filter>ソース ファイル\game\gameCamera\titleCamera</Filter>
     </ClCompile>
-    <ClCompile Include="gameObject\NumberSprite.cpp">
-      <Filter>ソース ファイル\game\gameUI\sprite</Filter>
-    </ClCompile>
     <ClCompile Include="gameObject\EnemyDefeatCounter.cpp">
-      <Filter>ソース ファイル\game\gameUI\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="gameObject\SpriteTexture.cpp">
-      <Filter>ソース ファイル\game\gameUI\sprite\texture</Filter>
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\StageResultUI.cpp">
-      <Filter>ソース ファイル\game\gameUI\UI</Filter>
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\StageClearText.cpp">
-      <Filter>ソース ファイル\game\gameUI\UI</Filter>
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClCompile>
     <ClCompile Include="gameObject\MultiHitUI.cpp">
-      <Filter>ソース ファイル\game\gameUI\UI</Filter>
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\SpriteTextureLoader.cpp">
+      <Filter>ソース ファイル\engine\2d\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\NumberSprite.cpp">
+      <Filter>ソース ファイル\game\gameSprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -499,9 +493,6 @@
     </ClInclude>
     <ClInclude Include="base\SceneManager.h">
       <Filter>ソース ファイル\engine\base\game</Filter>
-    </ClInclude>
-    <ClInclude Include="base\PipelineSet.h">
-      <Filter>ソース ファイル\engine\base\pipelineSet</Filter>
     </ClInclude>
     <ClInclude Include="camera\Camera.h">
       <Filter>ソース ファイル\engine\camera</Filter>
@@ -686,26 +677,29 @@
     <ClInclude Include="camera\TitleCamera.h">
       <Filter>ソース ファイル\game\gameCamera\titleCamera</Filter>
     </ClInclude>
-    <ClInclude Include="gameObject\NumberSprite.h">
-      <Filter>ソース ファイル\game\gameUI\sprite</Filter>
-    </ClInclude>
     <ClInclude Include="gameObject\BossMainBody.h">
       <Filter>ソース ファイル\game\gameObject\gameScene\boss</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\EnemyDefeatCounter.h">
-      <Filter>ソース ファイル\game\gameUI\UI</Filter>
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\StageResultUI.h">
-      <Filter>ソース ファイル\game\gameUI\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="gameObject\SpriteTexture.h">
-      <Filter>ソース ファイル\game\gameUI\sprite\texture</Filter>
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\StageClearText.h">
-      <Filter>ソース ファイル\game\gameUI\UI</Filter>
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClInclude>
     <ClInclude Include="gameObject\MultiHitUI.h">
-      <Filter>ソース ファイル\game\gameUI\UI</Filter>
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="base\PipelineSet.h">
+      <Filter>ソース ファイル\engine\base\pipelineSet</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\SpriteTextureLoader.h">
+      <Filter>ソース ファイル\engine\2d\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\NumberSprite.h">
+      <Filter>ソース ファイル\game\gameSprite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
