@@ -34,6 +34,10 @@ public: //メンバ関数
 
 	//getter
 	bool GetIsResultEnd() { return isResultEnd; }
+	bool GetIsDrawButtonSprite() { return isDrawButtonSprite; }
+
+	//setter
+	void SetIsDrawButtonSprite(bool isDraw) { isDrawButtonSprite = isDraw; }
 
 private: //メンバ関数
 	/// <summary>
@@ -51,6 +55,8 @@ private: //メンバ変数
 	std::unique_ptr<Sprite> frameSprite;
 	//数字スプライト
 	std::vector<std::unique_ptr<NumberSprite>> numberSprites;
+	//Bボタンスプライト
+	std::unique_ptr<Sprite> bButtonSprite;
 	//取得用撃破数
 	int enemyDefeatNum = 0;
 	//取得用撃破数の桁数
@@ -63,4 +69,6 @@ private: //メンバ変数
 	int32_t updateDisplayNumTimer = 0;
 	//リザルトを表示し終えたか
 	bool isResultEnd = false;
+	//ボタンスプライトを描画するか
+	bool isDrawButtonSprite = false;
 };

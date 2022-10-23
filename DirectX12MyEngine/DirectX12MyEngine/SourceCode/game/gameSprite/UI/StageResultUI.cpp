@@ -27,7 +27,7 @@ bool StageResultUI::Initialize(const int enemyDefeatNum)
 
 	//枠スプライト生成
 	frameSprite.reset(Sprite::Create(SpriteTextureLoader::DefeatNumText));
-	const Vector2 framePos = { 640, 300 };
+	const Vector2 framePos = { 640, 360 };
 	frameSprite->SetPosition(framePos);
 	const Vector2 frameSize = { 500, 100 };
 	frameSprite->SetSize(frameSize);
@@ -49,6 +49,15 @@ bool StageResultUI::Initialize(const int enemyDefeatNum)
 		numberSprites.push_back(std::move(newNumberSprite));
 	}
 
+	//Bボタンスプライト生成
+	bButtonSprite.reset(Sprite::Create(SpriteTextureLoader::BButton));
+	const Vector2 bButtonPos = { framePos.x, framePos.y + 90 };
+	bButtonSprite->SetPosition(bButtonPos);
+	const Vector2 bButtonSize = { 48, 48 };
+	bButtonSprite->SetSize(bButtonSize);
+	const Vector2 bButtonTexSize = { 64, 64 };
+	bButtonSprite->SetTexSize(bButtonTexSize);
+
 	return true;
 }
 
@@ -59,10 +68,13 @@ void StageResultUI::Update()
 
 	//枠スプライト更新
 	frameSprite->Update();
-
 	//表示用撃破数の分数字スプライト更新
 	for (int i = 0; i < enemyDefeatDisplayNumDigit; i++) {
 		numberSprites[i]->Update();
+	}
+	//Bボタンスプライト更新
+	if (isDrawButtonSprite) {
+		bButtonSprite->Update();
 	}
 }
 
@@ -70,10 +82,13 @@ void StageResultUI::Draw()
 {
 	//枠スプライト描画
 	frameSprite->Draw();
-
 	//表示用撃破数の分数字スプライト描画
 	for (int i = 0; i < enemyDefeatDisplayNumDigit; i++) {
 		numberSprites[i]->Draw();
+	}
+	//Bボタンスプライト描画
+	if (isDrawButtonSprite) {
+		bButtonSprite->Draw();
 	}
 }
 

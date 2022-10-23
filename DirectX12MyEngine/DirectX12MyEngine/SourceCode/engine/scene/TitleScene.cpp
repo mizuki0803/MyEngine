@@ -67,6 +67,9 @@ void TitleScene::Initialize()
 
 	//パーティクルにカメラをセット
 	ParticleManager::SetCamera(titleCamera.get());
+
+	//タイトルUI生成
+	titleUI.reset(TitleUI::Create());
 }
 
 void TitleScene::Update()
@@ -93,6 +96,12 @@ void TitleScene::Update()
 	//背景用(山)
 	for (const std::unique_ptr<Mountain>& mountain : mountains) {
 		mountain->Update();
+	}
+
+	//スプライト更新
+	//タイトルUI更新
+	if (titleUI) {
+		titleUI->Update();
 	}
 
 	//パーティクル更新
@@ -143,6 +152,18 @@ void TitleScene::Draw()
 	ParticleEmitter::GetInstance()->DrawAll();
 
 	///-------パーティクル描画ここまで-------///
+
+
+	//スプライト共通コマンド
+	SpriteCommon::GetInstance()->DrawPrev();
+	///-------スプライト描画ここから-------///
+
+	//タイトルUI
+	if (titleUI) {
+		titleUI->Draw();
+	}
+
+	///-------スプライト描画ここまで-------///
 }
 
 void TitleScene::SortieStart()
@@ -155,4 +176,7 @@ void TitleScene::SortieStart()
 	//自機とカメラを出撃状態にする
 	player->SetIsSortie(true);
 	titleCamera->SortieStart();
+
+	//タイトルUIを解放する
+	titleUI.reset();
 }

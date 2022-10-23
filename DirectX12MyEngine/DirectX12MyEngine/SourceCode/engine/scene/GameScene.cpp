@@ -983,6 +983,12 @@ void GameScene::StageResultUICreateAndRelease()
 		if (!stageResultUI->GetIsResultEnd()) { return; }
 		//カメラのステージクリア後行動が自機の方向をずっと向くでなければ抜ける
 		if (!(gameCamera->GetStageClearModePhase() == GameCamera::StageClearModePhase::PlayerKeepLock)) { return; }
+
+		//リザルト終了のためボタンスプライトを表示する
+		if (!stageResultUI->GetIsDrawButtonSprite()) {
+			stageResultUI->SetIsDrawButtonSprite(true);
+		}
+
 		//指定の入力をしなければ抜ける
 		if (!(Input::GetInstance()->TriggerKey(DIK_SPACE) || Input::GetInstance()->TriggerGamePadButton(Input::PAD_B))) { return; }
 

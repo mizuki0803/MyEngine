@@ -9,6 +9,8 @@ public: //テクスチャ名
 	enum TextureName {
 		DebugFont,			//デバッグ用フォント
 		Number,				//数字
+		TitleLogo,			//タイトルロゴ
+		BButton,			//Bボタン
 		Reticle,			//レティクル
 		PlayerHPGaugeIn,	//自機HPバー
 		PlayerHPGaugeOut,	//自機HPバーフレーム

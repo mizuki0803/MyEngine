@@ -233,6 +233,7 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageClearText.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageResultUI.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\TitleUI.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +408,7 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageClearText.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageResultUI.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\TitleUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

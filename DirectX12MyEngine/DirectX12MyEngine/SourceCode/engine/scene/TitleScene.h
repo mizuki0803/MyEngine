@@ -10,6 +10,7 @@
 #include "Skydome.h"
 #include "Ground.h"
 #include "Mountain.h"
+#include "TitleUI.h"
 
 #include <sstream>
 
@@ -96,6 +97,9 @@ private: //メンバ変数
 	std::unique_ptr<Ground> ground;
 	//背景用(山)
 	std::list<std::unique_ptr<Mountain>> mountains;
+
+	//タイトルUI
+	std::unique_ptr<TitleUI> titleUI;
 
 	//その他変数
 	float soundVol = 0.1f;

@@ -135,6 +135,9 @@
     <Filter Include="ソース ファイル\game\gameObject\boss\bossAvatar">
       <UniqueIdentifier>{d23f1597-33f2-4e94-8915-89261bcb15f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameSprite\UI\resultUI">
+      <UniqueIdentifier>{43c1ac11-3d47-4915-8108-061d76c30f40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\main.cpp">
@@ -370,6 +373,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\item\HealingItem.cpp">
       <Filter>ソース ファイル\game\gameObject\item</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\TitleUI.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -665,9 +671,6 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageResultUI.h">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameSprite\NumberSprite.h">
-      <Filter>ソース ファイル\game\gameSprite</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.h">
       <Filter>ソース ファイル\game\gameSprite\UI\bossHPUI</Filter>
     </ClInclude>
@@ -682,6 +685,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\item\HealingItem.h">
       <Filter>ソース ファイル\game\gameObject\item</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\TitleUI.h">
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\NumberSprite.h">
+      <Filter>ソース ファイル\game\gameSprite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

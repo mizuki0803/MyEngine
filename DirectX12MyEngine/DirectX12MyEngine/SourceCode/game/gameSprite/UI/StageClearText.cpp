@@ -68,7 +68,7 @@ void StageClearText::Update()
 void StageClearText::Draw()
 {
 	//ステージ名スプライト描画
-	stageNameSprite->Draw();
+	//stageNameSprite->Draw();
 	//表示する文字のみ文字スプライト描画
 	for (int i = 0; i < displayTextNum; i++) {
 		textSprites[i]->Draw();
