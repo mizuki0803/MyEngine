@@ -35,7 +35,7 @@ void FrameWork::Initialize()
 {
 	//ウインドウ作成
 	win = new WindowApp();
-	win->WindowCreate(L"ShootingGame");
+	win->WindowCreate(L"FIGHTER");
 
 	//DirectX初期化
 	dxbase = new DirectXBase();
