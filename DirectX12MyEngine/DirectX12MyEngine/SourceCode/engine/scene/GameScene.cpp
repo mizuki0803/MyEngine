@@ -56,6 +56,7 @@ void GameScene::Initialize()
 	modelBossAvatar.reset(ObjModel::LoadFromOBJ("bossAvatar", true));
 	modelBossAvatarDamage.reset(ObjModel::LoadFromOBJ("bossAvatarDamage", true));
 	modelBossAvatarSleep.reset(ObjModel::LoadFromOBJ("bossAvatarSleep", true));
+	modelHealingItem.reset(ObjModel::LoadFromOBJ("healingItem"));
 
 	//自機に必要な情報をセット
 	Player::SetGameScene(this);
@@ -91,11 +92,6 @@ void GameScene::Initialize()
 
 	//回復アイテムに必要な情報をセット
 	HealingItem::SetPlayer(player.get());
-
-	std::unique_ptr<HealingItem> healingItem;
-	healingItem.reset(HealingItem::Create(modelSphere.get(), { 0, 0, 35 }));
-	healingItems.push_back(std::move(healingItem));
-
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
@@ -204,7 +200,8 @@ void GameScene::Update()
 
 	//デバックテキスト
 	{
-
+		std::string itemNum = std::to_string(healingItems.size());
+		DebugText::GetInstance()->Print("ItemNum : " + itemNum, 100, 200);
 		//X座標,Y座標,縮尺を指定して表示
 		//debugText->Print("GAME SCENE", 1000, 50);
 		/*std::string enemyDefeat = std::to_string(EnemyDefeatCounter::GetDefeatCount());
@@ -358,6 +355,14 @@ void GameScene::ObjectRelease()
 			//ホーミング解除
 			bullet->SetEnemy(nullptr);
 		}
+
+		//被弾して削除状態でなければ飛ばす
+		if (!enemy->GetIsHitDelete()) { continue; }
+
+		//死亡させるだけでなく削除状態まで弾を当てた敵の座標に回復アイテム生成
+		std::unique_ptr<HealingItem> healingItem;
+		healingItem.reset(HealingItem::Create(modelHealingItem.get(), enemy->GetPosition()));
+		healingItems.push_back(std::move(healingItem));
 	}
 	//削除状態の敵の削除
 	enemys.remove_if([](std::unique_ptr<Enemy>& enemy) {
@@ -369,9 +374,9 @@ void GameScene::ObjectRelease()
 		return bullet->GetIsDead();
 		});
 
-	//死亡した回復アイテムの削除
+	//削除状態の回復アイテムの削除
 	healingItems.remove_if([](std::unique_ptr<HealingItem>& healingItem) {
-		return healingItem->GetIsDead();
+		return healingItem->GetIsDelete();
 		});
 
 	//削除状態のボスの削除
@@ -552,6 +557,9 @@ void GameScene::CollisionCheck3d()
 
 		//自機と全ての回復アイテムの衝突判定
 		for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
+			//既に接触していたら飛ばす
+			if (healingItem->GetIsTouched()) { continue; }
+
 			//回復アイテム座標
 			posB = healingItem->GetWorldPos();
 			//回復アイテム半径

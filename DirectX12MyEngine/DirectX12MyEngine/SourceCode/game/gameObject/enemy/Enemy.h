@@ -49,9 +49,10 @@ public: //メンバ関数
 	//getter
 	Vector3 GetWorldPos();
 	Vector2 GetScreenPos();
-	bool GetIsCollisionFrame() { return isCollisionFrame; }
+	bool GetIsCollisionFrame() const { return isCollisionFrame; }
 	bool GetIsDead() const { return isDead; }
 	bool GetIsDelete() const { return isDelete; }
+	bool GetIsHitDelete() const { return isHitDelete; }
 
 protected: //メンバ関数
 	/// <summary>
@@ -79,4 +80,6 @@ protected: //メンバ変数
 	bool isDead = false;
 	//削除フラグ
 	bool isDelete = false;
+	//被弾して削除か
+	bool isHitDelete = false;
 };

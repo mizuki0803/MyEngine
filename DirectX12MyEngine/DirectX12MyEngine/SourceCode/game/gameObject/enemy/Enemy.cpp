@@ -48,6 +48,9 @@ void Enemy::OnCollision()
 	//既に死亡状態で死亡演出中のときは削除する
 	else {
 		isDelete = true;
+
+		//被弾して削除するのでフラグを立てる
+		isHitDelete = true;
 	}
 
 	//当たり判定がこのフレームで作用した

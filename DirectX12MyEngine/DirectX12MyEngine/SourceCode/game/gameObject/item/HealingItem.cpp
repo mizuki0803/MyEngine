@@ -1,5 +1,6 @@
 #include "HealingItem.h"
 #include "Player.h"
+#include "Easing.h"
 
 Player* HealingItem::player = nullptr;
 
@@ -26,14 +27,21 @@ HealingItem* HealingItem::Create(ObjModel* model, const Vector3& position)
 	healingItem->position = position;
 
 	//デバッグ用
-	healingItem->color = { 1,0,0,1 };
-	healingItem->scale = { 0.5f, 0.5f, 0.5f };
+	healingItem->scale = { 2.0f, 2.0f, 2.0f };
 
 	return healingItem;
 }
 
 void HealingItem::Update()
 {
+	//ぐるぐる回転
+	Round();
+
+	//接触後の動き
+	if (isTouched) {
+		TouchedAction();
+	}
+
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
 
@@ -43,8 +51,12 @@ void HealingItem::Update()
 
 void HealingItem::OnCollision()
 {
-    //死亡させる
-    isDead = true;
+	//接触した
+	isTouched = true;
+
+	//回転の速さをアップ
+	const float deadRotSpeed = 15.0f;
+	rotSpeed = deadRotSpeed;
 }
 
 Vector3 HealingItem::GetWorldPos()
@@ -59,6 +71,12 @@ Vector3 HealingItem::GetWorldPos()
 	return worldPos;
 }
 
+void HealingItem::Round()
+{
+	//ぐるぐる回転
+	rotation.y -= rotSpeed;
+}
+
 void HealingItem::FrontOfScreenDelete()
 {
 	//座標が自機より手前(画面外手前)まで行ったら削除
@@ -67,6 +85,34 @@ void HealingItem::FrontOfScreenDelete()
 	const Vector3 worldPos = GetWorldPos();
 
 	if (worldPos.z <= deletePos) {
-		isDead = true;
+		isDelete = true;
+	}
+}
+
+void HealingItem::TouchedAction()
+{
+	//タイマー更新
+	const float deadTime = 70;
+	const float moveTime = 30;
+	touchedTimer++;
+
+	//移動イージングに使用する変数(0～1を算出)
+	float easeMoveTime = touchedTimer / moveTime;
+	easeMoveTime = min(easeMoveTime, 1);
+	//自機の座標に移動する
+	position = Easing::LerpVec3(position, player->GetWorldPos(), easeMoveTime);
+
+	//大きさ変更イージングに使用する変数(0～1を算出)
+	float easeScaleTime = touchedTimer / deadTime;
+	//大きさを変更する
+	const float startSize = 2.5f;
+	scale.x = Easing::InQuint(startSize, 0, easeScaleTime);
+	scale.y = Easing::InQuint(startSize, 0, easeScaleTime);
+	scale.z = Easing::InQuint(startSize, 0, easeScaleTime);
+
+	//タイマーが指定した時間になったら
+	if (touchedTimer >= deadTime) {
+		//削除
+		isDelete = true;
 	}
 }

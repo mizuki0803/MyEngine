@@ -136,7 +136,7 @@ void ObjModel::LoadFromOBJInternal(const std::string& modelname, const bool smoo
 				//エッジ平滑化用のデータを追加
 				if (smoothing) {
 					//vキー(座標データ)の番号と、全て合成した頂点のインデックスをセットで登録する
-					smoothData[indexPosition].emplace_back(GetVertexCount() - 1);
+					smoothData[indexPosition].emplace_back((unsigned short)GetVertexCount() - 1);
 				}
 
 				//四角形ポリゴン

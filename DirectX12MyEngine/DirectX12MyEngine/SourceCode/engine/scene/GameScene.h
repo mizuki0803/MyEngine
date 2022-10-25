@@ -166,6 +166,7 @@ private: //ƒƒ“ƒo•Ï”
 	std::unique_ptr<ObjModel> modelBossAvatar;
 	std::unique_ptr<ObjModel> modelBossAvatarDamage;
 	std::unique_ptr<ObjModel> modelBossAvatarSleep;
+	std::unique_ptr<ObjModel> modelHealingItem;
 
 	//©‹@
 	std::unique_ptr<Player> player;

@@ -33,19 +33,36 @@ public: //メンバ関数
 
 	//getter
 	Vector3 GetWorldPos();
-	bool GetIsDead() const { return isDead; }
+	bool GetIsTouched() const { return isTouched; }
+	bool GetIsDelete() const { return isDelete; }
 
 private: //メンバ関数
+	/// <summary>
+	/// ぐるぐる回転
+	/// </summary>
+	void Round();
+
 	/// <summary>
 	/// 画面手前まで行ったら削除する処理
 	/// </summary>
 	void FrontOfScreenDelete();
+
+	/// <summary>
+	/// 接触後の動き
+	/// </summary>
+	void TouchedAction();
 
 private: //静的メンバ変数
 	//プレイヤー自機
 	static Player* player;
 
 private: //メンバ変数
-	//死亡フラグ
-	bool isDead = false;
+	//回転の速さ
+	float rotSpeed = 2.0f;
+	//接触フラグ
+	bool isTouched = false;
+	//接触後タイマー
+	int32_t touchedTimer = 0;
+	//削除フラグ
+	bool isDelete = false;
 };
