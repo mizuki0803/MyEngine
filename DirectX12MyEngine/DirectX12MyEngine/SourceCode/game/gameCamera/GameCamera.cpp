@@ -5,13 +5,13 @@
 #include "BossMainBody.h"
 
 void (GameCamera::* GameCamera::stageClearCameraActionFuncTable[])() = {
-	&GameCamera::StageClearBossLock,
-	&GameCamera::StageClearFrontLock,
-	&GameCamera::StageClearPlayerLock,
+	&GameCamera::StageClearBossLook,
+	&GameCamera::StageClearFrontLook,
+	&GameCamera::StageClearPlayerLook,
 	&GameCamera::StageClearPlayerZoom,
 	&GameCamera::StageClearPlayerFollow,
 	&GameCamera::StageClearPlayerSideMove,
-	&GameCamera::StageClearPlayerKeepLock,
+	&GameCamera::StageClearPlayerKeepLook,
 };
 
 void GameCamera::Initialize()
@@ -110,7 +110,7 @@ void GameCamera::BossDelete()
 	//移動前カメラ角度をセット
 	stageClearMoveBeforeRota = rotation;
 	//ステージクリア後の挙動を正面を向くへ
-	stageClearModePhase = StageClearModePhase::FrontLock;
+	stageClearModePhase = StageClearModePhase::FrontLook;
 	//タイマー初期化
 	stageClearModeTimer = 0;
 }
@@ -263,7 +263,7 @@ void GameCamera::Shake()
 	}
 }
 
-void GameCamera::StageClearBossLock()
+void GameCamera::StageClearBossLook()
 {
 	//ボス本体のインスタンスがなければ抜ける
 	if (!bossMainBody) { return; }
@@ -299,7 +299,7 @@ void GameCamera::StageClearBossLock()
 	rotation.z = Easing::OutCubic(stageClearMoveBeforeRota.z, rota.z, time);
 }
 
-void GameCamera::StageClearFrontLock()
+void GameCamera::StageClearFrontLook()
 {
 	//方向を切り替える時間
 	const float lookChangeTime = 300;
@@ -316,7 +316,7 @@ void GameCamera::StageClearFrontLock()
 	//自機がカメラの後ろにいったら次のフェーズへ
 	const float changePhaseDistance = 10.0f;
 	if (player->GetWorldPos().z <= position.z + changePhaseDistance) {
-		stageClearModePhase = StageClearModePhase::PlayerLock;
+		stageClearModePhase = StageClearModePhase::PlayerLook;
 
 		//移動前カメラ角度をセット
 		stageClearMoveBeforeRota = rotation;
@@ -325,7 +325,7 @@ void GameCamera::StageClearFrontLock()
 	}
 }
 
-void GameCamera::StageClearPlayerLock()
+void GameCamera::StageClearPlayerLook()
 {
 	//方向を切り替える時間
 	const float lookChangeTime = 20;
@@ -459,11 +459,11 @@ void GameCamera::StageClearPlayerSideMove()
 
 	//指定した時間になったら次のフェーズへ
 	if (stageClearModeTimer >= moveTime) {
-		stageClearModePhase = StageClearModePhase::PlayerKeepLock;
+		stageClearModePhase = StageClearModePhase::PlayerKeepLook;
 	}
 }
 
-void GameCamera::StageClearPlayerKeepLock()
+void GameCamera::StageClearPlayerKeepLook()
 {
 	//自機の方向を向く
 	const Vector3 playerCameraVec = player->GetWorldPos() - position;

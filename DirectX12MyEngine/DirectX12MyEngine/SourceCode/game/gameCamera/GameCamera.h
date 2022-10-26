@@ -16,12 +16,12 @@ public:
 	//ステージクリア後行動フェーズ
 	enum class StageClearModePhase {
 		BossLook,		//ボスの方向を向く
-		FrontLock,		//正面の方向を向く
-		PlayerLock,		//自機の方向を向く
+		FrontLook,		//正面の方向を向く
+		PlayerLook,		//自機の方向を向く
 		PlayerZoom,		//自機をズーム
 		PlayerFollow,	//自機を追従(実際はなにもしない)
 		PlayerSideMove,	//自機横に移動
-		PlayerKeepLock,	//自機の方向をずっと向く
+		PlayerKeepLook,	//自機の方向をずっと向く
 	};
 
 public: //メンバ関数
@@ -98,17 +98,17 @@ private: //メンバ関数
 	/// <summary>
 	/// ステージクリア後のボスの方向を向く行動
 	/// </summary>
-	void StageClearBossLock();
+	void StageClearBossLook();
 
 	/// <summary>
 	/// ステージクリア後の正面の方向を向く行動
 	/// </summary>
-	void StageClearFrontLock();
+	void StageClearFrontLook();
 
 	/// <summary>
 	/// ステージクリア後の自機の方向を向く行動
 	/// </summary>
-	void StageClearPlayerLock();
+	void StageClearPlayerLook();
 
 	/// <summary>
 	/// ステージクリア後の自機をズームする行動
@@ -128,7 +128,7 @@ private: //メンバ関数
 	/// <summary>
 	/// ステージクリア後の自機の方向をずっと向く行動
 	/// </summary>
-	void StageClearPlayerKeepLock();
+	void StageClearPlayerKeepLook();
 
 
 private: //静的メンバ変数

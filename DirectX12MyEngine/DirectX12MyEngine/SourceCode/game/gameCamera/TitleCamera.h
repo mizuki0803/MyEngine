@@ -31,6 +31,11 @@ public: //メンバ関数
 
 private: //メンバ関数
 	/// <summary>
+	/// 自機周りをぐるぐる回転
+	/// </summary>
+	void RoundPlayer();
+
+	/// <summary>
 	/// 出撃
 	/// </summary>
 	void Sortie();

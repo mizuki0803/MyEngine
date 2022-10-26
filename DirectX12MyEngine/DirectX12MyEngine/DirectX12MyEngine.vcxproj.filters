@@ -138,6 +138,9 @@
     <Filter Include="ソース ファイル\game\gameSprite\UI\resultUI">
       <UniqueIdentifier>{43c1ac11-3d47-4915-8108-061d76c30f40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\sortiePlayer">
+      <UniqueIdentifier>{58b537c3-9b84-4d42-ae86-a531e03fe10e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\main.cpp">
@@ -376,6 +379,15 @@
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameSprite\UI\TitleUI.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\scene\SortieScene.cpp">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\SortiePlayer.cpp">
+      <Filter>ソース ファイル\game\gameObject\sortiePlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp">
+      <Filter>ソース ファイル\game\gameCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -691,6 +703,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\NumberSprite.h">
       <Filter>ソース ファイル\game\gameSprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\scene\SortieScene.h">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\SortiePlayer.h">
+      <Filter>ソース ファイル\game\gameObject\sortiePlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h">
+      <Filter>ソース ファイル\game\gameCamera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

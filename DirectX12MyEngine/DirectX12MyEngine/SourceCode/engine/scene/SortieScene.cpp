@@ -1,4 +1,4 @@
-#include "TitleScene.h"
+#include "SortieScene.h"
 #include "SceneManager.h"
 #include "Input.h"
 #include "Audio.h"
@@ -10,7 +10,7 @@
 #include <fstream>
 #include <iomanip>
 
-void TitleScene::Initialize()
+void SortieScene::Initialize()
 {
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
@@ -35,12 +35,12 @@ void TitleScene::Initialize()
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
 
 	//自機生成
-	player.reset(TitlePlayer::Create(modelFighter.get(), { 0, 5, 0 }));
+	player.reset(SortiePlayer::Create(modelFighter.get(), { 0, 20, -1000 }));
 
 	//カメラ初期化
-	titleCamera.reset(new TitleCamera());
-	titleCamera->SetTitlePlayer(player.get());
-	titleCamera->Initialize();
+	sortieCamera.reset(new SortieCamera());
+	sortieCamera->SetSortiePlayer(player.get());
+	sortieCamera->Initialize();
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
@@ -49,42 +49,38 @@ void TitleScene::Initialize()
 	ground.reset(Ground::Create(modelGround.get()));
 
 	//背景用(山)生成
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 40; i++) {
 		std::unique_ptr<Mountain> newMountain;
-		newMountain.reset(Mountain::Create(modelMountain.get(), { -70, 0, 0 + (float)i * 40 }));
+		newMountain.reset(Mountain::Create(modelMountain.get(), { -75, 0, -1000 + (float)i * 40 }));
 		mountains.push_back(std::move(newMountain));
 	}
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 40; i++) {
 		std::unique_ptr<Mountain> newMountain;
-		newMountain.reset(Mountain::Create(modelMountain.get(), { 70, 0, 0 + (float)i * 40 }));
+		newMountain.reset(Mountain::Create(modelMountain.get(), { 75, 0, -1000 + (float)i * 40 }));
 		mountains.push_back(std::move(newMountain));
 	}
 
 	//objオブジェクトにカメラをセット
-	ObjObject3d::SetCamera(titleCamera.get());
+	ObjObject3d::SetCamera(sortieCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
 	//パーティクルにカメラをセット
-	ParticleManager::SetCamera(titleCamera.get());
-
-	//タイトルUI生成
-	titleUI.reset(TitleUI::Create());
+	ParticleManager::SetCamera(sortieCamera.get());
 }
 
-void TitleScene::Update()
+void SortieScene::Update()
 {
 	//入力のインスタンスを取得
 	Input* input = Input::GetInstance();
 	//デバッグテキストのインスタンスを取得
 	DebugText* debugText = DebugText::GetInstance();
 
-	//出撃開始
-	SortieStart();
-
+	//出撃挙動管理
+	SortieAction();
 
 	//カメラ更新
-	titleCamera->Update();
+	sortieCamera->Update();
 
 	//オブジェクト更新
 	//自機
@@ -98,12 +94,6 @@ void TitleScene::Update()
 		mountain->Update();
 	}
 
-	//スプライト更新
-	//タイトルUI更新
-	if (titleUI) {
-		titleUI->Update();
-	}
-
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
@@ -111,20 +101,18 @@ void TitleScene::Update()
 	//X座標,Y座標,縮尺を指定して表示
 	//debugText->Print("GAME SCENE", 1000, 50);
 
-	//自機が空まで行って見えなくなったら
-	const bool isPlayerSky = (player->GetPosition().y >= 500);
-	if (isPlayerSky) {
+	//自機の出撃行動が完了したら
+	if (player->GetIsSortieEnd()) {
 		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("SORTIE");
+		SceneManager::GetInstance()->ChangeScene("GAME");
 	}
-
 	if (input->TriggerKey(DIK_RETURN)) {
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("GAME");
 	}
 }
 
-void TitleScene::Draw()
+void SortieScene::Draw()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawPrev();
@@ -158,25 +146,17 @@ void TitleScene::Draw()
 	SpriteCommon::GetInstance()->DrawPrev();
 	///-------スプライト描画ここから-------///
 
-	//タイトルUI
-	if (titleUI) {
-		titleUI->Draw();
-	}
 
 	///-------スプライト描画ここまで-------///
 }
 
-void TitleScene::SortieStart()
+void SortieScene::SortieAction()
 {
-	//既に出撃していたら抜ける
-	if (player->GetIsSortie()) { return; }
-	//スペースキーを押していなければ抜ける
-	if (!(Input::GetInstance()->TriggerKey(DIK_SPACE) || Input::GetInstance()->TriggerGamePadButton(Input::PAD_B))) { return; }
+	//既にブースト状態なら抜ける
+	if (player->GetSortieActionPhase() == SortiePlayer::SortieActionPhase::Boost) { return; }
+	//カメラの自機ズームが終了していなければ抜ける
+	if (!sortieCamera->GetIsZoomEnd()) { return; }
 
-	//自機とカメラを出撃状態にする
-	player->SetIsSortie(true);
-	titleCamera->SortieStart();
-
-	//タイトルUIを解放する
-	titleUI.reset();
+	//自機をブースト状態にする
+	player->BoostStart();
 }

@@ -20,20 +20,18 @@ void TitleCamera::Initialize()
 
 void TitleCamera::Update()
 {
+	//自機が出撃前
 	if (!player->GetIsSortie()) {
-
-		const float rotSpeed = 0.5f;
-		rotAngle += rotSpeed;
-		const float radian = XMConvertToRadians(rotAngle);
-		const float distance = eyeDistance.z/* + 5 * sinf(radian)*/;
-
-		eye.z = distance * cosf(radian);
-		eye.x = distance * sinf(radian);
-		dirtyView = true;
+		//自機の周りをぐるぐる回転
+		RoundPlayer();
 	}
+	//出撃状態
 	else {
+		//カメラも出撃用に
 		Sortie();
 	}
+
+	//カメラ更新
 	Camera::Update();
 }
 
@@ -44,6 +42,18 @@ void TitleCamera::SortieStart()
 	//一周分に修正
 	beforeRoundRotAngle = (float)((int)beforeRoundRotAngle % 360);
 	beforeRoundRotAngle += 360;
+}
+
+void TitleCamera::RoundPlayer()
+{
+	//角度を変更し続ける
+	const float rotSpeed = 0.5f;
+	rotAngle += rotSpeed;
+	const float radian = XMConvertToRadians(rotAngle);
+	const float distance = eyeDistance.z;
+	eye.z = distance * cosf(radian);
+	eye.x = distance * sinf(radian);
+	dirtyView = true;
 }
 
 void TitleCamera::Sortie()
