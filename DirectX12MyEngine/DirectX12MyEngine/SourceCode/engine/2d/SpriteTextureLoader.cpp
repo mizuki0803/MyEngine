@@ -8,6 +8,7 @@ void SpriteTextureLoader::TextureLoad()
 
 	//スプライト用テクスチャ読み込み
 	spriteCommon->LoadTexture(TextureName::DebugFont, "debugFont.png");
+	spriteCommon->LoadTexture(TextureName::White, "white1x1.png");
 	spriteCommon->LoadTexture(TextureName::Number, "number.png");
 	spriteCommon->LoadTexture(TextureName::TitleLogo, "titleLogo.png");
 	spriteCommon->LoadTexture(TextureName::BButton, "bButton.png");

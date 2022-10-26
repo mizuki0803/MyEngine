@@ -47,7 +47,7 @@ public: //メンバ関数
 	/// <param name="window_width">ウインドウ横幅</param>
 	/// <param name="window_height">ウインドウ縦幅</param>
 	/// <param name="directoryPath">ディレクトリパス</param>
-	void Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height, const std::string& directoryPath = "Resources/");
+	void Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height, const std::string& directoryPath = "Resources/spriteTexture/");
 
 	/// <summary>
 	/// 描画前処理	

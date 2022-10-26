@@ -40,7 +40,7 @@ void ObjModel::LoadFromOBJInternal(const std::string& modelname, const bool smoo
 	//objファイルからデータを読み込む
 	//const string modelname = "man";
 	const string filename = modelname + ".obj";
-	const string directoryPath = "Resources/" + modelname + "/";
+	const string directoryPath = "Resources/model/" + modelname + "/";
 
 	//ファイルストリーム
 	std::ifstream file;

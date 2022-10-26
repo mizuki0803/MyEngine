@@ -8,6 +8,7 @@ class SpriteTextureLoader
 public: //テクスチャ名
 	enum TextureName {
 		DebugFont,			//デバッグ用フォント
+		White,				//真っ白
 		Number,				//数字
 		TitleLogo,			//タイトルロゴ
 		BButton,			//Bボタン

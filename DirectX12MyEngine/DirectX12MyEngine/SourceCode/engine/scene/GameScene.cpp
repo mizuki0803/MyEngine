@@ -1,4 +1,4 @@
-#include "GameScene.h"
+﻿#include "GameScene.h"
 #include "SceneManager.h"
 #include "Input.h"
 #include "Audio.h"
@@ -98,7 +98,7 @@ void GameScene::Initialize()
 
 	//地面生成
 	ground.reset(Ground::Create(modelGround.get()));
-	int a = 0;
+
 	//背景用(山)生成
 	for (int i = 0; i < 20; i++) {
 		std::unique_ptr<Mountain> newMountain;
