@@ -135,9 +135,6 @@
     <Filter Include="ソース ファイル\game\gameObject\boss\bossAvatar">
       <UniqueIdentifier>{d23f1597-33f2-4e94-8915-89261bcb15f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\gameSprite\UI\resultUI">
-      <UniqueIdentifier>{43c1ac11-3d47-4915-8108-061d76c30f40}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\game\gameObject\sortiePlayer">
       <UniqueIdentifier>{58b537c3-9b84-4d42-ae86-a531e03fe10e}</UniqueIdentifier>
     </Filter>
@@ -388,6 +385,15 @@
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp">
       <Filter>ソース ファイル\game\gameCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\SceneChangeSprite.cpp">
+      <Filter>ソース ファイル\game\gameSprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameEffect\SceneChangeEffect.cpp">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\scene\BaseGameScene.cpp">
+      <Filter>ソース ファイル\engine\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -712,6 +718,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h">
       <Filter>ソース ファイル\game\gameCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameEffect\SceneChangeEffect.h">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\SceneChangeSprite.h">
+      <Filter>ソース ファイル\game\gameSprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\scene\BaseGameScene.h">
+      <Filter>ソース ファイル\engine\scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

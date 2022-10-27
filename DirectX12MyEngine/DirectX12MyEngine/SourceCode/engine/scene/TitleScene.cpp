@@ -6,6 +6,7 @@
 #include "DebugText.h"
 #include "Easing.h"
 #include "ParticleEmitter.h"
+#include "SceneChangeEffect.h"
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -114,14 +115,20 @@ void TitleScene::Update()
 	//自機が空まで行って見えなくなったら
 	const bool isPlayerSky = (player->GetPosition().y >= 500);
 	if (isPlayerSky) {
-		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("SORTIE");
+		//出撃シーンへシーン変更を開始する
+		SceneChangeStart({ 0,0,0,0 }, 40, 120, "SORTIE");
 	}
 
 	if (input->TriggerKey(DIK_RETURN)) {
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("GAME");
 	}
+
+	//シーン変更状態
+	SceneChangeMode();
+
+	//シーン変更演出更新
+	SceneChangeEffect::Update();
 }
 
 void TitleScene::Draw()
@@ -162,6 +169,9 @@ void TitleScene::Draw()
 	if (titleUI) {
 		titleUI->Draw();
 	}
+
+	//シーン変更演出描画
+	SceneChangeEffect::Draw();
 
 	///-------スプライト描画ここまで-------///
 }

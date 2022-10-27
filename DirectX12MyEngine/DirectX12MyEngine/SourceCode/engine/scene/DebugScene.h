@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseScene.h"
+#include "BaseGameScene.h"
 #include "Sprite.h"
 #include "ObjObject3d.h"
 #include "FbxObject3d.h"
@@ -11,7 +11,7 @@
 /// <summary>
 /// デバッグシーン
 /// </summary>
-class DebugScene :public BaseScene
+class DebugScene :public BaseGameScene
 {
 private: // エイリアス
 // Microsoft::WRL::を省略

@@ -6,6 +6,7 @@
 #include "DebugText.h"
 #include "Easing.h"
 #include "ParticleEmitter.h"
+#include "SceneChangeEffect.h"
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -103,13 +104,19 @@ void SortieScene::Update()
 
 	//自機の出撃行動が完了したら
 	if (player->GetIsSortieEnd()) {
-		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("GAME");
+		//ゲームシーンへシーン変更を開始する
+		SceneChangeStart({ 1,1,1,0 }, 10, 10, "GAME");
 	}
 	if (input->TriggerKey(DIK_RETURN)) {
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("GAME");
 	}
+
+	//シーン変更状態
+	SceneChangeMode();
+
+	//シーン変更演出更新
+	SceneChangeEffect::Update();
 }
 
 void SortieScene::Draw()
@@ -145,6 +152,9 @@ void SortieScene::Draw()
 	//スプライト共通コマンド
 	SpriteCommon::GetInstance()->DrawPrev();
 	///-------スプライト描画ここから-------///
+
+	//シーン変更演出描画
+	SceneChangeEffect::Draw();
 
 
 	///-------スプライト描画ここまで-------///

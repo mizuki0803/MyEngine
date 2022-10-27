@@ -184,6 +184,7 @@
     <ClCompile Include="SourceCode\engine\math\Easing.cpp" />
     <ClCompile Include="SourceCode\engine\math\Vector2.cpp" />
     <ClCompile Include="SourceCode\engine\math\Vector3.cpp" />
+    <ClCompile Include="SourceCode\engine\scene\BaseGameScene.cpp" />
     <ClCompile Include="SourceCode\engine\scene\BaseScene.cpp" />
     <ClCompile Include="SourceCode\engine\scene\DebugScene.cpp" />
     <ClCompile Include="SourceCode\engine\scene\GameScene.cpp" />
@@ -193,6 +194,7 @@
     <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\TitleCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\ParticleEmitter.cpp" />
+    <ClCompile Include="SourceCode\game\gameEffect\SceneChangeEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Ground.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Mountain.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Skydome.cpp" />
@@ -228,6 +230,7 @@
     <ClCompile Include="SourceCode\game\gameObject\SortiePlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\TitlePlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\NumberSprite.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\SceneChangeSprite.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPFrame.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\EnemyDefeatCounter.cpp" />
@@ -362,6 +365,7 @@
     <ClInclude Include="SourceCode\engine\math\Easing.h" />
     <ClInclude Include="SourceCode\engine\math\Vector2.h" />
     <ClInclude Include="SourceCode\engine\math\Vector3.h" />
+    <ClInclude Include="SourceCode\engine\scene\BaseGameScene.h" />
     <ClInclude Include="SourceCode\engine\scene\BaseScene.h" />
     <ClInclude Include="SourceCode\engine\scene\DebugScene.h" />
     <ClInclude Include="SourceCode\engine\scene\GameScene.h" />
@@ -371,6 +375,7 @@
     <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\TitleCamera.h" />
     <ClInclude Include="SourceCode\game\gameEffect\ParticleEmitter.h" />
+    <ClInclude Include="SourceCode\game\gameEffect\SceneChangeEffect.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Ground.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Mountain.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Skydome.h" />
@@ -406,6 +411,7 @@
     <ClInclude Include="SourceCode\game\gameObject\SortiePlayer.h" />
     <ClInclude Include="SourceCode\game\gameObject\TitlePlayer.h" />
     <ClInclude Include="SourceCode\game\gameSprite\NumberSprite.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\SceneChangeSprite.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPFrame.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\EnemyDefeatCounter.h" />

@@ -148,9 +148,9 @@ void FrameWork::Draw()
 	SceneManager::GetInstance()->Draw();
 
 	//スプライト共通コマンド
-	spriteCommon->DrawPrev();
-	//デバックテキスト描画
-	debugText->DrawAll();
+	//spriteCommon->DrawPrev();
+	////デバックテキスト描画
+	//debugText->DrawAll();
 
 	//グラフィックスコマンド(後)
 	dxbase->GraphicsCommandRear();

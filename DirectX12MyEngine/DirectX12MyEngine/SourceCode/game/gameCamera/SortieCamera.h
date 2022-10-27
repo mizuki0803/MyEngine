@@ -55,7 +55,9 @@ private: //静的メンバ変数
 	//出撃行動遷移
 	static void (SortieCamera::* sortieActionFuncTable[])();
 	//並走を開始する自機とカメラの距離
-	static float runningSideStartDistance;
+	static const float runningSideStartDistance;
+	//並走を終了する自機とカメラの距離
+	static const float runningSideEndDistance;
 
 private: //メンバ変数
 	//プレイヤー自機

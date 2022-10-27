@@ -775,7 +775,7 @@ void Player::StageClearReturn()
 void Player::StageClearUp()
 {
 	//タイマー更新
-	const float upTime = 300;
+	const float upTime = 350;
 	stageClearModeTimer++;
 
 	//下向きを上向きに
@@ -850,7 +850,7 @@ void Player::StageClearBoost()
 	if (isStageClearModeCompletion) { return; }
 
 	//タイマー更新
-	const float stageClearModeCompletionTime = 300;
+	const float stageClearModeCompletionTime = 120;
 	stageClearModeTimer++;
 
 	//タイマーが指定した時間に以下なら抜ける

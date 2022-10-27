@@ -8,7 +8,8 @@ void (SortieCamera::* SortieCamera::sortieActionFuncTable[])() = {
 	&SortieCamera::CameraRunningSideSpeedMove,
 };
 
-float SortieCamera::runningSideStartDistance = 40.0f;
+const float SortieCamera::runningSideStartDistance = 45.0f;
+const float SortieCamera::runningSideEndDistance = 20.0f;
 
 void SortieCamera::Initialize()
 {
@@ -16,7 +17,7 @@ void SortieCamera::Initialize()
 	Camera::Initialize();
 
 	//カメラの視点を自機の後方左上にセット
-	eyePlayerDistance = { 0, 2, 400 };
+	eyePlayerDistance = { 0, 0.5f, 400 };
 	eye = player->GetPosition() + eyePlayerDistance;
 }
 
@@ -51,8 +52,6 @@ void SortieCamera::RunningSideZoomPlayer()
 	cameraActionTimer++;
 	const float time = cameraActionTimer / zoomTime;
 
-	//並走終了時の自機とカメラの距離
-	const float runningSideEndDistance = 15.0f;
 	//カメラを自機に並走させる
 	eyePlayerDistance.z = Easing::OutQuint(runningSideStartDistance, runningSideEndDistance, time);
 	eye = player->GetPosition() + eyePlayerDistance;
@@ -73,8 +72,6 @@ void SortieCamera::RunningSideZoomPlayer()
 
 void SortieCamera::CameraRunningSideSpeedMove()
 {
-	//並走終了時の自機とカメラの距離
-	const float runningSideEndDistance = 15.0f;
 	//カメラを自機に並走させる
 	eye.z += 1.0f;
 

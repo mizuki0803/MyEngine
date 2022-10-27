@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseScene.h"
+#include "BaseGameScene.h"
 #include "Sprite.h"
 #include "ObjObject3d.h"
 #include "LightGroup.h"
@@ -17,7 +17,7 @@
 /// <summary>
 /// タイトルシーン
 /// </summary>
-class TitleScene :public BaseScene
+class TitleScene :public BaseGameScene
 {
 private: // エイリアス
 // Microsoft::WRL::を省略

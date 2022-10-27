@@ -69,7 +69,7 @@ void SortiePlayer::SortieBoost()
 	boostTimer++;
 
 	//一定時間経ったら出撃行動を終了させる
-	const int endTime = 30;
+	const int endTime = 15;
 	if (boostTimer >= endTime) {
 		isSortieEnd = true;
 	}
