@@ -1024,7 +1024,7 @@ void GameScene::ReturnTitleScene()
 	if (!player->GetIsStageClearModeCompletion()) { return; }
 
 	//タイトルシーンへシーン変更を開始する
-	SceneChangeStart({ 0,0,0,0 }, 120, 60, "TITLE");
+	SceneChangeStart({ 0,0,0,0 }, 120, 60, 60, "TITLE");
 }
 
 void GameScene::GameOver()
@@ -1050,7 +1050,7 @@ void GameScene::GameOver()
 
 		//タイマーが指定した時間になったらゲームシーンをやり直す
 		if (gameOverTimer >= gameOverTime) {
-			SceneChangeStart({ 0,0,0,0 }, 60, 60, "GAME");
+			SceneChangeStart({ 0,0,0,0 }, 60, 60, 20, "GAME");
 		}
 	}
 }

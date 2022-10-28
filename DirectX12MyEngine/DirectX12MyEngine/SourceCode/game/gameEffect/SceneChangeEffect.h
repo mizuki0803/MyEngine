@@ -24,8 +24,9 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="color">画面を覆う色</param>
 	/// <param name="deepenTime">色を濃くする時間</param>
+	/// <param name="waitTime">色を濃くしたまま待機する時間</param>
 	/// <param name="returnTime">色を戻す時間</param>
-	static void CreateSceneChangeEffect(const DirectX::XMFLOAT4& color, int32_t deepenTime, int32_t returnTime);
+	static void CreateSceneChangeEffect(const DirectX::XMFLOAT4& color, int32_t deepenTime, int32_t waitTime, int32_t returnTime);
 
 private: //静的メンバ変数
 	//シーン変更演出用スプライト

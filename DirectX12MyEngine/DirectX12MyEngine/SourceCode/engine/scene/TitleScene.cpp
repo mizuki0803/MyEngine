@@ -116,12 +116,12 @@ void TitleScene::Update()
 	const bool isPlayerSky = (player->GetPosition().y >= 500);
 	if (isPlayerSky) {
 		//出撃シーンへシーン変更を開始する
-		SceneChangeStart({ 0,0,0,0 }, 40, 120, "SORTIE");
+		SceneChangeStart({ 0,0,0,0 }, 40, 60, 120, "SORTIE");
 	}
 
 	if (input->TriggerKey(DIK_RETURN)) {
 		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("GAME");
+		SceneManager::GetInstance()->ChangeScene("SORTIE");
 	}
 
 	//シーン変更状態

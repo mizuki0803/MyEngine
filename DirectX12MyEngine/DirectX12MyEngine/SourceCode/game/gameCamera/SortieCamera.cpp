@@ -47,7 +47,7 @@ void SortieCamera::StayPlayer()
 void SortieCamera::RunningSideZoomPlayer()
 {
 	//自機をズームする時間
-	const float zoomTime = 300;
+	const float zoomTime = 400;
 	//タイマー更新
 	cameraActionTimer++;
 	const float time = cameraActionTimer / zoomTime;
@@ -72,12 +72,11 @@ void SortieCamera::RunningSideZoomPlayer()
 
 void SortieCamera::CameraRunningSideSpeedMove()
 {
-	//カメラを自機に並走させる
-	eye.z += 1.0f;
+	//カメラを自機の通常スピードで並走させる
+	eye.z += SortiePlayer::GetAdvanceSpeed();
 
 	//カメラの注視点を自機方向に移動させる
 	const Vector3 playerPos = player->GetPosition();
 	target = { playerPos.x, playerPos.y, eye.z - runningSideEndDistance };
-	
 	dirtyView = true;
 }

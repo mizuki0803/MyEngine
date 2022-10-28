@@ -23,10 +23,10 @@ void SceneChangeEffect::Draw()
 	}
 }
 
-void SceneChangeEffect::CreateSceneChangeEffect(const DirectX::XMFLOAT4& color, int32_t deepenTime, int32_t returnTime)
+void SceneChangeEffect::CreateSceneChangeEffect(const DirectX::XMFLOAT4& color, int32_t deepenTime, int32_t waitTime, int32_t returnTime)
 {
 	//新しいシーン変更演出用スプライトを生成する
 	std::unique_ptr<SceneChangeSprite> newSceneChangeSprite;
-	newSceneChangeSprite.reset(SceneChangeSprite::Create(color, deepenTime, returnTime));
+	newSceneChangeSprite.reset(SceneChangeSprite::Create(color, deepenTime, waitTime, returnTime));
 	sceneChangeSprites.push_back(std::move(newSceneChangeSprite));
 }

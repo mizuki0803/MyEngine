@@ -21,6 +21,9 @@ public: //静的メンバ関数
 	/// <returns>出撃シーン用自機</returns>
 	static SortiePlayer* Create(ObjModel* model, const Vector3& startPosition);
 
+	//getter
+	static const float GetAdvanceSpeed() { return SortiePlayer::advanceSpeed; }
+
 public: //メンバ関数
 	/// <summary>
 	/// 更新
@@ -50,6 +53,8 @@ private: //メンバ関数
 private: //静的メンバ変数
 	//出撃行動遷移
 	static void (SortiePlayer::* sortieActionFuncTable[])();
+	//通常前進スピード
+	static const float advanceSpeed;
 
 private: //メンバ変数
 	//出撃行動

@@ -5,10 +5,11 @@
 
 void (SceneChangeSprite::* SceneChangeSprite::intensityChangeActionFuncTable[])() = {
 	&SceneChangeSprite::ColorDeepen,
+	&SceneChangeSprite::ColorWait,
 	&SceneChangeSprite::ColorReturn,
 };
 
-SceneChangeSprite* SceneChangeSprite::Create(const XMFLOAT4& color, int32_t deepenTime, int32_t returnTime)
+SceneChangeSprite* SceneChangeSprite::Create(const XMFLOAT4& color, int32_t deepenTime, int32_t waitTime, int32_t returnTime)
 {
 	//シーン変更演出用スプライトのインスタンスを生成
 	SceneChangeSprite* sceneChangeSprite = new SceneChangeSprite();
@@ -28,6 +29,7 @@ SceneChangeSprite* SceneChangeSprite::Create(const XMFLOAT4& color, int32_t deep
 
 	//時間をセット
 	sceneChangeSprite->deepenTime = deepenTime;
+	sceneChangeSprite->waitTime = waitTime;
 	sceneChangeSprite->returnTime = returnTime;
 
 	return sceneChangeSprite;
@@ -70,6 +72,21 @@ void SceneChangeSprite::ColorDeepen()
 	//タイマーが指定した時間になったら
 	if (intensityChangeTimer >= deepenTime) {
 		//次のフェーズへ
+		phase = IntensityChangePhase::Wait;
+
+		//タイマー初期化
+		intensityChangeTimer = 0;
+	}
+}
+
+void SceneChangeSprite::ColorWait()
+{
+	//タイマー更新
+	intensityChangeTimer++;
+
+	//タイマーが指定した時間になったら
+	if (intensityChangeTimer >= waitTime) {
+		//次のフェーズへ
 		phase = IntensityChangePhase::Return;
 
 		//タイマー初期化
@@ -84,7 +101,7 @@ void SceneChangeSprite::ColorReturn()
 	//イージング用タイム
 	const float time = (float)intensityChangeTimer / returnTime;
 
-	//だんだん色を濃くしていく
+	//だんだん色を薄くしていく
 	color.w = Easing::LerpFloat(1, 0, time);
 
 	//タイマーが指定した時間になったら

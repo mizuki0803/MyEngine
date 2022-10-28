@@ -10,6 +10,7 @@ public:
 	//色の濃さ変更フェーズ
 	enum class IntensityChangePhase {
 		Deepen, //濃くする
+		Wait,	//色を濃くしたまま待機する
 		Return, //薄くする(戻す)
 	};
 
@@ -18,7 +19,7 @@ public:
 	/// 生成処理
 	/// </summary>
 	/// <returns>シーン変更演出用スプライト</returns>
-	static SceneChangeSprite* Create(const XMFLOAT4& color, int32_t deepenTime, int32_t returnTime);
+	static SceneChangeSprite* Create(const XMFLOAT4& color, int32_t deepenTime, int32_t waitTime, int32_t returnTime);
 
 public: //メンバ関数
 	/// <summary>
@@ -46,6 +47,10 @@ private: //メンバ関数
 	/// </summary>
 	void ColorDeepen();
 
+	/// 色を濃くしたまま待機する
+	/// </summary>
+	void ColorWait();
+
 	/// <summary>
 	/// 濃くした色を戻す
 	/// </summary>
@@ -61,6 +66,8 @@ private: //メンバ変数
 	IntensityChangePhase phase = IntensityChangePhase::Deepen;
 	//色を濃くする時間
 	int32_t deepenTime = 0;
+	//色を濃くしたまま待機する時間
+	int32_t waitTime = 0;
 	//濃くした色を戻す時間
 	int32_t returnTime = 0;
 	//色の濃さを変更するタイマー

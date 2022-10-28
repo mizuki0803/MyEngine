@@ -6,6 +6,8 @@ void (SortiePlayer::* SortiePlayer::sortieActionFuncTable[])() = {
 	&SortiePlayer::SortieBoost,
 };
 
+const float SortiePlayer::advanceSpeed = 1.0f;
+
 SortiePlayer* SortiePlayer::Create(ObjModel* model, const Vector3& startPosition)
 {
 	//出撃シーン用自機のインスタンスを生成
@@ -55,15 +57,14 @@ void SortiePlayer::BoostStart()
 void SortiePlayer::SortieAdvance()
 {
 	//前進させる
-	const float advanceSpeed = 1.0f;
 	position.z += advanceSpeed;
 }
 
 void SortiePlayer::SortieBoost()
 {
-	//ブーストさせる
-	const float advanceSpeed = 2.0f;
-	position.z += advanceSpeed;
+	//ブーストさせる(通常スピードの2倍)
+	const float boostSpeed = advanceSpeed * 2;
+	position.z += boostSpeed;
 
 	//タイマー更新
 	boostTimer++;

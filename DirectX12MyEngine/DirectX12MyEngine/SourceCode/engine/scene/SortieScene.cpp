@@ -105,7 +105,7 @@ void SortieScene::Update()
 	//自機の出撃行動が完了したら
 	if (player->GetIsSortieEnd()) {
 		//ゲームシーンへシーン変更を開始する
-		SceneChangeStart({ 1,1,1,0 }, 10, 10, "GAME");
+		SceneChangeStart({ 1,1,1,0 }, 10, 0, 20, "GAME");
 	}
 	if (input->TriggerKey(DIK_RETURN)) {
 		//シーン切り替え

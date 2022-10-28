@@ -13,9 +13,10 @@ protected: //メンバ関数
 	/// </summary>
 	/// <param name="color">画面を覆う色</param>
 	/// <param name="deepenTime">色を濃くする時間</param>
+	/// <param name="waitTime">色を濃くしたまま待機する時間</param>
 	/// <param name="returnTime">色を戻す時間</param>
 	/// <param name="nextSceneName">シーン変更後のシーン名</param>
-	void SceneChangeStart(const DirectX::XMFLOAT4& color, int32_t deepenTime, int32_t returnTime, const std::string& nextSceneName);
+	void SceneChangeStart(const DirectX::XMFLOAT4& color, int32_t deepenTime, int32_t waitTime, int32_t returnTime, const std::string& nextSceneName);
 
 	/// <summary>
 	/// シーン変更状態
