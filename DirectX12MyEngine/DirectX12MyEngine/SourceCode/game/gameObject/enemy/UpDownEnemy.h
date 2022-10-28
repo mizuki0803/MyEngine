@@ -64,4 +64,6 @@ private: //ƒƒ“ƒo•Ï”
 	int32_t fireTimer = 0;
 	//€–S’Ä—‘¬“x
 	Vector3 crashVel = { 0, 0.5f, 0.5f };
+	//€–S’Ä—‰ñ“]‘¬“x
+	Vector3 crashRotVel;
 };

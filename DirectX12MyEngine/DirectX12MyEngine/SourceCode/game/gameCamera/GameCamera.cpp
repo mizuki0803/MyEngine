@@ -14,6 +14,8 @@ void (GameCamera::* GameCamera::stageClearCameraActionFuncTable[])() = {
 	&GameCamera::StageClearPlayerKeepLook,
 };
 
+const float GameCamera::advanceSpeed = 0.1f;
+
 void GameCamera::Initialize()
 {
 	//初期座標を設定
@@ -196,7 +198,7 @@ void GameCamera::Move()
 	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
 
 	//前進する場合はZ方向に移動
-	if (isAdvance) { velocity.z = 0.1f; }
+	if (isAdvance) { velocity.z = advanceSpeed; }
 	//移動
 	position += velocity;
 
@@ -217,7 +219,7 @@ void GameCamera::Knockback()
 	velocity *= speed;
 
 	//前進する場合はZ方向に移動
-	if (isAdvance) { velocity.z = 0.1f; }
+	if (isAdvance) { velocity.z = advanceSpeed; }
 	//移動
 	position += velocity;
 

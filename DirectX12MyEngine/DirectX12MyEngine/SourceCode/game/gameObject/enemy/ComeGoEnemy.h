@@ -26,6 +26,9 @@ public: //静的メンバ関数
 	/// <returns>到着出発敵</returns>
 	static ComeGoEnemy* Create(ObjModel* model, const Vector3& startPos, const Vector3& comePos, const Vector3& goTargetPos, const int attackTime);
 
+	//setter
+	static void SetAttackMoveSpeed(float moveSpeed) { ComeGoEnemy::attackMoveSpeed = moveSpeed; }
+
 public: //メンバ関数
 	/// <summary>
 	/// 更新
@@ -63,6 +66,8 @@ private: //静的メンバ変数
 	static const int fireInterval = 120;
 	//行動遷移
 	static void (ComeGoEnemy::* actionFuncTable[])();
+	//攻撃時に移動する速さ
+	static float attackMoveSpeed;
 
 private: //メンバ変数
 	//行動
@@ -87,4 +92,6 @@ private: //メンバ変数
 	int32_t fireTimer = 0;
 	//死亡時墜落速度
 	Vector3 crashVel = { 0, 0.05f, 0.05f };
+	//死亡時墜落回転速度
+	Vector3 crashRotVel;
 };

@@ -75,6 +75,7 @@ void GameScene::Initialize()
 	Enemy::SetBulletModel(modelSphere.get());
 	//各種類の敵に必要な情報をセット
 	CannonEnemy::SetBreakModel(modelSphere.get());
+	ComeGoEnemy::SetAttackMoveSpeed(GameCamera::GetAdvanceSpeed());
 	//敵配置スクリプトの読み込み
 	LoadEnemySetData();
 

@@ -24,6 +24,11 @@ public:
 		PlayerKeepLook,	//自機の方向をずっと向く
 	};
 
+public: //静的メンバ関数
+
+	//getter
+	static float GetAdvanceSpeed() { return GameCamera::advanceSpeed; }
+
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
@@ -134,6 +139,8 @@ private: //メンバ関数
 private: //静的メンバ変数
 	//ステージクリア後行動遷移
 	static void (GameCamera::* stageClearCameraActionFuncTable[])();
+	//ステージ内を前進する速さ
+	static const float advanceSpeed;
 
 private: //メンバ変数
 	//プレイヤー自機

@@ -55,6 +55,13 @@ void FallEnemy::OnCollision()
 
 	//行動を死亡用にする
 	phase = Phase::Dead;
+
+	//死亡時墜落回転速度を乱数でセット
+	const Vector3 randRotVel = { -1.0f, 0.4f, 0.4f };
+	const float randRotBaseVelX = -0.25f;
+	crashRotVel.x = (float)rand() / RAND_MAX * randRotVel.x + randRotBaseVelX;
+	crashRotVel.y = (float)rand() / RAND_MAX * randRotVel.y - randRotVel.y / 2;
+	crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z - randRotVel.z / 2;
 }
 
 void FallEnemy::Fall()
@@ -88,9 +95,8 @@ void FallEnemy::Attack()
 
 void FallEnemy::Dead()
 {
-	//X軸回転をしながら墜落する
-	const float rotSpeed = 0.5f;
-	rotation.x -= rotSpeed;
+	//回転をしながら墜落する
+	rotation += crashRotVel;
 
 	//墜落するため、速度に加速度を加える
 	Vector3 crashAccel = { 0, -0.005f, 0 };

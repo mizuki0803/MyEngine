@@ -52,6 +52,11 @@ void UpDownEnemy::OnCollision()
 
 	//行動を死亡用にする
 	phase = Phase::Dead;
+
+	//死亡時墜落回転速度を乱数でセット
+	const float randRotVelX = -1.0f;
+	const float randRotBaseVelX = -0.5f;
+	crashRotVel.x = (float)rand() / RAND_MAX * randRotVelX + randRotBaseVelX;
 }
 
 void UpDownEnemy::UpBrake()
@@ -86,9 +91,8 @@ void UpDownEnemy::DownBrake()
 
 void UpDownEnemy::Dead()
 {
-	//X軸回転をしながら墜落する
-	const float rotSpeed = 1.0f;
-	rotation.x -= rotSpeed;
+	//回転をしながら墜落する
+	rotation += crashRotVel;
 
 	//墜落するため、速度に加速度を加える
 	Vector3 crashAccel = { 0, -0.01f, 0 };

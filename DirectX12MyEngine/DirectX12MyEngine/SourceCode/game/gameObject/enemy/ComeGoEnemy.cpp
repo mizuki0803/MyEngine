@@ -9,6 +9,8 @@ void (ComeGoEnemy::*ComeGoEnemy::actionFuncTable[])() = {
 	&ComeGoEnemy::Dead,
 };
 
+float ComeGoEnemy::attackMoveSpeed = 0;
+
 ComeGoEnemy* ComeGoEnemy::Create(ObjModel* model, const Vector3& startPos, const Vector3& comePos, const Vector3& goTargetPos, const int attackTime)
 {
 	//敵のインスタンスを生成
@@ -59,6 +61,12 @@ void ComeGoEnemy::OnCollision()
 
 	//行動を死亡用にする
 	phase = Phase::Dead;
+
+	//死亡時墜落回転速度を乱数でセット
+	const Vector3 randRotVel = { 0, 0.4f, 4.0f };
+	crashRotVel.x = (float)rand() / RAND_MAX * randRotVel.x - randRotVel.y / 2;
+	crashRotVel.y = (float)rand() / RAND_MAX * randRotVel.y - randRotVel.y / 2;
+	crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z - randRotVel.z / 2;
 }
 
 void ComeGoEnemy::Come()
@@ -83,8 +91,7 @@ void ComeGoEnemy::Attack()
 	attackTimer++;
 
 	//Z方向に移動させる
-	Vector3 velocity = { 0, 0, 0.1f };
-	position += velocity;
+	position.z += attackMoveSpeed;
 
 	//発射タイマーカウントダウン
 	--fireTimer;
@@ -122,9 +129,8 @@ void ComeGoEnemy::Go()
 
 void ComeGoEnemy::Dead()
 {
-	//Z軸回転をしながら墜落する
-	const float rotSpeed = 2.0f;
-	rotation.z += rotSpeed;
+	//回転をしながら墜落する
+	rotation += crashRotVel;
 
 	//墜落するため、速度に加速度を加える
 	Vector3 crashAccel = { 0, -0.005f, 0 };
