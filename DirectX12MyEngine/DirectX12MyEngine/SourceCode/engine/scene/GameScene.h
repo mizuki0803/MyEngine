@@ -14,6 +14,7 @@
 #include "Ground.h"
 #include "Mountain.h"
 #include "MultiHitUI.h"
+#include "StageStartUI.h"
 #include "StageClearText.h"
 #include "StageResultUI.h"
 
@@ -196,6 +197,8 @@ private: //メンバ変数
 	std::list<std::unique_ptr<Mountain>> mountains;
 	//一撃で複数体処理用のUI
 	std::list<std::unique_ptr<MultiHitUI>> multiHitUIs;
+	//ステージ開始UI
+	std::unique_ptr<StageStartUI> stageStartUI;
 	//ステージクリアテキスト
 	std::unique_ptr<StageClearText> stageClearText;
 	//ステージリザルトUI

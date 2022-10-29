@@ -425,11 +425,11 @@ void BossMainBody::AttackTypeRotateShot()
 		attackRotatePhase = AttackTypeRotatePhase::Move;
 
 		//次の移動後の座標をセット
-		if (attackRotateShotCount == 1) { attackRotateMpveAfterPos = { 10, 10, position.z }; }
-		else if (attackRotateShotCount == 2) { attackRotateMpveAfterPos = { -10, 10, position.z }; }
-		else if (attackRotateShotCount == 3) { attackRotateMpveAfterPos = { 10, -10, position.z }; }
-		else if (attackRotateShotCount == 4) { attackRotateMpveAfterPos = { -10, -10, position.z }; }
-		else if (attackRotateShotCount == 5) { attackRotateMpveAfterPos = { 0, 0, position.z }; }
+		if (attackRotateShotCount == 1) { attackRotateMpveAfterPos = { basePos.x + 10, basePos.y + 10, position.z }; }
+		else if (attackRotateShotCount == 2) { attackRotateMpveAfterPos = { basePos.x - 10, basePos.y + 10, position.z }; }
+		else if (attackRotateShotCount == 3) { attackRotateMpveAfterPos = { basePos.x + 10, basePos.y - 10, position.z }; }
+		else if (attackRotateShotCount == 4) { attackRotateMpveAfterPos = { basePos.x - 10, basePos.y - 10, position.z }; }
+		else if (attackRotateShotCount == 5) { attackRotateMpveAfterPos = { basePos.x, basePos.y, position.z }; }
 
 		//現在の座標を移動前座標として記録しておく
 		attackRotateMoveBeforePos = position;

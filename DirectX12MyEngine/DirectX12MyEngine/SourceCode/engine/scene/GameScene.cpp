@@ -122,6 +122,10 @@ void GameScene::Initialize()
 	//パーティクルにカメラをセット
 	ParticleManager::SetCamera(gameCamera.get());
 
+
+	//ステージ開始UI生成
+	stageStartUI.reset(StageStartUI::Create(1));
+
 	//敵を倒した数カウンターリセット
 	EnemyDefeatCounter::CounterReset();
 }
@@ -182,9 +186,19 @@ void GameScene::Update()
 	CollisionCheck3d();
 
 	//スプライト更新
+	//自機のUI
+	player->UpdateUI();
 	//複数体処理用UI 
 	for (const std::unique_ptr<MultiHitUI>& multiHitUI : multiHitUIs) {
 		multiHitUI->Update();
+	}
+	//ステージ開始UI
+	if (stageStartUI) {
+		stageStartUI->Update();
+		//死亡したら解放
+		if(stageStartUI->GetIsDead()) {
+			stageStartUI.reset();
+		}
 	}
 	//ステージクリアテキスト
 	if (stageClearText) {
@@ -301,6 +315,10 @@ void GameScene::Draw()
 	//複数体処理用UI 
 	for (const std::unique_ptr<MultiHitUI>& multiHitUI : multiHitUIs) {
 		multiHitUI->Draw();
+	}
+	//ステージ開始UI
+	if (stageStartUI) {
+		stageStartUI->Draw();
 	}
 	//ステージクリアテキスト
 	if (stageClearText) {

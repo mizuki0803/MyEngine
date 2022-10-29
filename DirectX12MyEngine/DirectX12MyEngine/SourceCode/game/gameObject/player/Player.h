@@ -4,6 +4,7 @@
 #include "PlayerReticles.h"
 #include "PlayerHPBar.h"
 #include "PlayerHPFrame.h"
+#include "PlayerDamageEffect.h"
 #include <memory>
 #include <list>
 
@@ -55,6 +56,11 @@ public: //メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw() override;
+
+	/// <summary>
+	/// UI更新
+	/// </summary>
+	void UpdateUI();
 
 	/// <summary>
 	/// UI描画
@@ -229,6 +235,8 @@ private: //メンバ変数
 	std::unique_ptr<PlayerHPBar> hpBar;
 	//HPバーフレーム
 	std::unique_ptr<PlayerHPFrame> hpFrame;
+	//ダメージ演出
+	std::unique_ptr<PlayerDamageEffect> damageEffect;
 	//ダメージフラグ
 	bool isDamage = false;
 	//墜落中か

@@ -62,6 +62,8 @@ bool Player::Initialize()
 	const float posDiff = 3.0f;	//HPバーの座標との差分
 	const Vector2 hpFramePosition = { hpBarPosition.x - posDiff, hpBarPosition.y - posDiff };
 	hpFrame.reset(PlayerHPFrame::Create(SpriteTextureLoader::PlayerHPGaugeOut, hpFramePosition));
+	//ダメージ演出生成
+	damageEffect.reset(PlayerDamageEffect::Create());
 
 	return true;
 }
@@ -80,11 +82,6 @@ void Player::Update()
 	//レティクル更新
 	reticles->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
 
-	//HPバー更新
-	hpBar->Update();
-	//HPバーフレーム更新
-	hpFrame->Update();
-
 	//自機のジェット噴射演出用パーティクル生成
 	ParticleEmitter::GetInstance()->PlayerJet(matWorld);
 }
@@ -98,20 +95,34 @@ void Player::Draw()
 	ObjObject3d::Draw();
 }
 
+void Player::UpdateUI()
+{
+	//死亡状態なら抜ける
+	if (isDead) { return; }
+
+	//HPバー更新
+	hpBar->Update();
+	//HPバーフレーム更新
+	hpFrame->Update();
+	//ダメージ演出更新
+	damageEffect->Update();
+}
+
 void Player::DrawUI()
 {
-	//墜落状態なら抜ける
-	if (isCrash) { return; }
-	//ステージクリア状態なら抜ける
-	if (isStageClearMode) { return; }
+	//墜落状態でないなら&&ステージクリア状態でないなら
+	if (!isCrash && !isStageClearMode) {
+		//レティクル描画
+		reticles->Draw();
 
-	//レティクル描画
-	reticles->Draw();
+		//HPバーフレーム描画
+		hpFrame->Draw();
+		//HPバー描画
+		hpBar->Draw();
+	}
 
-	//HPバーフレーム描画
-	hpFrame->Draw();
-	//HPバー描画
-	hpBar->Draw();
+	//ダメージ演出描画
+	damageEffect->Draw();
 }
 
 void Player::OnCollisionDamage(const Vector3& subjectPos)
@@ -124,6 +135,9 @@ void Player::OnCollisionDamage(const Vector3& subjectPos)
 
 	//ダメージを喰らったのでHPバーの長さを変更する
 	hpBar->SetChangeLength(HP);
+
+	//ダメージ演出を開始する
+	damageEffect->DamageEffectStart(maxHP, HP);
 }
 
 void Player::OnCollisionHeal()

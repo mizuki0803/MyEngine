@@ -194,6 +194,7 @@
     <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\TitleCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\ParticleEmitter.cpp" />
+    <ClCompile Include="SourceCode\game\gameEffect\PlayerDamageEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\SceneChangeEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Ground.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Mountain.cpp" />
@@ -238,6 +239,7 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPBar.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageClearText.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\StageStartUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageResultUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\TitleUI.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
@@ -375,6 +377,7 @@
     <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\TitleCamera.h" />
     <ClInclude Include="SourceCode\game\gameEffect\ParticleEmitter.h" />
+    <ClInclude Include="SourceCode\game\gameEffect\PlayerDamageEffect.h" />
     <ClInclude Include="SourceCode\game\gameEffect\SceneChangeEffect.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Ground.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Mountain.h" />
@@ -420,6 +423,7 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageClearText.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageResultUI.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\StageStartUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\TitleUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -395,6 +395,12 @@
     <ClCompile Include="SourceCode\engine\scene\BaseGameScene.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\StageStartUI.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameEffect\PlayerDamageEffect.cpp">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -727,6 +733,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\scene\BaseGameScene.h">
       <Filter>ソース ファイル\engine\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\StageStartUI.h">
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameEffect\PlayerDamageEffect.h">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

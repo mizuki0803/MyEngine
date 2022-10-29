@@ -51,7 +51,7 @@ private: //メンバ変数
 	//ステージ名スプライト
 	std::unique_ptr<Sprite> stageNameSprite;
 	//文字用スプライト配列
-	std::unique_ptr<Sprite> textSprites[textNum];
+	std::array<std::unique_ptr<Sprite>, textNum> textSprites;
 	//表示する文字数
 	int displayTextNum = 0;
 	//表示用タイマー
