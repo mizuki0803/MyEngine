@@ -81,7 +81,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 敵発生データ読み込み
 	/// </summary>
-	void LoadEnemySetData();
+	void LoadEnemySetData(const std::string& fileName);
 
 	/// <summary>
 	/// 敵発生コマンドの更新
@@ -181,8 +181,8 @@ private: //メンバ変数
 	std::stringstream enemySetCommands;
 	//待機中か
 	bool isWait = false;
-	//待機タイマー
-	int32_t waitTimer = 0;
+	//待機用 生成を行う自機座標(自機が生成を行う座標以上になったら敵生成を行う)
+	float waitEnemySetPlayerPosition = 0;
 	//ボス
 	std::unique_ptr<Boss> boss;
 	//ボス戦中か

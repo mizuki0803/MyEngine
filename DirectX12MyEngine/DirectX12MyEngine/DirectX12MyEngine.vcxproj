@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerHPUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerHPUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -142,7 +142,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerHPUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerHPUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -171,8 +171,6 @@
     <ClCompile Include="SourceCode\engine\base\AndosGame.cpp" />
     <ClCompile Include="SourceCode\engine\base\DirectXBase.cpp" />
     <ClCompile Include="SourceCode\engine\base\FrameWork.cpp" />
-    <ClCompile Include="SourceCode\engine\base\SceneFactory.cpp" />
-    <ClCompile Include="SourceCode\engine\base\SceneManager.cpp" />
     <ClCompile Include="SourceCode\engine\base\WindowApp.cpp" />
     <ClCompile Include="SourceCode\engine\behaviorTree\Selector.cpp" />
     <ClCompile Include="SourceCode\engine\behaviorTree\Sequencer.cpp" />
@@ -184,12 +182,9 @@
     <ClCompile Include="SourceCode\engine\math\Easing.cpp" />
     <ClCompile Include="SourceCode\engine\math\Vector2.cpp" />
     <ClCompile Include="SourceCode\engine\math\Vector3.cpp" />
-    <ClCompile Include="SourceCode\engine\scene\BaseGameScene.cpp" />
     <ClCompile Include="SourceCode\engine\scene\BaseScene.cpp" />
-    <ClCompile Include="SourceCode\engine\scene\DebugScene.cpp" />
-    <ClCompile Include="SourceCode\engine\scene\GameScene.cpp" />
-    <ClCompile Include="SourceCode\engine\scene\SortieScene.cpp" />
-    <ClCompile Include="SourceCode\engine\scene\TitleScene.cpp" />
+    <ClCompile Include="SourceCode\engine\scene\SceneFactory.cpp" />
+    <ClCompile Include="SourceCode\engine\scene\SceneManager.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\GameCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\TitleCamera.cpp" />
@@ -230,6 +225,11 @@
     <ClCompile Include="SourceCode\game\gameObject\player\reticle\Reticle3D.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\SortiePlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\TitlePlayer.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\BaseGameScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\DebugScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\GameScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\SortieScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\TitleScene.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\NumberSprite.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\SceneChangeSprite.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.cpp" />
@@ -350,8 +350,6 @@
     <ClInclude Include="SourceCode\engine\base\DirectXBase.h" />
     <ClInclude Include="SourceCode\engine\base\FrameWork.h" />
     <ClInclude Include="SourceCode\engine\base\PipelineSet.h" />
-    <ClInclude Include="SourceCode\engine\base\SceneFactory.h" />
-    <ClInclude Include="SourceCode\engine\base\SceneManager.h" />
     <ClInclude Include="SourceCode\engine\base\WindowApp.h" />
     <ClInclude Include="SourceCode\engine\behaviorTree\Selector.h" />
     <ClInclude Include="SourceCode\engine\behaviorTree\Sequencer.h" />
@@ -367,12 +365,9 @@
     <ClInclude Include="SourceCode\engine\math\Easing.h" />
     <ClInclude Include="SourceCode\engine\math\Vector2.h" />
     <ClInclude Include="SourceCode\engine\math\Vector3.h" />
-    <ClInclude Include="SourceCode\engine\scene\BaseGameScene.h" />
     <ClInclude Include="SourceCode\engine\scene\BaseScene.h" />
-    <ClInclude Include="SourceCode\engine\scene\DebugScene.h" />
-    <ClInclude Include="SourceCode\engine\scene\GameScene.h" />
-    <ClInclude Include="SourceCode\engine\scene\SortieScene.h" />
-    <ClInclude Include="SourceCode\engine\scene\TitleScene.h" />
+    <ClInclude Include="SourceCode\engine\scene\SceneFactory.h" />
+    <ClInclude Include="SourceCode\engine\scene\SceneManager.h" />
     <ClInclude Include="SourceCode\game\gameCamera\GameCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\TitleCamera.h" />
@@ -413,6 +408,11 @@
     <ClInclude Include="SourceCode\game\gameObject\player\reticle\Reticle3D.h" />
     <ClInclude Include="SourceCode\game\gameObject\SortiePlayer.h" />
     <ClInclude Include="SourceCode\game\gameObject\TitlePlayer.h" />
+    <ClInclude Include="SourceCode\game\gameScene\BaseGameScene.h" />
+    <ClInclude Include="SourceCode\game\gameScene\DebugScene.h" />
+    <ClInclude Include="SourceCode\game\gameScene\GameScene.h" />
+    <ClInclude Include="SourceCode\game\gameScene\SortieScene.h" />
+    <ClInclude Include="SourceCode\game\gameScene\TitleScene.h" />
     <ClInclude Include="SourceCode\game\gameSprite\NumberSprite.h" />
     <ClInclude Include="SourceCode\game\gameSprite\SceneChangeSprite.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.h" />

@@ -138,6 +138,9 @@
     <Filter Include="ソース ファイル\game\gameObject\sortiePlayer">
       <UniqueIdentifier>{58b537c3-9b84-4d42-ae86-a531e03fe10e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameScene">
+      <UniqueIdentifier>{1d1581cf-6bfa-463b-a5fb-6e91a81931fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\main.cpp">
@@ -188,12 +191,6 @@
     <ClCompile Include="SourceCode\engine\base\FrameWork.cpp">
       <Filter>ソース ファイル\engine\base\game</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\engine\base\SceneFactory.cpp">
-      <Filter>ソース ファイル\engine\base\game</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\base\SceneManager.cpp">
-      <Filter>ソース ファイル\engine\base\game</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\engine\base\WindowApp.cpp">
       <Filter>ソース ファイル\engine\base\window</Filter>
     </ClCompile>
@@ -228,15 +225,6 @@
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\engine\scene\BaseScene.cpp">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\scene\DebugScene.cpp">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\scene\GameScene.cpp">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\scene\TitleScene.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameCamera\GameCamera.cpp">
@@ -377,9 +365,6 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\TitleUI.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\engine\scene\SortieScene.cpp">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\SortiePlayer.cpp">
       <Filter>ソース ファイル\game\gameObject\sortiePlayer</Filter>
     </ClCompile>
@@ -392,14 +377,32 @@
     <ClCompile Include="SourceCode\game\gameEffect\SceneChangeEffect.cpp">
       <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\engine\scene\BaseGameScene.cpp">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageStartUI.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameEffect\PlayerDamageEffect.cpp">
       <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\scene\SceneFactory.cpp">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\scene\SceneManager.cpp">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameScene\BaseGameScene.cpp">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameScene\DebugScene.cpp">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameScene\GameScene.cpp">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameScene\SortieScene.cpp">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameScene\TitleScene.cpp">
+      <Filter>ソース ファイル\game\gameScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -512,12 +515,6 @@
     <ClInclude Include="SourceCode\engine\base\FrameWork.h">
       <Filter>ソース ファイル\engine\base\game</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\engine\base\SceneFactory.h">
-      <Filter>ソース ファイル\engine\base\game</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\base\SceneManager.h">
-      <Filter>ソース ファイル\engine\base\game</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\engine\base\PipelineSet.h">
       <Filter>ソース ファイル\engine\base\pipelineSet</Filter>
     </ClInclude>
@@ -567,15 +564,6 @@
       <Filter>ソース ファイル\engine\math</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\scene\BaseScene.h">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\scene\DebugScene.h">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\scene\GameScene.h">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\scene\TitleScene.h">
       <Filter>ソース ファイル\engine\scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameCamera\GameCamera.h">
@@ -716,9 +704,6 @@
     <ClInclude Include="SourceCode\game\gameSprite\NumberSprite.h">
       <Filter>ソース ファイル\game\gameSprite</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\engine\scene\SortieScene.h">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\SortiePlayer.h">
       <Filter>ソース ファイル\game\gameObject\sortiePlayer</Filter>
     </ClInclude>
@@ -731,14 +716,32 @@
     <ClInclude Include="SourceCode\game\gameSprite\SceneChangeSprite.h">
       <Filter>ソース ファイル\game\gameSprite</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\engine\scene\BaseGameScene.h">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageStartUI.h">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameEffect\PlayerDamageEffect.h">
       <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\scene\SceneFactory.h">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\scene\SceneManager.h">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\BaseGameScene.h">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\DebugScene.h">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\GameScene.h">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\SortieScene.h">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\TitleScene.h">
+      <Filter>ソース ファイル\game\gameScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

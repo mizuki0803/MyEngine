@@ -41,6 +41,7 @@ public: //ƒƒ“ƒoŠÖ”
 	/// </summary>
 	void Draw() override;
 
+private: //ƒƒ“ƒoŠÖ”
 	/// <summary>
 	/// oŒ‚
 	/// </summary>

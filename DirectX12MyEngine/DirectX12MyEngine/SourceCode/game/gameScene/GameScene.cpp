@@ -77,7 +77,7 @@ void GameScene::Initialize()
 	CannonEnemy::SetBreakModel(modelSphere.get());
 	ComeGoEnemy::SetAttackMoveSpeed(GameCamera::GetAdvanceSpeed());
 	//敵配置スクリプトの読み込み
-	LoadEnemySetData();
+	LoadEnemySetData("Resources/csv/EnemySet.csv");
 
 	//ボスに必要な情報をセット
 	Boss::SetPlayer(player.get());
@@ -762,11 +762,11 @@ void GameScene::AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet)
 	enemyBullets.push_back(std::move(enemyBullet));
 }
 
-void GameScene::LoadEnemySetData()
+void GameScene::LoadEnemySetData(const std::string& fileName)
 {
 	//ファイルを開く
 	std::ifstream file;
-	file.open("Resources/EnemySet.csv");
+	file.open(fileName);
 	assert(file.is_open());
 
 	//ファイルの内容を文字列ストリームにコピー
@@ -780,8 +780,8 @@ void GameScene::UpdateEnemySetCommands()
 {
 	//待機処理
 	if (isWait) {
-		waitTimer--;
-		if (waitTimer <= 0) {
+		//自機のワールドZ座標が生成自機座標以上なら
+		if (waitEnemySetPlayerPosition <= player->GetWorldPos().z) {
 			//待機終了
 			isWait = false;
 		}
@@ -909,12 +909,12 @@ void GameScene::UpdateEnemySetCommands()
 		else if (word.find("WAIT") == 0) {
 			getline(line_stream, word, ',');
 
-			//待ち時間
-			int32_t waitTime = atoi(word.c_str());
+			//生成自機座標
+			float waitPosition = (float)atoi(word.c_str());
 
 			//待機開始
 			isWait = true;
-			waitTimer = waitTime;
+			waitEnemySetPlayerPosition = waitPosition;
 
 			//コマンドループを抜ける
 			break;

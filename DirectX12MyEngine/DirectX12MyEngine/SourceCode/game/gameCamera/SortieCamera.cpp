@@ -17,7 +17,7 @@ void SortieCamera::Initialize()
 	Camera::Initialize();
 
 	//カメラの視点を自機の後方左上にセット
-	eyePlayerDistance = { 0, 0.5f, 400 };
+	eyePlayerDistance = { 0, 0.5f, 350 };
 	eye = player->GetPosition() + eyePlayerDistance;
 }
 
@@ -47,7 +47,7 @@ void SortieCamera::StayPlayer()
 void SortieCamera::RunningSideZoomPlayer()
 {
 	//自機をズームする時間
-	const float zoomTime = 400;
+	const float zoomTime = 300;
 	//タイマー更新
 	cameraActionTimer++;
 	const float time = cameraActionTimer / zoomTime;
