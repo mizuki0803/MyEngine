@@ -33,7 +33,7 @@ void TitleScene::Initialize()
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
-	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
+	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
 
 	//é©ã@ê∂ê¨
 	player.reset(TitlePlayer::Create(modelFighter.get(), { 0, 5, 0 }));

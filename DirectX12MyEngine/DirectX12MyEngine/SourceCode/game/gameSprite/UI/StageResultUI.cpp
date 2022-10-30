@@ -29,7 +29,7 @@ bool StageResultUI::Initialize(const int enemyDefeatNum)
 	frameSprite.reset(Sprite::Create(SpriteTextureLoader::DefeatNumText));
 	const Vector2 framePos = { 640, 360 };
 	frameSprite->SetPosition(framePos);
-	const Vector2 frameSize = { 500, 100 };
+	const Vector2 frameSize = { 508, 108 };
 	frameSprite->SetSize(frameSize);
 	frameSprite->SetTexSize(frameSize);
 

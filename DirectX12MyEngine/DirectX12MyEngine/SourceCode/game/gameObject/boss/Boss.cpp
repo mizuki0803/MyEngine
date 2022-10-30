@@ -57,7 +57,7 @@ bool Boss::Initialize(const Vector3& position)
 	HP = maxHP;
 
 	//HPバー生成
-	const Vector2 hpBarPosition = { 20, 120 };
+	const Vector2 hpBarPosition = { 50, 180 };
 	hpBar.reset(BossHPBar::Create(SpriteTextureLoader::BossHPGaugeIn, hpBarPosition, maxHP));
 	//HPバーフレーム生成
 	const float posDiff = 3.0f;	//HPバーの座標との差分
