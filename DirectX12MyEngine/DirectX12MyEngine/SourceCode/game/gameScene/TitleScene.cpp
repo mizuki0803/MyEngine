@@ -49,18 +49,6 @@ void TitleScene::Initialize()
 	//地面生成
 	ground.reset(Ground::Create(modelGround.get()));
 
-	//背景用(山)生成
-	for (int i = 0; i < 20; i++) {
-		std::unique_ptr<Mountain> newMountain;
-		newMountain.reset(Mountain::Create(modelMountain.get(), { -70, 0, 0 + (float)i * 40 }));
-		mountains.push_back(std::move(newMountain));
-	}
-	for (int i = 0; i < 20; i++) {
-		std::unique_ptr<Mountain> newMountain;
-		newMountain.reset(Mountain::Create(modelMountain.get(), { 70, 0, 0 + (float)i * 40 }));
-		mountains.push_back(std::move(newMountain));
-	}
-
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(titleCamera.get());
 	//objオブジェクトにライトをセット

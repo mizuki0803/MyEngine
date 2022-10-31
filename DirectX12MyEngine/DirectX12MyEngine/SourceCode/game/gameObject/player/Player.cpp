@@ -19,6 +19,10 @@ GameScene* Player::gameScene = nullptr;
 ObjModel* Player::bulletModel = nullptr;
 const float Player::homingBulletSize = 2.0f;
 const Vector2 Player::rotLimit = { 35.0f, 25.0f };
+const Vector2 Player::moveLimitMin =  { -15.0f, -4.0f };
+const Vector2 Player::moveLimitMax = { 15.0f, Player::moveLimitMin.y + 12.0f };
+const float Player::moveBaseSpeed = 0.15f;
+const float Player::knockbackBaseSpeed = 0.2f;
 
 Player* Player::Create(ObjModel* model)
 {
@@ -44,7 +48,7 @@ Player* Player::Create(ObjModel* model)
 
 bool Player::Initialize()
 {
-	position = { 0 ,1 ,15 };
+	position = { 0 ,2 ,15 };
 	scale = { 1.5f, 1.5f, 1.5f };
 
 	//3Dオブジェクトの初期化
@@ -456,14 +460,11 @@ void Player::Move()
 {
 	//自機が傾いている角度に移動させる
 	Vector3 velocity = { 0, 0, 0 };
-	const float moveSpeed = 0.1f;
-	velocity.x = moveSpeed * (rotation.y / rotLimit.y);
-	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
+	velocity.x = moveBaseSpeed * (rotation.y / rotLimit.y);
+	velocity.y = moveBaseSpeed * -(rotation.x / rotLimit.x);
 	position += velocity;
 
 	//移動限界から出ないようにする
-	const Vector2 moveLimitMax = { 10.0f, 6.0f };
-	const Vector2 moveLimitMin = { -10.0f, -4.0f };
 	position.x = max(position.x, moveLimitMin.x);
 	position.x = min(position.x, moveLimitMax.x);
 	position.y = max(position.y, moveLimitMin.y);
@@ -690,12 +691,9 @@ void Player::Knockback()
 	knockbackVel *= (1 - time);
 
 	//自機をノックバックさせる
-	const float speed = 0.2f;
-	position += knockbackVel *= speed;
+	position += knockbackVel *= knockbackBaseSpeed;
 
 	//移動限界から出ないようにする
-	const Vector2 moveLimitMax = { 10.0f, 6.0f };
-	const Vector2 moveLimitMin = { -10.0f, -4.0f };
 	position.x = max(position.x, moveLimitMin.x);
 	position.x = min(position.x, moveLimitMax.x);
 	position.y = max(position.y, moveLimitMin.y);

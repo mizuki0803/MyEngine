@@ -50,7 +50,8 @@ void GameScene::Initialize()
 	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
-	modelEnemyFighter.reset(ObjModel::LoadFromOBJ("enemyFighter", true));
+	modelEnemyFighter.reset(ObjModel::LoadFromOBJ("enemyFighter"));
+	modelEnemyMiniRobot.reset(ObjModel::LoadFromOBJ("enemyMiniRobot", true));
 	modelBossMainBody.reset(ObjModel::LoadFromOBJ("bossMainBody", true));
 	modelBossMainBodyDamage.reset(ObjModel::LoadFromOBJ("bossMainBodyDamage", true));
 	modelBossMainBodySleep.reset(ObjModel::LoadFromOBJ("bossMainBodySleep", true));
@@ -844,7 +845,7 @@ void GameScene::UpdateEnemySetCommands()
 			}
 			else if (type == Enemy::EnemyType::Cannon) {
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CannonEnemy::Create(modelEnemyFighter.get(), { x, y, z }));
+				newEnemy.reset(CannonEnemy::Create(modelEnemyMiniRobot.get(), { x, y, z }));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::Circular) {
@@ -866,7 +867,7 @@ void GameScene::UpdateEnemySetCommands()
 			}
 			else if (type == Enemy::EnemyType::Fall) {
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(FallEnemy::Create(modelEnemyFighter.get(), { x, y, z }));
+				newEnemy.reset(FallEnemy::Create(modelEnemyMiniRobot.get(), { x, y, z }));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::UpDown) {
@@ -928,13 +929,13 @@ void GameScene::BossBattleStart()
 	if (isBossBattle) { return; }
 
 	//自機がボスバトル開始とする座標まで進んだら開始
-	const float isBossBattleStartPos = 350;
+	const float isBossBattleStartPos = 450;
 	const bool isBossBattleStart = player->GetWorldPos().z >= isBossBattleStartPos;
 	if (!isBossBattleStart) { return; }
 
 	//ボス生成
 	const float distance = 60;
-	const Vector3 bossBasePos = { 0, 20, isBossBattleStartPos + distance };
+	const Vector3 bossBasePos = { 0, 23, isBossBattleStartPos + distance };
 	boss.reset(Boss::Create(bossBasePos));
 
 	//カメラの前進を止める

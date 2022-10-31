@@ -36,6 +36,10 @@ public: //静的メンバ関数
 
 	//getter
 	static const Vector2& GetRotLimit() { return rotLimit; }
+	static const Vector2& GetMoveLimitMax() { return moveLimitMax; }
+	static const Vector2& GetMoveLimitMin() { return moveLimitMin; }
+	static const float GetMoveBaseSpeed() { return moveBaseSpeed; }
+	static const float GetKnockbackBaseSpeed() { return knockbackBaseSpeed; }
 
 	//setter
 	static void SetGameScene(GameScene* gameScene) { Player::gameScene = gameScene; }
@@ -223,6 +227,13 @@ private: //静的メンバ変数
 	static const float homingBulletSize;
 	//自機の回転限界
 	static const Vector2 rotLimit;
+	//自機の移動限界
+	static const Vector2 moveLimitMax;
+	static const Vector2 moveLimitMin;
+	//自機の移動の基準の速さ
+	static const float moveBaseSpeed;
+	//自機のノックバックの基準の速さ
+	static const float knockbackBaseSpeed;
 	//最大体力
 	static const int maxHP = 101;
 	//ステージクリア後行動遷移

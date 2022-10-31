@@ -161,6 +161,7 @@ private: //ƒƒ“ƒo•Ï”
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
 	std::unique_ptr<ObjModel> modelEnemyFighter;
+	std::unique_ptr<ObjModel> modelEnemyMiniRobot;
 	std::unique_ptr<ObjModel> modelBossMainBody;
 	std::unique_ptr<ObjModel> modelBossMainBodyDamage;
 	std::unique_ptr<ObjModel> modelBossMainBodySleep;

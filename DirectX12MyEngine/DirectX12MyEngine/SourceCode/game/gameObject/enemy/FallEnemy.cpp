@@ -91,6 +91,10 @@ void FallEnemy::Attack()
 		//発射タイマーを初期化
 		fireTimer = fireInterval;
 	}
+
+	//クルクル回転
+	const float rotSpeed = 1.0f;
+	rotation.y += rotSpeed;
 }
 
 void FallEnemy::Dead()

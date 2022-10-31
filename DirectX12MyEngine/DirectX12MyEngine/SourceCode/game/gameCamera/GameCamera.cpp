@@ -184,7 +184,7 @@ void GameCamera::Rotate()
 	//回転(レールカメラに追従している自機の傾きを利用する)
 	rotation.x = player->GetRotation().x / 5;
 	rotation.y = player->GetRotation().y / 5;
-	rotation.z = -player->GetRotation().y / 10;
+	rotation.z = -player->GetRotation().y / 8;
 }
 
 void GameCamera::Move()
@@ -192,7 +192,7 @@ void GameCamera::Move()
 	//移動速度
 	Vector3 velocity;
 	//カメラが傾いている角度に移動させる
-	const float moveSpeed = 0.8f;
+	const float moveSpeed = Player::GetMoveBaseSpeed() * 8;
 	const Vector2 rotLimit = Player::GetRotLimit();
 	velocity.x = moveSpeed * (rotation.y / rotLimit.y);
 	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
@@ -203,8 +203,8 @@ void GameCamera::Move()
 	position += velocity;
 
 	//移動限界から出ないようにする
-	const Vector2 moveLimitMin = { -15.0f, 8.0f };
-	const Vector2 moveLimitMax = { 15.0f, 23.0f };
+	const Vector2 moveLimitMin = { Player::GetMoveLimitMin().x * 1.5f, 8.0f };
+	const Vector2 moveLimitMax = { Player::GetMoveLimitMax().x * 1.5f, moveLimitMin.y + (Player::GetMoveLimitMax().y - Player::GetMoveLimitMin().y) * 1.5f };
 	position.x = max(position.x, moveLimitMin.x);
 	position.x = min(position.x, moveLimitMax.x);
 	position.y = max(position.y, moveLimitMin.y);
@@ -214,7 +214,7 @@ void GameCamera::Move()
 void GameCamera::Knockback()
 {
 	//自機にあわせてカメラをノックバックさせる
-	const float speed = 1.6f;
+	const float speed = Player::GetKnockbackBaseSpeed() * 8;
 	Vector3 velocity = player->GetKnockbackVel();
 	velocity *= speed;
 
@@ -224,8 +224,8 @@ void GameCamera::Knockback()
 	position += velocity;
 
 	//移動限界から出ないようにする
-	const Vector2 moveLimitMin = { -15.0f, 8.0f };
-	const Vector2 moveLimitMax = { 15.0f, 23.0f };
+	const Vector2 moveLimitMin = { Player::GetMoveLimitMin().x * 1.5f, 8.0f };
+	const Vector2 moveLimitMax = { Player::GetMoveLimitMax().x * 1.5f, moveLimitMin.y + (Player::GetMoveLimitMax().y - Player::GetMoveLimitMin().y) * 1.5f };
 	position.x = max(position.x, moveLimitMin.x);
 	position.x = min(position.x, moveLimitMax.x);
 	position.y = max(position.y, moveLimitMin.y);
