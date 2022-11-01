@@ -4,11 +4,11 @@
 
 void (FallEnemy::*FallEnemy::actionFuncTable[])() = {
 	&FallEnemy::Fall,
-	&FallEnemy::Attack,
+	&FallEnemy::Rotate,
 	&FallEnemy::Dead,
 };
 
-FallEnemy* FallEnemy::Create(ObjModel* model, const Vector3& position)
+FallEnemy* FallEnemy::Create(ObjModel* model, const Vector3& stayPos, const float fallNum)
 {
 	//敵のインスタンスを生成
 	FallEnemy* upDownEnemy = new FallEnemy();
@@ -27,11 +27,15 @@ FallEnemy* FallEnemy::Create(ObjModel* model, const Vector3& position)
 		return nullptr;
 	}
 
-	//初期座標をセット
-	upDownEnemy->startPos = position;
+	//停止座標をセット
+	upDownEnemy->stayPos = stayPos;
 
+	//降下する値をセット
+	upDownEnemy->fallNum = fallNum;
+	
 	//座標をセット
-	upDownEnemy->position = position;
+	upDownEnemy->position = stayPos;
+	upDownEnemy->position.y += fallNum;
 
 	return upDownEnemy;
 }
@@ -67,31 +71,22 @@ void FallEnemy::OnCollision()
 void FallEnemy::Fall()
 {
 	//イージングで降下する
-	const float fallTime = 60;
+	const float fallTime = 120;
 	fallTimer++;
 	const float time = fallTimer / fallTime;
 
-	//生成位置から100降りたところで停止する
-	const float stayPosY = startPos.y - 100;
-	position.y = Easing::OutQuart(startPos.y, stayPosY, time);
+	//生成位置降りたところで停止する
+	const float startPosY = stayPos.y + fallNum;
+	position.y = Easing::OutQuart(startPosY, stayPos.y, time);
 
 	//イージングが終了したら次のフェーズへ
 	if (fallTimer >= fallTime) {
-		phase = Phase::Attack;
+		phase = Phase::Rotate;
 	}
 }
 
-void FallEnemy::Attack()
+void FallEnemy::Rotate()
 {
-	//発射タイマーカウントダウン
-	--fireTimer;
-	if (fireTimer <= 0) {
-		//弾を発射
-		Fire();
-		//発射タイマーを初期化
-		fireTimer = fireInterval;
-	}
-
 	//クルクル回転
 	const float rotSpeed = 1.0f;
 	rotation.y += rotSpeed;

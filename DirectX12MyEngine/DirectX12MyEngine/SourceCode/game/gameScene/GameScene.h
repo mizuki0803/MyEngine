@@ -13,6 +13,7 @@
 #include "Skydome.h"
 #include "Ground.h"
 #include "Mountain.h"
+#include "HowToPlayUI.h"
 #include "MultiHitUI.h"
 #include "StageStartUI.h"
 #include "StageClearText.h"
@@ -87,6 +88,11 @@ public: //メンバ関数
 	/// 敵発生コマンドの更新
 	/// </summary>
 	void UpdateEnemySetCommands();
+
+	/// <summary>
+	/// 遊び方
+	/// </summary>
+	void HowToPlay();
 
 	/// <summary>
 	/// ボスバトル開始判定処理
@@ -196,6 +202,8 @@ private: //メンバ変数
 	std::unique_ptr<Ground> ground;
 	//背景用(山)
 	std::list<std::unique_ptr<Mountain>> mountains;
+	//遊び方UI
+	std::unique_ptr<HowToPlayUI> howToPlayUI;
 	//一撃で複数体処理用のUI
 	std::list<std::unique_ptr<MultiHitUI>> multiHitUIs;
 	//ステージ開始UI
@@ -204,6 +212,8 @@ private: //メンバ変数
 	std::unique_ptr<StageClearText> stageClearText;
 	//ステージリザルトUI
 	std::unique_ptr<StageResultUI> stageResultUI;
+	//遊び方を表示したか
+	bool isHowToPlayTextShow = false;
 	//ステージクリアか
 	bool isStageClear = false;
 	//ゲームオーバーか

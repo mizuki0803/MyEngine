@@ -235,6 +235,7 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPFrame.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\EnemyDefeatCounter.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\HowToPlayUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\MultiHitUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPBar.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.cpp" />
@@ -418,6 +419,7 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPFrame.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\EnemyDefeatCounter.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\HowToPlayUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\MultiHitUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPBar.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.h" />

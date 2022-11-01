@@ -142,6 +142,8 @@ void GameScene::Update()
 	ObjectRelease();
 	//敵発生コマンド更新
 	UpdateEnemySetCommands();
+	//遊び方UI表示
+	HowToPlay();
 	//ボスバトル開始判定処理
 	BossBattleStart();
 	//ステージクリア
@@ -197,8 +199,16 @@ void GameScene::Update()
 	if (stageStartUI) {
 		stageStartUI->Update();
 		//死亡したら解放
-		if(stageStartUI->GetIsDead()) {
+		if (stageStartUI->GetIsDead()) {
 			stageStartUI.reset();
+		}
+	}
+	//遊び方UI 
+	if (howToPlayUI) {
+		howToPlayUI->Update();
+		//死亡したら解放
+		if (howToPlayUI->GetIsDead()) {
+			howToPlayUI.reset();
 		}
 	}
 	//ステージクリアテキスト
@@ -318,8 +328,12 @@ void GameScene::Draw()
 		multiHitUI->Draw();
 	}
 	//ステージ開始UI
-	if (stageStartUI) {
+	/*if (stageStartUI) {
 		stageStartUI->Draw();
+	}*/
+	//遊び方UI 
+	if (howToPlayUI) {
+		howToPlayUI->Draw();
 	}
 	//ステージクリアテキスト
 	if (stageClearText) {
@@ -845,7 +859,7 @@ void GameScene::UpdateEnemySetCommands()
 			}
 			else if (type == Enemy::EnemyType::Cannon) {
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CannonEnemy::Create(modelEnemyMiniRobot.get(), { x, y, z }));
+				newEnemy.reset(CannonEnemy::Create(modelEnemyFighter.get(), { x, y, z }));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::Circular) {
@@ -866,8 +880,12 @@ void GameScene::UpdateEnemySetCommands()
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::Fall) {
+				//降下する値
+				getline(line_stream, word, ',');
+				float fallNum = (float)std::atof(word.c_str());
+
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(FallEnemy::Create(modelEnemyMiniRobot.get(), { x, y, z }));
+				newEnemy.reset(FallEnemy::Create(modelEnemyMiniRobot.get(), { x, y, z }, fallNum));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::UpDown) {
@@ -923,13 +941,28 @@ void GameScene::UpdateEnemySetCommands()
 	}
 }
 
+void GameScene::HowToPlay()
+{
+	//既に遊び方を表示ていたら抜ける
+	if (isHowToPlayTextShow) { return; }
+
+	//自機のワールドZ座標が指定した値以下なら抜ける
+	const float showPos = 340;
+	if (player->GetWorldPos().z <= showPos) { return; }
+
+	//遊び方UI(チャージ)生成
+	howToPlayUI.reset(HowToPlayUI::Create());
+
+	isHowToPlayTextShow = true;
+}
+
 void GameScene::BossBattleStart()
 {
 	//既にボスバトルなら抜ける
 	if (isBossBattle) { return; }
 
 	//自機がボスバトル開始とする座標まで進んだら開始
-	const float isBossBattleStartPos = 450;
+	const float isBossBattleStartPos = 650;
 	const bool isBossBattleStart = player->GetWorldPos().z >= isBossBattleStartPos;
 	if (!isBossBattleStart) { return; }
 
@@ -949,6 +982,9 @@ void GameScene::StageClear()
 {
 	//ステージクリアでないとき
 	if (!isStageClear) {
+		//天球を自機に追従させる
+		skydome->SetPosition({ 0, 0, player->GetWorldPos().z });
+
 		//そもそもボスがいなければ抜ける
 		if (!boss) { return; }
 		//ボスが死亡していなければ抜ける

@@ -48,7 +48,7 @@ Player* Player::Create(ObjModel* model)
 
 bool Player::Initialize()
 {
-	position = { 0 ,2 ,15 };
+	position = { 0 ,3 ,15 };
 	scale = { 1.5f, 1.5f, 1.5f };
 
 	//3Dオブジェクトの初期化
