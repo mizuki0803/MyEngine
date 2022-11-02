@@ -14,7 +14,7 @@ void (GameCamera::* GameCamera::stageClearCameraActionFuncTable[])() = {
 	&GameCamera::StageClearPlayerKeepLook,
 };
 
-const float GameCamera::advanceSpeed = 0.2f;
+const float GameCamera::advanceSpeed = 0.3f;
 
 void GameCamera::Initialize()
 {

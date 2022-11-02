@@ -102,17 +102,8 @@ void GameScene::Initialize()
 	//地面生成
 	ground.reset(Ground::Create(modelGround.get()));
 
-	//背景用(山)生成
-	for (int i = 0; i < 20; i++) {
-		std::unique_ptr<Mountain> newMountain;
-		newMountain.reset(Mountain::Create(modelMountain.get(), { -75, 0, 0 + (float)i * 40 }));
-		mountains.push_back(std::move(newMountain));
-	}
-	for (int i = 0; i < 20; i++) {
-		std::unique_ptr<Mountain> newMountain;
-		newMountain.reset(Mountain::Create(modelMountain.get(), { 75, 0, 0 + (float)i * 40 }));
-		mountains.push_back(std::move(newMountain));
-	}
+	//背景用(ゲーム用山管理)生成
+	gameMountainManager.reset(GameMountainManager::Create(modelMountain.get(), 75, 10));
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
@@ -123,7 +114,8 @@ void GameScene::Initialize()
 	//パーティクルにカメラをセット
 	ParticleManager::SetCamera(gameCamera.get());
 
-
+	//遊び方UI生成
+	howToPlayUI.reset(HowToPlayUI::Create());
 	//ステージ開始UI生成
 	stageStartUI.reset(StageStartUI::Create(1));
 
@@ -182,9 +174,8 @@ void GameScene::Update()
 	//地面
 	ground->Update();
 	//背景用(山)
-	for (const std::unique_ptr<Mountain>& mountain : mountains) {
-		mountain->Update();
-	}
+	gameMountainManager->Update(player->GetWorldPos());
+
 	//3D衝突判定管理
 	CollisionCheck3d();
 
@@ -206,10 +197,6 @@ void GameScene::Update()
 	//遊び方UI 
 	if (howToPlayUI) {
 		howToPlayUI->Update();
-		//死亡したら解放
-		if (howToPlayUI->GetIsDead()) {
-			howToPlayUI.reset();
-		}
 	}
 	//ステージクリアテキスト
 	if (stageClearText) {
@@ -227,8 +214,8 @@ void GameScene::Update()
 
 	//デバックテキスト
 	{
-		std::string itemNum = std::to_string(healingItems.size());
-		DebugText::GetInstance()->Print("ItemNum : " + itemNum, 100, 200);
+		//std::string itemNum = std::to_string(healingItems.size());
+		//DebugText::GetInstance()->Print("ItemNum : " + itemNum, 100, 200);
 		//X座標,Y座標,縮尺を指定して表示
 		//debugText->Print("GAME SCENE", 1000, 50);
 		/*std::string enemyDefeat = std::to_string(EnemyDefeatCounter::GetDefeatCount());
@@ -296,9 +283,7 @@ void GameScene::Draw()
 	//地面
 	ground->Draw();
 	//背景用(山)
-	for (const std::unique_ptr<Mountain>& mountain : mountains) {
-		mountain->Draw();
-	}
+	gameMountainManager->Draw();
 
 	///-------Object3d描画ここまで-------///
 
@@ -943,17 +928,25 @@ void GameScene::UpdateEnemySetCommands()
 
 void GameScene::HowToPlay()
 {
-	//既に遊び方を表示ていたら抜ける
-	if (isHowToPlayTextShow) { return; }
+	//次に描画する遊び方UIが「ショット」の場合
+	if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::NextDrawUI::Shot) {
 
-	//自機のワールドZ座標が指定した値以下なら抜ける
-	const float showPos = 340;
-	if (player->GetWorldPos().z <= showPos) { return; }
+		//自機のワールドZ座標が指定した値以下なら抜ける
+		const float showPos = 15;
+		if (player->GetWorldPos().z <= showPos) { return; }
 
-	//遊び方UI(チャージ)生成
-	howToPlayUI.reset(HowToPlayUI::Create());
+		//遊び方UI(ショット)生成
+		howToPlayUI->ShotUICreate();
+	}
+	//次に描画する遊び方UIが「チャージ」の場合
+	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::NextDrawUI::Charge) {
+		//自機のワールドZ座標が指定した値以下なら抜ける
+		const float showPos = 235;
+		if (player->GetWorldPos().z <= showPos) { return; }
 
-	isHowToPlayTextShow = true;
+		//遊び方UI(チャージ)生成
+		howToPlayUI->ChargeUICreate();
+	}
 }
 
 void GameScene::BossBattleStart()
@@ -962,7 +955,7 @@ void GameScene::BossBattleStart()
 	if (isBossBattle) { return; }
 
 	//自機がボスバトル開始とする座標まで進んだら開始
-	const float isBossBattleStartPos = 650;
+	const float isBossBattleStartPos = 1000;
 	const bool isBossBattleStart = player->GetWorldPos().z >= isBossBattleStartPos;
 	if (!isBossBattleStart) { return; }
 

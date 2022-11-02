@@ -12,7 +12,7 @@ public: //テクスチャ名
 		Number,				//数字
 		TitleLogo,			//タイトルロゴ
 		BButton,			//Bボタン
-		HowToPlayCharge,	//遊び方「チャージ」
+		HowToPlay,			//遊び方
 		Reticle,			//レティクル
 		PlayerHPGaugeIn,	//自機HPバー
 		PlayerHPGaugeOut,	//自機HPバーフレーム

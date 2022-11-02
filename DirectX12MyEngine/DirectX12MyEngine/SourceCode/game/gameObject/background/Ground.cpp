@@ -20,7 +20,7 @@ Ground* Ground::Create(ObjModel* model)
 	ground->model = model;
 
 	//‘å‚«‚³‚ðƒZƒbƒg
-	ground->scale = { 10, 10, 10 };
+	ground->scale = { 20, 20, 20 };
 
 	return ground;
 }

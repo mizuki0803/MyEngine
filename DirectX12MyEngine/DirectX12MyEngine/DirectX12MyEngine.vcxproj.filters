@@ -239,7 +239,7 @@
     <ClCompile Include="SourceCode\game\gameObject\background\Ground.cpp">
       <Filter>ソース ファイル\game\gameObject\background\ground</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\background\Mountain.cpp">
+    <ClCompile Include="SourceCode\game\gameObject\background\GameMountainManager.cpp">
       <Filter>ソース ファイル\game\gameObject\background\mountain</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\background\Skydome.cpp">
@@ -406,6 +406,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameSprite\UI\HowToPlayUI.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\HowToPlaySprite.cpp">
+      <Filter>ソース ファイル\game\gameSprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\background\Mountain.cpp">
+      <Filter>ソース ファイル\game\gameObject\background\mountain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -581,7 +587,7 @@
     <ClInclude Include="SourceCode\game\gameObject\background\Ground.h">
       <Filter>ソース ファイル\game\gameObject\background\ground</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\background\Mountain.h">
+    <ClInclude Include="SourceCode\game\gameObject\background\GameMountainManager.h">
       <Filter>ソース ファイル\game\gameObject\background\mountain</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\background\Skydome.h">
@@ -748,6 +754,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\HowToPlayUI.h">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\HowToPlaySprite.h">
+      <Filter>ソース ファイル\game\gameSprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\background\Mountain.h">
+      <Filter>ソース ファイル\game\gameObject\background\mountain</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

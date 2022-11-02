@@ -12,7 +12,7 @@ void SpriteTextureLoader::TextureLoad()
 	spriteCommon->LoadTexture(TextureName::Number, "number.png");
 	spriteCommon->LoadTexture(TextureName::TitleLogo, "titleLogo.png");
 	spriteCommon->LoadTexture(TextureName::BButton, "bButton.png");
-	spriteCommon->LoadTexture(TextureName::HowToPlayCharge, "chargeHowToPlay.png");
+	spriteCommon->LoadTexture(TextureName::HowToPlay, "howToPlay.png");
 	spriteCommon->LoadTexture(TextureName::Reticle, "reticle.png");
 	spriteCommon->LoadTexture(TextureName::PlayerHPGaugeIn, "HPGaugeIn.png");
 	spriteCommon->LoadTexture(TextureName::PlayerHPGaugeOut, "HPGaugeOut.png");

@@ -12,7 +12,7 @@
 #include "HealingItem.h"
 #include "Skydome.h"
 #include "Ground.h"
-#include "Mountain.h"
+#include "GameMountainManager.h"
 #include "HowToPlayUI.h"
 #include "MultiHitUI.h"
 #include "StageStartUI.h"
@@ -200,8 +200,8 @@ private: //メンバ変数
 	std::unique_ptr<Skydome> skydome;
 	//地面
 	std::unique_ptr<Ground> ground;
-	//背景用(山)
-	std::list<std::unique_ptr<Mountain>> mountains;
+	//背景用(山管理)
+	std::unique_ptr<GameMountainManager> gameMountainManager;
 	//遊び方UI
 	std::unique_ptr<HowToPlayUI> howToPlayUI;
 	//一撃で複数体処理用のUI
@@ -212,8 +212,6 @@ private: //メンバ変数
 	std::unique_ptr<StageClearText> stageClearText;
 	//ステージリザルトUI
 	std::unique_ptr<StageResultUI> stageResultUI;
-	//遊び方を表示したか
-	bool isHowToPlayTextShow = false;
 	//ステージクリアか
 	bool isStageClear = false;
 	//ゲームオーバーか

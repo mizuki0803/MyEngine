@@ -1,6 +1,7 @@
 #pragma once
-#include "Sprite.h"
+#include "HowToPlaySprite.h"
 #include <memory>
+#include <list>
 
 /// <summary>
 /// 遊び方UI
@@ -8,11 +9,11 @@
 class HowToPlayUI
 {
 public:
-	//ス行動フェーズ
-	enum class ActionPhase {
-		Up,		//上に上がる
-		Stay,	//停止
-		Down,	//下に下がる
+	//次に描画するUI
+	enum class NextDrawUI {
+		Shot,	//ショット
+		Charge,	//チャージ
+		None,	//なし
 	};
 
 public: //静的メンバ関数
@@ -24,12 +25,6 @@ public: //静的メンバ関数
 
 public: //メンバ関数
 	/// <summary>
-	/// 初期化
-	/// </summary>
-	/// <returns>成否</returns>
-	bool Initialize();
-
-	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update();
@@ -39,40 +34,22 @@ public: //メンバ関数
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 「ショット」のUI生成
+	/// </summary>
+	void ShotUICreate();
+
+	/// <summary>
+	/// 「チャージ」のUI生成
+	/// </summary>
+	void ChargeUICreate();
+
 	//getter
-	bool GetIsDead() { return isDead; }
-
-private: //メンバ関数
-	/// <summary>
-	/// テキストを上に動かす
-	/// </summary>
-	void TextUp();
-
-	/// <summary>
-	/// テキストを停止させる
-	/// </summary>
-	void TextStay();
-
-	/// <summary>
-	/// テキストを下に動かす
-	/// </summary>
-	void TextDown();
-
-private: //静的メンバ変数
-	//行動遷移
-	static void (HowToPlayUI::* actionFuncTable[])();
-	//停止座標
-	static const Vector2 stayPos;
-	//画面外座標
-	static const Vector2 outScreenPos;
+	NextDrawUI GetNextDrawUI() { return nextDrawPhase; }
 
 private: //メンバ変数
-	//チャージ説明スプライト
-	std::unique_ptr<Sprite> chargeHowToPlaySprite;
-	//行動
-	ActionPhase phase = ActionPhase::Up;
-	//行動用タイマー
-	int32_t actionTimer = 0;
-	//死亡フラグ
-	bool isDead = false;
+	//遊び方スプライト
+	std::list<std::unique_ptr<HowToPlaySprite>> howToPlaySprites;
+	//次に描画するUI
+	NextDrawUI nextDrawPhase = NextDrawUI::Shot;
 };

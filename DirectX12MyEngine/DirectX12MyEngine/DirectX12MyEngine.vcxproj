@@ -192,6 +192,7 @@
     <ClCompile Include="SourceCode\game\gameEffect\PlayerDamageEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\SceneChangeEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Ground.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\background\GameMountainManager.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Mountain.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Skydome.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\boss\Boss.cpp" />
@@ -230,6 +231,7 @@
     <ClCompile Include="SourceCode\game\gameScene\GameScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\SortieScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\TitleScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\HowToPlaySprite.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\NumberSprite.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\SceneChangeSprite.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.cpp" />
@@ -376,6 +378,7 @@
     <ClInclude Include="SourceCode\game\gameEffect\PlayerDamageEffect.h" />
     <ClInclude Include="SourceCode\game\gameEffect\SceneChangeEffect.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Ground.h" />
+    <ClInclude Include="SourceCode\game\gameObject\background\GameMountainManager.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Mountain.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Skydome.h" />
     <ClInclude Include="SourceCode\game\gameObject\boss\Boss.h" />
@@ -414,6 +417,7 @@
     <ClInclude Include="SourceCode\game\gameScene\GameScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\SortieScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\TitleScene.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\HowToPlaySprite.h" />
     <ClInclude Include="SourceCode\game\gameSprite\NumberSprite.h" />
     <ClInclude Include="SourceCode\game\gameSprite\SceneChangeSprite.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.h" />

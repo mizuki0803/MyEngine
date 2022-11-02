@@ -13,7 +13,7 @@ void TitleCamera::Initialize()
 
 	//カメラの視点を自機から少し離れたところにセット
 	Vector3 eye = target;
-	eyeDistance = { 0.0f, 8.0f, -15.0f };
+	eyeDistance = { 0.0f, 4.0f, -15.0f };
 	eye += eyeDistance;
 	this->eye = eye;
 }
