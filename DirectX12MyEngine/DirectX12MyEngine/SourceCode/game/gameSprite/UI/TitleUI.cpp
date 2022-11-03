@@ -1,5 +1,6 @@
 #include "TitleUI.h"
 #include "SpriteTextureLoader.h"
+#include "Easing.h"
 
 TitleUI* TitleUI::Create()
 {
@@ -25,9 +26,10 @@ bool TitleUI::Initialize()
 	titleSprite.reset(Sprite::Create(SpriteTextureLoader::TitleLogo));
 	const Vector2 titlePos = { 640, 100 };
 	titleSprite->SetPosition(titlePos);
-	const Vector2 titleSize = { 300, 100 };
+	const Vector2 titleTexSize = { 500, 100 };
+	titleSprite->SetTexSize(titleTexSize);
+	const Vector2 titleSize = titleTexSize * 1.2f;
 	titleSprite->SetSize(titleSize);
-	titleSprite->SetTexSize(titleSize);
 
 	//Bボタンスプライト生成	
 	bButtonSprite.reset(Sprite::Create(SpriteTextureLoader::BButton));
@@ -42,8 +44,15 @@ bool TitleUI::Initialize()
 
 void TitleUI::Update()
 {
-	//ボタン表示切り替え
-	DrawChangeButtonSprite();
+	//表示を終えていない場合
+	if (!isShowEnd) {
+		//ボタン表示切り替え
+		DrawChangeButtonSprite();
+	}
+	//表示を終えている場合
+	else {
+		ShowEnd();
+	}
 
 	//タイトルロゴスプライト更新
 	titleSprite->Update();
@@ -57,10 +66,23 @@ void TitleUI::Draw()
 {
 	//タイトルロゴスプライト描画
 	titleSprite->Draw();
+
+	//表示を終えたら抜ける
+	if (isShowEnd) { return; }
+
 	//Bボタンスプライト描画
 	if (isDrawButtonSprite) {
 		bButtonSprite->Draw();
 	}
+}
+
+void TitleUI::SetShowEnd()
+{
+	//表示を終える
+	isShowEnd = true;
+
+	//タイマーを初期化
+	drawTimer = 0;
 }
 
 void TitleUI::DrawChangeButtonSprite()
@@ -79,4 +101,21 @@ void TitleUI::DrawChangeButtonSprite()
 		//タイマー初期化
 		drawTimer = 0;
 	}
+}
+
+void TitleUI::ShowEnd()
+{
+	//表示を終える時間
+	const float endTime = 20;
+	//タイマーが指定した時間以上なら抜ける
+	if (drawTimer >= endTime) { return; }
+
+	//タイマー更新
+	drawTimer++;
+	const float time = drawTimer / endTime;
+
+	//イージングで上に動かす
+	Vector2 pos = titleSprite->GetPosition();
+	pos.y = Easing::OutQuad(100, -100, time);
+	titleSprite->SetPosition(pos);
 }

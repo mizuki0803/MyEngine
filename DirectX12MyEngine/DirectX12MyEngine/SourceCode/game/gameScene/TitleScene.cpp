@@ -89,9 +89,8 @@ void TitleScene::Update()
 
 	//スプライト更新
 	//タイトルUI更新
-	if (titleUI) {
-		titleUI->Update();
-	}
+	titleUI->Update();
+	
 
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
@@ -103,13 +102,13 @@ void TitleScene::Update()
 	//自機が空まで行って見えなくなったら
 	const bool isPlayerSky = (player->GetPosition().y >= 500);
 	if (isPlayerSky) {
-		//出撃シーンへシーン変更を開始する
-		SceneChangeStart({ 0,0,0,0 }, 40, 60, 120, "SORTIE");
+		//ステージ選択へシーン変更を開始する
+		SceneChangeStart({ 0,0,0,0 }, 40, 60, 60, "STAGESELECT");
 	}
 
 	if (input->TriggerKey(DIK_RETURN)) {
 		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("SORTIE");
+		SceneManager::GetInstance()->ChangeScene("STAGESELECT");
 	}
 
 	//シーン変更状態
@@ -175,6 +174,6 @@ void TitleScene::SortieStart()
 	player->SetIsSortie(true);
 	titleCamera->SortieStart();
 
-	//タイトルUIを解放する
-	titleUI.reset();
+	//タイトルUIの表示を終える
+	titleUI->SetShowEnd();
 }

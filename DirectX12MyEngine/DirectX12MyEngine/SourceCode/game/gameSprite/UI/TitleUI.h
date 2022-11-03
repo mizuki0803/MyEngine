@@ -31,11 +31,21 @@ public: //メンバ関数
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 表示を終えるセット
+	/// </summary>
+	void SetShowEnd();
+
 private: //メンバ関数
 	/// <summary>
 	/// ボタン表示をするしないを切り替え
 	/// </summary>
 	void DrawChangeButtonSprite();
+
+	/// <summary>
+	/// 表示を終える
+	/// </summary>
+	void ShowEnd();
 
 private: //メンバ変数
 	//タイトルロゴスプライト
@@ -46,4 +56,6 @@ private: //メンバ変数
 	bool isDrawButtonSprite = true;
 	//描画用タイマー
 	int32_t drawTimer = 0;
+	//表示を終えるか
+	bool isShowEnd = false;
 };

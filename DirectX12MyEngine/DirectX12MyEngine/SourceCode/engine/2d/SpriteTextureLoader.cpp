@@ -12,6 +12,10 @@ void SpriteTextureLoader::TextureLoad()
 	spriteCommon->LoadTexture(TextureName::Number, "number.png");
 	spriteCommon->LoadTexture(TextureName::TitleLogo, "titleLogo.png");
 	spriteCommon->LoadTexture(TextureName::BButton, "bButton.png");
+	spriteCommon->LoadTexture(TextureName::PlanetName, "planetName.png");
+	spriteCommon->LoadTexture(TextureName::HighScoreFrame, "highScoreFrame.png");
+	spriteCommon->LoadTexture(TextureName::StageSelectHowToPlay, "stageSelectHowToPlay.png");
+	spriteCommon->LoadTexture(TextureName::StageDecision, "stageDecision.png");
 	spriteCommon->LoadTexture(TextureName::HowToPlay, "howToPlay.png");
 	spriteCommon->LoadTexture(TextureName::Reticle, "reticle.png");
 	spriteCommon->LoadTexture(TextureName::PlayerHPGaugeIn, "HPGaugeIn.png");

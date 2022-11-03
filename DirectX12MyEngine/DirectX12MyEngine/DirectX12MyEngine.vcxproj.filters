@@ -141,6 +141,12 @@
     <Filter Include="ソース ファイル\game\gameScene">
       <UniqueIdentifier>{1d1581cf-6bfa-463b-a5fb-6e91a81931fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\stageSelectPlayer">
+      <UniqueIdentifier>{75672245-b4bf-498a-b1ed-5771f2f0a0ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\stageSelectPlanet">
+      <UniqueIdentifier>{4f8e46ee-7d44-4cdf-a7d5-2684c12a5ad9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\main.cpp">
@@ -413,6 +419,24 @@
     <ClCompile Include="SourceCode\game\gameObject\background\Mountain.cpp">
       <Filter>ソース ファイル\game\gameObject\background\mountain</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameScene\StageSelectScene.cpp">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameCamera\StageSelectCamera.cpp">
+      <Filter>ソース ファイル\game\gameCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\StageSelectPlayer.cpp">
+      <Filter>ソース ファイル\game\gameObject\stageSelectPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\StageSelectPlanet.cpp">
+      <Filter>ソース ファイル\game\gameObject\stageSelectPlanet</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\StageDecisionUI.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\StageSelectUI.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -514,9 +538,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\base\DirectXBase.h">
       <Filter>ソース ファイル\engine\base\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\base\AbstractSceneFactory.h">
-      <Filter>ソース ファイル\engine\base\game</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\base\AndosGame.h">
       <Filter>ソース ファイル\engine\base\game</Filter>
@@ -760,6 +781,27 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\background\Mountain.h">
       <Filter>ソース ファイル\game\gameObject\background\mountain</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\StageSelectScene.h">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\StageSelectPlayer.h">
+      <Filter>ソース ファイル\game\gameObject\stageSelectPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameCamera\StageSelectCamera.h">
+      <Filter>ソース ファイル\game\gameCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\scene\AbstractSceneFactory.h">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\StageSelectPlanet.h">
+      <Filter>ソース ファイル\game\gameObject\stageSelectPlanet</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\StageDecisionUI.h">
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\StageSelectUI.h">
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

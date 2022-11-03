@@ -187,6 +187,7 @@
     <ClCompile Include="SourceCode\engine\scene\SceneManager.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\GameCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp" />
+    <ClCompile Include="SourceCode\game\gameCamera\StageSelectCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\TitleCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\ParticleEmitter.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\PlayerDamageEffect.cpp" />
@@ -225,11 +226,15 @@
     <ClCompile Include="SourceCode\game\gameObject\player\reticle\Reticle2D.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\player\reticle\Reticle3D.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\SortiePlayer.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\StageDecisionUI.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\StageSelectPlanet.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\StageSelectPlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\TitlePlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\BaseGameScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\DebugScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\GameScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\SortieScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\StageSelectScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\TitleScene.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\HowToPlaySprite.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\NumberSprite.cpp" />
@@ -242,6 +247,7 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPBar.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageClearText.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\StageSelectUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageStartUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageResultUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\TitleUI.cpp" />
@@ -348,7 +354,6 @@
     <ClInclude Include="SourceCode\engine\3d\ObjObject3d.h" />
     <ClInclude Include="SourceCode\engine\3d\ParticleManager.h" />
     <ClInclude Include="SourceCode\engine\audio\Audio.h" />
-    <ClInclude Include="SourceCode\engine\base\AbstractSceneFactory.h" />
     <ClInclude Include="SourceCode\engine\base\AndosGame.h" />
     <ClInclude Include="SourceCode\engine\base\DirectXBase.h" />
     <ClInclude Include="SourceCode\engine\base\FrameWork.h" />
@@ -368,11 +373,13 @@
     <ClInclude Include="SourceCode\engine\math\Easing.h" />
     <ClInclude Include="SourceCode\engine\math\Vector2.h" />
     <ClInclude Include="SourceCode\engine\math\Vector3.h" />
+    <ClInclude Include="SourceCode\engine\scene\AbstractSceneFactory.h" />
     <ClInclude Include="SourceCode\engine\scene\BaseScene.h" />
     <ClInclude Include="SourceCode\engine\scene\SceneFactory.h" />
     <ClInclude Include="SourceCode\engine\scene\SceneManager.h" />
     <ClInclude Include="SourceCode\game\gameCamera\GameCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h" />
+    <ClInclude Include="SourceCode\game\gameCamera\StageSelectCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\TitleCamera.h" />
     <ClInclude Include="SourceCode\game\gameEffect\ParticleEmitter.h" />
     <ClInclude Include="SourceCode\game\gameEffect\PlayerDamageEffect.h" />
@@ -411,11 +418,15 @@
     <ClInclude Include="SourceCode\game\gameObject\player\reticle\Reticle2D.h" />
     <ClInclude Include="SourceCode\game\gameObject\player\reticle\Reticle3D.h" />
     <ClInclude Include="SourceCode\game\gameObject\SortiePlayer.h" />
+    <ClInclude Include="SourceCode\game\gameObject\StageDecisionUI.h" />
+    <ClInclude Include="SourceCode\game\gameObject\StageSelectPlanet.h" />
+    <ClInclude Include="SourceCode\game\gameObject\StageSelectPlayer.h" />
     <ClInclude Include="SourceCode\game\gameObject\TitlePlayer.h" />
     <ClInclude Include="SourceCode\game\gameScene\BaseGameScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\DebugScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\GameScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\SortieScene.h" />
+    <ClInclude Include="SourceCode\game\gameScene\StageSelectScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\TitleScene.h" />
     <ClInclude Include="SourceCode\game\gameSprite\HowToPlaySprite.h" />
     <ClInclude Include="SourceCode\game\gameSprite\NumberSprite.h" />
@@ -429,6 +440,7 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageClearText.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageResultUI.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\StageSelectUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageStartUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\TitleUI.h" />
   </ItemGroup>

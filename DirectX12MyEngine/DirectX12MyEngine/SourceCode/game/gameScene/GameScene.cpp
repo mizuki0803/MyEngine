@@ -1072,8 +1072,8 @@ void GameScene::ReturnTitleScene()
 	//自機のステージクリア後行動が完了していなければ抜ける
 	if (!player->GetIsStageClearModeCompletion()) { return; }
 
-	//タイトルシーンへシーン変更を開始する
-	SceneChangeStart({ 0,0,0,0 }, 120, 60, 60, "TITLE");
+	//ステージ選択へシーン変更を開始する
+	SceneChangeStart({ 0,0,0,0 }, 120, 60, 60, "STAGESELECT");
 }
 
 void GameScene::GameOver()
