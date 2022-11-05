@@ -72,8 +72,6 @@ void SortieScene::Initialize()
 
 void SortieScene::Update()
 {
-	//入力のインスタンスを取得
-	Input* input = Input::GetInstance();
 	//デバッグテキストのインスタンスを取得
 	DebugText* debugText = DebugText::GetInstance();
 
@@ -107,10 +105,8 @@ void SortieScene::Update()
 		//ゲームシーンへシーン変更を開始する
 		SceneChangeStart({ 1,1,1,0 }, 10, 0, 20, "GAME");
 	}
-	if (input->TriggerKey(DIK_RETURN)) {
-		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("GAME");
-	}
+	//ムービースキップ機能
+	MovieSkip();
 
 	//シーン変更状態
 	SceneChangeMode();
@@ -169,4 +165,13 @@ void SortieScene::SortieAction()
 
 	//自機をブースト状態にする
 	player->BoostStart();
+}
+
+void SortieScene::MovieSkip()
+{
+	//スキップ入力がなければ抜ける
+	if (!(Input::GetInstance()->TriggerKey(DIK_RETURN) || Input::GetInstance()->TriggerGamePadButton(Input::PAD_START))) { return; }
+
+	//ゲームシーンへシーン変更を開始する
+	SceneChangeStart({ 0,0,0,0 }, 15, 0, 15, "GAME");
 }

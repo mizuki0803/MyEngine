@@ -51,6 +51,11 @@ private: //メンバ関数
 	/// </summary>
 	void SortieStart();
 
+	/// <summary>
+	/// ムービースキップ機能
+	/// </summary>
+	void MovieSkip();
+
 private: //メンバ変数
 	//カメラ
 	std::unique_ptr<TitleCamera> titleCamera;

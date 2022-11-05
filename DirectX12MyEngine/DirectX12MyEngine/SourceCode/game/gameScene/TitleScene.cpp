@@ -105,11 +105,8 @@ void TitleScene::Update()
 		//ステージ選択へシーン変更を開始する
 		SceneChangeStart({ 0,0,0,0 }, 40, 60, 60, "STAGESELECT");
 	}
-
-	if (input->TriggerKey(DIK_RETURN)) {
-		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("STAGESELECT");
-	}
+	//ムービースキップ機能
+	MovieSkip();
 
 	//シーン変更状態
 	SceneChangeMode();
@@ -176,4 +173,15 @@ void TitleScene::SortieStart()
 
 	//タイトルUIの表示を終える
 	titleUI->SetShowEnd();
+}
+
+void TitleScene::MovieSkip()
+{
+	//出撃していなければ抜ける
+	if (!player->GetIsSortie()) { return; }
+	//スキップ入力がなければ抜ける
+	if (!(Input::GetInstance()->TriggerKey(DIK_RETURN) || Input::GetInstance()->TriggerGamePadButton(Input::PAD_START))) { return; }
+
+	//ステージ選択へシーン変更を開始する
+	SceneChangeStart({ 0,0,0,0 }, 40, 60, 60, "STAGESELECT");
 }

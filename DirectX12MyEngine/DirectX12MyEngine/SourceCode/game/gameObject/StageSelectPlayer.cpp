@@ -130,7 +130,7 @@ void StageSelectPlayer::EnterPlanetStart(const Vector3& selectPlanetPos)
 void StageSelectPlayer::GooutPlanet()
 {
 	//惑星から出てくるのにかかる時間
-	const float gooutTime = 300;
+	const float gooutTime = 210;
 	//タイマー更新
 	actionTimer++;
 	const float time = actionTimer / gooutTime;
@@ -225,7 +225,7 @@ void StageSelectPlayer::EnterPlanetRotate()
 void StageSelectPlayer::EnterPlanetBoost()
 {
 	//惑星入るのにかかる時間
-	const float enterTime = 300;
+	const float enterTime = 180;
 	//タイマー更新
 	actionTimer++;
 	const float time = actionTimer / enterTime;
@@ -249,7 +249,7 @@ void StageSelectPlayer::EnterPlanetBoost()
 	scale.z = Easing::OutQuint(1.5f, 0.2f, time);
 
 	//タイマーが惑星に入るのを終える時間になったら
-	const int endTime = 240;
+	const int endTime = 150;
 	if (actionTimer >= endTime) {
 		//ステージ選択で行う全ての行動を終える
 		isStageSelectModeEnd = true;

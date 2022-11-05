@@ -92,7 +92,7 @@ void StageSelectUI::Draw()
 	}
 
 	//•\Ž¦ó‘Ô‚Å‚È‚¯‚ê‚Î”²‚¯‚é
-	if (!(phase == ActionPhase::Show)) { return; }
+	if (!(phase == ActionPhase::InScreen || phase == ActionPhase::Show)) { return; }
 
 	howToPlaySprite->Draw();
 }
