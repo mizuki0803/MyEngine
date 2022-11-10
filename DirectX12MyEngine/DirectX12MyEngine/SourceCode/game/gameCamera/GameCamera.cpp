@@ -406,7 +406,7 @@ void GameCamera::StageClearPlayerZoom()
 void GameCamera::StageClearPlayerFollow()
 {
 	//追従する時間
-	const float followTime = 120;
+	const float followTime = 90;
 	//タイマー更新
 	stageClearModeTimer++;
 	const float time = stageClearModeTimer / followTime;

@@ -12,7 +12,7 @@
 
 Player* Boss::player = nullptr;
 const float Boss::attackModeTime = 600.0f;
-const float Boss::waitModeTime = 480.0f;
+const float Boss::waitModeTime = 500.0f;
 const float Boss::changeModeTime = 60.0f;
 const float Boss::returnBasePositionTime = 180.0f;
 

@@ -591,8 +591,9 @@ void GameScene::CollisionCheck3d()
 
 			//回復アイテム座標
 			posB = healingItem->GetWorldPos();
-			//回復アイテム半径
-			radiusB = healingItem->GetScale().x;
+			//回復アイテム半径 + 触れやすくするための余白
+			const float addScale = 1.0f;
+			radiusB = healingItem->GetScale().x + addScale;
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);

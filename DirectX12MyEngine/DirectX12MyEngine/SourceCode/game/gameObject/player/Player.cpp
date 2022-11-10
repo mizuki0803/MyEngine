@@ -21,7 +21,7 @@ const float Player::homingBulletSize = 2.0f;
 const Vector2 Player::rotLimit = { 35.0f, 25.0f };
 const Vector2 Player::moveLimitMin =  { -15.0f, -4.0f };
 const Vector2 Player::moveLimitMax = { 15.0f, Player::moveLimitMin.y + 12.0f };
-const float Player::moveBaseSpeed = 0.15f;
+const float Player::moveBaseSpeed = 0.16f;
 const float Player::knockbackBaseSpeed = 0.2f;
 
 Player* Player::Create(ObjModel* model)
@@ -149,8 +149,10 @@ void Player::OnCollisionHeal()
 	//‰ñ•œ
 	Heal();
 
-	//ƒ_ƒ[ƒW‚ð‹ò‚ç‚Á‚½‚Ì‚ÅHPƒo[‚Ì’·‚³‚ð•ÏX‚·‚é
+	//‰ñ•œƒAƒCƒeƒ€‚ðŠl“¾‚µ‚½‚Ì‚ÅHPƒo[‚Ì’·‚³‚ð•ÏX‚·‚é
 	hpBar->SetChangeLength(HP);
+	//HPƒo[ƒtƒŒ[ƒ€‚àF‚ðƒ`ƒJƒ`ƒJ‚³‚¹‚é
+	hpFrame->ItemGetModeStart();
 }
 
 void Player::StageClearModeStart()
@@ -331,8 +333,8 @@ void Player::Rotate()
 
 	//‰ñ“]‘¬“x
 	const float rotSpeed = 1.0f;
-	//Šp“xC³‘¬“x
-	const float backSpeed = rotSpeed / 1.5f;
+	//Šp“xC³Šî€‘¬“x
+	const float backBaseSpeed = rotSpeed / 1.5f;
 	Vector3 rot = { 0, 0, 0 };
 
 
@@ -357,11 +359,16 @@ void Player::Rotate()
 
 		//ƒL[“ü—Í‚È‚µ&ƒXƒeƒBƒbƒN‚ð“|‚µ‚Ä‚¢‚È‚¢ê‡
 		else {
+			//Šp“xC³‘¬“x”{—¦
+			float backSpeedRatio = fabsf(rotation.y / (rotLimit.y * 2)) + 0.5f;
+			//Šp“xC³‘¬“x
+			const float backSpeed = backBaseSpeed * backSpeedRatio;
 			//yŽ²‰ñ“]‚ÌŒX‚«‚ðC³‚·‚é
-			if (rotation.y > 1.0f) {
+			const float rotMin = 0.5f;
+			if (rotation.y > rotMin) {
 				rot.y -= backSpeed;
 			}
-			else if (rotation.y < -1.0f) {
+			else if (rotation.y < -rotMin) {
 				rot.y += backSpeed;
 			}
 			else {
@@ -387,11 +394,16 @@ void Player::Rotate()
 		}
 		//ƒL[“ü—Í‚È‚µ&ƒXƒeƒBƒbƒN‚ð“|‚µ‚Ä‚¢‚È‚¢ê‡
 		else {
+			//Šp“xC³‘¬“x”{—¦
+			float backSpeedRatio = fabsf(rotation.x / (rotLimit.x * 2)) + 0.5f;
+			//Šp“xC³‘¬“x
+			const float backSpeed = backBaseSpeed * backSpeedRatio;
 			//xŽ²‰ñ“]‚ÌŒX‚«‚ðC³‚·‚é
-			if (rotation.x > 1.0f) {
+			const float rotMin = 0.5f;
+			if (rotation.x > rotMin) {
 				rot.x -= backSpeed;
 			}
-			else if (rotation.x < -1.0f) {
+			else if (rotation.x < -rotMin) {
 				rot.x += backSpeed;
 			}
 			else {

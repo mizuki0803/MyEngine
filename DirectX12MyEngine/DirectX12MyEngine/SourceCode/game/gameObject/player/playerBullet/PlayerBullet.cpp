@@ -2,7 +2,7 @@
 
 bool PlayerBullet::Initialize()
 {
-	scale = { 0.5f, 0.5f, 0.5f };
+	scale = { 0.6f, 0.6f, 0.6f };
 
 	//3Dオブジェクトの初期化
 	if (!ObjObject3d::Initialize())
