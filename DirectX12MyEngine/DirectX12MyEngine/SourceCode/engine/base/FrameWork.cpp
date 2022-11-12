@@ -1,4 +1,5 @@
 #include "FrameWork.h"
+#include "FpsCheck.h"
 #include "SpriteTextureLoader.h"
 #include "ObjObject3d.h"
 #include "FbxLoader.h"
@@ -129,23 +130,32 @@ void FrameWork::Update()
 
 	//シーン更新
 	SceneManager::GetInstance()->Update();
+
+	//フレームレート確認
+	//FpsCheck::Display();
 }
 
 void FrameWork::Draw()
 {
 	//レンダーテクスチャへの描画
-	//postEffect->DrawScenePrev();
-	//SceneManager::GetInstance()->Draw();
-	//postEffect->DrawSceneRear();
+	postEffect->DrawScenePrev();
+	SceneManager::GetInstance()->Draw3D();
+	postEffect->DrawSceneRear();
 
 	//グラフィックスコマンド(前)
 	dxbase->GraphicsCommandPrev();
 
+	//シーンの背景スプライト描画
+	SceneManager::GetInstance()->DrawBackSprite();
+
 	//ポストエフェクトの描画
-	//postEffect->Draw();
+	postEffect->Draw();
 
 	//シーン描画
-	SceneManager::GetInstance()->Draw();
+	//SceneManager::GetInstance()->Draw3D();
+
+	//シーンの前景スプライト描画
+	SceneManager::GetInstance()->DrawFrontSprite();
 
 	//スプライト共通コマンド
 	//spriteCommon->DrawPrev();

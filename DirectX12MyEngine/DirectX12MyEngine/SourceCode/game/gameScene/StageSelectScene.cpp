@@ -135,7 +135,11 @@ void StageSelectScene::Update()
 	SceneChangeEffect::Update();
 }
 
-void StageSelectScene::Draw()
+void StageSelectScene::DrawBackSprite()
+{
+}
+
+void StageSelectScene::Draw3D()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawPrev();
@@ -163,8 +167,10 @@ void StageSelectScene::Draw()
 	ParticleEmitter::GetInstance()->DrawAll();
 
 	///-------パーティクル描画ここまで-------///
+}
 
-
+void StageSelectScene::DrawFrontSprite()
+{
 	//スプライト共通コマンド
 	SpriteCommon::GetInstance()->DrawPrev();
 	///-------スプライト描画ここから-------///

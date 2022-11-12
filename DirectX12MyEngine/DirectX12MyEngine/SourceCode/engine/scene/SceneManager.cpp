@@ -38,10 +38,22 @@ void SceneManager::Update()
 	scene->Update();
 }
 
-void SceneManager::Draw()
+void SceneManager::DrawBackSprite()
 {
-	//•`‰æ
-	scene->Draw();
+	//”wŒiƒXƒvƒ‰ƒCƒg•`‰æ
+	scene->DrawBackSprite();
+}
+
+void SceneManager::Draw3D()
+{
+	//3DƒV[ƒ“•`‰æ
+	scene->Draw3D();
+}
+
+void SceneManager::DrawFrontSprite()
+{
+	//‘OŒiƒXƒvƒ‰ƒCƒg•`‰æ
+	scene->DrawFrontSprite();
 }
 
 void SceneManager::ChangeScene(const std::string& sceneName)

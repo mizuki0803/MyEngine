@@ -115,7 +115,11 @@ void SortieScene::Update()
 	SceneChangeEffect::Update();
 }
 
-void SortieScene::Draw()
+void SortieScene::DrawBackSprite()
+{
+}
+
+void SortieScene::Draw3D()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawPrev();
@@ -143,8 +147,10 @@ void SortieScene::Draw()
 	ParticleEmitter::GetInstance()->DrawAll();
 
 	///-------パーティクル描画ここまで-------///
+}
 
-
+void SortieScene::DrawFrontSprite()
+{
 	//スプライト共通コマンド
 	SpriteCommon::GetInstance()->DrawPrev();
 	///-------スプライト描画ここから-------///

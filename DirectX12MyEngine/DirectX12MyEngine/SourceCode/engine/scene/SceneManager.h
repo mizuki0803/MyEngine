@@ -32,9 +32,19 @@ public: //メンバ関数
 	void Update();
 
 	/// <summary>
-	/// 描画
+	/// 背景スプライト描画
 	/// </summary>
-	void Draw();
+	void DrawBackSprite();
+
+	/// <summary>
+	/// 3Dシーン描画
+	/// </summary>
+	void Draw3D();
+
+	/// <summary>
+	/// 前景スプライト描画
+	/// </summary>
+	void DrawFrontSprite();
 
 	/// <summary>
 	/// 次のシーンをセット

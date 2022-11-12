@@ -25,9 +25,19 @@ public:
 	virtual void Update() = 0;
 
 	/// <summary>
-	/// 描画
+	/// 背景スプライト描画
 	/// </summary>
-	virtual void Draw() = 0;
+	virtual void DrawBackSprite() = 0;
+
+	/// <summary>
+	/// 3Dシーン描画
+	/// </summary>
+	virtual void Draw3D() = 0;
+
+	/// <summary>
+	/// 前景スプライト描画
+	/// </summary>
+	virtual void DrawFrontSprite() = 0;
 
 	//setter
 	static void SetDirectXbase(DirectXBase* dxbase) { BaseScene::dxbase = dxbase; }

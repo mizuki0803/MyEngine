@@ -115,7 +115,11 @@ void TitleScene::Update()
 	SceneChangeEffect::Update();
 }
 
-void TitleScene::Draw()
+void TitleScene::DrawBackSprite() 
+{
+}
+
+void TitleScene::Draw3D()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawPrev();
@@ -143,8 +147,10 @@ void TitleScene::Draw()
 	ParticleEmitter::GetInstance()->DrawAll();
 
 	///-------パーティクル描画ここまで-------///
+}
 
-
+void TitleScene::DrawFrontSprite()
+{
 	//スプライト共通コマンド
 	SpriteCommon::GetInstance()->DrawPrev();
 	///-------スプライト描画ここから-------///

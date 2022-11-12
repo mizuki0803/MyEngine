@@ -37,9 +37,19 @@ public: //メンバ関数
 	void Update() override;
 
 	/// <summary>
-	/// 描画
+	/// 背景スプライト描画
 	/// </summary>
-	void Draw() override;
+	void DrawBackSprite() override;
+
+	/// <summary>
+	/// 3Dシーン描画
+	/// </summary>
+	void Draw3D() override;
+
+	/// <summary>
+	/// 前景スプライト描画
+	/// </summary>
+	void DrawFrontSprite() override;
 
 private: //メンバ関数
 	/// <summary>

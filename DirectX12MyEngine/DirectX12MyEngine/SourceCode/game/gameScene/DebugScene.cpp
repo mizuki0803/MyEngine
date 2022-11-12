@@ -472,18 +472,20 @@ void DebugScene::Update()
 	}
 }
 
-void DebugScene::Draw()
+void DebugScene::DrawBackSprite()
 {
 	//背景スプライト共通コマンド
 	SpriteCommon::GetInstance()->DrawPrev();
 	///-------背景スプライト描画ここから-------///
 
-	
-	dxbase->ClearDepthBuffer();
-	
+
+	//dxbase->ClearDepthBuffer();
+
 	///-------背景スプライト描画ここまで-------///
+}
 
-
+void DebugScene::Draw3D()
+{
 	//Object3d共通コマンド
 	ObjObject3d::DrawPrev();
 	///-------Object3d描画ここから-------///
@@ -499,18 +501,6 @@ void DebugScene::Draw()
 
 	///-------Object3d描画ここまで-------///
 
-
-	//スプライト共通コマンド
-	SpriteCommon::GetInstance()->DrawPrev();
-	///-------スプライト描画ここから-------///
-
-
-	//sprite->Draw();
-
-
-	///-------スプライト描画ここまで-------///
-
-
 	//パーティクル共通コマンド
 	ParticleManager::DrawPrev();
 	///-------パーティクル描画ここから-------///
@@ -523,3 +513,15 @@ void DebugScene::Draw()
 	///-------パーティクル描画ここまで-------///
 }
 
+void DebugScene::DrawFrontSprite()
+{
+	//スプライト共通コマンド
+	SpriteCommon::GetInstance()->DrawPrev();
+	///-------スプライト描画ここから-------///
+
+
+	//sprite->Draw();
+
+
+	///-------スプライト描画ここまで-------///
+}

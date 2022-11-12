@@ -437,6 +437,9 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageSelectUI.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\engine\base\FpsCheck.cpp">
+      <Filter>ソース ファイル\engine\base\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -802,6 +805,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageSelectUI.h">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\base\FpsCheck.h">
+      <Filter>ソース ファイル\engine\base\game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
