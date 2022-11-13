@@ -74,6 +74,8 @@ void StageSelectScene::Initialize()
 
 	//パーティクルにカメラをセット
 	ParticleManager::SetCamera(stageSelectCamera.get());
+	//画面にパーティクルが残ることがあるので全て削除しておく
+	ParticleEmitter::GetInstance()->AllDelete();
 }
 
 void StageSelectScene::Update()

@@ -132,7 +132,7 @@ void FrameWork::Update()
 	SceneManager::GetInstance()->Update();
 
 	//フレームレート確認
-	//FpsCheck::Display();
+	FpsCheck::Display();
 }
 
 void FrameWork::Draw()

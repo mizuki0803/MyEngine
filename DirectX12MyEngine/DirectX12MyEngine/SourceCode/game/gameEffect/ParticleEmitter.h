@@ -56,6 +56,12 @@ public: //メンバ関数
 	void PlayerJet(const XMMATRIX& matWorld);
 
 	/// <summary>
+	/// ショット死亡演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	void ShotDead(const Vector3& position, const float size);
+
+	/// <summary>
 	/// チャージショット演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>

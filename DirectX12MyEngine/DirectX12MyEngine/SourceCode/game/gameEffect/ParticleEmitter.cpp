@@ -158,6 +158,37 @@ void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld)
 	}
 }
 
+void ParticleEmitter::ShotDead(const Vector3& position, const float size)
+{
+	//色
+	const XMFLOAT4 startColor = { 0.2f, 0.3f, 0.4f, 1.0f }; //薄い青
+	const XMFLOAT4 endColor = { 0, 0, 0, 1.0f }; //無色
+
+	//速度、加速度は0
+	Vector3 vel{};
+	Vector3 acc{};
+
+	for (int i = 0; i < 3; i++) {
+		//生存時間
+		const int life = (rand() % 10) + 15;
+		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
+		const float md_pos = 0.5f;
+		Vector3 pos = position;
+		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		//大きさをランダムに分布
+		const float md_scale = 2.0f;
+		const float startScale = (float)rand() / RAND_MAX * md_scale + (size * 2);
+		const float endScale = startScale;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > outQuad =
+			std::bind(&Easing::OutCubic, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
+		//追加
+		circleParticle->Add(life, pos, vel, acc, startScale, endScale, outQuad, startColor, endColor);
+	}
+}
+
 void ParticleEmitter::ChargeShot(const Vector3& position, const float size)
 {
 	//生存時間

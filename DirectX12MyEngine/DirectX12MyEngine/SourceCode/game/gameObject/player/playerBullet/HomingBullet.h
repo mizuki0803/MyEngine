@@ -32,7 +32,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	void OnCollision() override;
+	void OnCollision(float subjectSize) override;
 
 private: //メンバ関数
 	/// <summary>

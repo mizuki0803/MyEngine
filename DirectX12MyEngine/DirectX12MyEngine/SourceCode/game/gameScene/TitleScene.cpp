@@ -56,6 +56,8 @@ void TitleScene::Initialize()
 
 	//パーティクルにカメラをセット
 	ParticleManager::SetCamera(titleCamera.get());
+	//画面にパーティクルが残ることがあるので全て削除しておく
+	ParticleEmitter::GetInstance()->AllDelete();
 
 	//タイトルUI生成
 	titleUI.reset(TitleUI::Create());

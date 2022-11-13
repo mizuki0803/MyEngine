@@ -94,10 +94,10 @@ void HomingBullet::Update()
 	ParticleEmitter::GetInstance()->ChargeShot(GetWorldPos(), size);
 }
 
-void HomingBullet::OnCollision()
+void HomingBullet::OnCollision(float subjectSize)
 {
-	//全弾共通処理
-	PlayerBullet::OnCollision();
+	//死亡させる
+	isDead = true;
 
 	//チャージショット死亡演出用パーティクル生成
 	ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos(), blastSize);

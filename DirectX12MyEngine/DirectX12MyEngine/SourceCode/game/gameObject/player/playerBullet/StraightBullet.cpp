@@ -1,4 +1,5 @@
 #include "StraightBullet.h"
+#include "ParticleEmitter.h"
 
 StraightBullet* StraightBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity)
 {
@@ -50,4 +51,29 @@ void StraightBullet::Update()
 
 	//3Dオブジェクトの更新
 	PlayerBullet::Update();
+}
+
+void StraightBullet::OnCollision(float subjectSize)
+{
+	//死亡させる
+	isDead = true;
+
+	//敵内部に演出が出てしまうことがあるので、敵の大きさ分押し戻す
+	Vector3 pos = GetWorldPos();
+	pos.z -= subjectSize;
+	//ショット死亡演出用パーティクル生成
+	ParticleEmitter::GetInstance()->ShotDead(pos, scale.x);
+}
+
+void StraightBullet::CollisionGround()
+{
+	//Y座標0以下でなければ抜ける
+	if (position.y > 0) { return; }
+
+	//死亡
+	isDead = true;
+	//ショット死亡演出用パーティクル生成
+	Vector3 pos = GetWorldPos();
+	pos.y = 0;
+	ParticleEmitter::GetInstance()->ShotDead(pos, scale.x);
 }

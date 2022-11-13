@@ -22,12 +22,6 @@ void PlayerBullet::Update()
 	ObjObject3d::Update();
 }
 
-void PlayerBullet::OnCollision()
-{
-	//Ž€–S‚³‚¹‚é
-	isDead = true;
-}
-
 Vector3 PlayerBullet::GetWorldPos()
 {
 	//ƒ[ƒ‹ƒhÀ•W‚ð“ü‚ê‚é•Ï”
@@ -38,13 +32,4 @@ Vector3 PlayerBullet::GetWorldPos()
 	worldPos.z = matWorld.r[3].m128_f32[2];
 
 	return worldPos;
-}
-
-void PlayerBullet::CollisionGround()
-{
-	//YÀ•W0ˆÈ‰º‚Å‚È‚¯‚ê‚Î”²‚¯‚é
-	if (position.y > 0) { return; }
-
-	//Ž€–S
-	isDead = true;
 }

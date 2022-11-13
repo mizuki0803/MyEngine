@@ -68,6 +68,8 @@ void SortieScene::Initialize()
 
 	//パーティクルにカメラをセット
 	ParticleManager::SetCamera(sortieCamera.get());
+	//画面にパーティクルが残ることがあるので全て削除しておく
+	ParticleEmitter::GetInstance()->AllDelete();
 }
 
 void SortieScene::Update()

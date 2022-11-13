@@ -28,10 +28,19 @@ float4 GaussianBlur(float2 uv, float sigma, float stepWidth)
 
 float4 main(VSOutput input) : SV_TARGET
 {
-	float4 texcolor = tex.Sample(smp, input.uv);
-	return float4(texcolor.rgb, 1);
+	float4 texColor = tex.Sample(smp, input.uv);
+	return float4(texColor.rgb, 1);
 
-	//ガウシアンブラー
-	float _Sigma = 0.005, _StepWidth = 0.001;
-	return GaussianBlur(input.uv, _Sigma, _StepWidth);
+	////ガウシアンブラー
+	//float _Sigma = 0.005, _StepWidth = 0.001;
+	//return GaussianBlur(input.uv, _Sigma, _StepWidth);
+
+	/*float _Depth = 0.05f;
+	float _Width = 0.05f;
+
+	float4 depth = tex.Sample(smp, input.uv);
+	float4 pintColor = tex.Sample(smp, input.uv);
+	float4 overColor = GaussianBlur(input.uv, 0.03f, 0.005f);
+	float pint = smoothstep(0, _Width / 2, abs(depth.r - _Depth));
+	return (1 - pint) * pintColor + pint * overColor;*/
 }

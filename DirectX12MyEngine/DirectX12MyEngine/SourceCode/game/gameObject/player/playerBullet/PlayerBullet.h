@@ -29,7 +29,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	virtual void OnCollision();
+	virtual void OnCollision(float subjectSize) = 0;
 
 	//getter
 	Vector3 GetWorldPos();
@@ -43,7 +43,7 @@ protected: //メンバ関数
 	/// <summary>
 	/// 地面に衝突したとき
 	/// </summary>
-	virtual void CollisionGround();
+	virtual void CollisionGround() = 0;
 
 protected: //メンバ変数
 	//弾の種類

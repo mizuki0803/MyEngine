@@ -113,6 +113,8 @@ void GameScene::Initialize()
 
 	//パーティクルにカメラをセット
 	ParticleManager::SetCamera(gameCamera.get());
+	//画面にパーティクルが残ることがあるので全て削除しておく
+	ParticleEmitter::GetInstance()->AllDelete();
 
 	//遊び方UI生成
 	howToPlayUI.reset(HowToPlayUI::Create());
@@ -460,7 +462,7 @@ void GameScene::CollisionCheck3d()
 			//敵のコールバック関数を呼び出す
 			enemy->OnCollision();
 			//自機弾のコールバック関数を呼び出す
-			bullet->OnCollision();
+			bullet->OnCollision(radiusB);
 
 			//弾は一つの敵しか倒せないのでenemyループを抜ける
 			break;
@@ -671,7 +673,7 @@ void GameScene::CollisionCheck3d()
 		const int attackPower = 2;
 		boss->OnCollisionMainBody(attackPower);
 		//自機弾のコールバック関数を呼び出す
-		bullet->OnCollision();
+		bullet->OnCollision(radiusA);
 
 		break;
 	}
@@ -690,8 +692,10 @@ void GameScene::CollisionCheck3d()
 		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
 			//ボス分身座標
 			posB = bossAvatar->GetWorldPos();
-			//ボス分身半径(親子構造の為、本体の大きさ×分身の大きさで正しい大きさが分かる)
-			radiusB = boss->GetMainBody()->GetScale().x * bossAvatar->GetScale().x;
+			//ボス分身半径
+			radiusB = bossAvatar->GetScale().x;
+			//分身生存時は親子構造の為、本体の大きさを乗算して正しい大きさが分かる
+			if (!bossAvatar->GetIsDead()) { radiusB *= boss->GetMainBody()->GetScale().x; }
 
 			//球と球の衝突判定を行う
 			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
@@ -702,7 +706,7 @@ void GameScene::CollisionCheck3d()
 			const int attackPower = 2;
 			boss->OnCollisionAvatar(bossAvatar.get(), attackPower);
 			//自機弾のコールバック関数を呼び出す
-			bullet->OnCollision();
+			bullet->OnCollision(radiusB);
 
 			break;
 		}
