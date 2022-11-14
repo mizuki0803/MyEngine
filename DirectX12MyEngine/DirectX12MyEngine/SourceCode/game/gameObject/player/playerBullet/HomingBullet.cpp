@@ -5,7 +5,7 @@
 
 const float HomingBullet::blastSize = 16.0f;
 
-HomingBullet* HomingBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float size, Enemy* enemy)
+HomingBullet* HomingBullet::Create(const Vector3& position, const Vector3& velocity, const float size, Enemy* enemy)
 {
 	//ホーミング弾のインスタンスを生成
 	HomingBullet* homingBullet = new HomingBullet();
@@ -19,10 +19,6 @@ HomingBullet* HomingBullet::Create(ObjModel* model, const Vector3& position, con
 		assert(0);
 		return nullptr;
 	}
-
-	//モデルをセット
-	assert(model);
-	homingBullet->model = model;
 
 	//弾の種類をセット
 	homingBullet->bulletType = BulletType::Homing;
@@ -40,21 +36,6 @@ HomingBullet* HomingBullet::Create(ObjModel* model, const Vector3& position, con
 	homingBullet->enemy = enemy;
 
 	return homingBullet;
-}
-
-bool HomingBullet::Initialize()
-{
-	//色を黄色に変更
-	XMFLOAT4 yellow = { 1.0f, 1.0f, 0.2f, 1 };
-	color = yellow;
-
-	//3Dオブジェクトの初期化
-	if (!PlayerBullet::Initialize())
-	{
-		return false;
-	}
-
-	return true;
 }
 
 void HomingBullet::Update()
@@ -90,8 +71,7 @@ void HomingBullet::Update()
 	PlayerBullet::Update();
 
 	//チャージショット演出用パーティクル生成
-	const float size = scale.x;
-	ParticleEmitter::GetInstance()->ChargeShot(GetWorldPos(), size);
+	ParticleEmitter::GetInstance()->ChargeShot(GetWorldPos(), scale.x);
 }
 
 void HomingBullet::OnCollision(float subjectSize)

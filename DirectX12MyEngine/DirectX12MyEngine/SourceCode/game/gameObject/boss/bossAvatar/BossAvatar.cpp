@@ -1,6 +1,7 @@
 #include "BossAvatar.h"
 #include "Easing.h"
 #include "GameScene.h"
+#include "BossChargeBullet.h"
 #include "ParticleEmitter.h"
 
 void (BossAvatar::* BossAvatar::attackTypeAvatarBodyBlowPhaseFuncTable[])() = {
@@ -110,6 +111,25 @@ void BossAvatar::DamageModelChange()
 	isDamageModel = true;
 }
 
+void BossAvatar::UpdateBulletShotPos()
+{
+	//中心座標からの距離
+	const Vector3 distancePos = { 0, 0, scale.z * parent->GetScale().z - 1.0f };
+	//平行移動行列の計算
+	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
+
+	//ワールド行列の合成
+	XMMATRIX bulletShotMatWorld;
+	bulletShotMatWorld = XMMatrixIdentity();	//変形をリセット
+	bulletShotMatWorld *= matTrans;	//ワールド行列に平行移動を反映
+
+	//自機オブジェクトのワールド行列をかける
+	bulletShotMatWorld *= matWorld;
+
+	//弾発射座標を取得
+	bulletShotPos = { bulletShotMatWorld.r[3].m128_f32[0], bulletShotMatWorld.r[3].m128_f32[1], bulletShotMatWorld.r[3].m128_f32[2] };
+}
+
 void BossAvatar::AttackTypeAvatarBodyBlow(const Vector3& playerPosition)
 {
 	//自機座標をロックオンする
@@ -203,7 +223,19 @@ void BossAvatar::Fire(const float scale, const float bulletSpeed)
 
 	//弾を生成
 	std::unique_ptr<EnemyBullet> newBullet;
-	newBullet.reset(EnemyBullet::Create(bulletModel, GetWorldPos(), velocity, scale));
+	newBullet.reset(EnemyBullet::Create(bulletModel, bulletShotPos, velocity, scale));
+	gameScene->AddEnemyBullet(std::move(newBullet));
+}
+
+void BossAvatar::ChargeBulletFire(const float scale, const float bulletSpeed)
+{
+	//弾の速度を設定
+	Vector3 velocity(0, 0, bulletSpeed);
+	velocity = MatrixTransformDirection(velocity, matWorld);
+
+	//チャージ弾を生成
+	std::unique_ptr<EnemyBullet> newBullet;
+	newBullet.reset(BossChargeBullet::Create(bulletShotPos, velocity, scale));
 	gameScene->AddEnemyBullet(std::move(newBullet));
 }
 
@@ -353,6 +385,12 @@ void BossAvatar::AttackTypeAvatarGiantBulletChargeShot()
 	color.y = Easing::OutQuad(1, 0, time);
 	color.z = Easing::OutQuad(1, 0, time);
 
+	//発射する弾の大きさ
+	const float bulletScale = 8.0f;
+	//チャージ演出
+	const float effectScale = Easing::OutCubic(0, bulletScale, time);
+	ParticleEmitter::GetInstance()->BossCharge(bulletShotPos, effectScale);
+
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (attackTimer >= chargeTime) {
 		attackAvatarGiantBulletPhase = AttackTypeAvatarGiantBulletPhase::Recoil;
@@ -361,9 +399,8 @@ void BossAvatar::AttackTypeAvatarGiantBulletChargeShot()
 		attackTimer = 0;
 
 		//弾を発射
-		const float bulletScale = 10.0f;
 		const float bulletSpeed = 0.8f;
-		Fire(bulletScale, bulletSpeed);
+		ChargeBulletFire(bulletScale, bulletSpeed);
 
 		//色を元に戻す
 		color = { 1, 1, 1, 1 };

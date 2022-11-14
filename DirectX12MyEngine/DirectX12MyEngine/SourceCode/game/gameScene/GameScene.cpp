@@ -398,7 +398,11 @@ void GameScene::ObjectRelease()
 
 		//死亡させるだけでなく削除状態まで弾を当てた敵の座標に回復アイテム生成
 		std::unique_ptr<HealingItem> healingItem;
-		healingItem.reset(HealingItem::Create(modelHealingItem.get(), enemy->GetPosition()));
+		const float healingItemSize = 2.0f;
+		Vector3 healingItemPos = enemy->GetPosition();
+		//生成位置を地面にめり込まないようにする
+		if (healingItemPos.y < healingItemSize) { healingItemPos.y = healingItemSize; }
+		healingItem.reset(HealingItem::Create(modelHealingItem.get(), healingItemPos, healingItemSize));
 		healingItems.push_back(std::move(healingItem));
 	}
 	//削除状態の敵の削除

@@ -85,6 +85,16 @@ public: //メンバ関数
 	bool FallMode();
 
 	/// <summary>
+	/// 攻撃状態
+	/// </summary>
+	bool AttackModeCount();
+
+	/// <summary>
+	/// 弾発射座標を更新
+	/// </summary>
+	bool UpdateBulletShotPos();
+
+	/// <summary>
 	/// 攻撃内容設定を開始するか
 	/// </summary>
 	/// <returns></returns>
@@ -125,11 +135,6 @@ public: //メンバ関数
 	/// </summary>
 	/// <returns></returns>
 	bool AttackTypeAvatarGiantBulletSelect();
-
-	/// <summary>
-	/// 攻撃状態
-	/// </summary>
-	bool AttackModeCount();
 
 	/// <summary>
 	/// 攻撃内容;追従
@@ -232,7 +237,6 @@ private: //メンバ関数
 	/// 基準位置に戻るときの出発座標を記録する、弾発射状態解除
 	/// </summary>
 	void AttackEnd();
-
 
 private: //静的メンバ変数
 	//プレイヤー自機

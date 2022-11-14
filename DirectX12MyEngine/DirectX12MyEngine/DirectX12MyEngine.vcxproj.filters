@@ -147,6 +147,9 @@
     <Filter Include="ソース ファイル\game\gameObject\stageSelectPlanet">
       <UniqueIdentifier>{4f8e46ee-7d44-4cdf-a7d5-2684c12a5ad9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\enemy\enemyBullet">
+      <UniqueIdentifier>{c212ec50-d06b-4bb0-8f08-64cd90a1fb5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\main.cpp">
@@ -288,9 +291,6 @@
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\enemy\Enemy.cpp">
-      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\enemy\EnemyBullet.cpp">
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\enemy\FallEnemy.cpp">
@@ -439,6 +439,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\engine\base\FpsCheck.cpp">
       <Filter>ソース ファイル\engine\base\game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\enemy\enemyBullet\EnemyBullet.cpp">
+      <Filter>ソース ファイル\game\gameObject\enemy\enemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\enemy\enemyBullet\BossChargeBullet.cpp">
+      <Filter>ソース ファイル\game\gameObject\enemy\enemyBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -656,9 +662,6 @@
     <ClInclude Include="SourceCode\game\gameObject\enemy\Enemy.h">
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\enemy\EnemyBullet.h">
-      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\enemy\FallEnemy.h">
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
@@ -808,6 +811,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\base\FpsCheck.h">
       <Filter>ソース ファイル\engine\base\game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\enemy\enemyBullet\EnemyBullet.h">
+      <Filter>ソース ファイル\game\gameObject\enemy\enemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\enemy\enemyBullet\BossChargeBullet.h">
+      <Filter>ソース ファイル\game\gameObject\enemy\enemyBullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

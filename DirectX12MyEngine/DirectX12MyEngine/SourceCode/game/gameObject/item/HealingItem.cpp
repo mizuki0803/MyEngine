@@ -4,7 +4,7 @@
 
 Player* HealingItem::player = nullptr;
 
-HealingItem* HealingItem::Create(ObjModel* model, const Vector3& position)
+HealingItem* HealingItem::Create(ObjModel* model, const Vector3& position, const float size)
 {
 	//回復アイテムのインスタンスを生成
 	HealingItem* healingItem = new HealingItem();
@@ -26,8 +26,8 @@ HealingItem* HealingItem::Create(ObjModel* model, const Vector3& position)
 	//座標をセット
 	healingItem->position = position;
 
-	//デバッグ用
-	healingItem->scale = { 2.0f, 2.0f, 2.0f };
+	//大きさをセット
+	healingItem->scale = { size, size, size };
 
 	return healingItem;
 }

@@ -23,17 +23,17 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	void OnCollision();
+	virtual void OnCollision();
 
 	//getter
 	Vector3 GetWorldPos();
 	bool GetIsDead() const { return isDead; }
 
-private: //静的メンバ変数
+protected: //静的メンバ変数
 	//寿命時間
 	static const int32_t lifeTime = 180;
 
-private: //メンバ変数
+protected: //メンバ変数
 	//速度
 	Vector3 velocity;
 	//寿命タイマー

@@ -673,7 +673,7 @@ void Player::ShotHomingBullet()
 
 	//ホーミング弾を生成
 	std::unique_ptr<PlayerBullet> newBullet;
-	newBullet.reset(HomingBullet::Create(bulletModel, bulletShotPos, velocity, homingBulletSize, reticles->GetLockonEnemy()));
+	newBullet.reset(HomingBullet::Create(bulletShotPos, velocity, homingBulletSize, reticles->GetLockonEnemy()));
 	gameScene->AddPlayerBullet(std::move(newBullet));
 }
 

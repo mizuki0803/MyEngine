@@ -15,7 +15,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>回復アイテム</returns>
-	static HealingItem* Create(ObjModel* model, const Vector3& position);
+	static HealingItem* Create(ObjModel* model, const Vector3& position, const float size);
 
 	//setter
 	static void SetPlayer(Player* player) { HealingItem::player = player; }

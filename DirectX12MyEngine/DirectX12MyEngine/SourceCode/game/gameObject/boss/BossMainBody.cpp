@@ -1,6 +1,8 @@
 #include "BossMainBody.h"
 #include "Easing.h"
 #include "GameScene.h"
+#include "BossChargeBullet.h"
+#include "ParticleEmitter.h"
 
 void (BossMainBody::* BossMainBody::attackTypeTrackingPhaseFuncTable[])() = {
 	&BossMainBody::AttackTypeTrackingLockon,
@@ -121,6 +123,25 @@ void BossMainBody::FallMode(const float time)
 	const float fallNum = 70;
 	bornPos.y = basePos.y + fallNum;
 	position = Easing::LerpVec3(bornPos, basePos, time);
+}
+
+void BossMainBody::UpdateBulletShotPos()
+{
+	//中心座標からの距離
+	const Vector3 distancePos = { 0, 0, scale.z - 1.0f };
+	//平行移動行列の計算
+	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
+
+	//ワールド行列の合成
+	XMMATRIX bulletShotMatWorld;
+	bulletShotMatWorld = XMMatrixIdentity();	//変形をリセット
+	bulletShotMatWorld *= matTrans;	//ワールド行列に平行移動を反映
+
+	//自機オブジェクトのワールド行列をかける
+	bulletShotMatWorld *= matWorld;
+
+	//弾発射座標を取得
+	bulletShotPos = { bulletShotMatWorld.r[3].m128_f32[0], bulletShotMatWorld.r[3].m128_f32[1], bulletShotMatWorld.r[3].m128_f32[2] };
 }
 
 void BossMainBody::AttackTypeTracking(const Vector3& playerPosition)
@@ -278,7 +299,19 @@ void BossMainBody::Fire(const float scale, const float bulletSpeed)
 
 	//弾を生成
 	std::unique_ptr<EnemyBullet> newBullet;
-	newBullet.reset(EnemyBullet::Create(bulletModel, GetWorldPos(), velocity, scale));
+	newBullet.reset(EnemyBullet::Create(bulletModel, bulletShotPos, velocity, scale));
+	gameScene->AddEnemyBullet(std::move(newBullet));
+}
+
+void BossMainBody::ChargeBulletFire(const float scale, const float bulletSpeed)
+{
+	//弾の速度を設定
+	Vector3 velocity(0, 0, bulletSpeed);
+	velocity = MatrixTransformDirection(velocity, matWorld);
+
+	//チャージ弾を生成
+	std::unique_ptr<EnemyBullet> newBullet;
+	newBullet.reset(BossChargeBullet::Create(bulletShotPos, velocity, scale));
 	gameScene->AddEnemyBullet(std::move(newBullet));
 }
 
@@ -370,6 +403,12 @@ void BossMainBody::AttackTypeSuperGiantBulletChargeShot()
 	color.y = Easing::OutQuad(1, 0, time);
 	color.z = Easing::OutQuad(1, 0, time);
 
+	//発射する弾の大きさ
+	const float bulletScale = 20.0f;
+	//チャージ演出
+	const float effectScale = Easing::OutCubic(0, bulletScale, time);
+	ParticleEmitter::GetInstance()->BossCharge(bulletShotPos, effectScale);
+
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (attackTimer >= chargeTime) {
 		attackSuperGiantBulletPhase = AttackTypeSuperGiantBulletPhase::Stay;
@@ -378,9 +417,8 @@ void BossMainBody::AttackTypeSuperGiantBulletChargeShot()
 		attackTimer = 0;
 
 		//弾を発射
-		const float bulletScale = 20.0f;
 		const float bulletSpeed = 1.0f;
-		Fire(bulletScale, bulletSpeed);
+		ChargeBulletFire(bulletScale, bulletSpeed);
 
 		//色を元に戻す
 		color = { 1, 1, 1, 1 };
@@ -413,7 +451,7 @@ void BossMainBody::AttackTypeRotateShot()
 {
 	//弾を発射
 	const float bulletScale = 5.0f;
-	const float bulletSpeed = 1.5f;
+	const float bulletSpeed = 1.0f;
 	Fire(bulletScale, bulletSpeed);
 
 	//攻撃回数をカウント

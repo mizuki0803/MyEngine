@@ -93,6 +93,11 @@ void BossBehaviorTree::AttackModeSequenceNode()
 		std::bind(&Boss::AttackModeCount, boss);
 	attackModeSequencer->AddNode(attackModeCount);
 
+	//発射座標更新
+	std::function<bool()> updateBulletShotPos =
+		std::bind(&Boss::UpdateBulletShotPos, boss);
+	attackModeSequencer->AddNode(updateBulletShotPos);
+
 
 	//攻撃内容セレクター
 	std::function<bool()> attackTypeSelect =

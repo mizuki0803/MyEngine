@@ -70,6 +70,11 @@ public: //メンバ関数
 	void FallMode(const float time);
 
 	/// <summary>
+	/// 弾発射座標を更新
+	/// </summary>
+	void UpdateBulletShotPos();
+
+	/// <summary>
 	/// 攻撃内容:追従
 	/// </summary>
 	void AttackTypeTracking(const Vector3& playerPosition);
@@ -141,9 +146,14 @@ public: //メンバ関数
 
 private: //メンバ関数
 	/// <summary>
-	/// 弾発射
+	/// 通常弾発射
 	/// </summary>
 	void Fire(const float scale, const float bulletSpeed);
+
+	/// <summary>
+	/// チャージ弾発射
+	/// </summary>
+	void ChargeBulletFire(const float scale, const float bulletSpeed);
 
 	/// <summary>
 	/// ダメージを喰らった状態の色にする
@@ -233,6 +243,8 @@ private: //メンバ変数
 	bool isDamageModel = false;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
+	//弾発射座標
+	Vector3 bulletShotPos;
 	//基準位置に戻るときの出発座標
 	Vector3 returnStartPos;
 	//攻撃で使うタイマー

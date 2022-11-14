@@ -256,6 +256,98 @@ void ParticleEmitter::ChargeShotDead(const Vector3& position, const float size)
 	}
 }
 
+void ParticleEmitter::BossCharge(const Vector3& position, const float size)
+{
+	//生存時間
+	const int life = 2;
+	//色
+	const XMFLOAT4 startColor = { 1.0f, 0.1f, 0.1f, 1.0f }; //濃い赤
+	const XMFLOAT4 endColor = { 0.4f, 0.01f, 0.01f, 1.0f }; //薄い赤
+	//速度、加速度は0
+	Vector3 vel{};
+	Vector3 acc{};
+
+	for (int i = 0; i < 20; i++) {
+		//大きさをランダムに分布
+		const float md_scale = 1.5f;
+		float startScale = (float)rand() / RAND_MAX * md_scale + (size * 2 / 7) - md_scale / 2;
+		float endScale = (float)rand() / RAND_MAX * md_scale + (size * 2) - md_scale / 2;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerp =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
+		//追加
+		circleParticle->Add(life, position, vel, acc, startScale, endScale, lerp, startColor, endColor);
+	}
+}
+
+void ParticleEmitter::BossChargeShot(const Vector3& position, const float size)
+{
+	//生存時間
+	const int life = 2;
+	//色
+	const XMFLOAT4 startColor = { 1.0f, 0.1f, 0.1f, 1.0f }; //濃い赤
+	const XMFLOAT4 endColor = { 0.4f, 0.01f, 0.01f, 1.0f }; //薄い赤
+	//速度、加速度は0
+	Vector3 vel{};
+	Vector3 acc{};
+
+	for (int i = 0; i < 20; i++) {
+		//大きさをランダムに分布
+		const float md_scale = 1.0f;
+		float startScale = (float)rand() / RAND_MAX * md_scale + (size * 2 / 4) - md_scale / 2;
+		float endScale = (float)rand() / RAND_MAX * md_scale + (size * 2) - md_scale / 2;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerp =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
+		//追加
+		circleParticle->Add(life, position, vel, acc, startScale, endScale, lerp, startColor, endColor);
+	}
+}
+
+void ParticleEmitter::BossChargeShotDead(const Vector3& position, const float size)
+{
+	//色
+	const XMFLOAT4 startColor = { 0.1f, 0.04f, 0.04f, 1.0f }; //濃い赤
+	const XMFLOAT4 endColor = { 0, 0, 0, 1.0f }; //無色
+
+	//速度、加速度は0
+	Vector3 vel{};
+	Vector3 acc{};
+
+	for (int i = 0; i < 20; i++) {
+		//生存時間
+		int life = (rand() % 10) + 15;
+		//大きさをランダムに分布
+		const float md_scale = 10.0f;
+		const float scale = size * 3 / 5;
+		float startScale = 0;
+		float endScale = (float)rand() / RAND_MAX * md_scale + (size * 2);
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > outQuad =
+			std::bind(&Easing::OutCubic, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
+		//追加
+		circleParticle->Add(life, position, vel, acc, startScale, endScale, outQuad, startColor, endColor);
+	}
+
+	for (int i = 0; i < 10; i++) {
+		//生存時間
+		int life = (rand() % 20) + 60;
+		//大きさをランダムに分布
+		const float md_scale = 10.0f;
+		float startScale = 0;
+		float endScale = (float)rand() / RAND_MAX * md_scale + (size * 2);
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > outQuad =
+			std::bind(&Easing::OutCubic, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
+		//追加
+		circleParticle->Add(life, position, vel, acc, startScale, endScale, outQuad, startColor, endColor);
+	}
+}
+
 void ParticleEmitter::Explosion(const Vector3& position)
 {
 	for (int j = 0; j < 5; j++) {

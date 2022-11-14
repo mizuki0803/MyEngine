@@ -75,6 +75,26 @@ public: //メンバ関数
 	void ChargeShotDead(const Vector3& position, const float size);
 
 	/// <summary>
+	/// ボスチャージ演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">大きさ</param>
+	void BossCharge(const Vector3& position, const float size);
+
+	/// <summary>
+	/// ボスチャージショット演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">大きさ</param>
+	void BossChargeShot(const Vector3& position, const float size);
+
+	/// <summary>
+	/// ボスチャージショット死亡演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	void BossChargeShotDead(const Vector3& position, const float size);
+
+	/// <summary>
 	/// 爆発演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>

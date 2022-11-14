@@ -186,6 +186,50 @@ bool Boss::FallMode()
 	return true;
 }
 
+bool Boss::AttackModeCount()
+{
+	//攻撃状態でなければ抜ける
+	if (!(phase == Phase::Attack)) { return false; }
+
+	//タイマーを更新
+	attackModeTimer++;
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackModeTimer >= attackModeTime) {
+		phase = Phase::Wait;
+
+		//次に攻撃状態になったときのためにタイマーを初期化しておく
+		attackModeTimer = 0;
+		//攻撃内容を未設定にしておく
+		attackType = AttackType::None;
+
+		//攻撃状態終了するので必要な情報をセット
+		AttackEnd();
+
+		//攻撃状態を終えるのでfalseを返す
+		return false;
+	}
+
+	return true;
+}
+
+bool Boss::UpdateBulletShotPos()
+{
+	//攻撃状態でなければ抜ける
+	if (!(phase == Phase::Attack)) { return false; }
+
+	//本体と分身の発射座標を更新
+	mainBody->UpdateBulletShotPos();
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		//分身が既に死亡していたら飛ばす
+		if (avatar->GetIsDead()) { continue; }
+
+		avatar->UpdateBulletShotPos();
+	}
+
+	return true;
+}
+
 bool Boss::AttackTypeSelectStart()
 {
 	//攻撃内容が既に決まっていたらtrueを返す
@@ -293,33 +337,6 @@ bool Boss::AttackTypeAvatarGiantBulletSelect()
 	attackType = AttackType::AvatarGiantBullet;
 	//1つ前の攻撃内容を更新
 	preAttackType = AttackType::AvatarGiantBullet;
-
-	return true;
-}
-
-bool Boss::AttackModeCount()
-{
-	//攻撃状態でなければ抜ける
-	if (!(phase == Phase::Attack)) { return false; }
-
-	//タイマーを更新
-	attackModeTimer++;
-
-	//タイマーが指定した時間になったら次のフェーズへ
-	if (attackModeTimer >= attackModeTime) {
-		phase = Phase::Wait;
-
-		//次に攻撃状態になったときのためにタイマーを初期化しておく
-		attackModeTimer = 0;
-		//攻撃内容を未設定にしておく
-		attackType = AttackType::None;
-
-		//攻撃状態終了するので必要な情報をセット
-		AttackEnd();
-
-		//攻撃状態を終えるのでfalseを返す
-		return false;
-	}
 
 	return true;
 }
