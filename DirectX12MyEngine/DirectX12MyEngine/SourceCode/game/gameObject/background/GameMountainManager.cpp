@@ -80,6 +80,14 @@ void GameMountainManager::Draw()
 	}
 }
 
+void GameMountainManager::DrawLightCameraView()
+{
+	//影用光源ライトから見た視点での描画
+	for (const std::unique_ptr<Mountain>& mountain : mountains) {
+		mountain->DrawLightCameraView();
+	}
+}
+
 void GameMountainManager::CreateNewMountain()
 {
 	//新たな山生成

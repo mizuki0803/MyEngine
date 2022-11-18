@@ -27,6 +27,9 @@ void GameScene::Initialize()
 	//ゲームカメラ初期化
 	gameCamera.reset(new GameCamera());
 	gameCamera->Initialize();
+	//影用光源カメラ初期化
+	lightCamera.reset(new LightCamera());
+	lightCamera->Initialize({ 0, 500, 0 });
 
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
@@ -107,6 +110,7 @@ void GameScene::Initialize()
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
+	ObjObject3d::SetLightCamera(lightCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
@@ -147,6 +151,7 @@ void GameScene::Update()
 
 	//カメラ更新
 	gameCamera->Update();
+	lightCamera->Update();
 
 	//オブジェクト更新
 	//自機
@@ -302,6 +307,45 @@ void GameScene::Draw3D()
 	ParticleEmitter::GetInstance()->DrawAll();
 
 	///-------パーティクル描画ここまで-------///
+}
+
+void GameScene::Draw3DLightView()
+{
+	//Object3d共通コマンド
+	ObjObject3d::DrawPrev();
+	///-------Object3d描画ここから-------///
+
+	//自機
+	player->DrawLightCameraView();
+	//自機弾
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		if (!(bullet->GetBulletType() == PlayerBullet::BulletType::Straight)) { continue; }
+		bullet->DrawLightCameraView();
+	}
+	//敵
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
+		enemy->DrawLightCameraView();
+	}
+	//敵弾
+	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
+		bullet->DrawLightCameraView();
+	}
+	//ボス
+	if (boss) {
+		boss->DrawLightCameraView();
+	}
+	//回復アイテム
+	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
+		healingItem->DrawLightCameraView();
+	}
+	//天球
+	skydome->DrawLightCameraView();
+	//地面
+	ground->DrawLightCameraView();
+	//背景用(山)
+	gameMountainManager->DrawLightCameraView();
+
+	///-------Object3d描画ここまで-------///
 }
 
 void GameScene::DrawFrontSprite()

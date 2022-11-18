@@ -3,6 +3,7 @@
 #include "ObjObject3d.h"
 #include "LightGroup.h"
 #include "SortieCamera.h"
+#include "LightCamera.h"
 #include "SortiePlayer.h"
 #include "Skydome.h"
 #include "Ground.h"
@@ -47,6 +48,11 @@ public: //メンバ関数
 	void Draw3D() override;
 
 	/// <summary>
+	/// 3Dシーン描画(ライトから見た視点)
+	/// </summary>
+	void Draw3DLightView() override;
+
+	/// <summary>
 	/// 前景スプライト描画
 	/// </summary>
 	void DrawFrontSprite() override;
@@ -65,6 +71,8 @@ private: //メンバ関数
 private: //メンバ変数
 	//カメラ
 	std::unique_ptr<SortieCamera> sortieCamera;
+	//影用光源カメラ
+	std::unique_ptr<LightCamera> lightCamera;
 
 	//ライト
 	std::unique_ptr<LightGroup> lightGroup;

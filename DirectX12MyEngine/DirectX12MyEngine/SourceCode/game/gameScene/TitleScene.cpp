@@ -42,6 +42,9 @@ void TitleScene::Initialize()
 	titleCamera.reset(new TitleCamera());
 	titleCamera->SetTitlePlayer(player.get());
 	titleCamera->Initialize();
+	//影用光源カメラ初期化
+	lightCamera.reset(new LightCamera());
+	lightCamera->Initialize({ 0, 500, 0 });
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
@@ -51,6 +54,8 @@ void TitleScene::Initialize()
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(titleCamera.get());
+	//objオブジェクトにカメラをセット
+	ObjObject3d::SetLightCamera(lightCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
@@ -76,6 +81,7 @@ void TitleScene::Update()
 
 	//カメラ更新
 	titleCamera->Update();
+	lightCamera->Update();
 
 	//オブジェクト更新
 	//自機
@@ -92,7 +98,7 @@ void TitleScene::Update()
 	//スプライト更新
 	//タイトルUI更新
 	titleUI->Update();
-	
+
 
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
@@ -117,7 +123,7 @@ void TitleScene::Update()
 	SceneChangeEffect::Update();
 }
 
-void TitleScene::DrawBackSprite() 
+void TitleScene::DrawBackSprite()
 {
 }
 
@@ -149,6 +155,26 @@ void TitleScene::Draw3D()
 	ParticleEmitter::GetInstance()->DrawAll();
 
 	///-------パーティクル描画ここまで-------///
+}
+
+void TitleScene::Draw3DLightView()
+{
+	//Object3d共通コマンド
+	ObjObject3d::DrawPrev();
+	///-------Object3d描画ここから-------///
+
+	//自機
+	player->DrawLightCameraView();
+	//天球
+	skydome->DrawLightCameraView();
+	//地面
+	ground->DrawLightCameraView();
+	//背景用(山)
+	for (const std::unique_ptr<Mountain>& mountain : mountains) {
+		mountain->DrawLightCameraView();
+	}
+
+	///-------Object3d描画ここまで-------///
 }
 
 void TitleScene::DrawFrontSprite()

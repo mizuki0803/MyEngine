@@ -6,6 +6,7 @@
 #include "ObjModel.h"
 #include "LightGroup.h"
 #include "Camera.h"
+#include "LightCamera.h"
 #include "Vector3.h"
 
 /// <summary>
@@ -76,6 +77,12 @@ public: //メンバ関数
 	/// </summary>
 	virtual void Draw();
 
+	/// <summary>
+	/// 影用光源ライトから見た視点での描画
+	/// </summary>
+	/// <returns></returns>
+	virtual void DrawLightCameraView();
+
 	//getter
 	const Vector3& GetPosition() { return position; }
 	const Vector3& GetRotation() { return rotation; }
@@ -91,6 +98,7 @@ public: //メンバ関数
 	void SetIsCameraFollow(bool isCameraFollow) { this->isCameraFollow = isCameraFollow; }
 	static void SetLightGroup(LightGroup* lightGroup) { ObjObject3d::lightGroup = lightGroup; }
 	static void SetCamera(Camera* camera) { ObjObject3d::camera = camera; }
+	static void SetLightCamera(LightCamera* lightCamera) { ObjObject3d::lightCamera = lightCamera; }
 
 
 protected: //静的メンバ変数
@@ -104,10 +112,12 @@ protected: //静的メンバ変数
 	static LightGroup* lightGroup;
 	//カメラ
 	static Camera* camera;
+	//影用光源カメラ
+	static LightCamera* lightCamera;
 
 protected: //メンバ変数
 	//定数バッファ
-	ComPtr<ID3D12Resource> constBuffB0;
+	ComPtr<ID3D12Resource> constBuffB0[2];
 	//アフィン変換情報
 	Vector3 scale = { 1, 1, 1 };
 	Vector3 rotation = { 0, 0, 0 };

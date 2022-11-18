@@ -42,6 +42,9 @@ void SortieScene::Initialize()
 	sortieCamera.reset(new SortieCamera());
 	sortieCamera->SetSortiePlayer(player.get());
 	sortieCamera->Initialize();
+	//影用光源カメラ初期化
+	lightCamera.reset(new LightCamera());
+	lightCamera->Initialize({ 0, 500, 0 });
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
@@ -63,6 +66,7 @@ void SortieScene::Initialize()
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(sortieCamera.get());
+	ObjObject3d::SetLightCamera(lightCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
@@ -82,6 +86,7 @@ void SortieScene::Update()
 
 	//カメラ更新
 	sortieCamera->Update();
+	lightCamera->Update();
 
 	//オブジェクト更新
 	//自機
@@ -149,6 +154,26 @@ void SortieScene::Draw3D()
 	ParticleEmitter::GetInstance()->DrawAll();
 
 	///-------パーティクル描画ここまで-------///
+}
+
+void SortieScene::Draw3DLightView()
+{
+	//Object3d共通コマンド
+	ObjObject3d::DrawPrev();
+	///-------Object3d描画ここから-------///
+
+	//自機
+	player->DrawLightCameraView();
+	//天球
+	skydome->DrawLightCameraView();
+	//地面
+	ground->DrawLightCameraView();
+	//背景用(山)
+	for (const std::unique_ptr<Mountain>& mountain : mountains) {
+		mountain->DrawLightCameraView();
+	}
+
+	///-------Object3d描画ここまで-------///
 }
 
 void SortieScene::DrawFrontSprite()

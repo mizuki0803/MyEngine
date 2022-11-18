@@ -446,6 +446,12 @@
     <ClCompile Include="SourceCode\game\gameObject\enemy\enemyBullet\BossChargeBullet.cpp">
       <Filter>ソース ファイル\game\gameObject\enemy\enemyBullet</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\engine\camera\LightCamera.cpp">
+      <Filter>ソース ファイル\engine\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\ShadowMap.cpp">
+      <Filter>ソース ファイル\engine\2d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -464,6 +470,9 @@
       <Filter>リソース ファイル</Filter>
     </None>
     <None Include="Resources\shaders\PostEffect.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\ShadowMap.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>
@@ -505,6 +514,12 @@
       <Filter>リソース ファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>
@@ -817,6 +832,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\enemy\enemyBullet\BossChargeBullet.h">
       <Filter>ソース ファイル\game\gameObject\enemy\enemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\camera\LightCamera.h">
+      <Filter>ソース ファイル\engine\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
+      <Filter>ソース ファイル\engine\2d</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

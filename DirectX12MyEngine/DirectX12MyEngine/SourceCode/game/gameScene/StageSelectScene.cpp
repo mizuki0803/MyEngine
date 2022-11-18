@@ -58,12 +58,17 @@ void StageSelectScene::Initialize()
 	stageSelectCamera->Initialize();
 	stageSelectCamera->GooutPlayerLookActionStart(planets[(int)selectStage]->GetPosition(), stageSelectFieldPos[(int)selectStage]);
 
+	//影用光源カメラ初期化
+	lightCamera.reset(new LightCamera());
+	lightCamera->Initialize({ 0, 500, 0 });
+
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
 	skydome->SetScale({ 10,10,10 });
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(stageSelectCamera.get());
+	ObjObject3d::SetLightCamera(lightCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
@@ -94,6 +99,7 @@ void StageSelectScene::Update()
 
 	//カメラ更新
 	stageSelectCamera->Update();
+	lightCamera->Update();
 
 	//オブジェクト更新
 	//自機
@@ -169,6 +175,26 @@ void StageSelectScene::Draw3D()
 	ParticleEmitter::GetInstance()->DrawAll();
 
 	///-------パーティクル描画ここまで-------///
+}
+
+void StageSelectScene::Draw3DLightView()
+{
+	//Object3d共通コマンド
+	ObjObject3d::DrawPrev();
+	///-------Object3d描画ここから-------///
+
+	//自機
+	player->DrawLightCameraView();
+	//惑星
+	for (const std::unique_ptr<StageSelectPlanet>& planet : planets) {
+		planet->DrawLightCameraView();
+	}
+	//天球
+	skydome->DrawLightCameraView();
+	//ステージ選択フィールド
+	stageSelectField->DrawLightCameraView();
+
+	///-------Object3d描画ここまで-------///
 }
 
 void StageSelectScene::DrawFrontSprite()

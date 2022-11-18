@@ -95,6 +95,7 @@
   <ItemGroup>
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
     <ClCompile Include="SourceCode\engine\2d\PostEffect.cpp" />
+    <ClCompile Include="SourceCode\engine\2d\ShadowMap.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Sprite.cpp" />
     <ClCompile Include="SourceCode\engine\2d\SpriteCommon.cpp" />
     <ClCompile Include="SourceCode\engine\2d\SpriteTextureLoader.cpp" />
@@ -113,6 +114,7 @@
     <ClCompile Include="SourceCode\engine\behaviorTree\Selector.cpp" />
     <ClCompile Include="SourceCode\engine\behaviorTree\Sequencer.cpp" />
     <ClCompile Include="SourceCode\engine\camera\Camera.cpp" />
+    <ClCompile Include="SourceCode\engine\camera\LightCamera.cpp" />
     <ClCompile Include="SourceCode\engine\collision\Collision.cpp" />
     <ClCompile Include="SourceCode\engine\collision\CollisionShape.cpp" />
     <ClCompile Include="SourceCode\engine\input\Input.cpp" />
@@ -198,6 +200,7 @@
     <None Include="Resources\shaders\Obj.hlsli" />
     <None Include="Resources\shaders\Particle.hlsli" />
     <None Include="Resources\shaders\PostEffect.hlsli" />
+    <None Include="Resources\shaders\ShadowMap.hlsli" />
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
@@ -216,10 +219,14 @@
     <FxCompile Include="Resources\shaders\FBXPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Resources\shaders\FBXVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ObjPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -263,6 +270,18 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
@@ -279,6 +298,7 @@
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
     <ClInclude Include="SourceCode\engine\2d\PostEffect.h" />
+    <ClInclude Include="SourceCode\engine\2d\ShadowMap.h" />
     <ClInclude Include="SourceCode\engine\2d\Sprite.h" />
     <ClInclude Include="SourceCode\engine\2d\SpriteCommon.h" />
     <ClInclude Include="SourceCode\engine\2d\SpriteTextureLoader.h" />
@@ -298,6 +318,7 @@
     <ClInclude Include="SourceCode\engine\behaviorTree\Selector.h" />
     <ClInclude Include="SourceCode\engine\behaviorTree\Sequencer.h" />
     <ClInclude Include="SourceCode\engine\camera\Camera.h" />
+    <ClInclude Include="SourceCode\engine\camera\LightCamera.h" />
     <ClInclude Include="SourceCode\engine\collision\Collision.h" />
     <ClInclude Include="SourceCode\engine\collision\CollisionShape.h" />
     <ClInclude Include="SourceCode\engine\input\Input.h" />

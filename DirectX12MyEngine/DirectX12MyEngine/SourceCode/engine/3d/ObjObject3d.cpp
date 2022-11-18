@@ -18,6 +18,7 @@ ID3D12GraphicsCommandList* ObjObject3d::cmdList = nullptr;
 PipelineSet ObjObject3d::pipelineSet;
 LightGroup* ObjObject3d::lightGroup = nullptr;
 Camera* ObjObject3d::camera = nullptr;
+LightCamera* ObjObject3d::lightCamera = nullptr;
 
 
 void ObjObject3d::Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
@@ -176,7 +177,7 @@ void ObjObject3d::CreatePipeline()
 	gpipeline.SampleDesc.Count = 1;	//1ピクセルにつき1回サンプリング
 
 	//デスクリプタテーブルの設定
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV ={};
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV = {};
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);	//t0 レジスタ
 
 	//ルートパラメータ
@@ -190,7 +191,7 @@ void ObjObject3d::CreatePipeline()
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
 	//ルートシグネチャの設定
-	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc ={};
+	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc = {};
 	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
@@ -262,13 +263,15 @@ bool ObjObject3d::Initialize()
 	resdesc.SampleDesc.Count = 1;
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	//定数バッファの生成
-	result = dev->CreateCommittedResource(
-		&heapprop,
-		D3D12_HEAP_FLAG_NONE,
-		&resdesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constBuffB0));
+	for (int i = 0; i < 2; i++) {
+		result = dev->CreateCommittedResource(
+			&heapprop,
+			D3D12_HEAP_FLAG_NONE,
+			&resdesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuffB0[i]));
+	}
 
 	return true;
 }
@@ -307,16 +310,28 @@ void ObjObject3d::Update()
 
 	const XMMATRIX matViewProjection = camera->GetMatView() * camera->GetMatProjection();
 	const Vector3 cameraPos = camera->GetEye();
-
-	//定数バッファへのデータ転送
-	ConstBufferDataB0* constMap = nullptr;
-	if (SUCCEEDED(constBuffB0->Map(0, nullptr, (void**)&constMap)))
+	//定数バッファへのデータ転送(カメラ視点)
+	ConstBufferDataB0* constMap0 = nullptr;
+	if (SUCCEEDED(constBuffB0[0]->Map(0, nullptr, (void**)&constMap0)))
 	{
-		constMap->color = color;
-		constMap->viewproj = matViewProjection;
-		constMap->world = matWorld;
-		constMap->cameraPos = cameraPos;
-		constBuffB0->Unmap(0, nullptr);
+		constMap0->color = color;
+		constMap0->viewproj = matViewProjection;
+		constMap0->world = matWorld;
+		constMap0->cameraPos = cameraPos;
+		constBuffB0[0]->Unmap(0, nullptr);
+	}
+
+	const XMMATRIX matLightViewProjection = lightCamera->GetMatView() * lightCamera->GetMatProjection();
+	const Vector3 lightCameraPos = lightCamera->GetEye();
+	//定数バッファへのデータ転送(光源カメラ視点)
+	ConstBufferDataB0* constMap1 = nullptr;
+	if (SUCCEEDED(constBuffB0[1]->Map(0, nullptr, (void**)&constMap1)))
+	{
+		constMap1->color = color;
+		constMap1->viewproj = matLightViewProjection;
+		constMap1->world = matWorld;
+		constMap1->cameraPos = lightCameraPos;
+		constBuffB0[1]->Unmap(0, nullptr);
 	}
 }
 
@@ -326,7 +341,22 @@ void ObjObject3d::Draw()
 	if (model == nullptr) return;
 
 	//定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0[0]->GetGPUVirtualAddress());
+
+	//ライトの描画
+	lightGroup->Draw(cmdList, 3);
+
+	//モデル描画
+	model->Draw(cmdList, 1);
+}
+
+void ObjObject3d::DrawLightCameraView()
+{
+	//モデルがセットされていなければ描画をスキップ
+	if (model == nullptr) return;
+
+	//定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0[1]->GetGPUVirtualAddress());
 
 	//ライトの描画
 	lightGroup->Draw(cmdList, 3);

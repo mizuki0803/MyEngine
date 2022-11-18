@@ -4,6 +4,7 @@
 #include "ObjObject3d.h"
 #include "LightGroup.h"
 #include "GameCamera.h"
+#include "LightCamera.h"
 #include "CollisionShape.h"
 #include "Collision.h"
 #include "Player.h"
@@ -56,6 +57,11 @@ public: //メンバ関数
 	/// 3Dシーン描画
 	/// </summary>
 	void Draw3D() override;
+
+	/// <summary>
+	/// 3Dシーン描画(ライトから見た視点)
+	/// </summary>
+	void Draw3DLightView() override;
 
 	/// <summary>
 	/// 前景スプライト描画
@@ -142,6 +148,8 @@ public: //メンバ関数
 private: //メンバ変数
 	//ゲームカメラ
 	std::unique_ptr<GameCamera> gameCamera;
+	//影用光源カメラ
+	std::unique_ptr<LightCamera> lightCamera;
 
 	//ライト
 	std::unique_ptr<LightGroup> lightGroup;

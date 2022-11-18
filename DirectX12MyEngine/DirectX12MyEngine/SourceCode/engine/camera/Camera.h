@@ -41,7 +41,7 @@ public:
 	/// <summary>
 	/// 射影行列を更新
 	/// </summary>
-	void UpdateMatProjection();
+	virtual void UpdateMatProjection();
 
 	/// <summary>
 	/// ベクトルによる移動

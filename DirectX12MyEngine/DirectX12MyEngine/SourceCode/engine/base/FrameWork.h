@@ -6,6 +6,7 @@
 #include "SpriteCommon.h"
 #include "DebugText.h"
 #include "PostEffect.h"
+#include "ShadowMap.h"
 #include "SceneManager.h"
 #include "AbstractSceneFactory.h"
 
@@ -64,6 +65,8 @@ protected: //メンバ変数
 	DebugText* debugText = nullptr;
 	//ポストエフェクト
 	PostEffect* postEffect = nullptr;
+	//シャドウマップ
+	ShadowMap* shadowMap = nullptr;
 	//シーン工場
 	AbstractSceneFactory* sceneFactory = nullptr;
 };

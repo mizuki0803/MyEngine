@@ -60,10 +60,15 @@ void FrameWork::Initialize()
 	debugText = DebugText::GetInstance();
 	debugText->Initialize(SpriteTextureLoader::DebugFont);
 
-	//Object3d共通初期化処理
+	//ポストエフェクト共通初期化処理
 	PostEffect::PostEffectCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	//ポストエフェクトの初期化
 	postEffect = PostEffect::Create();
+
+	//シャドウマップ共通初期化処理
+	ShadowMap::ShadowMapCommon(dxbase->GetDevice(), dxbase->GetCmdList());
+	//シャドウマップの初期化
+	shadowMap = ShadowMap::Create();
 
 	//objオブジェクト3d共通初期化処理
 	ObjObject3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
@@ -90,6 +95,9 @@ void FrameWork::Finalize()
 {
 	//シーン工場解放
 	delete sceneFactory;
+
+	//シャドウマップの解放
+	delete shadowMap;
 
 	//ポストエフェクトの解放
 	delete postEffect;
@@ -137,6 +145,11 @@ void FrameWork::Update()
 
 void FrameWork::Draw()
 {
+	//シャドウマップのレンダーテクスチャへの描画
+	shadowMap->DrawScenePrev();
+	SceneManager::GetInstance()->Draw3DLightView();
+	shadowMap->DrawSceneRear();
+
 	//レンダーテクスチャへの描画
 	postEffect->DrawScenePrev();
 	SceneManager::GetInstance()->Draw3D();
@@ -151,8 +164,6 @@ void FrameWork::Draw()
 	//ポストエフェクトの描画
 	postEffect->Draw();
 
-	//シーン描画
-	//SceneManager::GetInstance()->Draw3D();
 
 	//シーンの前景スプライト描画
 	SceneManager::GetInstance()->DrawFrontSprite();

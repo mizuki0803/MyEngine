@@ -33,6 +33,10 @@ void DebugScene::Initialize()
 	camera->SetTarget({ 0, 2.5f, 0 });
 	camera->SetDistance(8.0f);
 
+	//影用光源カメラ初期化
+	lightCamera.reset(new LightCamera());
+	lightCamera->Initialize({ 0, 500, 0 });
+
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
 
@@ -77,6 +81,7 @@ void DebugScene::Initialize()
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(camera.get());
+	ObjObject3d::SetLightCamera(lightCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
@@ -442,6 +447,7 @@ void DebugScene::Update()
 
 	//カメラ更新
 	camera->Update();
+	lightCamera->Update();
 
 	//Object3d更新
 	objMan->Update();
@@ -511,6 +517,24 @@ void DebugScene::Draw3D()
 
 
 	///-------パーティクル描画ここまで-------///
+}
+
+void DebugScene::Draw3DLightView()
+{
+	//Object3d共通コマンド
+	ObjObject3d::DrawPrev();
+	///-------Object3d描画ここから-------///
+
+
+	objMan->DrawLightCameraView();
+	objGround->DrawLightCameraView();
+	objSkydome->DrawLightCameraView();
+	objSphere->DrawLightCameraView();
+
+	fbxObject1->Draw();
+
+
+	///-------Object3d描画ここまで-------///
 }
 
 void DebugScene::DrawFrontSprite()

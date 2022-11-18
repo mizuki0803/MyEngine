@@ -3,12 +3,12 @@
 #include "PipelineSet.h"
 
 /// <summary>
-/// ポストエフェクト
+/// シャドウマップ
 /// </summary>
-class PostEffect
+class ShadowMap
 {
 private: // エイリアス
-// Microsoft::WRL::を省略
+	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -32,17 +32,17 @@ public: //サブクラス
 
 public:
 	/// <summary>
-	/// ポストエフェクト生成
+	/// シャドウマップ生成
 	/// </summary>
 	/// <returns>Sprite</returns>
-	static PostEffect* Create();
+	static ShadowMap* Create();
 
 	/// <summary>
-	/// ポストエフェクト共通部分の初期化
+	/// シャドウマップ共通部分の初期化
 	/// </summary>
 	/// <param name="dev">デバイス</param>
 	/// <param name="cmdList">コマンドリスト</param>
-	static void PostEffectCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
+	static void ShadowMapCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 
 public:
 	/// <summary>

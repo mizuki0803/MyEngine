@@ -61,6 +61,12 @@ public: //メンバ関数
 	void Draw();
 
 	/// <summary>
+	/// 影用光源ライトから見た視点での描画
+	/// </summary>
+	/// <returns></returns>
+	void DrawLightCameraView();
+
+	/// <summary>
 	/// UI描画
 	/// </summary>
 	void DrawUI();

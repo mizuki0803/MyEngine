@@ -50,6 +50,12 @@ void SceneManager::Draw3D()
 	scene->Draw3D();
 }
 
+void SceneManager::Draw3DLightView()
+{
+	//3Dシーン描画(ライトからの視点)
+	scene->Draw3DLightView();
+}
+
 void SceneManager::DrawFrontSprite()
 {
 	//前景スプライト描画

@@ -30,6 +30,12 @@ public: //メンバ変数
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 影用光源ライトから見た視点での描画
+	/// </summary>
+	/// <returns></returns>
+	void DrawLightCameraView();
+
 private: //メンバ関数
 	/// <summary>
 	/// 新たな山生成
