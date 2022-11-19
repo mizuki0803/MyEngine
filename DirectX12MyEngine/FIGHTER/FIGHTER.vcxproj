@@ -16,6 +16,7 @@
     <ProjectGuid>{f8c69688-d2e0-4519-a5c1-8a19cd9fa8f5}</ProjectGuid>
     <RootNamespace>DirectX12MyEngine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>FIGHTER</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
