@@ -71,7 +71,7 @@ void FrameWork::Initialize()
 	shadowMap = ShadowMap::Create();
 
 	//objオブジェクト3d共通初期化処理
-	ObjObject3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
+	ObjObject3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList(), shadowMap->GetDepthBuff());
 
 	//FBXLoader初期化
 	FbxLoader::GetInstance()->Initialize(dxbase->GetDevice());
@@ -163,7 +163,6 @@ void FrameWork::Draw()
 
 	//ポストエフェクトの描画
 	postEffect->Draw();
-
 
 	//シーンの前景スプライト描画
 	SceneManager::GetInstance()->DrawFrontSprite();

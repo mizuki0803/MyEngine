@@ -67,11 +67,13 @@ public: //静的メンバ関数
 
 	//setter
 	static void SetDevice(ID3D12Device* device) { ObjModel::dev = device; };
+	static void SetShadowMap(ID3D12Resource* shadowMap) { ObjModel::shadowMap = shadowMap; }
 
 private: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* dev;
-
+	//シャドウマップ参照用
+	static ID3D12Resource* shadowMap;
 
 private: //非公開のメンバ関数
 	/// <summary>

@@ -31,6 +31,8 @@ public: //サブクラス
 		XMMATRIX viewproj;	//ビュープロジェクション行列
 		XMMATRIX world;		//ワールド行列
 		Vector3 cameraPos;	//カメラ座標(ワールド座標)
+		XMMATRIX lightViewproj;	//ライトビュープロジェクション行列
+		Vector3 lightCameraPos;	//ライトカメラ座標(ワールド座標)
 	};
 
 
@@ -40,7 +42,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="dev">デバイス</param>
 	/// <param name="cmdList">コマンドリスト</param>
-	static void Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
+	static void Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, ID3D12Resource* shadowMap);
 
 	/// <summary>
 	/// パイプライン生成

@@ -16,6 +16,7 @@ using namespace std;
 
 //静的メンバ変数の実体
 ID3D12Device* ObjModel::dev = nullptr;
+ID3D12Resource* ObjModel::shadowMap = nullptr;
 
 
 ObjModel* ObjModel::LoadFromOBJ(const std::string& modelname, const bool smoothing)
@@ -278,7 +279,6 @@ void ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 		(UINT16)metadata.mipLevels);
 
 	//テクスチャ用バッファの生成
-	//ID3D12Resource *texbuff = nullptr;
 	result = dev->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
 		D3D12_HEAP_FLAG_NONE,
@@ -297,19 +297,28 @@ void ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 	);
 
 	//シェーダリソースビュー設定
+	D3D12_CPU_DESCRIPTOR_HANDLE srvH{};//ハンドルを取得
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
 	srvDesc.Format = metadata.format;	//RGBA
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
-
+	srvH = descHeap->GetCPUDescriptorHandleForHeapStart();
 	//シェーダリソースビュー作成
 	dev->CreateShaderResourceView(
 		texBuff.Get(),	//ビューと関連付けるバッファ
 		&srvDesc,	//テクスチャ設定情報
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-		)
+		srvH
+	);
+
+	//シェーダリソースビュー設定
+	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;	//R
+	srvH.ptr += dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//シェーダリソースビュー作成
+	dev->CreateShaderResourceView(
+		shadowMap,	//ビューと関連付けるバッファ
+		&srvDesc,	//テクスチャ設定情報
+		srvH
 	);
 }
 
@@ -317,10 +326,10 @@ void ObjModel::InitializeDescHeap()
 {
 	HRESULT result;
 
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};	//TODO
+	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;	//シェーダーから見える
-	descHeapDesc.NumDescriptors = 1;
+	descHeapDesc.NumDescriptors = 2;
 
 	//デスクリプタヒープの生成
 	result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
@@ -459,6 +468,12 @@ void ObjModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMater
 			CD3DX12_GPU_DESCRIPTOR_HANDLE(
 				descHeap->GetGPUDescriptorHandleForHeapStart(),
 				0,
+				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+
+		cmdList->SetGraphicsRootDescriptorTable(3,
+			CD3DX12_GPU_DESCRIPTOR_HANDLE(
+				descHeap->GetGPUDescriptorHandleForHeapStart(),
+				1,
 				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 	}
 

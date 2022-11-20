@@ -21,7 +21,7 @@ Camera* ObjObject3d::camera = nullptr;
 LightCamera* ObjObject3d::lightCamera = nullptr;
 
 
-void ObjObject3d::Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
+void ObjObject3d::Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, ID3D12Resource* shadowMap)
 {
 	//nullptrチェック
 	assert(dev);
@@ -35,6 +35,8 @@ void ObjObject3d::Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* c
 
 	//モデルにデバイスをセット
 	ObjModel::SetDevice(dev);
+	//モデルにシャドウマップをセット
+	ObjModel::SetShadowMap(shadowMap);
 }
 
 void ObjObject3d::CreatePipeline()
@@ -177,15 +179,18 @@ void ObjObject3d::CreatePipeline()
 	gpipeline.SampleDesc.Count = 1;	//1ピクセルにつき1回サンプリング
 
 	//デスクリプタテーブルの設定
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV = {};
-	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);	//t0 レジスタ
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV0 = {};
+	descRangeSRV0.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);	//t0 レジスタ
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV1 = {};
+	descRangeSRV1.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);	//t1 レジスタ
 
 	//ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[4] = {};
+	CD3DX12_ROOT_PARAMETER rootparams[5] = {};
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[3].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[3].InitAsDescriptorTable(1, &descRangeSRV1, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[4].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 
 	//テクスチャサンプラーの設定
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -310,6 +315,9 @@ void ObjObject3d::Update()
 
 	const XMMATRIX matViewProjection = camera->GetMatView() * camera->GetMatProjection();
 	const Vector3 cameraPos = camera->GetEye();
+	const XMMATRIX matLightViewProjection = lightCamera->GetMatView() * lightCamera->GetMatProjection();
+	const Vector3 lightCameraPos = lightCamera->GetEye();
+
 	//定数バッファへのデータ転送(カメラ視点)
 	ConstBufferDataB0* constMap0 = nullptr;
 	if (SUCCEEDED(constBuffB0[0]->Map(0, nullptr, (void**)&constMap0)))
@@ -318,11 +326,11 @@ void ObjObject3d::Update()
 		constMap0->viewproj = matViewProjection;
 		constMap0->world = matWorld;
 		constMap0->cameraPos = cameraPos;
+		constMap0->lightViewproj = matLightViewProjection;
+		constMap0->lightCameraPos = lightCameraPos;
 		constBuffB0[0]->Unmap(0, nullptr);
 	}
 
-	const XMMATRIX matLightViewProjection = lightCamera->GetMatView() * lightCamera->GetMatProjection();
-	const Vector3 lightCameraPos = lightCamera->GetEye();
 	//定数バッファへのデータ転送(光源カメラ視点)
 	ConstBufferDataB0* constMap1 = nullptr;
 	if (SUCCEEDED(constBuffB0[1]->Map(0, nullptr, (void**)&constMap1)))
@@ -344,7 +352,7 @@ void ObjObject3d::Draw()
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0[0]->GetGPUVirtualAddress());
 
 	//ライトの描画
-	lightGroup->Draw(cmdList, 3);
+	lightGroup->Draw(cmdList, 4);
 
 	//モデル描画
 	model->Draw(cmdList, 1);
@@ -359,7 +367,7 @@ void ObjObject3d::DrawLightCameraView()
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0[1]->GetGPUVirtualAddress());
 
 	//ライトの描画
-	lightGroup->Draw(cmdList, 3);
+	lightGroup->Draw(cmdList, 4);
 
 	//モデル描画
 	model->Draw(cmdList, 1);

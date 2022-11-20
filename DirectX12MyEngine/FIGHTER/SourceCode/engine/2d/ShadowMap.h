@@ -73,6 +73,9 @@ public:
 	/// </summary>
 	void CreateGraphicsPipelineState();
 
+	//getter
+	ID3D12Resource* GetDepthBuff() { return depthBuff.Get(); }
+
 private:
 	//画面クリアカラー
 	static const float clearColor[4];
