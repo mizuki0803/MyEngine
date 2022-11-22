@@ -62,11 +62,11 @@ void Reticle3D::Update()
 
 	//定数バッファへのデータ転送
 	ConstBufferDataB0* constMap = nullptr;
-	if (SUCCEEDED(constBuffB0[0]->Map(0, nullptr, (void**)&constMap))) {
+	if (SUCCEEDED(constBuffB0->Map(0, nullptr, (void**)&constMap))) {
 		constMap->viewproj = matViewProjection;
 		constMap->world = matWorld;
 		constMap->cameraPos = cameraPos;
-		constBuffB0[0]->Unmap(0, nullptr);
+		constBuffB0->Unmap(0, nullptr);
 	}
 }
 

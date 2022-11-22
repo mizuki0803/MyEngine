@@ -35,16 +35,16 @@ void FrameWork::Run()
 void FrameWork::Initialize()
 {
 	//ウインドウ作成
-	win = new WindowApp();
+	win.reset(new WindowApp());
 	win->WindowCreate(L"FIGHTER");
 
 	//DirectX初期化
-	dxbase = new DirectXBase();
-	dxbase->Initialize(win);;
+	dxbase.reset(new DirectXBase());
+	dxbase->Initialize(win.get());
 
 	//入力の初期化
 	input = Input::GetInstance();
-	input->Initialize(win);
+	input->Initialize(win.get());
 
 	//音声初期化
 	audio = Audio::GetInstance();
@@ -63,15 +63,16 @@ void FrameWork::Initialize()
 	//ポストエフェクト共通初期化処理
 	PostEffect::PostEffectCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	//ポストエフェクトの初期化
-	postEffect = PostEffect::Create();
+	postEffect.reset(PostEffect::Create());
 
 	//シャドウマップ共通初期化処理
 	ShadowMap::ShadowMapCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	//シャドウマップの初期化
-	shadowMap = ShadowMap::Create();
+	shadowMap.reset(ShadowMap::Create({ 0.25f, 0.25f }, { -0.6f, 0.6f }));
 
 	//objオブジェクト3d共通初期化処理
-	ObjObject3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList(), shadowMap->GetDepthBuff());
+	ObjObject3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
+	ObjModel::SetDescHeapDSV(shadowMap->GetDescHeapSRV());
 
 	//FBXLoader初期化
 	FbxLoader::GetInstance()->Initialize(dxbase->GetDevice());
@@ -93,28 +94,14 @@ void FrameWork::Initialize()
 
 void FrameWork::Finalize()
 {
-	//シーン工場解放
-	delete sceneFactory;
-
-	//シャドウマップの解放
-	delete shadowMap;
-
-	//ポストエフェクトの解放
-	delete postEffect;
-
 	//FBXLoader解放
 	FbxLoader::GetInstance()->Finalize();
 
 	//audio解放
 	audio->Finalize();
 
-	//DirectX解放
-	delete dxbase;
-
 	//ウインドウ解放
 	win->WindowRelease();
-	delete win;
-	win = nullptr;
 }
 
 void FrameWork::Update()
@@ -148,11 +135,16 @@ void FrameWork::Draw()
 	//シャドウマップのレンダーテクスチャへの描画
 	shadowMap->DrawScenePrev();
 	SceneManager::GetInstance()->Draw3DLightView();
-	shadowMap->DrawSceneRear();
+	shadowMap->DrawSceneRear();	
+	
 
 	//レンダーテクスチャへの描画
 	postEffect->DrawScenePrev();
+	shadowMap->Draw();
+
+	shadowMap->ReadScenePrev();
 	SceneManager::GetInstance()->Draw3D();
+	shadowMap->ReadSceneRear();
 	postEffect->DrawSceneRear();
 
 	//グラフィックスコマンド(前)
@@ -163,7 +155,7 @@ void FrameWork::Draw()
 
 	//ポストエフェクトの描画
 	postEffect->Draw();
-
+	
 	//シーンの前景スプライト描画
 	SceneManager::GetInstance()->DrawFrontSprite();
 

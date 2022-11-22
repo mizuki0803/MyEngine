@@ -159,7 +159,7 @@ void SortieScene::Draw3D()
 void SortieScene::Draw3DLightView()
 {
 	//Object3d共通コマンド
-	ObjObject3d::DrawPrev();
+	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
 	//自機

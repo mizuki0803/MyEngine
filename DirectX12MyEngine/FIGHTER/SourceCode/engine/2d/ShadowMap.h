@@ -35,7 +35,7 @@ public:
 	/// シャドウマップ生成
 	/// </summary>
 	/// <returns>Sprite</returns>
-	static ShadowMap* Create();
+	static ShadowMap* Create(const XMFLOAT2& size = { 1.0f, 1.0f }, const XMFLOAT2& center = { 0, 0 });
 
 	/// <summary>
 	/// シャドウマップ共通部分の初期化
@@ -48,7 +48,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	bool Initialize();
+	bool Initialize(const XMFLOAT2& size, const XMFLOAT2& center);
 
 	/// <summary>
 	/// 描画
@@ -69,12 +69,38 @@ public:
 	void DrawSceneRear();
 
 	/// <summary>
+	/// シーン読み取り前処理
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	void ReadScenePrev();
+
+	/// <summary>
+	/// シーン読み取り後処理
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	void ReadSceneRear();
+
+	/// <summary>
+	/// シーン読み取り前処理
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	void DrawSceneReadPrev();
+
+	/// <summary>
+	/// シーン読み取り後処理
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	void DrawSceneReadRear();
+
+	/// <summary>
 	/// パイプライン生成
 	/// </summary>
 	void CreateGraphicsPipelineState();
 
 	//getter
 	ID3D12Resource* GetDepthBuff() { return depthBuff.Get(); }
+	ID3D12DescriptorHeap* GetDescHeapDSV() { return descHeapDSV.Get(); }
+	ID3D12DescriptorHeap* GetDescHeapSRV() { return descHeapSRV.Get(); }
 
 private:
 	//画面クリアカラー

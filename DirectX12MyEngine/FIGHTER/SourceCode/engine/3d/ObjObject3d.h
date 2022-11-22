@@ -32,7 +32,14 @@ public: //サブクラス
 		XMMATRIX world;		//ワールド行列
 		Vector3 cameraPos;	//カメラ座標(ワールド座標)
 		XMMATRIX lightViewproj;	//ライトビュープロジェクション行列
-		Vector3 lightCameraPos;	//ライトカメラ座標(ワールド座標)
+	};
+
+	struct ConstBufferDataLightViewB0
+	{
+		XMFLOAT4 color;		//色
+		XMMATRIX viewproj;	//ビュープロジェクション行列
+		XMMATRIX world;		//ワールド行列
+		Vector3 cameraPos;	//カメラ座標(ワールド座標)
 	};
 
 
@@ -42,7 +49,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="dev">デバイス</param>
 	/// <param name="cmdList">コマンドリスト</param>
-	static void Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, ID3D12Resource* shadowMap);
+	static void Object3dCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 
 	/// <summary>
 	/// パイプライン生成
@@ -50,9 +57,19 @@ public: //静的メンバ関数
 	static void CreatePipeline();
 
 	/// <summary>
+	/// パイプライン生成
+	/// </summary>
+	static void CreateLightViewPipeline();
+
+	/// <summary>
 	/// 描画前処理
 	/// </summary>
 	static void DrawPrev();
+
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
+	static void DrawLightViewPrev();
 
 	/// <summary>
 	/// 生成処理
@@ -110,6 +127,8 @@ protected: //静的メンバ変数
 	static ID3D12GraphicsCommandList* cmdList;
 	//パイプラインセット
 	static PipelineSet pipelineSet;
+	//パイプラインセット
+	static PipelineSet pipelineSetLightView;
 	//ライト
 	static LightGroup* lightGroup;
 	//カメラ
@@ -119,7 +138,8 @@ protected: //静的メンバ変数
 
 protected: //メンバ変数
 	//定数バッファ
-	ComPtr<ID3D12Resource> constBuffB0[2];
+	ComPtr<ID3D12Resource> constBuffB0;
+	ComPtr<ID3D12Resource> constBuffLightViewB0;
 	//アフィン変換情報
 	Vector3 scale = { 1, 1, 1 };
 	Vector3 rotation = { 0, 0, 0 };

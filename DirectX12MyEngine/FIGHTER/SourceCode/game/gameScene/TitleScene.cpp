@@ -44,7 +44,7 @@ void TitleScene::Initialize()
 	titleCamera->Initialize();
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
-	lightCamera->Initialize({ 0, 500, 0 });
+	lightCamera->Initialize({ 0, 100, 0 });
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
@@ -160,7 +160,7 @@ void TitleScene::Draw3D()
 void TitleScene::Draw3DLightView()
 {
 	//Object3d共通コマンド
-	ObjObject3d::DrawPrev();
+	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
 	//自機

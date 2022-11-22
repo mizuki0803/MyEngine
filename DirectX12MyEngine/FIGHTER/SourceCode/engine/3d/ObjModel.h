@@ -67,13 +67,12 @@ public: //静的メンバ関数
 
 	//setter
 	static void SetDevice(ID3D12Device* device) { ObjModel::dev = device; };
-	static void SetShadowMap(ID3D12Resource* shadowMap) { ObjModel::shadowMap = shadowMap; }
+	static void SetDescHeapDSV(ID3D12DescriptorHeap* shadowDescHeapSRV) { ObjModel::shadowDescHeapSRV = shadowDescHeapSRV; }
 
 private: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* dev;
-	//シャドウマップ参照用
-	static ID3D12Resource* shadowMap;
+	static ID3D12DescriptorHeap* shadowDescHeapSRV;
 
 private: //非公開のメンバ関数
 	/// <summary>
@@ -133,6 +132,13 @@ public: //メンバ関数
 	/// <param name="cmdList">コマンドリスト</param>
 	/// <param name="rootOaramIndexMaterial">ルートパラメータの数字</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
+
+	/// <summary>
+	/// 影用光源ライトから見た視点での描画
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	/// <param name="rootOaramIndexMaterial">ルートパラメータの数字</param>
+	void DrawLightCameraView(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
 
 private: //メンバ変数
 	//テクスチャ用デスクリプタヒープの生成

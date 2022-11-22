@@ -12,7 +12,7 @@ ID3D12Device* ShadowMap::dev = nullptr;
 ID3D12GraphicsCommandList* ShadowMap::cmdList = nullptr;
 PipelineSet ShadowMap::pipelineSet;
 
-ShadowMap* ShadowMap::Create()
+ShadowMap* ShadowMap::Create(const XMFLOAT2& size, const XMFLOAT2& center)
 {
 	//インスタンスを生成
 	ShadowMap* instance = new ShadowMap();
@@ -21,7 +21,7 @@ ShadowMap* ShadowMap::Create()
 	}
 
 	// 初期化
-	if (!instance->Initialize()) {
+	if (!instance->Initialize(size, center)) {
 		delete instance;
 		assert(0);
 		return nullptr;
@@ -40,7 +40,7 @@ void ShadowMap::ShadowMapCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cm
 	ShadowMap::cmdList = cmdList;
 }
 
-bool ShadowMap::Initialize()
+bool ShadowMap::Initialize(const XMFLOAT2& size, const XMFLOAT2& center)
 {
 	//パイプライン生成
 	CreateGraphicsPipelineState();
@@ -49,10 +49,10 @@ bool ShadowMap::Initialize()
 
 	//頂点データ
 	VertexPosUv vertices[] = {
-		{{ -0.3f, -0.3f, 0.0f}, {0.0f, 1.0f}},	//左下
-		{{ -0.3f, +0.3f, 0.0f}, {0.0f, 0.0f}},	//左上
-		{{ +0.3f, -0.3f, 0.0f}, {1.0f, 1.0f}},	//右下
-		{{ +0.3f, +0.3f, 0.0f}, {1.0f, 0.0f}},	//右上
+		{{ -size.x + center.x, -size.y + center.y, 0.0f}, {0.0f, 1.0f}},	//左下
+		{{ -size.x + center.x, +size.y + center.y, 0.0f}, {0.0f, 0.0f}},	//左上
+		{{ +size.x + center.x, -size.y + center.y, 0.0f}, {1.0f, 1.0f}},	//右下
+		{{ +size.x + center.x, +size.y + center.y, 0.0f}, {1.0f, 0.0f}},	//右上
 	};
 
 	//頂点バッファ生成
@@ -136,6 +136,19 @@ bool ShadowMap::Initialize()
 	result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
 	assert(SUCCEEDED(result));
 
+	//SRV設定
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
+	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
+	srvDesc.Texture2D.MipLevels = 1;
+
+	//デスクリプタヒープにSRV作成
+	dev->CreateShaderResourceView(texBuff.Get(),	//ビューと関連付けるバッファ
+		&srvDesc,
+		descHeapSRV->GetCPUDescriptorHandleForHeapStart()
+	);
+
 
 	//RTV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
@@ -188,19 +201,6 @@ bool ShadowMap::Initialize()
 		&dsvDesc,
 		descHeapDSV->GetCPUDescriptorHandleForHeapStart());
 
-	//SRV設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
-	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = 1;
-
-	//デスクリプタヒープにSRV作成
-	dev->CreateShaderResourceView(depthBuff.Get(),	//ビューと関連付けるバッファ
-		&srvDesc,
-		descHeapSRV->GetCPUDescriptorHandleForHeapStart()
-	);
-
 	return true;
 }
 
@@ -234,7 +234,7 @@ void ShadowMap::DrawScenePrev()
 {
 	//リソースバリアを変更(シェーダリソース→描画可能)
 	cmdList->ResourceBarrier(1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
+		&CD3DX12_RESOURCE_BARRIER::Transition(depthBuff.Get(),
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			D3D12_RESOURCE_STATE_RENDER_TARGET));
 
@@ -264,8 +264,22 @@ void ShadowMap::DrawScenePrev()
 void ShadowMap::DrawSceneRear()
 {
 	//リソースバリアを変更(描画可能→シェーダリソース)
-	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
+	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(depthBuff.Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
+}
+
+void ShadowMap::ReadScenePrev()
+{
+	//リソースバリアを変更(シェーダリソース→読み取り可能)
+	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(depthBuff.Get(),
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_GENERIC_READ));
+}
+
+void ShadowMap::ReadSceneRear()
+{
+	//リソースバリアを変更(読み取り可能→シェーダリソース)
+	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(depthBuff.Get(),
+		D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 }
 
 void ShadowMap::CreateGraphicsPipelineState()

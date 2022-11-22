@@ -16,7 +16,7 @@ using namespace std;
 
 //静的メンバ変数の実体
 ID3D12Device* ObjModel::dev = nullptr;
-ID3D12Resource* ObjModel::shadowMap = nullptr;
+ID3D12DescriptorHeap* ObjModel::shadowDescHeapSRV = nullptr;
 
 
 ObjModel* ObjModel::LoadFromOBJ(const std::string& modelname, const bool smoothing)
@@ -279,46 +279,37 @@ void ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 		(UINT16)metadata.mipLevels);
 
 	//テクスチャ用バッファの生成
-	result = dev->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
-		D3D12_HEAP_FLAG_NONE,
-		&texresDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&texBuff));
+		result = dev->CreateCommittedResource(
+			&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
+			D3D12_HEAP_FLAG_NONE,
+			&texresDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&texBuff));
 
-	//テクスチャバッファにデータ転送
-	result = texBuff->WriteToSubresource(
-		0,
-		nullptr,	//全領域コピー
-		img->pixels,	//元データアドレス
-		(UINT)img->rowPitch,	//1ラインサイズ
-		(UINT)img->slicePitch	//1枚サイズ
-	);
+		//テクスチャバッファにデータ転送
+		result = texBuff->WriteToSubresource(
+			0,
+			nullptr,	//全領域コピー
+			img->pixels,	//元データアドレス
+			(UINT)img->rowPitch,	//1ラインサイズ
+			(UINT)img->slicePitch	//1枚サイズ
+		);
 
 	//シェーダリソースビュー設定
-	D3D12_CPU_DESCRIPTOR_HANDLE srvH{};//ハンドルを取得
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
 	srvDesc.Format = metadata.format;	//RGBA
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
-	srvH = descHeap->GetCPUDescriptorHandleForHeapStart();
 	//シェーダリソースビュー作成
 	dev->CreateShaderResourceView(
 		texBuff.Get(),	//ビューと関連付けるバッファ
 		&srvDesc,	//テクスチャ設定情報
-		srvH
-	);
-
-	//シェーダリソースビュー設定
-	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;	//R
-	srvH.ptr += dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	//シェーダリソースビュー作成
-	dev->CreateShaderResourceView(
-		shadowMap,	//ビューと関連付けるバッファ
-		&srvDesc,	//テクスチャ設定情報
-		srvH
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			descHeap->GetCPUDescriptorHandleForHeapStart(), 0,
+			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+		)
 	);
 }
 
@@ -329,7 +320,7 @@ void ObjModel::InitializeDescHeap()
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;	//シェーダーから見える
-	descHeapDesc.NumDescriptors = 2;
+	descHeapDesc.NumDescriptors = 1;
 
 	//デスクリプタヒープの生成
 	result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
@@ -375,7 +366,6 @@ void ObjModel::CreateBuffers()
 	VertexPosNormalUv* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
-		//memcpy(vertMap, vertices, sizeof(vertices));
 		std::copy(vertices.begin(), vertices.end(), vertMap);
 		vertBuff->Unmap(0, nullptr);
 	}
@@ -469,11 +459,47 @@ void ObjModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMater
 				descHeap->GetGPUDescriptorHandleForHeapStart(),
 				0,
 				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+	}
 
+	ID3D12DescriptorHeap* shadowppHeaps[] = { shadowDescHeapSRV };
+	cmdList->SetDescriptorHeaps(_countof(shadowppHeaps), shadowppHeaps);
+
+	if (material.textureFilename.size() > 0)
+	{
+		//シェーダリソースビューをセット
 		cmdList->SetGraphicsRootDescriptorTable(3,
 			CD3DX12_GPU_DESCRIPTOR_HANDLE(
-				descHeap->GetGPUDescriptorHandleForHeapStart(),
+				shadowDescHeapSRV->GetGPUDescriptorHandleForHeapStart(),
 				1,
+				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+	}
+
+
+	//描画コマンド
+	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
+}
+
+void ObjModel::DrawLightCameraView(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial)
+{
+	//頂点バッファビューの設定
+	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	//インデックスバッファビューの設定
+	cmdList->IASetIndexBuffer(&ibView);
+
+	//定数バッファビューをセット(マテリアル)
+	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1->GetGPUVirtualAddress());
+
+	//デスクリプタヒープの配列
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	if (material.textureFilename.size() > 0)
+	{
+		//シェーダリソースビューをセット
+		cmdList->SetGraphicsRootDescriptorTable(2,
+			CD3DX12_GPU_DESCRIPTOR_HANDLE(
+				descHeap->GetGPUDescriptorHandleForHeapStart(),
+				0,
 				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 	}
 

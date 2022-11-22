@@ -45,15 +45,6 @@
     <Filter Include="ソース ファイル\engine\base\pipelineSet">
       <UniqueIdentifier>{9b113925-a59f-476e-89cb-f83e5ec01597}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\engine\3d">
-      <UniqueIdentifier>{fae37165-57c0-4ab7-86f4-5532a302b9f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\engine\3d\particle">
-      <UniqueIdentifier>{88c08148-ee75-4804-aa2a-50437b3e454b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\engine\3d\object">
-      <UniqueIdentifier>{132e1006-364c-4c7f-9c47-01f9552eca50}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\engine\2d">
       <UniqueIdentifier>{003d5477-41be-47e7-a06e-247c04d1a934}</UniqueIdentifier>
     </Filter>
@@ -149,6 +140,39 @@
     </Filter>
     <Filter Include="ソース ファイル\game\gameObject\enemy\enemyBullet">
       <UniqueIdentifier>{c212ec50-d06b-4bb0-8f08-64cd90a1fb5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\engine\2d\shadowMap">
+      <UniqueIdentifier>{c66fe934-88fb-4522-838b-9603047a187c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\engine\3d">
+      <UniqueIdentifier>{fae37165-57c0-4ab7-86f4-5532a302b9f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\engine\3d\particle">
+      <UniqueIdentifier>{88c08148-ee75-4804-aa2a-50437b3e454b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\engine\3d\object">
+      <UniqueIdentifier>{132e1006-364c-4c7f-9c47-01f9552eca50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\FBX">
+      <UniqueIdentifier>{92719863-5591-486e-9e00-19984b285355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Obj">
+      <UniqueIdentifier>{a7e2a880-d1f9-4bff-9be1-c50119ed7f57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Particle">
+      <UniqueIdentifier>{c692ca91-cfd5-4150-837a-da117b57d452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\PostEffect">
+      <UniqueIdentifier>{06decd9c-9d01-4b5b-b81f-7e120c0a4b3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\ShadowMap">
+      <UniqueIdentifier>{63771d91-6185-4857-b04a-3ddbd9bd4362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Sprite">
+      <UniqueIdentifier>{46b64092-2c65-4a9c-89fd-9c83a298720a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\ObjLightView">
+      <UniqueIdentifier>{1cf862e3-8d87-4a4a-85db-805cecda40f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -450,77 +474,77 @@
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\engine\2d\ShadowMap.cpp">
-      <Filter>ソース ファイル\engine\2d</Filter>
+      <Filter>ソース ファイル\engine\2d\shadowMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shaders\Basic.hlsli">
-      <Filter>リソース ファイル</Filter>
-    </None>
-    <None Include="Resources\shaders\Sprite.hlsli">
-      <Filter>リソース ファイル</Filter>
-    </None>
-    <None Include="Resources\shaders\Particle.hlsli">
-      <Filter>リソース ファイル</Filter>
+    <None Include="Resources\shaders\FBX.hlsli">
+      <Filter>リソース ファイル\FBX</Filter>
     </None>
     <None Include="Resources\shaders\Obj.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\Obj</Filter>
     </None>
-    <None Include="Resources\shaders\FBX.hlsli">
-      <Filter>リソース ファイル</Filter>
+    <None Include="Resources\shaders\ObjLightView.hlsli">
+      <Filter>リソース ファイル\ObjLightView</Filter>
+    </None>
+    <None Include="Resources\shaders\Particle.hlsli">
+      <Filter>リソース ファイル\Particle</Filter>
     </None>
     <None Include="Resources\shaders\PostEffect.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\PostEffect</Filter>
     </None>
     <None Include="Resources\shaders\ShadowMap.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\ShadowMap</Filter>
+    </None>
+    <None Include="Resources\shaders\Sprite.hlsli">
+      <Filter>リソース ファイル\Sprite</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shaders\BasicPS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\BasicVS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\SpritePS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticlePS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjVS.hlsl">
-      <Filter>リソース ファイル</Filter>
+    <FxCompile Include="Resources\shaders\FBXPS.hlsl">
+      <Filter>リソース ファイル\FBX</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\FBXVS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\FBX</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\FBXPS.hlsl">
-      <Filter>リソース ファイル</Filter>
+    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
+      <Filter>リソース ファイル\Obj</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjVS.hlsl">
+      <Filter>リソース ファイル\Obj</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjLightViewPS.hlsl">
+      <Filter>リソース ファイル\ObjLightView</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjLightViewVS.hlsl">
+      <Filter>リソース ファイル\ObjLightView</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
+      <Filter>リソース ファイル\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ParticlePS.hlsl">
+      <Filter>リソース ファイル\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
+      <Filter>リソース ファイル\Particle</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffectPS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\PostEffect</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\PostEffect</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\ShadowMap</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\SpritePS.hlsl">
+      <Filter>リソース ファイル\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
+      <Filter>リソース ファイル\Sprite</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -837,7 +861,7 @@
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
-      <Filter>ソース ファイル\engine\2d</Filter>
+      <Filter>ソース ファイル\engine\2d\shadowMap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
