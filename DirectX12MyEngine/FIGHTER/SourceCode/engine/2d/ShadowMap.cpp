@@ -235,8 +235,7 @@ void ShadowMap::DrawScenePrev()
 	//リソースバリアを変更(シェーダリソース→描画可能)
 	cmdList->ResourceBarrier(1,
 		&CD3DX12_RESOURCE_BARRIER::Transition(depthBuff.Get(),
-			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-			D3D12_RESOURCE_STATE_RENDER_TARGET));
+			D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_DEPTH_WRITE));
 
 	//レンダーターゲットビュー用デスクリプタヒープのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvH =
@@ -265,21 +264,7 @@ void ShadowMap::DrawSceneRear()
 {
 	//リソースバリアを変更(描画可能→シェーダリソース)
 	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(depthBuff.Get(),
-		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
-}
-
-void ShadowMap::ReadScenePrev()
-{
-	//リソースバリアを変更(シェーダリソース→読み取り可能)
-	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(depthBuff.Get(),
-		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_GENERIC_READ));
-}
-
-void ShadowMap::ReadSceneRear()
-{
-	//リソースバリアを変更(読み取り可能→シェーダリソース)
-	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(depthBuff.Get(),
-		D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
+		D3D12_RESOURCE_STATE_DEPTH_WRITE, D3D12_RESOURCE_STATE_GENERIC_READ));
 }
 
 void ShadowMap::CreateGraphicsPipelineState()

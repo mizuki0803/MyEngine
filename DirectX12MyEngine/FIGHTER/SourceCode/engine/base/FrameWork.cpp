@@ -140,11 +140,7 @@ void FrameWork::Draw()
 
 	//レンダーテクスチャへの描画
 	postEffect->DrawScenePrev();
-	shadowMap->Draw();
-
-	shadowMap->ReadScenePrev();
 	SceneManager::GetInstance()->Draw3D();
-	shadowMap->ReadSceneRear();
 	postEffect->DrawSceneRear();
 
 	//グラフィックスコマンド(前)

@@ -69,30 +69,6 @@ public:
 	void DrawSceneRear();
 
 	/// <summary>
-	/// シーン読み取り前処理
-	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
-	void ReadScenePrev();
-
-	/// <summary>
-	/// シーン読み取り後処理
-	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
-	void ReadSceneRear();
-
-	/// <summary>
-	/// シーン読み取り前処理
-	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
-	void DrawSceneReadPrev();
-
-	/// <summary>
-	/// シーン読み取り後処理
-	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
-	void DrawSceneReadRear();
-
-	/// <summary>
 	/// パイプライン生成
 	/// </summary>
 	void CreateGraphicsPipelineState();

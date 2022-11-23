@@ -279,22 +279,22 @@ void ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 		(UINT16)metadata.mipLevels);
 
 	//テクスチャ用バッファの生成
-		result = dev->CreateCommittedResource(
-			&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
-			D3D12_HEAP_FLAG_NONE,
-			&texresDesc,
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(&texBuff));
+	result = dev->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
+		D3D12_HEAP_FLAG_NONE,
+		&texresDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&texBuff));
 
-		//テクスチャバッファにデータ転送
-		result = texBuff->WriteToSubresource(
-			0,
-			nullptr,	//全領域コピー
-			img->pixels,	//元データアドレス
-			(UINT)img->rowPitch,	//1ラインサイズ
-			(UINT)img->slicePitch	//1枚サイズ
-		);
+	//テクスチャバッファにデータ転送
+	result = texBuff->WriteToSubresource(
+		0,
+		nullptr,	//全領域コピー
+		img->pixels,	//元データアドレス
+		(UINT)img->rowPitch,	//1ラインサイズ
+		(UINT)img->slicePitch	//1枚サイズ
+	);
 
 	//シェーダリソースビュー設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
@@ -461,18 +461,18 @@ void ObjModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMater
 				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 	}
 
-	ID3D12DescriptorHeap* shadowppHeaps[] = { shadowDescHeapSRV };
-	cmdList->SetDescriptorHeaps(_countof(shadowppHeaps), shadowppHeaps);
+	//ID3D12DescriptorHeap* shadowppHeaps[] = { shadowDescHeapSRV };
+	//cmdList->SetDescriptorHeaps(_countof(shadowppHeaps), shadowppHeaps);
 
-	if (material.textureFilename.size() > 0)
-	{
-		//シェーダリソースビューをセット
-		cmdList->SetGraphicsRootDescriptorTable(3,
-			CD3DX12_GPU_DESCRIPTOR_HANDLE(
-				shadowDescHeapSRV->GetGPUDescriptorHandleForHeapStart(),
-				1,
-				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
-	}
+	//if (material.textureFilename.size() > 0)
+	//{
+	//	//シェーダリソースビューをセット
+	//	cmdList->SetGraphicsRootDescriptorTable(3,
+	//		CD3DX12_GPU_DESCRIPTOR_HANDLE(
+	//			shadowDescHeapSRV->GetGPUDescriptorHandleForHeapStart(),
+	//			1,
+	//			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+	//}
 
 
 	//描画コマンド
