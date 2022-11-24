@@ -103,12 +103,8 @@ void TitleScene::Update()
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
-	//デバックテキスト
-	//X座標,Y座標,縮尺を指定して表示
-	//debugText->Print("GAME SCENE", 1000, 50);
-
 	//自機が空まで行って見えなくなったら
-	const bool isPlayerSky = (player->GetPosition().y >= 500);
+	const bool isPlayerSky = (player->GetPosition().y >= 400);
 	if (isPlayerSky) {
 		//ステージ選択へシーン変更を開始する
 		SceneChangeStart({ 0,0,0,0 }, 40, 60, 60, "STAGESELECT");

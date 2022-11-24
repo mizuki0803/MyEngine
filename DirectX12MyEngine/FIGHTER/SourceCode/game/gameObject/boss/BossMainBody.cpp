@@ -356,8 +356,8 @@ void BossMainBody::AttackTypeTrackingShot()
 	const int fireInterval = 10;
 	if (fireTimer >= fireInterval) {
 		//弾を発射
-		const float bulletScale = 1.0f;
-		const float bulletSpeed = 1.5f;
+		const float bulletScale = 1.5f;
+		const float bulletSpeed = 1.2f;
 		Fire(bulletScale, bulletSpeed);
 		//発射タイマーを初期化
 		fireTimer = 0;
