@@ -14,7 +14,7 @@ void (GameCamera::* GameCamera::stageClearCameraActionFuncTable[])() = {
 	&GameCamera::StageClearPlayerKeepLook,
 };
 
-const float GameCamera::advanceSpeed = 0.3f;
+const float GameCamera::advanceSpeed = 0.4f;
 
 void GameCamera::Initialize()
 {
@@ -197,8 +197,13 @@ void GameCamera::Move()
 	velocity.x = moveSpeed * (rotation.y / rotLimit.y);
 	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
 
+	//自機の移動速度変更に合わせて変更する
+	float moveSpeedPhaseSpeed = 1.0f;
+	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = 2.2f; }
+	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = 0.4f; }
+
 	//前進する場合はZ方向に移動
-	if (isAdvance) { velocity.z = advanceSpeed; }
+	if (isAdvance) { velocity.z = advanceSpeed * moveSpeedPhaseSpeed; }
 	//移動
 	position += velocity;
 
@@ -218,8 +223,14 @@ void GameCamera::Knockback()
 	Vector3 velocity = player->GetKnockbackVel();
 	velocity *= speed;
 
+	//自機の移動速度変更に合わせて変更する
+	float moveSpeedPhaseSpeed = 1.0f;
+	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = 2.2f; }
+	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = 0.4f; }
+
 	//前進する場合はZ方向に移動
-	if (isAdvance) { velocity.z = advanceSpeed; }
+	const float knockBackSpeed = 0.3f;
+	if (isAdvance) { velocity.z = advanceSpeed * moveSpeedPhaseSpeed * knockBackSpeed; }
 	//移動
 	position += velocity;
 
@@ -235,12 +246,12 @@ void GameCamera::Knockback()
 void GameCamera::Shake()
 {
 	//シェイクする時間を設定
-	const float shakeTime = 20;
+	const float shakeTime = 30;
 	//タイマーをカウント
 	shakeTimer++;
 	const float time = shakeTimer / shakeTime;
 	//シェイクの最大の強さを設定
-	const float maxShakePower = 15;
+	const float maxShakePower = 20;
 
 	//シェイクする値を計算
 	const float randShake = maxShakePower * (1 - time);

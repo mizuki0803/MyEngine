@@ -59,5 +59,6 @@ void TitlePlayer::Sortie()
 
 	}
 
+	//自機のジェット噴射演出用パーティクル生成
 	ParticleEmitter::GetInstance()->PlayerJet(matWorld);
 }

@@ -569,8 +569,8 @@ void GameScene::CollisionCheck3d()
 	if (player->GetIsDead()) { return; }
 
 #pragma region 自機と敵の衝突判定
-	//自機が緊急回避をしていなければ判定する
-	if (!player->GetIsRoll()) {
+	//自機が緊急回避をしていない && ダメージ状態でなければ判定する
+	if (!player->GetIsRoll() && !player->GetIsDamage()) {
 		//自機座標
 		posA = player->GetWorldPos();
 		//自機半径
@@ -578,8 +578,8 @@ void GameScene::CollisionCheck3d()
 
 		//自機と全ての敵の衝突判定
 		for (const std::unique_ptr<Enemy>& enemy : enemys) {
-			//自機がダメージ状態なら飛ばす
-			if (player->GetIsDamage()) { continue; }
+			//敵が死亡していたら飛ばす
+			if (enemy->GetIsDead()) { continue; }
 
 			//敵座標
 			posB = enemy->GetWorldPos();

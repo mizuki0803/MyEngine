@@ -60,7 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerHPUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -80,7 +80,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerHPUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -186,8 +186,11 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\EnemyDefeatCounter.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\HowToPlayUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\MultiHitUI.cpp" />
-    <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPBar.cpp" />
-    <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPBar.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPFrame.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPUI.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI\PlayerSpeedChangeBar.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI\PlayerSpeedChangeUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageClearText.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageSelectUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageStartUI.cpp" />
@@ -196,7 +199,6 @@
     <ClCompile Include="SourceCode\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shaders\Basic.hlsli" />
     <None Include="Resources\shaders\FBX.hlsli" />
     <None Include="Resources\shaders\Obj.hlsli" />
     <None Include="Resources\shaders\Particle.hlsli" />
@@ -205,18 +207,6 @@
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shaders\BasicPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\BasicVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\FBXPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
@@ -395,8 +385,11 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\EnemyDefeatCounter.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\HowToPlayUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\MultiHitUI.h" />
-    <ClInclude Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPBar.h" />
-    <ClInclude Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPBar.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPFrame.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPUI.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI\PlayerSpeedChangeBar.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI\PlayerSpeedChangeUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageClearText.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageResultUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageSelectUI.h" />

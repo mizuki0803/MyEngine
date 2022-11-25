@@ -2,8 +2,8 @@
 #include "ObjObject3d.h"
 #include "PlayerBullet.h"
 #include "PlayerReticles.h"
-#include "PlayerHPBar.h"
-#include "PlayerHPFrame.h"
+#include "PlayerHPUI.h"
+#include "PlayerSpeedChangeUI.h"
 #include "PlayerDamageEffect.h"
 #include <memory>
 #include <list>
@@ -17,6 +17,14 @@ class GameScene;
 class Player : public ObjObject3d
 {
 public:
+	//移動速度状態
+	enum class MoveSpeedPhase {
+		NormalSpeed,	//通常移動
+		HighSpeed,		//速い移動
+		SlowSpeed,		//遅い移動
+		ReturnNormalSpeed, //通常移動に戻す状態
+	};
+
 	//ステージクリア後行動フェーズ
 	enum class StageClearModePhase {
 		SideMove,	//横旋回移動
@@ -99,13 +107,14 @@ public: //メンバ関数
 
 	//getter
 	Vector3 GetWorldPos();
-	XMMATRIX GetMatWorld() { return matWorld; }
+	const XMMATRIX& GetMatWorld() { return matWorld; }
 	const int GetHP() { return HP; }
 	const bool GetIsDamage() { return isDamage; }
 	const bool GetIsCrash() { return isCrash; }
 	const int GetCrashBoundCount() { return crashBoundCount; }
 	const bool GetIsDead() { return isDead; }
 	const bool GetIsRoll() { return isRoll; }
+	MoveSpeedPhase GetMoveSpeedPhase() { return moveSpeedPhase; }
 	const Vector3& GetKnockbackVel() { return knockbackVel; }
 	PlayerReticles* GetReticles() { return reticles.get(); }
 	const bool GetIsChargeShotMode() { return isChargeShotMode; }
@@ -149,9 +158,58 @@ private: //メンバ関数
 	void Move();
 
 	/// <summary>
-	/// 移動
+	/// 旋回
 	/// </summary>
 	void Roll();
+
+	/// <summary>
+	/// 旋回開始
+	/// </summary>
+	void RollStart();
+
+	/// <summary>
+	/// 旋回状態
+	/// </summary>
+	void RollMode();
+
+	/// <summary>
+	/// 速度変更
+	/// </summary>
+	void SpeedChange();
+
+	/// <summary>
+	/// 速度変更開始
+	/// </summary>
+	/// <param name="isPushHighSpeedInput">加速入力をしたか</param>
+	/// <param name="isPushSlowSpeedInput">減速入力をしたか</param>
+	void SpeedChangeStart(bool isPushHighSpeedInput, bool isPushSlowSpeedInput);
+
+	/// <summary>
+	/// 速度変更中(加速or減速)の処理
+	/// </summary>
+	/// <param name="isPushHighSpeedInput">加速入力をしたか</param>
+	/// <param name="isPushSlowSpeedInput">減速入力をしたか</param>
+	void SpeedChangeMode(bool isPushHighSpeedInput, bool isPushSlowSpeedInput);
+
+	/// <summary>
+	/// 速度変更終了(元の速度に戻していく)の処理
+	/// </summary>
+	void SpeedChangeModeEnd();
+
+	/// <summary>
+	/// 移動速度を速くするときの処理
+	/// </summary>
+	void SpeedChangeHighSpeed();
+
+	/// <summary>
+	/// 移動速度を遅くするときの処理
+	/// </summary>
+	void SpeedChangeSlowSpeed();
+
+	/// <summary>
+	/// 移動速度を通常に戻すときの処理
+	/// </summary>
+	void SpeedChangeNormalSpeed();
 
 	/// <summary>
 	/// 攻撃
@@ -225,6 +283,8 @@ private: //静的メンバ変数
 	static ObjModel* bulletModel;
 	//ホーミング弾の大きさ
 	static const float homingBulletSize;
+	//自機の基準座標
+	static const Vector3 basePos;
 	//自機の回転限界
 	static const Vector2 rotLimit;
 	//自機の移動限界
@@ -236,16 +296,16 @@ private: //静的メンバ変数
 	static const float knockbackBaseSpeed;
 	//最大体力
 	static const int maxHP = 101;
+	//速度変更最大ゲージ数
+	static const float maxSpeedChangeGauge;
 	//ステージクリア後行動遷移
 	static void (Player::* stageClearActionFuncTable[])();
 
 private: //メンバ変数
 	//体力
 	int HP = maxHP;
-	//HPバー
-	std::unique_ptr<PlayerHPBar> hpBar;
-	//HPバーフレーム
-	std::unique_ptr<PlayerHPFrame> hpFrame;
+	//HPUI
+	std::unique_ptr<PlayerHPUI> hpUI;
 	//ダメージ演出
 	std::unique_ptr<PlayerDamageEffect> damageEffect;
 	//ダメージフラグ
@@ -266,6 +326,18 @@ private: //メンバ変数
 	float rollStartRot = 0;
 	//緊急回避終了時のZ軸角度
 	float rollEndRot = 0;
+	//速度変更ゲージ
+	float speedChangeGauge = maxSpeedChangeGauge;
+	//速度変更ゲージUI
+	std::unique_ptr<PlayerSpeedChangeUI> speedChangeUI;
+	//速度変更開始可能か
+	bool isSpeedChangeStartPossible = true;
+	//速度変更中か
+	bool isSpeedChange = false;
+	//移動速度
+	MoveSpeedPhase moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
+	//速度変更用タイマー
+	int32_t speedChangeTimer = 0;
 	//ノックバック用タイマー
 	int32_t knockbackTimer = 0;
 	//ノックバック方向

@@ -62,7 +62,7 @@ void ParticleEmitter::DemoEffect()
 
 		//大きさ変更のイージング
 		std::function<float(const float, const float, const float) > lerp =
-			std::bind(&Easing::LerpFloat, std::placeholders::_1 , std::placeholders::_2, std::placeholders::_3);
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
 		//追加
 		circleParticle->Add(life, pos, vel, acc, 1.0f, 0.0f, lerp, purple, lightBlue);
@@ -104,7 +104,7 @@ void ParticleEmitter::DemoEffect2()
 	}
 }
 
-void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld)
+void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld, const int playerSpeedPhase)
 {
 	//自機の中心座標からの距離
 	const Vector3 distancePos = { 0, -0.25f, -1.2f };
@@ -125,12 +125,40 @@ void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld)
 		const XMFLOAT4 startColor = { 0.6f, 0.6f, 0.6f, 1.0f }; //濃い白
 		const XMFLOAT4 endColor = { 0.4f, 0.4f, 0.4f, 1.0f }; //薄い白
 		Vector3 vel{};
-		vel.z = (float)rand() / RAND_MAX * -0.1f - 0.1f;
 		Vector3 acc{};
-		const float md_acc = 0.005f;
-		acc.z = -(float)rand() / RAND_MAX * md_acc;
-		float startScale = (float)rand() / RAND_MAX * 0.1f + 0.5f;
+		float startScale = 0;
 		float endScale = 0;
+
+		//移動速度フェーズごとに調整
+		//通常移動状態
+		if (playerSpeedPhase == 0) {
+			vel.z = (float)rand() / RAND_MAX * -0.1f - 0.1f;
+			const float md_acc = 0.005f;
+			acc.z = -(float)rand() / RAND_MAX * md_acc;
+			startScale = (float)rand() / RAND_MAX * 0.1f + 0.5f;
+		}
+		//加速移動状態
+		else if (playerSpeedPhase == 1) {
+			vel.z = (float)rand() / RAND_MAX * -0.2f - 0.2f;
+			const float md_acc = 0.01f;
+			acc.z = -(float)rand() / RAND_MAX * md_acc;
+			startScale = (float)rand() / RAND_MAX * 0.1f + 1.0f;
+		}
+		//減速移動状態
+		else if (playerSpeedPhase == 2) {
+			vel.z = (float)rand() / RAND_MAX * -0.001f - 0.001f;
+			const float md_acc = 0.001f;
+			acc.z = -(float)rand() / RAND_MAX * md_acc;
+			startScale = (float)rand() / RAND_MAX * 0.05f + 0.25f;
+		}
+		//通常移動に戻す状態
+		else if (playerSpeedPhase == 3) {
+			vel.z = (float)rand() / RAND_MAX * -0.002f - 0.002f;
+			const float md_acc = 0.0025f;
+			acc.z = -(float)rand() / RAND_MAX * md_acc;
+			startScale = (float)rand() / RAND_MAX * 0.05f + 0.3f;
+		}
+
 		//大きさ変更のイージング
 		std::function<float(const float, const float, const float) > lerp =
 			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
@@ -144,17 +172,45 @@ void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld)
 		const XMFLOAT4 startColor = { 1.0f, 0.21f, 0.21f, 1.0f }; //薄い赤
 		const XMFLOAT4 endColor = { 0.3f, 0.01f, 0.01f, 1.0f }; //濃い赤
 		Vector3 vel{};
-		vel.z = (float)rand() / RAND_MAX * -0.1f - 0.1f;
 		Vector3 acc{};
-		const float md_acc = 0.008f;
-		acc.z = -(float)rand() / RAND_MAX * md_acc;
-		float startScale = (float)rand() / RAND_MAX * 0.2f + 2.0f;
+		float startScale = 0;
 		float endScale = 0;
+
+		//移動速度フェーズごとに調整
+		//通常移動状態
+		if (playerSpeedPhase == 0) {
+			vel.z = (float)rand() / RAND_MAX * -0.1f - 0.1f;
+			const float md_acc = 0.008f;
+			acc.z = -(float)rand() / RAND_MAX * md_acc;
+			startScale = (float)rand() / RAND_MAX * 0.2f + 2.0f;
+		}
+		//加速移動状態
+		else if (playerSpeedPhase == 1) {
+			vel.z = (float)rand() / RAND_MAX * -0.2f - 0.2f;
+			const float md_acc = 0.0016f;
+			acc.z = -(float)rand() / RAND_MAX * md_acc;
+			startScale = (float)rand() / RAND_MAX * 0.2f + 4.0f;
+		}
+		//減速移動状態
+		else if (playerSpeedPhase == 2) {
+			vel.z = (float)rand() / RAND_MAX * -0.04f - 0.04f;
+			const float md_acc = 0.004f;
+			acc.z = -(float)rand() / RAND_MAX * md_acc;
+			startScale = (float)rand() / RAND_MAX * 0.1f + 1.0f;
+		}
+		//通常移動に戻す状態
+		else if (playerSpeedPhase == 3) {
+			vel.z = (float)rand() / RAND_MAX * -0.06f - 0.06f;
+			const float md_acc = 0.005f;
+			acc.z = -(float)rand() / RAND_MAX * md_acc;
+			startScale = (float)rand() / RAND_MAX * 0.15f + 1.2f;
+		}
+
 		//大きさ変更のイージング
 		std::function<float(const float, const float, const float) > lerp =
 			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		//追加
-		circleParticle->Add(5, pos, vel, acc, startScale, endScale, lerp,startColor, endColor);
+		circleParticle->Add(5, pos, vel, acc, startScale, endScale, lerp, startColor, endColor);
 	}
 }
 

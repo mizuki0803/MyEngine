@@ -18,11 +18,13 @@ void (Player::* Player::stageClearActionFuncTable[])() = {
 GameScene* Player::gameScene = nullptr;
 ObjModel* Player::bulletModel = nullptr;
 const float Player::homingBulletSize = 2.0f;
+const Vector3 Player::basePos = { 0, 3, 15 };
 const Vector2 Player::rotLimit = { 35.0f, 25.0f };
-const Vector2 Player::moveLimitMin =  { -15.0f, -4.0f };
+const Vector2 Player::moveLimitMin = { -15.0f, -4.0f };
 const Vector2 Player::moveLimitMax = { 15.0f, Player::moveLimitMin.y + 12.0f };
 const float Player::moveBaseSpeed = 0.16f;
 const float Player::knockbackBaseSpeed = 0.2f;
+const float Player::maxSpeedChangeGauge = 100.0f;
 
 Player* Player::Create(ObjModel* model)
 {
@@ -48,7 +50,9 @@ Player* Player::Create(ObjModel* model)
 
 bool Player::Initialize()
 {
-	position = { 0 ,3 ,15 };
+	//初期座標をセット
+	position = basePos;
+	//大きさをセット
 	scale = { 1.5f, 1.5f, 1.5f };
 
 	//3Dオブジェクトの初期化
@@ -59,13 +63,12 @@ bool Player::Initialize()
 	//レティクルを生成
 	reticles.reset(PlayerReticles::Create());
 
-	//HPバー生成
-	const Vector2 hpBarPosition = { 20, 20 };
-	hpBar.reset(PlayerHPBar::Create(SpriteTextureLoader::PlayerHPGaugeIn, hpBarPosition, maxHP));
-	//HPバーフレーム生成
-	const float posDiff = 3.0f;	//HPバーの座標との差分
-	const Vector2 hpFramePosition = { hpBarPosition.x - posDiff, hpBarPosition.y - posDiff };
-	hpFrame.reset(PlayerHPFrame::Create(SpriteTextureLoader::PlayerHPGaugeOut, hpFramePosition));
+	//HPUI生成
+	const Vector2 hpUIPosition = { 20, 20 };
+	hpUI.reset(PlayerHPUI::Create(hpUIPosition, maxHP));
+	//速度変更ゲージUI生成
+	const Vector2 speedChangeUIPosition = { 20, 80 };
+	speedChangeUI.reset(PlayerSpeedChangeUI::Create(speedChangeUIPosition, maxSpeedChangeGauge));
 	//ダメージ演出生成
 	damageEffect.reset(PlayerDamageEffect::Create());
 
@@ -87,7 +90,7 @@ void Player::Update()
 	reticles->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
 
 	//自機のジェット噴射演出用パーティクル生成
-	ParticleEmitter::GetInstance()->PlayerJet(matWorld);
+	ParticleEmitter::GetInstance()->PlayerJet(matWorld, (int)moveSpeedPhase);
 }
 
 void Player::Draw()
@@ -104,10 +107,10 @@ void Player::UpdateUI()
 	//死亡状態なら抜ける
 	if (isDead) { return; }
 
-	//HPバー更新
-	hpBar->Update();
-	//HPバーフレーム更新
-	hpFrame->Update();
+	//HPUI更新
+	hpUI->Update();
+	//速度変更ゲージUI更新
+	speedChangeUI->Update();
 	//ダメージ演出更新
 	damageEffect->Update();
 }
@@ -119,10 +122,11 @@ void Player::DrawUI()
 		//レティクル描画
 		reticles->Draw();
 
-		//HPバーフレーム描画
-		hpFrame->Draw();
-		//HPバー描画
-		hpBar->Draw();
+		//HPUI描画
+		hpUI->Draw();
+
+		//速度変更ゲージUI描画
+		speedChangeUI->Draw();
 	}
 
 	//ダメージ演出描画
@@ -138,7 +142,7 @@ void Player::OnCollisionDamage(const Vector3& subjectPos)
 	SetKnockback(subjectPos);
 
 	//ダメージを喰らったのでHPバーの長さを変更する
-	hpBar->SetChangeLength(HP);
+	hpUI->Damage(HP);
 
 	//ダメージ演出を開始する
 	damageEffect->DamageEffectStart(maxHP, HP);
@@ -149,10 +153,8 @@ void Player::OnCollisionHeal()
 	//回復
 	Heal();
 
-	//回復アイテムを獲得したのでHPバーの長さを変更する
-	hpBar->SetChangeLength(HP);
-	//HPバーフレームも色をチカチカさせる
-	hpFrame->ItemGetModeStart();
+	//回復アイテムを獲得したのでHPUIを回復状態にする
+	hpUI->ItemGet(HP);
 }
 
 void Player::StageClearModeStart()
@@ -233,6 +235,9 @@ void Player::Action()
 
 		//緊急回避
 		Roll();
+
+		//速度変更
+		SpeedChange();
 
 		//ダメージ状態ならノックバックする
 		if (isDamage) {
@@ -485,45 +490,245 @@ void Player::Move()
 
 void Player::Roll()
 {
-	Input* input = Input::GetInstance();
-
 	//緊急回避時の動き
 	if (isRoll) {
-		//タイマーを更新
-		const float rollTime = 40;
-		rollTimer++;
-		const float time = rollTimer / rollTime;
-
-		//Z軸回転する
-		const float endRot = rollEndRot - rotation.y + swayZ;
-		rotation.z = Easing::OutBack(rollStartRot, endRot, time);
-
-		//タイマーが指定した時間になったら緊急回避終了
-		if (rollTimer >= rollTime) {
-			isRoll = false;
-		}
+		RollMode();
 	}
 	//緊急回避可能時
 	else {
-		//ダメージ状態なら緊急回避は発動できないで抜ける
-		if (isDamage) { return; }
+		//開始するか判定
+		RollStart();
+	}
+}
 
-		//緊急回避キーを押していなければ抜ける
-		if (!(input->TriggerKey(DIK_RSHIFT) || input->TriggerKey(DIK_LSHIFT) || input->TriggerGamePadButton(Input::PAD_RB)
-			|| input->TriggerGamePadButton(Input::PAD_LB))) {
-			return;
+void Player::RollStart()
+{
+	//ダメージ状態なら緊急回避は発動できないで抜ける
+	if (isDamage) { return; }
+
+	Input* input = Input::GetInstance();
+	//緊急回避キーを押していなければ抜ける
+	if (!(input->TriggerKey(DIK_RSHIFT) || input->TriggerKey(DIK_LSHIFT) ||
+		input->TriggerGamePadButton(Input::PAD_RB) || input->TriggerGamePadButton(Input::PAD_LB))) {
+		return;
+	}
+	//緊急回避状態にする
+	isRoll = true;
+	//タイマーを初期化
+	rollTimer = 0;
+	//緊急回避開始時のZ軸角度を記憶
+	rollStartRot = rotation.z;
+
+	//緊急回避終了時のZ軸角度をセット
+	const float rotAmount = 360; //回転量
+	if (input->TriggerKey(DIK_RSHIFT) || input->TriggerGamePadButton(Input::PAD_RB)) { rollEndRot = -rotAmount; }		//右回転
+	else if (input->TriggerKey(DIK_LSHIFT) || input->TriggerGamePadButton(Input::PAD_LB)) { rollEndRot = rotAmount; }	//左回転
+}
+
+void Player::RollMode()
+{
+	//タイマーを更新
+	const float rollTime = 40;
+	rollTimer++;
+	const float time = rollTimer / rollTime;
+
+	//Z軸回転する
+	const float endRot = rollEndRot - rotation.y + swayZ;
+	rotation.z = Easing::OutBack(rollStartRot, endRot, time);
+
+	//タイマーが指定した時間になったら緊急回避終了
+	if (rollTimer >= rollTime) {
+		isRoll = false;
+	}
+}
+
+void Player::SpeedChange()
+{
+	Input* input = Input::GetInstance();
+
+	//加速入力
+	const bool isPushHighSpeedInput = (input->PushGamePadButton(Input::PAD_X) || input->PushKey(DIK_X));
+	//減速入力
+	const bool isPushSlowSpeedInput = (input->TiltGamePadRStickY(250) || input->PushKey(DIK_Z));
+
+	//速度変更開始可能時
+	if (isSpeedChangeStartPossible) {
+		//開始するか判定
+		SpeedChangeStart(isPushHighSpeedInput, isPushSlowSpeedInput);
+	}
+	//速度変更開始可能ではないとき
+	else {
+		//速度変更中のとき
+		if (isSpeedChange) {
+			//速度変更中(加速or減速)の処理
+			SpeedChangeMode(isPushHighSpeedInput, isPushSlowSpeedInput);
 		}
-		//緊急回避状態にする
-		isRoll = true;
-		//タイマーを初期化
-		rollTimer = 0;
-		//緊急回避開始時のZ軸角度を記憶
-		rollStartRot = rotation.z;
+		//速度変更を終え、元の速度に戻るとき
+		else {
+			//ゲージを元に戻していく
+			SpeedChangeModeEnd();
+		}
 
-		//緊急回避終了時のZ軸角度をセット
-		const float rotAmount = 360; //回転量
-		if (input->TriggerKey(DIK_RSHIFT) || input->TriggerGamePadButton(Input::PAD_RB)) { rollEndRot = -rotAmount; }		//右回転
-		else if (input->TriggerKey(DIK_LSHIFT) || input->TriggerGamePadButton(Input::PAD_LB)) { rollEndRot = rotAmount; }	//左回転
+		//ゲージが溢れないようにする
+		speedChangeGauge = max(speedChangeGauge, 0);
+		speedChangeGauge = min(speedChangeGauge, maxSpeedChangeGauge);
+		//ゲージ変更処理
+		speedChangeUI->ChangeLength(speedChangeGauge);
+	}
+
+	//加速or減速どちらでもない場合、元の位置に戻す
+	SpeedChangeNormalSpeed();
+}
+
+void Player::SpeedChangeStart(bool isPushHighSpeedInput, bool isPushSlowSpeedInput)
+{
+	//加速or減速のキーボタンの入力がなければ抜ける
+	if (!(isPushHighSpeedInput || isPushSlowSpeedInput)) { return; }
+
+	//加速状態をセット
+	if (isPushHighSpeedInput) { moveSpeedPhase = MoveSpeedPhase::HighSpeed; }
+	else if (isPushSlowSpeedInput) { moveSpeedPhase = MoveSpeedPhase::SlowSpeed; }
+
+	//速度変更状態にする
+	isSpeedChange = true;
+	//速度変更開始可能ではなくする
+	isSpeedChangeStartPossible = false;
+	//速度変更タイマーを初期化
+	speedChangeTimer = 0;
+}
+
+void Player::SpeedChangeMode(bool isPushHighSpeedInput, bool isPushSlowSpeedInput)
+{
+	//タイマー更新
+	speedChangeTimer++;
+
+	//ゲージを減らす速さ
+	const float gaugeDecSpeed = 1.3f;
+	//加速状態のとき
+	if (moveSpeedPhase == MoveSpeedPhase::HighSpeed) {
+		//加速入力を続けている場合は、ゲージを減らし続ける
+		if (isPushHighSpeedInput) {
+			speedChangeGauge -= gaugeDecSpeed;
+
+			//加速するので前に移動させる
+			SpeedChangeHighSpeed();
+		}
+		//加速入力をやめた瞬間に速度変更を終了
+		else {
+			isSpeedChange = false;
+
+			//移動速度を通常に戻す状態にする
+			moveSpeedPhase = MoveSpeedPhase::ReturnNormalSpeed;
+		}
+	}
+	//減速状態のとき
+	else if (moveSpeedPhase == MoveSpeedPhase::SlowSpeed) {
+		//減速入力を続けている場合は、ゲージを減らし続ける
+		if (isPushSlowSpeedInput) {
+			speedChangeGauge -= gaugeDecSpeed;
+
+			//減速するので後ろに移動させる
+			SpeedChangeSlowSpeed();
+		}
+		//加速入力をやめた瞬間に速度変更を終了
+		else {
+			isSpeedChange = false;
+
+			//移動速度を通常に戻す状態にする
+			moveSpeedPhase = MoveSpeedPhase::ReturnNormalSpeed;
+		}
+	}
+
+	//ゲージがなくなったら
+	if (!(speedChangeGauge <= 0)) { return; }
+
+	//速度変更終了
+	isSpeedChange = false;
+	//移動速度を通常に戻す状態にする
+	moveSpeedPhase = MoveSpeedPhase::ReturnNormalSpeed;
+}
+
+void Player::SpeedChangeModeEnd()
+{
+	//減らしたゲージを増やしていく
+	const float gaugeIncSpeed = 0.55f;
+	speedChangeGauge += gaugeIncSpeed;
+
+	//ゲージが最大まで溜まったていなければ抜ける
+	if (speedChangeGauge < maxSpeedChangeGauge) { return; }
+
+	//速度変更開始可能にする
+	isSpeedChangeStartPossible = true;
+
+	//ゲージが溜まった合図に、通常移動状態にしておく
+	moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
+}
+
+void Player::SpeedChangeHighSpeed()
+{
+	//加速時に移動する最大限界座標
+	const float highSpeedMaxPosZ = 25.0f;
+
+	//速度変更時間
+	const int speedChangeTime = 30;
+	float timeRatio = ((float)speedChangeTimer / (float)speedChangeTime);
+	timeRatio = min(timeRatio, 1);
+	//タイマーの値から移動速度に緩急をつける
+	float speedRatio = 1 - timeRatio;
+	speedRatio = max(speedRatio, 0.2f);
+
+	//前に移動させる
+	const float moveSpeed = 0.4f;
+	position.z += moveSpeed * speedRatio;
+
+	//最大限界座標を越えないようにする
+	position.z = min(position.z, highSpeedMaxPosZ);
+}
+
+void Player::SpeedChangeSlowSpeed()
+{
+	//減速時に移動する最小限界座標
+	const float slowSpeedMinPosZ = 10.0f;
+
+	//速度変更時間
+	const int speedChangeTime = 30;
+	float timeRatio = ((float)speedChangeTimer / (float)speedChangeTime);
+	timeRatio = min(timeRatio, 1);
+	//タイマーの値から移動速度に緩急をつける
+	float speedRatio = 1 - timeRatio;
+	speedRatio = max(speedRatio, 0.15f);
+
+	//後ろに移動させる
+	const float moveSpeed = 0.2f;
+	position.z -= moveSpeed * speedRatio;
+
+	//最小限界座標を越えないようにする
+	position.z = max(position.z, slowSpeedMinPosZ);
+}
+
+void Player::SpeedChangeNormalSpeed()
+{
+	//通常移動に戻す状態でなければ抜ける
+	if (!(moveSpeedPhase == MoveSpeedPhase::NormalSpeed || moveSpeedPhase == MoveSpeedPhase::ReturnNormalSpeed)) { return; }
+
+	//移動させるか判定する差分
+	const float distanceBasePos = 0.02f;
+	//差分がない状態だったら抜ける
+	if (position.z < basePos.z + distanceBasePos && position.z > basePos.z - distanceBasePos) {
+		//基準座標にしておく
+		position.z = basePos.z;
+
+		//抜ける
+		return;
+	}
+
+	//元の座標に戻していく
+	const float moveSpeed = 0.08f;
+	if (position.z >= basePos.z + distanceBasePos) {
+		position.z -= moveSpeed;
+	}
+	else if (position.z <= basePos.z - distanceBasePos) {
+		position.z += moveSpeed;
 	}
 }
 

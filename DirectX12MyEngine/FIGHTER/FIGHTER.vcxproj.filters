@@ -90,9 +90,6 @@
     <Filter Include="ソース ファイル\game\gameSprite\UI">
       <UniqueIdentifier>{02f9b831-4f51-49ae-aa20-96b13f37dcf4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\gameSprite\UI\playerHPUI">
-      <UniqueIdentifier>{0b329883-8e13-471c-98e9-0f3c5cc050b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\game\gameSprite\UI\bossHPUI">
       <UniqueIdentifier>{70e1b55e-225f-4a10-9986-a9f713668e3c}</UniqueIdentifier>
     </Filter>
@@ -149,6 +146,33 @@
     </Filter>
     <Filter Include="ソース ファイル\game\gameObject\enemy\enemyBullet">
       <UniqueIdentifier>{c212ec50-d06b-4bb0-8f08-64cd90a1fb5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\FBX">
+      <UniqueIdentifier>{84578737-a3b0-4ace-900e-b5dde81f657e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Obj">
+      <UniqueIdentifier>{092d70a7-0990-49cd-a56c-32015497fba7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Particle">
+      <UniqueIdentifier>{4cf4c631-68ed-4781-b829-6827aa801b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\PostEffect">
+      <UniqueIdentifier>{178b0d42-45b1-4a40-87d9-4f3ae5805efe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\ShadowMap">
+      <UniqueIdentifier>{ee7bcb7b-0e1f-476e-8ec0-be6882100c7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Sprite">
+      <UniqueIdentifier>{a49c621a-1c22-4e1b-a3ec-301a8d6df201}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameSprite\UI\playerUI">
+      <UniqueIdentifier>{261896f1-3dd8-4cb3-b59e-443515281e83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameSprite\UI\playerUI\playerHPUI">
+      <UniqueIdentifier>{0b329883-8e13-471c-98e9-0f3c5cc050b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameSprite\UI\playerUI\playerSpeedChangeUI">
+      <UniqueIdentifier>{490dc1ad-a49f-4391-abd7-378cd6273854}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -359,12 +383,6 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPFrame.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI\bossHPUI</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPBar.cpp">
-      <Filter>ソース ファイル\game\gameSprite\UI\playerHPUI</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.cpp">
-      <Filter>ソース ファイル\game\gameSprite\UI\playerHPUI</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\item\HealingItem.cpp">
       <Filter>ソース ファイル\game\gameObject\item</Filter>
     </ClCompile>
@@ -452,75 +470,81 @@
     <ClCompile Include="SourceCode\engine\2d\ShadowMap.cpp">
       <Filter>ソース ファイル\engine\2d</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPBar.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerHPUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPFrame.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerHPUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI\PlayerSpeedChangeBar.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerSpeedChangeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPUI.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerHPUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI\PlayerSpeedChangeUI.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerSpeedChangeUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shaders\Basic.hlsli">
-      <Filter>リソース ファイル</Filter>
-    </None>
-    <None Include="Resources\shaders\Sprite.hlsli">
-      <Filter>リソース ファイル</Filter>
-    </None>
-    <None Include="Resources\shaders\Particle.hlsli">
-      <Filter>リソース ファイル</Filter>
+    <None Include="Resources\shaders\FBX.hlsli">
+      <Filter>リソース ファイル\FBX</Filter>
     </None>
     <None Include="Resources\shaders\Obj.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\Obj</Filter>
     </None>
-    <None Include="Resources\shaders\FBX.hlsli">
-      <Filter>リソース ファイル</Filter>
+    <None Include="Resources\shaders\Particle.hlsli">
+      <Filter>リソース ファイル\Particle</Filter>
     </None>
     <None Include="Resources\shaders\PostEffect.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\PostEffect</Filter>
     </None>
     <None Include="Resources\shaders\ShadowMap.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\ShadowMap</Filter>
+    </None>
+    <None Include="Resources\shaders\Sprite.hlsli">
+      <Filter>リソース ファイル\Sprite</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shaders\BasicPS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\BasicVS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\SpritePS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticlePS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjVS.hlsl">
-      <Filter>リソース ファイル</Filter>
+    <FxCompile Include="Resources\shaders\FBXPS.hlsl">
+      <Filter>リソース ファイル\FBX</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\FBXVS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\FBX</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\FBXPS.hlsl">
-      <Filter>リソース ファイル</Filter>
+    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
+      <Filter>リソース ファイル\Obj</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjVS.hlsl">
+      <Filter>リソース ファイル\Obj</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
+      <Filter>リソース ファイル\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ParticlePS.hlsl">
+      <Filter>リソース ファイル\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
+      <Filter>リソース ファイル\Particle</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffectPS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\PostEffect</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\PostEffect</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\ShadowMap</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>リソース ファイル\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\SpritePS.hlsl">
+      <Filter>リソース ファイル\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
+      <Filter>リソース ファイル\Sprite</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -740,12 +764,6 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPFrame.h">
       <Filter>ソース ファイル\game\gameSprite\UI\bossHPUI</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPBar.h">
-      <Filter>ソース ファイル\game\gameSprite\UI\playerHPUI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameSprite\UI\playerHPUI\PlayerHPFrame.h">
-      <Filter>ソース ファイル\game\gameSprite\UI\playerHPUI</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\item\HealingItem.h">
       <Filter>ソース ファイル\game\gameObject\item</Filter>
     </ClInclude>
@@ -838,6 +856,21 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
       <Filter>ソース ファイル\engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPBar.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerHPUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPFrame.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerHPUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI\PlayerSpeedChangeBar.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerSpeedChangeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPUI.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerHPUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI\PlayerSpeedChangeUI.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerSpeedChangeUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

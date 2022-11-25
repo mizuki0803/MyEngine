@@ -53,7 +53,8 @@ public: //メンバ関数
 	/// 自機のジェット噴射演出
 	/// </summary>
 	/// <param name="matWorld">自機ワールド行列</param>
-	void PlayerJet(const XMMATRIX& matWorld);
+	/// <param name="playerSpeedPhase">自機移動速度フェーズ</param>
+	void PlayerJet(const XMMATRIX& matWorld, const int playerSpeedPhase = 0);
 
 	/// <summary>
 	/// ショット死亡演出
