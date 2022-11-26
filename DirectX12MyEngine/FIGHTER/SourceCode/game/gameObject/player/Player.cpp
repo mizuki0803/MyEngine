@@ -195,6 +195,9 @@ void Player::StageClearReturnStart(const Vector3& cameraPos)
 	//帰還状態にする
 	stageClearModePhase = StageClearModePhase::Return;
 
+	//パーティクルの大きさを統一するため、移動はもうしないが通常移動状態にしておく
+	moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
+
 	//タイマー初期化
 	stageClearModeTimer = 0;
 }

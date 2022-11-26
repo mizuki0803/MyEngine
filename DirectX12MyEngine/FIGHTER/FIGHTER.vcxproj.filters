@@ -90,9 +90,6 @@
     <Filter Include="ソース ファイル\game\gameSprite\UI">
       <UniqueIdentifier>{02f9b831-4f51-49ae-aa20-96b13f37dcf4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\gameSprite\UI\bossHPUI">
-      <UniqueIdentifier>{70e1b55e-225f-4a10-9986-a9f713668e3c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\game\gameObject\titlePlayer">
       <UniqueIdentifier>{66729fe4-7f85-48c5-8488-59b1bfa38237}</UniqueIdentifier>
     </Filter>
@@ -173,6 +170,15 @@
     </Filter>
     <Filter Include="ソース ファイル\game\gameSprite\UI\playerUI\playerSpeedChangeUI">
       <UniqueIdentifier>{490dc1ad-a49f-4391-abd7-378cd6273854}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameSprite\UI\bossUI">
+      <UniqueIdentifier>{36973af4-c16a-4bbe-8886-20c3d4efc74e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI">
+      <UniqueIdentifier>{70e1b55e-225f-4a10-9986-a9f713668e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameSprite\UI\bossUI\bossNameUI">
+      <UniqueIdentifier>{10ca81e2-454f-470c-a874-65fa79abd9e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -377,12 +383,6 @@
     <ClCompile Include="SourceCode\game\gameSprite\NumberSprite.cpp">
       <Filter>ソース ファイル\game\gameSprite</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.cpp">
-      <Filter>ソース ファイル\game\gameSprite\UI\bossHPUI</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPFrame.cpp">
-      <Filter>ソース ファイル\game\gameSprite\UI\bossHPUI</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\item\HealingItem.cpp">
       <Filter>ソース ファイル\game\gameObject\item</Filter>
     </ClCompile>
@@ -484,6 +484,21 @@
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI\PlayerSpeedChangeUI.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerSpeedChangeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPBar.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPFrame.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPUI.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\bossUI\bossNameUI\BossNameUI.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossNameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPLogo.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -758,12 +773,6 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageResultUI.h">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPBar.h">
-      <Filter>ソース ファイル\game\gameSprite\UI\bossHPUI</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameSprite\UI\bossHPUI\BossHPFrame.h">
-      <Filter>ソース ファイル\game\gameSprite\UI\bossHPUI</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\item\HealingItem.h">
       <Filter>ソース ファイル\game\gameObject\item</Filter>
     </ClInclude>
@@ -871,6 +880,21 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI\PlayerSpeedChangeUI.h">
       <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerSpeedChangeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPBar.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPFrame.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPUI.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\bossUI\bossNameUI\BossNameUI.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossNameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPLogo.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

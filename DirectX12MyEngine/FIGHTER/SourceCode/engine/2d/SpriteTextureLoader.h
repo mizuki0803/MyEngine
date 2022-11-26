@@ -20,6 +20,7 @@ public: //テクスチャ名
 		Reticle,			//レティクル
 		PlayerHPGaugeIn,	//自機HPバー
 		PlayerHPGaugeOut,	//自機HPバーフレーム
+		BossHPLogo,			//ボスHPロゴ
 		BossHPGaugeIn,		//ボスHPバー
 		BossHPGaugeOut,		//ボスHPバーフレーム
 		HitPlusText,		//HIT+テキスト

@@ -181,7 +181,7 @@ void GameScene::Update()
 	//地面
 	ground->Update();
 	//背景用(山)
-	gameMountainManager->Update(player->GetWorldPos());
+	gameMountainManager->Update(gameCamera->GetPosition());
 
 	//3D衝突判定管理
 	CollisionCheck3d();
@@ -218,30 +218,6 @@ void GameScene::Update()
 
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
-
-	//デバックテキスト
-	{
-		//std::string itemNum = std::to_string(healingItems.size());
-		//DebugText::GetInstance()->Print("ItemNum : " + itemNum, 100, 200);
-		//X座標,Y座標,縮尺を指定して表示
-		//debugText->Print("GAME SCENE", 1000, 50);
-		/*std::string enemyDefeat = std::to_string(EnemyDefeatCounter::GetDefeatCount());
-		DebugText::GetInstance()->Print("EnemyDefeatCount : " + enemyDefeat, 100, 160);
-		std::string highScore = std::to_string(EnemyDefeatCounter::GetHighScore());
-		DebugText::GetInstance()->Print("HighScore : " + highScore, 100, 180);
-		std::string enemyNum = std::to_string(enemys.size());
-		DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 100, 200);
-		if (isStageClear) {
-			DebugText::GetInstance()->Print("STAGE CLEAR", 100, 250);
-		}*/
-		/*std::string playerHP = std::to_string(player->GetHP());
-		if (!player->GetIsDead()) {
-			DebugText::GetInstance()->Print("PlayerHP : " + playerHP, 200, 200);
-		}
-		else {
-			DebugText::GetInstance()->Print("PlayerDead", 200, 200);
-		}*/
-	}
 
 	if (input->TriggerKey(DIK_RETURN))
 	{
@@ -839,8 +815,8 @@ void GameScene::UpdateEnemySetCommands()
 {
 	//待機処理
 	if (isWait) {
-		//自機のワールドZ座標が生成自機座標以上なら
-		if (waitEnemySetPlayerPosition <= player->GetWorldPos().z) {
+		//カメラのZ座標が生成自機座標以上なら
+		if (waitEnemySetPlayerPosition <= gameCamera->GetPosition().z) {
 			//待機終了
 			isWait = false;
 		}
@@ -990,18 +966,18 @@ void GameScene::HowToPlay()
 	//次に描画する遊び方UIが「ショット」の場合
 	if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::NextDrawUI::Shot) {
 
-		//自機のワールドZ座標が指定した値以下なら抜ける
+		//カメラのZ座標が指定した値以下なら抜ける
 		const float showPos = 15;
-		if (player->GetWorldPos().z <= showPos) { return; }
+		if (gameCamera->GetPosition().z <= showPos) { return; }
 
 		//遊び方UI(ショット)生成
 		howToPlayUI->ShotUICreate();
 	}
 	//次に描画する遊び方UIが「チャージ」の場合
 	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::NextDrawUI::Charge) {
-		//自機のワールドZ座標が指定した値以下なら抜ける
+		//カメラのZ座標が指定した値以下なら抜ける
 		const float showPos = 235;
-		if (player->GetWorldPos().z <= showPos) { return; }
+		if (gameCamera->GetPosition().z <= showPos) { return; }
 
 		//遊び方UI(チャージ)生成
 		howToPlayUI->ChargeUICreate();
@@ -1013,13 +989,13 @@ void GameScene::BossBattleStart()
 	//既にボスバトルなら抜ける
 	if (isBossBattle) { return; }
 
-	//自機がボスバトル開始とする座標まで進んだら開始
+	//カメラがボスバトル開始とする座標まで進んだら開始
 	const float isBossBattleStartPos = 1000;
-	const bool isBossBattleStart = player->GetWorldPos().z >= isBossBattleStartPos;
+	const bool isBossBattleStart = gameCamera->GetPosition().z >= isBossBattleStartPos;
 	if (!isBossBattleStart) { return; }
 
 	//ボス生成
-	const float distance = 60;
+	const float distance = 75;
 	const Vector3 bossBasePos = { 0, 23, isBossBattleStartPos + distance };
 	boss.reset(Boss::Create(bossBasePos));
 
@@ -1034,8 +1010,8 @@ void GameScene::StageClear()
 {
 	//ステージクリアでないとき
 	if (!isStageClear) {
-		//天球を自機に追従させる
-		skydome->SetPosition({ 0, 0, player->GetWorldPos().z });
+		//天球をカメラに追従させる
+		skydome->SetPosition({ 0, 0, gameCamera->GetPosition().z });
 
 		//そもそもボスがいなければ抜ける
 		if (!boss) { return; }

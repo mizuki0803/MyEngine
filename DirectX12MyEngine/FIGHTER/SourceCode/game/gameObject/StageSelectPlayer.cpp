@@ -10,6 +10,7 @@ void (StageSelectPlayer::* StageSelectPlayer::actionFuncTable[])() = {
 
 void (StageSelectPlayer::* StageSelectPlayer::enterPlanetActionFuncTable[])() = {
 	&StageSelectPlayer::EnterPlanetRotate,
+	&StageSelectPlayer::EnterPlanetStay,
 	&StageSelectPlayer::EnterPlanetBoost,
 };
 
@@ -51,7 +52,7 @@ void StageSelectPlayer::Update()
 	ObjObject3d::Update();
 
 	//パーティクル演出
-	ParticleEmitter::GetInstance()->PlayerJet(matWorld);
+	ParticleEmitter::GetInstance()->PlayerJet(matWorld, particleJetSizePhaseNum);
 }
 
 void StageSelectPlayer::GooutPlanetStart(const Vector3& targetPos)
@@ -215,20 +216,42 @@ void StageSelectPlayer::EnterPlanetRotate()
 	//タイマーが指定した時間になったら
 	if (actionTimer >= rotTime) {
 		//次のフェーズへ
-		enterPlanetActionPhase = EnterPlanetActionPhase::Boost;
+		enterPlanetActionPhase = EnterPlanetActionPhase::Stay;
 
 		//タイマーを初期化
 		actionTimer = 0;
 	}
 }
 
+void StageSelectPlayer::EnterPlanetStay()
+{
+	//待機する時間
+	const float stayTime = 10;
+	//タイマー更新
+	actionTimer++;
+
+	//タイマーが指定した時間になったら
+	if (actionTimer >= stayTime) {
+		//次のフェーズへ
+		enterPlanetActionPhase = EnterPlanetActionPhase::Boost;
+
+		//タイマーを初期化
+		actionTimer = 0;
+
+		//パーティクルジェットを大きくする(加速用にする)
+		const int32_t particleSizePhase = 1;
+		particleJetSizePhaseNum = particleSizePhase;
+	}
+}
+
 void StageSelectPlayer::EnterPlanetBoost()
 {
 	//惑星入るのにかかる時間
-	const float enterTime = 180;
+	const float enterTime = 120;
 	//タイマー更新
 	actionTimer++;
-	const float time = actionTimer / enterTime;
+	float time = actionTimer / enterTime;
+	time = min(time, 1);
 
 	//移動する方向を向く
 	const Vector3 moveVec = moveAfterPos - moveBeforePos;

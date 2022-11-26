@@ -16,7 +16,8 @@ public:
 
 	//惑星に入る行動フェーズ
 	enum class EnterPlanetActionPhase {
-		Rotate,			//回転
+		Rotate,	//回転
+		Stay,	//ちょっと待機
 		Boost,	//ブースト
 	};
 
@@ -80,6 +81,11 @@ private: //メンバ関数
 	void EnterPlanetRotate();
 
 	/// <summary>
+	/// 惑星に入る行動(ちょっと待機)
+	/// </summary>
+	void EnterPlanetStay();
+
+	/// <summary>
 	/// 惑星に入る行動(ブースト)
 	/// </summary>
 	void EnterPlanetBoost();
@@ -113,4 +119,6 @@ private: //メンバ変数
 	Vector3 changeAfterRota;
 	//行動タイマー
 	int32_t actionTimer = 0;
+	//パーティクルジェットの大きさ変更用
+	int32_t particleJetSizePhaseNum = 0;
 };

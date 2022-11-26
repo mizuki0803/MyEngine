@@ -45,13 +45,17 @@ void SortiePlayer::Update()
 	ObjObject3d::Update();
 
 	//自機のジェット噴射演出用パーティクル生成
-	ParticleEmitter::GetInstance()->PlayerJet(matWorld);
+	ParticleEmitter::GetInstance()->PlayerJet(matWorld, particleJetSizePhaseNum);
 }
 
 void SortiePlayer::BoostStart()
 {
 	//ブースト状態にする
 	sortieActionPhase = SortieActionPhase::Boost;
+
+	//パーティクルジェットを大きくする(加速用にする)
+	const int32_t particleSizePhase = 1;
+	particleJetSizePhaseNum = particleSizePhase;
 }
 
 void SortiePlayer::SortieAdvance()

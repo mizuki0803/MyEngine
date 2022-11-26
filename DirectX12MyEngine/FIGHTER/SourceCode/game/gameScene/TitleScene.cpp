@@ -117,6 +117,10 @@ void TitleScene::Update()
 
 	//シーン変更演出更新
 	SceneChangeEffect::Update();
+
+	if (input->TriggerKey(DIK_Q)) {
+		SceneManager::GetInstance()->ChangeScene("GAME");
+	}
 }
 
 void TitleScene::DrawBackSprite()

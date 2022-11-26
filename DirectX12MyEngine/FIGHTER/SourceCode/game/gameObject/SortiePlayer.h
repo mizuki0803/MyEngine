@@ -63,4 +63,6 @@ private: //メンバ変数
 	bool isSortieEnd = false;
 	//ブースト経過時間タイマー
 	int32_t boostTimer = 0;
+	//パーティクルジェットの大きさ変更用
+	int32_t particleJetSizePhaseNum = 0;
 };

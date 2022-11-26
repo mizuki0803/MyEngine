@@ -1,8 +1,8 @@
 #pragma once
 #include "BossMainBody.h"
 #include "BossAvatar.h"
-#include "BossHPBar.h"
-#include "BossHPFrame.h"
+#include "BossNameUI.h"
+#include "BossHPUI.h"
 #include "BossBehaviorTree.h"
 
 //自機クラスを前方宣言
@@ -283,12 +283,12 @@ private: //メンバ変数
 	int32_t explosionTimer = 0;
 	//爆発発生回数
 	int32_t explosionCount = 0;
+	//ボス名表示UI
+	std::unique_ptr<BossNameUI> bossNameUI;
+	//HPUI
+	std::unique_ptr<BossHPUI> hpUI;
 	//体力
 	int HP = 0;
-	//HPバー
-	std::unique_ptr<BossHPBar> hpBar;
-	//HPバーフレーム
-	std::unique_ptr<BossHPFrame> hpFrame;
 	//死亡フラグ
 	bool isDead = false;
 	//削除フラグ

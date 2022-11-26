@@ -1,7 +1,6 @@
 #include "Boss.h"
 #include "Input.h"
 #include "SpriteTextureLoader.h"
-#include "DebugText.h"
 #include "Player.h"
 #include "BossAvatarType01.h"
 #include "BossAvatarType02.h"
@@ -56,14 +55,6 @@ bool Boss::Initialize(const Vector3& position)
 	int maxHP = BossMainBody::GetMaxHP() + BossAvatar::GetMaxHP() * (int)avatars.size();
 	HP = maxHP;
 
-	//HPバー生成
-	const Vector2 hpBarPosition = { 50, 180 };
-	hpBar.reset(BossHPBar::Create(SpriteTextureLoader::BossHPGaugeIn, hpBarPosition, maxHP));
-	//HPバーフレーム生成
-	const float posDiff = 3.0f;	//HPバーの座標との差分
-	const Vector2 hpFramePosition = { hpBarPosition.x - posDiff, hpBarPosition.y - posDiff };
-	hpFrame.reset(BossHPFrame::Create(SpriteTextureLoader::BossHPGaugeOut, hpFramePosition));
-
 	//ビヘイビアツリー生成
 	behaviorTree.reset(BossBehaviorTree::Create(this));
 
@@ -86,19 +77,15 @@ void Boss::Update()
 		avatar->Update();//分身
 	}
 
-	//HPバー更新
-	hpBar->Update();
-	//HPバーフレーム更新
-	hpFrame->Update();
-
-	if (phase == Phase::Dead) {
-		DebugText::GetInstance()->Print("BossDeadMode", 100, 60);
+	//HPUI更新
+	if (hpUI) {
+		hpUI->Update();
+	}
+	//ボス名表示UI更新
+	if (bossNameUI) {
+		bossNameUI->Update();
 	}
 
-	std::string hpNum = std::to_string(HP);
-	DebugText::GetInstance()->Print("HP : " + hpNum, 100, 80);
-	std::string avatarNum = std::to_string(avatars.size());
-	DebugText::GetInstance()->Print("AvatarNum : " + avatarNum, 100, 100);
 }
 
 void Boss::Draw()
@@ -121,10 +108,14 @@ void Boss::DrawLightCameraView()
 
 void Boss::DrawUI()
 {
-	//HPバーフレーム描画
-	hpFrame->Draw();
-	//HPバー描画
-	hpBar->Draw();
+	//HPUI描画
+	if (hpUI) {
+		hpUI->Draw();
+	}
+	//ボス名表示UI描画
+	if (bossNameUI) {
+		bossNameUI->Draw();
+	}
 }
 
 void Boss::OnCollisionMainBody(const int damageNum)
@@ -175,12 +166,25 @@ bool Boss::FallMode()
 	if (!(phase == Phase::Fall)) { return false; }
 
 	//タイマーを更新
-	const float fallModeTime = 300;
+	const float fallModeTime = 400;
 	fallModeTimer++;
 	const float time = fallModeTimer / fallModeTime;
 
 	//ボス本体を降下させる
 	mainBody->FallMode(time);
+
+	//指定した時間になったらボス名表示UI生成
+	const float bossNameUICreateTime = 80;
+	if (fallModeTimer >= bossNameUICreateTime && !bossNameUI) {
+		bossNameUI.reset(BossNameUI::Create());
+	}
+
+	//指定した時間になったらHPバー生成
+	const float hpUICreateTime = fallModeTime - 120;
+	if (fallModeTimer >= hpUICreateTime && !hpUI) {
+		const Vector2 hpUIPosition = { 30, 150 };
+		hpUI.reset(BossHPUI::Create(hpUIPosition, HP));
+	}
 
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (fallModeTimer >= fallModeTime) {
@@ -190,6 +194,9 @@ bool Boss::FallMode()
 		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
 			avatar->ChangeModel();
 		}
+
+		//ボス名表示UIはもう使用しないので解放しておく
+		bossNameUI.reset();
 	}
 
 	return true;
@@ -631,7 +638,9 @@ void Boss::Damage(const int damageNum)
 	}
 
 	//ダメージを喰らったのでHPバーの長さを変更する
-	hpBar->ChangeLength(HP);
+	if (hpUI) {
+		hpUI->Damage(HP);
+	}
 }
 
 void Boss::CheckAllAvatarDead()

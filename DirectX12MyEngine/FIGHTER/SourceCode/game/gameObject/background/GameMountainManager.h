@@ -23,7 +23,7 @@ public: //メンバ変数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(const Vector3& playerPos);
+	void Update(const Vector3& targetPos);
 
 	/// <summary>
 	/// 描画
@@ -33,7 +33,6 @@ public: //メンバ変数
 	/// <summary>
 	/// 影用光源ライトから見た視点での描画
 	/// </summary>
-	/// <returns></returns>
 	void DrawLightCameraView();
 
 private: //メンバ関数

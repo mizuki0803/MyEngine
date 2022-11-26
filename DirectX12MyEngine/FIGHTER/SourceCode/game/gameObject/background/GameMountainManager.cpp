@@ -43,7 +43,7 @@ bool GameMountainManager::Initialize(ObjModel* model, float distance, int startN
 	return true;
 }
 
-void GameMountainManager::Update(const Vector3& playerPos)
+void GameMountainManager::Update(const Vector3& targetPos)
 {
 	//山の設置を可能にする
 	isCanCreate = true;
@@ -67,8 +67,8 @@ void GameMountainManager::Update(const Vector3& playerPos)
 	for (const std::unique_ptr<Mountain>& mountain : mountains) {
 		mountain->Update();
 
-		//山と自機の距離を比較し手前まで行ったら削除
-		mountain->FrontOfScreenDelete(playerPos);
+		//山と対象の距離を比較し手前まで行ったら削除
+		mountain->FrontOfScreenDelete(targetPos);
 	}
 }
 
