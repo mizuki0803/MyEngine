@@ -64,10 +64,10 @@ public: //メンバ関数
 	void DamageModelChange();
 
 	/// <summary>
-	/// 降下状態
+	/// 降下
 	/// </summary>
 	/// <param name="time">イージング用(0～1)の数値</param>
-	void FallMode(const float time);
+	void Fall(const float time);
 
 	/// <summary>
 	/// 弾発射座標を更新

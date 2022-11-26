@@ -1,7 +1,7 @@
 #include "BossNameUI.h"
 #include "SpriteTextureLoader.h"
 
-BossNameUI* BossNameUI::Create()
+BossNameUI* BossNameUI::Create(int bossType)
 {
 	//ボス名表示UIのインスタンスを生成
 	BossNameUI* bossNameUI = new BossNameUI();
@@ -10,7 +10,7 @@ BossNameUI* BossNameUI::Create()
 	}
 
 	// 初期化
-	if (!bossNameUI->Initialize()) {
+	if (!bossNameUI->Initialize(bossType)) {
 		delete bossNameUI;
 		assert(0);
 		return nullptr;
@@ -19,12 +19,19 @@ BossNameUI* BossNameUI::Create()
 	return bossNameUI;
 }
 
-bool BossNameUI::Initialize()
+bool BossNameUI::Initialize(int bossType)
 {
+	//ボスの種類をセット
+	this->bossType = bossType;
+
 	//二つ名スプライト生成
-	sprites[0].reset(Sprite::Create(SpriteTextureLoader::BButton, { 0, 0 }));
-	const Vector2 pos = { 200, 500 };
+	sprites[0].reset(Sprite::Create(SpriteTextureLoader::BossNickname, { 0, 0 }));
+	const Vector2 pos = { 80, 520 };
 	sprites[0]->SetPosition(pos);
+	const Vector2 texSize = { 300, 40 };
+	sprites[0]->SetTexSize(texSize);
+	sprites[0]->SetSize(texSize);
+	sprites[0]->SetTexLeftTop({ texSize.x * bossType, 0 });
 
 	return true;
 }
@@ -64,17 +71,20 @@ void BossNameUI::CountDrawTimer()
 	drawTimer++;
 
 	//指定した時間になったらボス名を表示
-	const int nameSpriteCreateTime = 90;
+	const int nameSpriteCreateTime = 50;
 	if (drawTimer >= nameSpriteCreateTime && !sprites[1]) {
 		//ボス名スプライト生成
-		sprites[1].reset(Sprite::Create(SpriteTextureLoader::BButton, { 0, 0 }));
-		const Vector2 pos = { 200, 600 };
+		sprites[1].reset(Sprite::Create(SpriteTextureLoader::BossName, { 0, 0 }));
+		const Vector2 pos = { 70, 580 };
 		sprites[1]->SetPosition(pos);
-		sprites[1]->SetSize({ 128, 128 });
+		const Vector2 texSize = { 1200, 95 };
+		sprites[1]->SetTexSize(texSize);
+		sprites[1]->SetSize(texSize);
+		sprites[1]->SetTexLeftTop({ texSize.x * bossType, 0 });
 	}
 
 	//さらに指定した時間になったら
-	const int lifeTime = 300;
+	const int lifeTime = 350;
 	if (drawTimer >= lifeTime) {
 		//表示を終える
 		isDraw = false;

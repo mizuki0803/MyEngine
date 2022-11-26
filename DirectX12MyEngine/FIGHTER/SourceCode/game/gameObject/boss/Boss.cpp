@@ -10,6 +10,7 @@
 #include "ParticleEmitter.h"
 
 Player* Boss::player = nullptr;
+const float Boss::appearModeTime = 560.0f;
 const float Boss::attackModeTime = 600.0f;
 const float Boss::waitModeTime = 500.0f;
 const float Boss::changeModeTime = 60.0f;
@@ -160,34 +161,29 @@ void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum)
 	Damage(avatarBodyDamageNum);
 }
 
-bool Boss::FallMode()
+bool Boss::AppearModeCount()
 {
-	//降下状態でなければ抜ける
-	if (!(phase == Phase::Fall)) { return false; }
+	//登場状態でなければ抜ける
+	if (!(phase == Phase::Appear)) { return false; }
 
 	//タイマーを更新
-	const float fallModeTime = 400;
-	fallModeTimer++;
-	const float time = fallModeTimer / fallModeTime;
-
-	//ボス本体を降下させる
-	mainBody->FallMode(time);
+	appearModeTimer++;
 
 	//指定した時間になったらボス名表示UI生成
-	const float bossNameUICreateTime = 80;
-	if (fallModeTimer >= bossNameUICreateTime && !bossNameUI) {
-		bossNameUI.reset(BossNameUI::Create());
+	const float bossNameUICreateTime = 150;
+	if (appearModeTimer >= bossNameUICreateTime && !bossNameUI) {
+		bossNameUI.reset(BossNameUI::Create(0));
 	}
 
 	//指定した時間になったらHPバー生成
-	const float hpUICreateTime = fallModeTime - 120;
-	if (fallModeTimer >= hpUICreateTime && !hpUI) {
+	const float hpUICreateTime = appearModeTime - 90;
+	if (appearModeTimer >= hpUICreateTime && !hpUI) {
 		const Vector2 hpUIPosition = { 30, 150 };
 		hpUI.reset(BossHPUI::Create(hpUIPosition, HP));
 	}
 
 	//タイマーが指定した時間になったら次のフェーズへ
-	if (fallModeTimer >= fallModeTime) {
+	if (appearModeTimer >= appearModeTime) {
 		phase = Phase::Attack;
 
 		//分身のモデルを起きている状態のモデルに変更する
@@ -198,6 +194,22 @@ bool Boss::FallMode()
 		//ボス名表示UIはもう使用しないので解放しておく
 		bossNameUI.reset();
 	}
+
+	return true;
+}
+
+bool Boss::AppearFall()
+{
+	//降下にかかる時間
+	const float fallTime = 400;
+	//既に降下にかかる時間以上なら抜ける
+	if (appearModeTimer > fallTime) { return false; }
+
+	//イージング用に0～1の値を算出する
+	const float time = appearModeTimer / fallTime;
+
+	//ボス本体を降下させる
+	mainBody->Fall(time);
 
 	return true;
 }
@@ -580,10 +592,10 @@ bool Boss::DeadExplosion()
 
 		//爆発演出回数更新
 		explosionCount++;
-		
+
 		//爆発が指定回数に達したら死亡フラグを立てる
-		if (explosionCount >= explosionNum) { 
-			isDead = true; 
+		if (explosionCount >= explosionNum) {
+			isDead = true;
 
 			//倒した数カウンターを増やす(本体 + 分身数)
 			const int defeatNum = 5;

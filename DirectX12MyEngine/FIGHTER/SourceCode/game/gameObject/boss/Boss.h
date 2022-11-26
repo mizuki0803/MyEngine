@@ -16,7 +16,7 @@ class Boss
 public:
 	//行動フェーズ
 	enum class Phase {
-		Fall,	//降下
+		Appear,	//登場
 		Attack,	//攻撃
 		Wait,	//待機
 		Dead,	//死亡
@@ -86,9 +86,14 @@ public: //メンバ関数
 	void OnCollisionAvatar(BossAvatar* avatar, const int damageNum);
 
 	/// <summary>
-	/// 降下状態
+	/// 登場状態
 	/// </summary>
-	bool FallMode();
+	bool AppearModeCount();
+
+	/// <summary>
+	/// 登場降下
+	/// </summary>
+	bool AppearFall();
 
 	/// <summary>
 	/// 攻撃状態
@@ -247,6 +252,8 @@ private: //メンバ関数
 private: //静的メンバ変数
 	//プレイヤー自機
 	static Player* player;
+	//登場状態時間
+	static const float appearModeTime;
 	//攻撃状態時間
 	static const float attackModeTime;
 	//待機状態時間
@@ -266,9 +273,9 @@ private: //メンバ変数
 	//本体が攻撃する状態か
 	bool isMainBodyAttackMode = false;
 	//行動
-	Phase phase = Phase::Fall;
-	//降下状態時間タイマー
-	int32_t fallModeTimer = 0;
+	Phase phase = Phase::Appear;
+	//登場状態時間タイマー
+	int32_t appearModeTimer = 0;
 	//攻撃内容
 	AttackType attackType = AttackType::None;
 	//1つ前に発動した攻撃内容

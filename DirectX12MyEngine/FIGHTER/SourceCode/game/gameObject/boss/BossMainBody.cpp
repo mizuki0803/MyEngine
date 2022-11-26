@@ -116,7 +116,7 @@ void BossMainBody::DamageModelChange()
 	isDamageModel = true;
 }
 
-void BossMainBody::FallMode(const float time)
+void BossMainBody::Fall(const float time)
 {
 	//Šî€‚ÌˆÊ’u‚Ì^ã‚©‚ç~‚è‚Ä‚­‚é
 	Vector3 bornPos = basePos;

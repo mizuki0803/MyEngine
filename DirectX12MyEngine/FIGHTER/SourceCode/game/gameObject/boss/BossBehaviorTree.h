@@ -36,6 +36,11 @@ private: //メンバ関数
 	void MakeTree();
 
 	/// <summary>
+	/// 登場状態シーケンスノード
+	/// </summary>
+	void AppearModeSequenceNode();
+
+	/// <summary>
 	/// 攻撃状態シーケンスノード
 	/// </summary>
 	void AttackModeSequenceNode();
@@ -85,6 +90,8 @@ private:
 	Boss* boss = nullptr;
 	//セレクター
 	std::unique_ptr<Selector> topSelector;
+	//シーケンサー
+	std::unique_ptr<Sequencer> appearModeSequencer;
 	//シーケンサー
 	std::unique_ptr<Sequencer> attackModeSequencer;
 	//シーケンサー

@@ -23,6 +23,8 @@ void SpriteTextureLoader::TextureLoad()
 	spriteCommon->LoadTexture(TextureName::BossHPLogo, "bossHPGaugeLogo.png");
 	spriteCommon->LoadTexture(TextureName::BossHPGaugeIn, "bossHPGaugeIn.png");
 	spriteCommon->LoadTexture(TextureName::BossHPGaugeOut, "bossHPGaugeOut.png");
+	spriteCommon->LoadTexture(TextureName::BossName, "bossName.png");
+	spriteCommon->LoadTexture(TextureName::BossNickname, "bossNickname.png");
 	spriteCommon->LoadTexture(TextureName::HitPlusText, "hitPlus.png");
 	spriteCommon->LoadTexture(TextureName::HitPlusNumber, "hitPlusNumber.png");
 	spriteCommon->LoadTexture(TextureName::StageClearText, "stageClearText.png");

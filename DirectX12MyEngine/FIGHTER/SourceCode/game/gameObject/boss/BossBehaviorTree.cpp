@@ -28,6 +28,7 @@ bool BossBehaviorTree::Initialize(Boss* boss)
 
 	//Selector,Sequencerの生成
 	topSelector.reset(Selector::Create());
+	appearModeSequencer.reset(Sequencer::Create());
 	attackModeSequencer.reset(Sequencer::Create());
 	waitModeSequencer.reset(Sequencer::Create());
 	deadModeSelector.reset(Selector::Create());
@@ -54,10 +55,12 @@ void BossBehaviorTree::MakeTree()
 {
 	//ルートノード
 
-	//降下状態
-	std::function<bool()> fallMode =
-		std::bind(&Boss::FallMode, boss);
-	topSelector->AddNode(fallMode);
+	//登場状態
+	std::function<bool()> appearModeSequence =
+		std::bind(&Sequencer::Sequence, appearModeSequencer.get());
+	topSelector->AddNode(appearModeSequence);
+	//登場状態シーケンスノード
+	AppearModeSequenceNode();
 
 
 	//攻撃状態シーケンサー
@@ -82,6 +85,21 @@ void BossBehaviorTree::MakeTree()
 	topSelector->AddNode(deadModeSelect);
 	//死亡状態セレクトノード
 	DeadModeSelectNode();
+}
+
+void BossBehaviorTree::AppearModeSequenceNode()
+{
+	//登場状態シーケンスノード
+
+	//時間経過
+	std::function<bool()> appearModeCount =
+		std::bind(&Boss::AppearModeCount, boss);
+	appearModeSequencer->AddNode(appearModeCount);
+
+	//登場降下
+	std::function<bool()> appearFall =
+		std::bind(&Boss::AppearFall, boss);
+	appearModeSequencer->AddNode(appearFall);
 }
 
 void BossBehaviorTree::AttackModeSequenceNode()
