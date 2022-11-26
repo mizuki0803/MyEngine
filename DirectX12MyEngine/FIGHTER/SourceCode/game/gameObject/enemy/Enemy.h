@@ -1,7 +1,8 @@
 #pragma once
 #include "ObjObject3d.h"
-#include "EnemyBullet.h"
 #include "Vector2.h"
+#include "EnemyBullet.h"
+#include "EnemyBreakEffect.h"
 
 //自機クラスを前方宣言
 class Player;
@@ -59,6 +60,17 @@ protected: //メンバ関数
 	/// 弾発射
 	/// </summary>
 	void Fire();
+
+	/// <summary>
+	/// 破壊
+	/// </summary>
+	virtual void Break();
+
+	/// <summary>
+	/// 破壊エフェクト追加
+	/// </summary>
+	/// <param name="model">モデル</param>
+	void BreakEffect(ObjModel* model, const Vector3& velocity, const Vector3& scale);
 
 	/// <summary>
 	/// 画面手前まで行ったら削除する処理

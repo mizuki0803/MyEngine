@@ -500,6 +500,9 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPLogo.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameEffect\EnemyBreakEffect.cpp">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -895,6 +898,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPLogo.h">
       <Filter>ソース ファイル\game\gameSprite\UI\bossUI\bossHPUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameEffect\EnemyBreakEffect.h">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

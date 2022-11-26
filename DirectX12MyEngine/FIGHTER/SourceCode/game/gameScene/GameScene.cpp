@@ -172,6 +172,10 @@ void GameScene::Update()
 	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
 		bullet->Update();
 	}
+	//敵破壊エフェクト
+	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
+		breakEffect->Update();
+	}
 	//回復アイテム
 	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
 		healingItem->Update();
@@ -257,6 +261,10 @@ void GameScene::Draw3D()
 	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
 		bullet->Draw();
 	}
+	//敵破壊エフェクト
+	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
+		breakEffect->Draw();
+	}
 	//ボス
 	if (boss) {
 		boss->Draw();
@@ -305,6 +313,10 @@ void GameScene::Draw3DLightView()
 	//敵弾
 	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
 		bullet->DrawLightCameraView();
+	}
+	//敵破壊エフェクト
+	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
+		breakEffect->DrawLightCameraView();
 	}
 	//ボス
 	if (boss) {
@@ -433,6 +445,11 @@ void GameScene::ObjectRelease()
 	//死亡した敵弾の削除
 	enemyBullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
 		return bullet->GetIsDead();
+		});
+
+	//削除状態の敵破壊エフェクトの削除
+	enemyBreakEffects.remove_if([](std::unique_ptr<EnemyBreakEffect>& breakEffect) {
+		return breakEffect->GetIsDelete();
 		});
 
 	//削除状態の回復アイテムの削除
@@ -795,6 +812,12 @@ void GameScene::AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet)
 {
 	//敵弾リストに登録
 	enemyBullets.push_back(std::move(enemyBullet));
+}
+
+void GameScene::AddEnemyBreakEffect(std::unique_ptr<EnemyBreakEffect> enemyBreakEffect)
+{
+	//敵破壊エフェクトリストに登録
+	enemyBreakEffects.push_back(std::move(enemyBreakEffect));
 }
 
 void GameScene::LoadEnemySetData(const std::string& fileName)

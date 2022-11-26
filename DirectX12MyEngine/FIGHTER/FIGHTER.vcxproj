@@ -130,6 +130,7 @@
     <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\StageSelectCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\TitleCamera.cpp" />
+    <ClCompile Include="SourceCode\game\gameEffect\EnemyBreakEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\ParticleEmitter.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\PlayerDamageEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\SceneChangeEffect.cpp" />
@@ -332,6 +333,7 @@
     <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\StageSelectCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\TitleCamera.h" />
+    <ClInclude Include="SourceCode\game\gameEffect\EnemyBreakEffect.h" />
     <ClInclude Include="SourceCode\game\gameEffect\ParticleEmitter.h" />
     <ClInclude Include="SourceCode\game\gameEffect\PlayerDamageEffect.h" />
     <ClInclude Include="SourceCode\game\gameEffect\SceneChangeEffect.h" />

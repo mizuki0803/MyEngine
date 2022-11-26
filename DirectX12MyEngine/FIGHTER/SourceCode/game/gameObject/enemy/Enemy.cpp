@@ -51,13 +51,16 @@ void Enemy::OnCollision()
 
 		//被弾して削除するのでフラグを立てる
 		isHitDelete = true;
+
+		//破壊
+		Break();
 	}
 
 	//当たり判定がこのフレームで作用した
 	isCollisionFrame = true;
 
 	//爆発演出用パーティクル生成
-	ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
+	ParticleEmitter::GetInstance()->Explosion(position);
 }
 
 Vector3 Enemy::GetWorldPos()
@@ -113,6 +116,34 @@ void Enemy::Fire()
 	std::unique_ptr<EnemyBullet> newBullet;
 	newBullet.reset(EnemyBullet::Create(bulletModel, position, velocity));
 	gameScene->AddEnemyBullet(std::move(newBullet));
+}
+
+void Enemy::Break()
+{
+	//破壊用エフェクト追加
+	for (int i = 0; i < 5; i++) {
+		//ランダムでエフェクトの速度をセット
+		const Vector3 randVel = { 2, 2, 2 };
+		Vector3 velocity;
+		velocity.x = (float)((rand() % (int)randVel.x) - randVel.x / 2);
+		velocity.y = (float)((rand() % (int)randVel.y));
+		velocity.z = (float)((rand() % (int)randVel.z) - randVel.z / 2);
+
+		//値が大きいので割り算して小さくする
+		const float div = 10;
+		velocity /= div;
+
+		const Vector3 scale = { 0.5f, 0.5f, 0.5f };
+		BreakEffect(bulletModel, velocity, scale);
+	}
+}
+
+void Enemy::BreakEffect(ObjModel* model, const Vector3& velocity, const Vector3& scale)
+{
+	//破壊用エフェクトを生成
+	std::unique_ptr<EnemyBreakEffect> newBreakEffect;
+	newBreakEffect.reset(EnemyBreakEffect::Create(model, position, velocity, scale));
+	gameScene->AddEnemyBreakEffect(std::move(newBreakEffect));
 }
 
 void Enemy::FrontOfScreenDelete()

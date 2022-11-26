@@ -110,6 +110,6 @@ void FallEnemy::Dead()
 		isDelete = true;
 
 		//爆発演出用パーティクル生成
-		ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
+		ParticleEmitter::GetInstance()->Explosion(position);
 	}
 }

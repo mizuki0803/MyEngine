@@ -96,6 +96,12 @@ public: //メンバ関数
 	void AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet);
 
 	/// <summary>
+	/// 敵破壊エフェクトを追加する
+	/// </summary>
+	/// <param name="enemyBreakEffect">敵破壊エフェクト</param>
+	void AddEnemyBreakEffect(std::unique_ptr<EnemyBreakEffect> enemyBreakEffect);
+
+	/// <summary>
 	/// 敵発生データ読み込み
 	/// </summary>
 	void LoadEnemySetData(const std::string& fileName);
@@ -202,6 +208,8 @@ private: //メンバ変数
 	std::list<std::unique_ptr<Enemy>> enemys;
 	//敵弾
 	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
+	//敵破壊エフェクト
+	std::list<std::unique_ptr<EnemyBreakEffect>> enemyBreakEffects;
 	//敵発生コマンド
 	std::stringstream enemySetCommands;
 	//待機中か
