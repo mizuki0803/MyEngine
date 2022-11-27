@@ -84,7 +84,7 @@ void BossNameUI::CountDrawTimer()
 	}
 
 	//‚³‚ç‚Éw’è‚µ‚½ŠÔ‚É‚È‚Á‚½‚ç
-	const int lifeTime = 350;
+	const int lifeTime = 300;
 	if (drawTimer >= lifeTime) {
 		//•\¦‚ğI‚¦‚é
 		isDraw = false;

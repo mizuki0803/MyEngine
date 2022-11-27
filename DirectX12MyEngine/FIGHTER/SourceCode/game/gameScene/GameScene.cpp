@@ -987,23 +987,50 @@ void GameScene::UpdateEnemySetCommands()
 void GameScene::HowToPlay()
 {
 	//次に描画する遊び方UIが「ショット」の場合
-	if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::NextDrawUI::Shot) {
+	if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Shot) {
 
 		//カメラのZ座標が指定した値以下なら抜ける
-		const float showPos = 15;
-		if (gameCamera->GetPosition().z <= showPos) { return; }
+		const float createPos = 15;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
 
 		//遊び方UI(ショット)生成
-		howToPlayUI->ShotUICreate();
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Shot, HowToPlayUI::DrawUI::Charge);
 	}
 	//次に描画する遊び方UIが「チャージ」の場合
-	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::NextDrawUI::Charge) {
+	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Charge) {
 		//カメラのZ座標が指定した値以下なら抜ける
-		const float showPos = 235;
-		if (gameCamera->GetPosition().z <= showPos) { return; }
+		const float createPos = 235;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
 
 		//遊び方UI(チャージ)生成
-		howToPlayUI->ChargeUICreate();
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Charge, HowToPlayUI::DrawUI::Boost);
+	}
+	//次に描画する遊び方UIが「ブースト」の場合
+	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Boost) {
+		//カメラのZ座標が指定した値以下なら抜ける
+		const float createPos = 500;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
+
+		//遊び方UI(ブースト)生成
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Boost, HowToPlayUI::DrawUI::Brake);
+	}
+	//次に描画する遊び方UIが「ブレーキ」の場合
+	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Brake) {
+		//カメラのZ座標が指定した値以下なら抜ける
+		const float createPos = 750;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
+
+		//遊び方UI(ブレーキ)生成
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Brake, HowToPlayUI::DrawUI::Rolling);
+	}
+	//次に描画する遊び方UIが「ローリング」の場合
+	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Rolling) {
+		//カメラのZ座標が指定した値以下なら抜ける
+		const float createPos = 1000;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
+
+		//遊び方UI(ローリング)生成
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Rolling, HowToPlayUI::DrawUI::None);
 	}
 }
 

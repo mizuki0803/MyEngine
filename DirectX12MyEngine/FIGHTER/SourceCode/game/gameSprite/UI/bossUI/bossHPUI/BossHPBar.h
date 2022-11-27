@@ -53,7 +53,7 @@ private: //メンバ変数
 	//バーの長さ変更中か
 	bool isChangeLength = false;
 	//バーの長さ最大値
-	const float lengthMax = 400;
+	const float lengthMax = 350;
 	//バーの長さ変更タイマー
 	int changeLengthTimer = 0;
 	//バーの長さ変更前の長さ

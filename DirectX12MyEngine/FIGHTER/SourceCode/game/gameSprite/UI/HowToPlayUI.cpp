@@ -33,30 +33,16 @@ void HowToPlayUI::Draw()
 	}
 }
 
-void HowToPlayUI::ShotUICreate()
+void HowToPlayUI::CreateUI(DrawUI drawUI, DrawUI nextDrawUI)
 {
 	//「ショット」UI生成
 	std::unique_ptr<HowToPlaySprite> newHowToPlaySprite;
 	const Vector2 texSize = { 740, 100 };
 	const Vector2 size = texSize * 0.8f;
-	const Vector2 leftTop = { 0, texSize.y * (float)nextDrawPhase };
+	const Vector2 leftTop = { 0, texSize.y * (float)drawUI };
 	newHowToPlaySprite.reset(HowToPlaySprite::Create(SpriteTextureLoader::HowToPlay, size, texSize, leftTop));
 	howToPlaySprites.push_back(std::move(newHowToPlaySprite));
 
 	//次に描画するUIを設定
-	nextDrawPhase = NextDrawUI::Charge;
-}
-
-void HowToPlayUI::ChargeUICreate()
-{
-	//「ショット」UI生成
-	std::unique_ptr<HowToPlaySprite> newHowToPlaySprite;
-	const Vector2 texSize = { 740, 100 };
-	const Vector2 size = texSize * 0.8f;
-	const Vector2 leftTop = { 0, texSize.y * (float)nextDrawPhase };
-	newHowToPlaySprite.reset(HowToPlaySprite::Create(SpriteTextureLoader::HowToPlay, size, texSize, leftTop));
-	howToPlaySprites.push_back(std::move(newHowToPlaySprite));
-
-	//次に描画するUIを設定
-	nextDrawPhase = NextDrawUI::None;
+	nextDrawPhase = nextDrawUI;
 }

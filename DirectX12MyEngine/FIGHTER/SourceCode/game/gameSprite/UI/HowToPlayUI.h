@@ -9,10 +9,14 @@
 class HowToPlayUI
 {
 public:
-	//次に描画するUI
-	enum class NextDrawUI {
+	//描画するUI
+	enum class DrawUI
+	{
 		Shot,	//ショット
 		Charge,	//チャージ
+		Boost,	//ブースト
+		Brake,	//ブレーキ
+		Rolling,//ローリング
 		None,	//なし
 	};
 
@@ -35,21 +39,18 @@ public: //メンバ関数
 	void Draw();
 
 	/// <summary>
-	/// 「ショット」のUI生成
+	/// UI生成
 	/// </summary>
-	void ShotUICreate();
-
-	/// <summary>
-	/// 「チャージ」のUI生成
-	/// </summary>
-	void ChargeUICreate();
+	/// <param name="drawUI">作成するUI</param>
+	/// <param name="nextDrawUI">次に作成するUI</param>
+	void CreateUI(DrawUI drawUI, DrawUI nextDrawUI);
 
 	//getter
-	NextDrawUI GetNextDrawUI() { return nextDrawPhase; }
+	DrawUI GetNextDrawUI() { return nextDrawPhase; }
 
 private: //メンバ変数
 	//遊び方スプライト
 	std::list<std::unique_ptr<HowToPlaySprite>> howToPlaySprites;
 	//次に描画するUI
-	NextDrawUI nextDrawPhase = NextDrawUI::Shot;
+	DrawUI nextDrawPhase = DrawUI::Shot;
 };

@@ -550,9 +550,9 @@ void Player::SpeedChange()
 	Input* input = Input::GetInstance();
 
 	//加速入力
-	const bool isPushHighSpeedInput = (input->PushGamePadButton(Input::PAD_X) || input->PushKey(DIK_X));
+	const bool isPushHighSpeedInput = (input->PushGamePadButton(Input::PAD_Y) || input->PushKey(DIK_Z));
 	//減速入力
-	const bool isPushSlowSpeedInput = (input->TiltGamePadRStickY(250) || input->PushKey(DIK_Z));
+	const bool isPushSlowSpeedInput = (input->PushGamePadButton(Input::PAD_X) || input->PushKey(DIK_X));
 
 	//速度変更開始可能時
 	if (isSpeedChangeStartPossible) {

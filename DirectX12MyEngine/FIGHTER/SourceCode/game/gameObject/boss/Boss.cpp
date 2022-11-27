@@ -10,7 +10,7 @@
 #include "ParticleEmitter.h"
 
 Player* Boss::player = nullptr;
-const float Boss::appearModeTime = 560.0f;
+const float Boss::appearModeTime = 600.0f;
 const float Boss::attackModeTime = 600.0f;
 const float Boss::waitModeTime = 500.0f;
 const float Boss::changeModeTime = 60.0f;
@@ -170,13 +170,13 @@ bool Boss::AppearModeCount()
 	appearModeTimer++;
 
 	//指定した時間になったらボス名表示UI生成
-	const float bossNameUICreateTime = 150;
+	const float bossNameUICreateTime = 160;
 	if (appearModeTimer >= bossNameUICreateTime && !bossNameUI) {
 		bossNameUI.reset(BossNameUI::Create(0));
 	}
 
 	//指定した時間になったらHPバー生成
-	const float hpUICreateTime = appearModeTime - 90;
+	const float hpUICreateTime = appearModeTime - 100;
 	if (appearModeTimer >= hpUICreateTime && !hpUI) {
 		const Vector2 hpUIPosition = { 30, 150 };
 		hpUI.reset(BossHPUI::Create(hpUIPosition, HP));
