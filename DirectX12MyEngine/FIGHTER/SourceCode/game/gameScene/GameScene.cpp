@@ -77,7 +77,9 @@ void GameScene::Initialize()
 	Player::SetGameScene(this);
 	Player::SetBulletModel(modelSphere.get());
 	//自機生成
-	player.reset(Player::Create(modelFighter.get()));
+	const int maxHP = 101; //最大HP
+	const int startHP = maxHP / 2 + 1; //開始時HP
+	player.reset(Player::Create(modelFighter.get(), startHP, maxHP));
 	player->SetIsCameraFollow(true);
 
 	//ゲームカメラに自機のポインタをセット

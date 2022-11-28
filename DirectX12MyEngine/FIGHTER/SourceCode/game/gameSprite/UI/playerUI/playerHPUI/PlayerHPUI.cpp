@@ -1,7 +1,7 @@
 #include "PlayerHPUI.h"
 #include "SpriteTextureLoader.h"
 
-PlayerHPUI* PlayerHPUI::Create(const Vector2& position, const int maxHP)
+PlayerHPUI* PlayerHPUI::Create(const Vector2& position, const int startHP, const int maxHP)
 {
 	//HPUIのインスタンスを生成
 	PlayerHPUI* playerHPUI = new PlayerHPUI();
@@ -10,7 +10,7 @@ PlayerHPUI* PlayerHPUI::Create(const Vector2& position, const int maxHP)
 	}
 
 	// 初期化
-	if (!playerHPUI->Initialize(position, maxHP)) {
+	if (!playerHPUI->Initialize(position, startHP, maxHP)) {
 		delete playerHPUI;
 		assert(0);
 		return nullptr;
@@ -19,11 +19,11 @@ PlayerHPUI* PlayerHPUI::Create(const Vector2& position, const int maxHP)
 	return playerHPUI;
 }
 
-bool PlayerHPUI::Initialize(const Vector2& position, const int maxHP)
+bool PlayerHPUI::Initialize(const Vector2& position, const int startHP, const int maxHP)
 {
 	//HPバー生成
 	const Vector2 hpBarPosition = position;
-	hpBar.reset(PlayerHPBar::Create(SpriteTextureLoader::PlayerHPGaugeIn, hpBarPosition, maxHP));
+	hpBar.reset(PlayerHPBar::Create(SpriteTextureLoader::PlayerHPGaugeIn, hpBarPosition, startHP, maxHP));
 	//HPバーフレーム生成
 	const float posDiff = 3.0f;	//HPバーの座標との差分
 	const Vector2 hpFramePosition = { hpBarPosition.x - posDiff, hpBarPosition.y - posDiff };

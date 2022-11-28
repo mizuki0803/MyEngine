@@ -352,7 +352,7 @@ void StageSelectScene::StageDicision()
 		//ステージ選択シーンUIを画面外に移動させる
 		stageSelectUI->TextOutScreenStart();
 		//ステージ決定確認UIを画面に出す
-		stageDecisionUI->TextUpStart();
+		stageDecisionUI->TextUpStart((int)selectStage);
 	}
 	//ステージ決定確認中なら
 	else {
@@ -367,7 +367,6 @@ void StageSelectScene::StageDicision()
 
 		//A入力は確定でステージに入らない
 		if (input->TriggerGamePadButton(Input::PAD_A)) {
-			stageDecisionUI->ChangeStageDecision(false);
 
 			//ステージ決定確認中を解除
 			isStageDecisionCheck = false;

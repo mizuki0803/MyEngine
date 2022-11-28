@@ -58,14 +58,23 @@ void StageDecisionUI::Draw()
 	stageDecisionSprite->Draw();
 }
 
-void StageDecisionUI::TextUpStart()
+void StageDecisionUI::TextUpStart(int stageNum)
 {
 	//ステージを決定する状態にセット
 	isStageDecision = true;
+
+	//ステージ番号が0ならタイトルシーンを選択している状態にする
+	if (stageNum == 0) { isSelectTitleStage = true; }
+	else { isSelectTitleStage = false; }
+
 	//スプライトの状態も変更する
 	float leftTop = 0;
 	if (isStageDecision) { leftTop = 0.0f; }
 	else { leftTop = 1.0f; }
+
+	//タイトルシーンを選択しているときのみテクスチャを2つずらす
+	if (isSelectTitleStage) { leftTop += 2; }
+
 	stageDecisionSprite->SetTexLeftTop({ stageDecisionSprite->GetTexSize().x * leftTop, 0 });
 
 	//移動タイマー初期化
@@ -93,6 +102,10 @@ void StageDecisionUI::ChangeStageDecision(bool isStageDecision)
 	float leftTop = 0;
 	if (isStageDecision) { leftTop = 0.0f; }
 	else { leftTop = 1.0f; }
+
+	//タイトルシーンを選択しているときのみテクスチャを2つずらす
+	if (isSelectTitleStage) { leftTop += 2; }
+
 	stageDecisionSprite->SetTexLeftTop({ stageDecisionSprite->GetTexSize().x * leftTop, 0 });
 
 	//状態を引数の状態にセット

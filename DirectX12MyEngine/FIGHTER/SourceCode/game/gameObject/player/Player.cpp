@@ -26,7 +26,7 @@ const float Player::moveBaseSpeed = 0.16f;
 const float Player::knockbackBaseSpeed = 0.2f;
 const float Player::maxSpeedChangeGauge = 100.0f;
 
-Player* Player::Create(ObjModel* model)
+Player* Player::Create(ObjModel* model, const int startHP, const int maxHP)
 {
 	//自機のインスタンスを生成
 	Player* player = new Player();
@@ -34,12 +34,8 @@ Player* Player::Create(ObjModel* model)
 		return nullptr;
 	}
 
-	//モデルをセット
-	assert(model);
-	player->model = model;
-
 	// 初期化
-	if (!player->Initialize()) {
+	if (!player->Initialize(model, startHP, maxHP)) {
 		delete player;
 		assert(0);
 		return nullptr;
@@ -48,24 +44,34 @@ Player* Player::Create(ObjModel* model)
 	return player;
 }
 
-bool Player::Initialize()
+bool Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
 {
-	//初期座標をセット
-	position = basePos;
-	//大きさをセット
-	scale = { 1.5f, 1.5f, 1.5f };
-
 	//3Dオブジェクトの初期化
 	if (!ObjObject3d::Initialize()) {
 		return false;
 	}
 
+	//初期座標をセット
+	position = basePos;
+	//大きさをセット
+	scale = { 1.5f, 1.5f, 1.5f };
+
+	//モデルをセット
+	assert(model);
+	this->model = model;
+
+
 	//レティクルを生成
 	reticles.reset(PlayerReticles::Create());
 
+	//HPをセット
+	HP = startHP;
+	//最大HPをセット
+	this->maxHP = maxHP;
+
 	//HPUI生成
 	const Vector2 hpUIPosition = { 20, 20 };
-	hpUI.reset(PlayerHPUI::Create(hpUIPosition, maxHP));
+	hpUI.reset(PlayerHPUI::Create(hpUIPosition, HP, maxHP));
 	//速度変更ゲージUI生成
 	const Vector2 speedChangeUIPosition = { 20, 80 };
 	speedChangeUI.reset(PlayerSpeedChangeUI::Create(speedChangeUIPosition, maxSpeedChangeGauge));

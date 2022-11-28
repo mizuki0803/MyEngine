@@ -10,11 +10,16 @@ public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
 	/// <returns>プレイヤー用HPバー</returns>
-	static PlayerHPBar* Create(UINT texNumber, const Vector2& position, const int maxHP);
+	static PlayerHPBar* Create(UINT texNumber, const Vector2& position, const int startHP, const int maxHP);
 
 public: //メンバ関数
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <returns>成否</returns>
+	bool Initialize(UINT texNumber, const Vector2& position, const int startHP, const int maxHP);
+
 	/// <summary>
 	/// 更新
 	/// </summary>

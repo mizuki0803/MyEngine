@@ -43,7 +43,8 @@ public: //メンバ関数
 	/// <summary>
 	/// テキストを上に動かす開始
 	/// </summary>
-	void TextUpStart();
+	/// <param name="stageNum">ステージ番号</param>
+	void TextUpStart(int stageNum);
 
 	/// <summary>
 	/// テキストを下に動かす開始
@@ -94,4 +95,6 @@ private: //メンバ変数
 	int32_t moveTimer = 0;
 	//状態を変更可能か
 	bool isCanChangeDecision = false;
+	//テクスチャの左上座標倍数
+	bool isSelectTitleStage = false;
 };

@@ -39,8 +39,10 @@ public: //静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
+	/// <param name="startHP">開始時HP</param>
+	/// <param name="maxHP">最大HP</param>
 	/// <returns>自機</returns>
-	static Player* Create(ObjModel* model);
+	static Player* Create(ObjModel* model, const int startHP, const int maxHP);
 
 	//getter
 	static const Vector2& GetRotLimit() { return rotLimit; }
@@ -57,7 +59,11 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	bool Initialize() override;
+	/// <param name="model">モデル</param>
+	/// <param name="startHP">開始時HP</param>
+	/// <param name="maxHP">最大HP</param>
+	/// <returns>成否</returns>
+	bool Initialize(ObjModel* model, const int startHP, const int maxHP);
 
 	/// <summary>
 	/// 更新
@@ -294,16 +300,16 @@ private: //静的メンバ変数
 	static const float moveBaseSpeed;
 	//自機のノックバックの基準の速さ
 	static const float knockbackBaseSpeed;
-	//最大体力
-	static const int maxHP = 101;
 	//速度変更最大ゲージ数
 	static const float maxSpeedChangeGauge;
 	//ステージクリア後行動遷移
 	static void (Player::* stageClearActionFuncTable[])();
 
 private: //メンバ変数
+	//最大体力
+	int maxHP = 0;
 	//体力
-	int HP = maxHP;
+	int HP = 0;
 	//HPUI
 	std::unique_ptr<PlayerHPUI> hpUI;
 	//ダメージ演出

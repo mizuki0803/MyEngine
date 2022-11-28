@@ -1,7 +1,7 @@
 #include "PlayerHPBar.h"
 #include "Easing.h"
 
-PlayerHPBar* PlayerHPBar::Create(UINT texNumber, const Vector2& position, const int maxHP)
+PlayerHPBar* PlayerHPBar::Create(UINT texNumber, const Vector2& position, const int startHP, const int maxHP)
 {
 	//HPバーのインスタンスを生成
 	PlayerHPBar* playerHPBar = new PlayerHPBar();
@@ -10,7 +10,7 @@ PlayerHPBar* PlayerHPBar::Create(UINT texNumber, const Vector2& position, const 
 	}
 
 	// 初期化
-	if (!playerHPBar->Initialize(texNumber, { 0.0f, 0.0f }, false, false)) {
+	if (!playerHPBar->Initialize(texNumber, position, startHP, maxHP)) {
 		delete playerHPBar;
 		assert(0);
 		return nullptr;
@@ -23,6 +23,24 @@ PlayerHPBar* PlayerHPBar::Create(UINT texNumber, const Vector2& position, const 
 	playerHPBar->maxHP = maxHP;
 
 	return playerHPBar;
+}
+
+bool PlayerHPBar::Initialize(UINT texNumber, const Vector2& position, const int startHP, const int maxHP)
+{
+	//スプライト初期化
+	if (!Sprite::Initialize(texNumber, { 0, 0 }, false, false)) {
+		return false;
+	}
+
+	//座標をセット
+	this->position = position;
+
+	//スプライトのサイズを開始時のHP用に変更
+	size.x = lengthMax * ((float)startHP / maxHP);
+	//テクスチャサイズも更新したサイズに合わせる
+	texSize = size;
+
+	return true;
 }
 
 void PlayerHPBar::Update()
