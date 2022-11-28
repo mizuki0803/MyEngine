@@ -19,9 +19,10 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>大砲敵</returns>
-	static CannonEnemy* Create(ObjModel* model, const Vector3& position);
+	static CannonEnemy* Create(const Vector3& position);
 
 	//setter
+	static void SetModel(ObjModel* model) { CannonEnemy::enemyModel = model; }
 	static void SetBreakModel(ObjModel* model) { CannonEnemy::breakModel = model; }
 
 public: //メンバ関数
@@ -51,6 +52,8 @@ private: //静的メンバ変数
 	static const int fireInterval = 300;
 	//行動遷移
 	static void (CannonEnemy::* actionFuncTable[])();
+	//モデル
+	static ObjModel* enemyModel;
 	//破壊されたモデル
 	static ObjModel* breakModel;
 

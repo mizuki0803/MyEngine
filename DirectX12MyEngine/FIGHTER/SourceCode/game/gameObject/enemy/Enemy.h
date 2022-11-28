@@ -70,7 +70,10 @@ protected: //メンバ関数
 	/// 破壊エフェクト追加
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void BreakEffect(ObjModel* model, const Vector3& velocity, const Vector3& scale);
+	/// <param name="velocity">速度</param>
+	/// <param name="rotSpeed">回転の速さ</param>
+	/// <param name="scale">大きさ</param>
+	void BreakEffect(ObjModel* model, const Vector3& velocity, const Vector3& rotSpeed, const Vector3& scale);
 
 	/// <summary>
 	/// 画面手前まで行ったら削除する処理

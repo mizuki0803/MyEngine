@@ -8,7 +8,11 @@ void (FallEnemy::*FallEnemy::actionFuncTable[])() = {
 	&FallEnemy::Dead,
 };
 
-FallEnemy* FallEnemy::Create(ObjModel* model, const Vector3& stayPos, const float fallNum)
+
+ObjModel* FallEnemy::enemyModel = nullptr;
+std::array<ObjModel*, 5> FallEnemy::breakModels;
+
+FallEnemy* FallEnemy::Create(const Vector3& stayPos, const float fallNum)
 {
 	//敵のインスタンスを生成
 	FallEnemy* upDownEnemy = new FallEnemy();
@@ -17,8 +21,8 @@ FallEnemy* FallEnemy::Create(ObjModel* model, const Vector3& stayPos, const floa
 	}
 
 	//モデルをセット
-	assert(model);
-	upDownEnemy->model = model;
+	assert(enemyModel);
+	upDownEnemy->model = FallEnemy::enemyModel;
 
 	// 初期化
 	if (!upDownEnemy->Initialize()) {
@@ -38,6 +42,13 @@ FallEnemy* FallEnemy::Create(ObjModel* model, const Vector3& stayPos, const floa
 	upDownEnemy->position.y += fallNum;
 
 	return upDownEnemy;
+}
+
+void FallEnemy::SetBreakModel(int modelNum, ObjModel* model)
+{
+	//破壊時のモデルをセット
+	assert(model);
+	breakModels[modelNum] = model;
 }
 
 void FallEnemy::Update()
@@ -111,5 +122,37 @@ void FallEnemy::Dead()
 
 		//爆発演出用パーティクル生成
 		ParticleEmitter::GetInstance()->Explosion(position);
+	}
+}
+
+void FallEnemy::Break()
+{
+	//破壊用エフェクト追加
+	for (int i = 0; i < breakModels.size(); i++) {
+		//モデルが未設定なら飛ばす
+		if (!breakModels[i]) { continue; }
+
+		//ランダムでエフェクトの速度をセット
+		const Vector3 randVel = { 4, 4, 4 };
+		Vector3 velocity;
+		velocity.x = (float)((rand() % (int)randVel.x) - randVel.x / 2);
+		velocity.y = (float)((rand() % (int)randVel.y) - randVel.y / 4);
+		velocity.z = (float)((rand() % (int)randVel.z) - randVel.z / 2);
+
+		//ランダムでエフェクトの回転の速さをセット
+		const Vector3 randRotSpeed = { 5, 5, 5 };
+		Vector3 rotSpeed;
+		rotSpeed.x = (float)((rand() % (int)randRotSpeed.x) - randRotSpeed.x / 2);
+		rotSpeed.x = (float)((rand() % (int)randRotSpeed.y) - randRotSpeed.y / 2);
+		rotSpeed.z = (float)((rand() % (int)randRotSpeed.z) - randRotSpeed.z / 2);
+
+		//値が大きいので割り算して小さくする
+		const float div = 10;
+		velocity /= div;
+		//大きさをセット
+		const Vector3 scale = { 1.5f, 1.5f, 1.5f };
+
+		//破壊時エフェクト生成
+		BreakEffect(breakModels[i], velocity, rotSpeed, scale);
 	}
 }

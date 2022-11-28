@@ -20,6 +20,7 @@
 #include "StageClearText.h"
 #include "StageResultUI.h"
 
+#include <array>
 #include <sstream>
 
 /// <summary>
@@ -28,7 +29,7 @@
 class GameScene :public BaseGameScene
 {
 private: // エイリアス
-// Microsoft::WRL::を省略
+	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -100,6 +101,11 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="enemyBreakEffect">敵破壊エフェクト</param>
 	void AddEnemyBreakEffect(std::unique_ptr<EnemyBreakEffect> enemyBreakEffect);
+
+	/// <summary>
+	/// 敵初期化処理
+	/// </summary>
+	void InitializeEnemy();
 
 	/// <summary>
 	/// 敵発生データ読み込み
@@ -191,7 +197,9 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
 	std::unique_ptr<ObjModel> modelEnemyFighter;
+	std::array<std::unique_ptr<ObjModel>, 5> modelEnemyFighterBreak;
 	std::unique_ptr<ObjModel> modelEnemyMiniRobot;
+	std::array<std::unique_ptr<ObjModel>, 5> modelEnemyMiniRobotBreak;
 	std::unique_ptr<ObjModel> modelBossMainBody;
 	std::unique_ptr<ObjModel> modelBossMainBodyDamage;
 	std::unique_ptr<ObjModel> modelBossMainBodySleep;

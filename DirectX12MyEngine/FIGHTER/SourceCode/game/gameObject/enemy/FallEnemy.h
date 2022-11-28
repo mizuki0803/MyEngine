@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include <array>
 
 /// <summary>
 /// 降下敵
@@ -18,9 +19,12 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
 	/// <returns>降下敵</returns>
-	static FallEnemy* Create(ObjModel* model, const Vector3& stayPos, const float fallNum);
+	static FallEnemy* Create(const Vector3& stayPos, const float fallNum);
+
+	//setter
+	static void SetModel(ObjModel* model) { FallEnemy::enemyModel = model; }
+	static void SetBreakModel(int modelNum, ObjModel* model);
 
 public: //メンバ関数
 	/// <summary>
@@ -49,9 +53,18 @@ private: //メンバ関数
 	/// </summary>
 	void Dead();
 
+	/// <summary>
+	/// 破壊
+	/// </summary>
+	void Break() override;
+
 private: //静的メンバ変数
 	//行動遷移
 	static void (FallEnemy::* actionFuncTable[])();
+	//モデル
+	static ObjModel* enemyModel;
+	//破壊時に出すモデル
+	static std::array<ObjModel*, 5> breakModels;
 
 private: //メンバ変数
 	//行動

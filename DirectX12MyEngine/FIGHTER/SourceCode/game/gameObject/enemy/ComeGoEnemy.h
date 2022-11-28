@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include <array>
 
 /// <summary>
 /// 到着出発敵
@@ -24,10 +25,12 @@ public: //静的メンバ関数
 	/// <param name="comePos">到着座標</param>
 	/// <param name="goPos">出発目標座標</param>
 	/// <returns>到着出発敵</returns>
-	static ComeGoEnemy* Create(ObjModel* model, const Vector3& startPos, const Vector3& comePos, const Vector3& goTargetPos, const int attackTime);
+	static ComeGoEnemy* Create(const Vector3& startPos, const Vector3& comePos, const Vector3& goTargetPos, const int attackTime);
 
 	//setter
 	static void SetAttackMoveSpeed(float moveSpeed) { ComeGoEnemy::attackMoveSpeed = moveSpeed; }
+	static void SetModel(ObjModel* model) { ComeGoEnemy::enemyModel = model; }
+	static void SetBreakModel(int modelNum, ObjModel* model);
 
 public: //メンバ関数
 	/// <summary>
@@ -61,6 +64,11 @@ private: //メンバ関数
 	/// </summary>
 	void Dead();
 
+	/// <summary>
+	/// 破壊
+	/// </summary>
+	void Break() override;
+
 private: //静的メンバ変数
 	//発射間隔
 	static const int fireInterval = 120;
@@ -68,6 +76,10 @@ private: //静的メンバ変数
 	static void (ComeGoEnemy::* actionFuncTable[])();
 	//攻撃時に移動する速さ
 	static float attackMoveSpeed;
+	//モデル
+	static ObjModel* enemyModel;
+	//破壊時に出すモデル
+	static std::array<ObjModel*, 5> breakModels;
 
 private: //メンバ変数
 	//行動

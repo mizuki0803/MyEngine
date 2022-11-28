@@ -54,7 +54,17 @@ void GameScene::Initialize()
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
 	modelEnemyFighter.reset(ObjModel::LoadFromOBJ("enemyFighter"));
+	modelEnemyFighterBreak[0].reset(ObjModel::LoadFromOBJ("enemyFighterBreak01"));
+	modelEnemyFighterBreak[1].reset(ObjModel::LoadFromOBJ("enemyFighterBreak02"));
+	modelEnemyFighterBreak[2].reset(ObjModel::LoadFromOBJ("enemyFighterBreak03"));
+	modelEnemyFighterBreak[3].reset(ObjModel::LoadFromOBJ("enemyFighterBreak04"));
+	modelEnemyFighterBreak[4].reset(ObjModel::LoadFromOBJ("enemyFighterBreak05"));
 	modelEnemyMiniRobot.reset(ObjModel::LoadFromOBJ("enemyMiniRobot", true));
+	modelEnemyMiniRobotBreak[0].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak01"));
+	modelEnemyMiniRobotBreak[1].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak02"));
+	modelEnemyMiniRobotBreak[2].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak03"));
+	modelEnemyMiniRobotBreak[3].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak04"));
+	modelEnemyMiniRobotBreak[4].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak05"));
 	modelBossMainBody.reset(ObjModel::LoadFromOBJ("bossMainBody", true));
 	modelBossMainBodyDamage.reset(ObjModel::LoadFromOBJ("bossMainBodyDamage", true));
 	modelBossMainBodySleep.reset(ObjModel::LoadFromOBJ("bossMainBodySleep", true));
@@ -73,15 +83,8 @@ void GameScene::Initialize()
 	//ゲームカメラに自機のポインタをセット
 	gameCamera->SetPlayer(player.get());
 
-	//全敵に必要な情報をセット
-	Enemy::SetGameScene(this);
-	Enemy::SetPlayer(player.get());
-	Enemy::SetBulletModel(modelSphere.get());
-	//各種類の敵に必要な情報をセット
-	CannonEnemy::SetBreakModel(modelSphere.get());
-	ComeGoEnemy::SetAttackMoveSpeed(GameCamera::GetAdvanceSpeed());
-	//敵配置スクリプトの読み込み
-	LoadEnemySetData("Resources/csv/EnemySet.csv");
+	//全敵初期化処理
+	InitializeEnemy();
 
 	//ボスに必要な情報をセット
 	Boss::SetPlayer(player.get());
@@ -820,6 +823,59 @@ void GameScene::AddEnemyBreakEffect(std::unique_ptr<EnemyBreakEffect> enemyBreak
 	enemyBreakEffects.push_back(std::move(enemyBreakEffect));
 }
 
+void GameScene::InitializeEnemy()
+{
+	//敵配置スクリプトの読み込み
+	LoadEnemySetData("Resources/csv/EnemySet.csv");
+
+	//全敵に必要な情報をセット
+	Enemy::SetGameScene(this); //全敵にゲームシーンを教える
+	Enemy::SetPlayer(player.get()); //自機をセット
+	Enemy::SetBulletModel(modelSphere.get()); //弾のモデルをセット
+
+	//各種類の敵に必要な情報をセット
+	//大砲敵
+	CannonEnemy::SetModel(modelEnemyFighter.get()); //モデルをセット
+	CannonEnemy::SetBreakModel(modelSphere.get()); //破壊時に出すモデルをセット
+
+	//円運動敵
+	CircularEnemy::SetModel(modelEnemyFighter.get()); //モデルをセット
+	//破壊時に出すモデルをセット
+	for (int i = 0; i < modelEnemyFighterBreak.size(); i++) {
+		//モデルが未設定なら飛ばす
+		if (!modelEnemyFighterBreak[i]) { continue; }
+		CircularEnemy::SetBreakModel(i, modelEnemyFighterBreak[i].get());
+	}
+
+	//降下敵
+	FallEnemy::SetModel(modelEnemyMiniRobot.get()); //モデルをセット
+	//破壊時に出すモデルをセット
+	for (int i = 0; i < modelEnemyMiniRobotBreak.size(); i++) {
+		//モデルが未設定なら飛ばす
+		if (!modelEnemyMiniRobotBreak[i]) { continue; }
+		FallEnemy::SetBreakModel(i, modelEnemyMiniRobotBreak[i].get());
+	}
+
+	//上下移動敵
+	UpDownEnemy::SetModel(modelEnemyFighter.get()); //モデルをセット
+	//破壊時に出すモデルをセット
+	for (int i = 0; i < modelEnemyFighterBreak.size(); i++) {
+		//モデルが未設定なら飛ばす
+		if (!modelEnemyFighterBreak[i]) { continue; }
+		UpDownEnemy::SetBreakModel(i, modelEnemyFighterBreak[i].get());
+	}
+
+	//到着出発敵
+	ComeGoEnemy::SetAttackMoveSpeed(GameCamera::GetAdvanceSpeed()); //移動スピードをセット
+	ComeGoEnemy::SetModel(modelEnemyFighter.get()); //モデルをセット
+	//破壊時に出すモデルをセット
+	for (int i = 0; i < modelEnemyFighterBreak.size(); i++) {
+		//モデルが未設定なら飛ばす
+		if (!modelEnemyFighterBreak[i]) { continue; }
+		ComeGoEnemy::SetBreakModel(i, modelEnemyFighterBreak[i].get());
+	}
+}
+
 void GameScene::LoadEnemySetData(const std::string& fileName)
 {
 	//ファイルを開く
@@ -902,7 +958,7 @@ void GameScene::UpdateEnemySetCommands()
 			}
 			else if (type == Enemy::EnemyType::Cannon) {
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CannonEnemy::Create(modelEnemyFighter.get(), { x, y, z }));
+				newEnemy.reset(CannonEnemy::Create({ x, y, z }));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::Circular) {
@@ -919,7 +975,7 @@ void GameScene::UpdateEnemySetCommands()
 				float rotSpeed = (float)std::atof(word.c_str());
 
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CircularEnemy::Create(modelEnemyFighter.get(), { x, y, z }, angle, length, rotSpeed));
+				newEnemy.reset(CircularEnemy::Create({ x, y, z }, angle, length, rotSpeed));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::Fall) {
@@ -928,12 +984,12 @@ void GameScene::UpdateEnemySetCommands()
 				float fallNum = (float)std::atof(word.c_str());
 
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(FallEnemy::Create(modelEnemyMiniRobot.get(), { x, y, z }, fallNum));
+				newEnemy.reset(FallEnemy::Create({ x, y, z }, fallNum));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::UpDown) {
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(UpDownEnemy::Create(modelEnemyFighter.get(), { x, y, z }));
+				newEnemy.reset(UpDownEnemy::Create({ x, y, z }));
 				enemys.push_back(std::move(newEnemy));
 			}
 			else if (type == Enemy::EnemyType::ComeGo) {
@@ -962,7 +1018,7 @@ void GameScene::UpdateEnemySetCommands()
 				int time = (int)std::atof(word.c_str());
 
 				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(ComeGoEnemy::Create(modelEnemyFighter.get(), { x, y, z }, { comeX, comeY, comeZ }, { goX, goY, goZ }, time));
+				newEnemy.reset(ComeGoEnemy::Create({ x, y, z }, { comeX, comeY, comeZ }, { goX, goY, goZ }, time));
 				enemys.push_back(std::move(newEnemy));
 			}
 		}

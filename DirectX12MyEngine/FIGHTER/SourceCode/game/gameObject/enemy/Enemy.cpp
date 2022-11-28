@@ -134,15 +134,15 @@ void Enemy::Break()
 		velocity /= div;
 
 		const Vector3 scale = { 0.5f, 0.5f, 0.5f };
-		BreakEffect(bulletModel, velocity, scale);
+		BreakEffect(bulletModel, velocity, {}, scale);
 	}
 }
 
-void Enemy::BreakEffect(ObjModel* model, const Vector3& velocity, const Vector3& scale)
+void Enemy::BreakEffect(ObjModel* model, const Vector3& velocity, const Vector3& rotSpeed, const Vector3& scale)
 {
 	//破壊用エフェクトを生成
 	std::unique_ptr<EnemyBreakEffect> newBreakEffect;
-	newBreakEffect.reset(EnemyBreakEffect::Create(model, position, velocity, scale));
+	newBreakEffect.reset(EnemyBreakEffect::Create(model, position, velocity, rotSpeed, scale));
 	gameScene->AddEnemyBreakEffect(std::move(newBreakEffect));
 }
 

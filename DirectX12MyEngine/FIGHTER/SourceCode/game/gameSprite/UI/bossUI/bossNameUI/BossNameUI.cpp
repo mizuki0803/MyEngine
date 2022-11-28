@@ -71,7 +71,7 @@ void BossNameUI::CountDrawTimer()
 	drawTimer++;
 
 	//指定した時間になったらボス名を表示
-	const int nameSpriteCreateTime = 50;
+	const int nameSpriteCreateTime = 65;
 	if (drawTimer >= nameSpriteCreateTime && !sprites[1]) {
 		//ボス名スプライト生成
 		sprites[1].reset(Sprite::Create(SpriteTextureLoader::BossName, { 0, 0 }));

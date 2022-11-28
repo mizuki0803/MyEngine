@@ -6,9 +6,10 @@ void (CannonEnemy::* CannonEnemy::actionFuncTable[])() = {
 	&CannonEnemy::Dead,
 };
 
+ObjModel* CannonEnemy::enemyModel = nullptr;
 ObjModel* CannonEnemy::breakModel = nullptr;
 
-CannonEnemy* CannonEnemy::Create(ObjModel* model, const Vector3& position)
+CannonEnemy* CannonEnemy::Create(const Vector3& position)
 {
 	//敵のインスタンスを生成
 	CannonEnemy* cannon = new CannonEnemy();
@@ -17,8 +18,8 @@ CannonEnemy* CannonEnemy::Create(ObjModel* model, const Vector3& position)
 	}
 
 	//モデルをセット
-	assert(model);
-	cannon->model = model;
+	assert(enemyModel);
+	cannon->model = CannonEnemy::enemyModel;
 
 	// 初期化
 	if (!cannon->Initialize()) {

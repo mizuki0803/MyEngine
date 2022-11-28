@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include <array>
 
 /// <summary>
 /// ‰~‰^“®“G
@@ -10,9 +11,12 @@ public: //Ã“Iƒƒ“ƒoŠÖ”
 	/// <summary>
 	/// ¶¬ˆ—
 	/// </summary>
-	/// <param name="model">ƒ‚ƒfƒ‹</param>
 	/// <returns>‰~‰^“®“G</returns>
-	static CircularEnemy* Create(ObjModel* model, const Vector3& centerPosition, const float angle, const float length, const float rotSpeed);
+	static CircularEnemy* Create(const Vector3& centerPosition, const float angle, const float length, const float rotSpeed);
+
+	//setter
+	static void SetModel(ObjModel* model) { CircularEnemy::enemyModel = model; }
+	static void SetBreakModel(int modelNum, ObjModel* model);
 
 public: //ƒƒ“ƒoŠÖ”
 	/// <summary>
@@ -31,9 +35,18 @@ private: //ƒƒ“ƒoŠÖ”
 	/// </summary>
 	void Move();
 
+	/// <summary>
+	/// ”j‰ó
+	/// </summary>
+	void Break() override;
+
 private: //Ã“Iƒƒ“ƒo•Ï”
 	//”­ËŠÔŠu
 	static const int fireInterval = 180;
+	//ƒ‚ƒfƒ‹
+	static ObjModel* enemyModel;
+	//”j‰ó‚Éo‚·ƒ‚ƒfƒ‹
+	static std::array<ObjModel*, 5> breakModels;
 
 private: //ƒƒ“ƒo•Ï”
 	//‰~‰^“®‚Ì’†SÀ•W
