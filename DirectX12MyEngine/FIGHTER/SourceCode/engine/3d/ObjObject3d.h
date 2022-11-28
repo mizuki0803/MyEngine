@@ -94,6 +94,7 @@ public: //ƒƒ“ƒoŠÖ”
 	void SetRotation(const Vector3& rotation) { this->rotation = rotation; }
 	void SetScale(const Vector3& scale) { this->scale = scale; }
 	void SetColor(const XMFLOAT4& color) { this->color = color; }
+	void SetParent(ObjObject3d* parent) { this->parent = parent; }
 	void SetModel(ObjModel* model) { this->model = model; }
 	void SetIsCameraFollow(bool isCameraFollow) { this->isCameraFollow = isCameraFollow; }
 	static void SetLightGroup(LightGroup* lightGroup) { ObjObject3d::lightGroup = lightGroup; }

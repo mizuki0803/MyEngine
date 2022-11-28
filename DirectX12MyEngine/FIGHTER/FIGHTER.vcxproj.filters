@@ -503,6 +503,9 @@
     <ClCompile Include="SourceCode\game\gameEffect\EnemyBreakEffect.cpp">
       <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\LevelDataLoader.cpp">
+      <Filter>ソース ファイル\engine\3d\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -901,6 +904,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameEffect\EnemyBreakEffect.h">
       <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\LevelDataLoader.h">
+      <Filter>ソース ファイル\engine\3d\object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

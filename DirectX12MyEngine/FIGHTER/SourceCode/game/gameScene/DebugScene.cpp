@@ -64,6 +64,7 @@ void DebugScene::Initialize()
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
+	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
 
 	//objオブジェクト生成
 	objMan.reset(ObjObject3d::Create(modelMan.get()));
@@ -119,10 +120,19 @@ void DebugScene::Initialize()
 	//当たり判定 レイ の初期値を設定
 	ray.start = XMVectorSet(0, 5, 0, 1);	//原点やや上
 	ray.dir = XMVectorSet(0, -1, 0, 0);		//下向き
+
+	//デモマップレベルデータ生成
+	demoMapData.reset(LevelDataLoader::Create("demoMap.json"));
+	demoMapData->InsertModel("sphere", modelSphere.get());
+	demoMapData->InsertModel("mountain", modelMountain.get());
+	demoMapData->CreateLevelDataObjects();
 }
 
 void DebugScene::Update()
 {
+	//デモマップレベルデータ更新
+	demoMapData->Update();
+
 	//入力のインスタンスを取得
 	Input* input = Input::GetInstance();
 	//デバッグテキストのインスタンスを取得
@@ -495,6 +505,9 @@ void DebugScene::Draw3D()
 	//Object3d共通コマンド
 	ObjObject3d::DrawPrev();
 	///-------Object3d描画ここから-------///
+
+
+	demoMapData->Draw();
 
 
 	objMan->Draw();

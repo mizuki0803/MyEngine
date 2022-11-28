@@ -8,6 +8,7 @@
 #include "LightCamera.h"
 #include "CollisionShape.h"
 #include "Collision.h"
+#include "LevelDataLoader.h"
 
 /// <summary>
 /// デバッグシーン
@@ -94,6 +95,7 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelGround;
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
+	std::unique_ptr<ObjModel> modelMountain;
 
 	//objオブジェクト
 	std::unique_ptr<ObjObject3d> objMan;
@@ -104,6 +106,9 @@ private: //メンバ変数
 	//FBXモデル
 	std::unique_ptr<FbxModel> fbxModel1;
 	std::unique_ptr<FbxObject3d> fbxObject1;
+
+	//デモマップレベルデータ
+	std::unique_ptr<LevelDataLoader> demoMapData;
 
 	//当たり判定 球
 	Sphere sphere;

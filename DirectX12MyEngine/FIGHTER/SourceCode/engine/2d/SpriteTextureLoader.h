@@ -24,7 +24,7 @@ public: //テクスチャ名
 		BossHPGaugeIn,		//ボスHPバー
 		BossHPGaugeOut,		//ボスHPバーフレーム
 		BossName,			//ボス名
-		BossNickname,			//ボス異名
+		BossNickname,		//ボス異名
 		HitPlusText,		//HIT+テキスト
 		HitPlusNumber,		//HIT+数字
 		StageClearText,		//ステージクリアテキスト(攻略完了)
