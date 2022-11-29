@@ -2,23 +2,23 @@
 #include "Sprite.h"
 
 /// <summary>
-/// 警告ライン
+/// 警告ライン背景
 /// </summary>
-class WarningLine : public Sprite
+class WarningLineBack : public Sprite
 {
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <returns>警告ライン</returns>
-	static WarningLine* Create(UINT texNumber, const Vector2& showPos, const bool isMoveRight);
+	/// <returns>警告ライン背景</returns>
+	static WarningLineBack* Create(UINT texNumber, const Vector2& showPos, const Vector2 showSize);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <returns>成否</returns>
-	bool Initialize(UINT texNumber, const Vector2& showPos, const bool isMoveRight);
+	bool Initialize(UINT texNumber, const Vector2& showPos, const Vector2 showSize);
 
 	/// <summary>
 	/// 開始時に必要な情報をセット
@@ -38,10 +38,9 @@ public: //メンバ関数
 	/// <param name="easeTimer">イージングタイマー(0～1)</param>
 	void WarningEnd(float easeTimer);
 
-	/// <summary>
-	/// 警告中ライン移動
-	/// </summary>
-	void LineMove();
+	//getter
+	const Vector2& GetShowPos() { return showPos; }
+	const Vector2& GetShowSize() { return showSize; }
 
 private: //メンバ変数
 	//生成座標
@@ -50,6 +49,4 @@ private: //メンバ変数
 	Vector2 showPos;
 	//表示大きさ
 	Vector2 showSize;
-	//右に移動するか
-	bool isMoveRight = true;
 };

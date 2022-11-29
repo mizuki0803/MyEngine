@@ -1,10 +1,11 @@
 #pragma once
 #include "Sprite.h"
+#include "BossWarningSprites.h"
 #include <memory>
 #include <array>
 
 /// <summary>
-/// ボス登場警告演出
+/// ボス登場警告
 /// </summary>
 class BossWarning
 {
@@ -13,7 +14,7 @@ public: //静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <param name="warningTime">警告時間</param>
-	/// <returns>ボス登場警告演出</returns>
+	/// <returns>ボス登場警告</returns>
 	static BossWarning* Create(int32_t warningTime);
 
 public: //メンバ関数
@@ -54,47 +55,17 @@ private: //メンバ関数
 	/// <param name="warningTimer">警告時間タイマー</param>
 	void WarningEnd(int32_t warningTimer);
 
-	/// <summary>
-	/// テキストの色を変更し続ける
-	/// </summary>
-	void TextColorChange();
-
 private: //静的メンバ変数
 	//警告画面の画面赤の色の濃さ
 	static const float warningColorAlpha;
-	//警告「WARNING」文字色(赤が最大)
-	static const DirectX::XMFLOAT4 warningTextColorMax;
-	//警告「WARNING」文字色(赤が最小)
-	static const DirectX::XMFLOAT4 warningTextColorMin;
 
 private: //メンバ変数
 	//画面赤用スプライト
 	std::unique_ptr<Sprite> screenRedSprite;
-	//文字スプライト
-	std::unique_ptr<Sprite> textSprite;
-	//文字背景用スプライト
-	std::unique_ptr<Sprite> textBackSprite;
-	//警告ラインスプライト
-	std::array<std::unique_ptr<Sprite>, 2> lineSprite;
-	//警告ライン背景用スプライト
-	std::array<std::unique_ptr<Sprite>, 2> lineBackSprite;
-
-
-	//文字スプライト
-	std::unique_ptr<Sprite> textSpriteDown;
-	//文字背景用スプライト
-	std::unique_ptr<Sprite> textBackSpriteDown;
-	//警告ラインスプライト
-	std::array<std::unique_ptr<Sprite>, 2> lineSpriteDown;
-	//警告ライン背景用スプライト
-	std::array<std::unique_ptr<Sprite>, 2> lineBackSpriteDown;
-
+	//警告用スプライト群
+	std::array<std::unique_ptr<BossWarningSprites>, 2> bossWarningSprites;
 	//画面を覆う色の濃さ
 	float colorDeepNum = 0;
-	//テキスト色変更用タイマー
-	int textColorChangeTimer = 0;
-	//色を濃くするか
-	bool isTextColorDeep = false;
 	//警告時間
 	int32_t warningTime = 0;
 	//警告時間タイマー

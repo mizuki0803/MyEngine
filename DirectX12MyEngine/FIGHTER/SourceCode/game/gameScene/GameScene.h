@@ -10,7 +10,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Boss.h"
-#include "BossWarningSprites.h"
+#include "BossWarning.h"
 #include "HealingItem.h"
 #include "Skydome.h"
 #include "Ground.h"
@@ -129,11 +129,6 @@ public: //メンバ関数
 	void BossBattleStart();
 
 	/// <summary>
-	/// ボス登場の警告演出開始判定処理
-	/// </summary>
-	//void BossWarningStart();
-
-	/// <summary>
 	/// ステージクリア
 	/// </summary>
 	void StageClear();
@@ -234,8 +229,8 @@ private: //メンバ変数
 	std::unique_ptr<Boss> boss;
 	//ボス戦中か
 	bool isBossBattle = false;
-	//ボス登場警告演出
-	std::unique_ptr<BossWarning> bossWarningEffect;
+	//ボス登場警告
+	std::unique_ptr<BossWarning> bossWarning;
 	//回復アイテム
 	std::list<std::unique_ptr<HealingItem>> healingItems;
 	//天球

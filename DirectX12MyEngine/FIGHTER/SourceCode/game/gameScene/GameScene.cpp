@@ -214,9 +214,9 @@ void GameScene::Update()
 	if (howToPlayUI) {
 		howToPlayUI->Update();
 	}
-	//ボス登場警告演出
-	if (bossWarningEffect) {
-		bossWarningEffect->Update();
+	//ボス登場警告演
+	if (bossWarning) {
+		bossWarning->Update();
 	}
 	//ステージクリアテキスト
 	if (stageClearText) {
@@ -378,8 +378,8 @@ void GameScene::DrawFrontSprite()
 		stageResultUI->Draw();
 	}
 	//ボス登場警告演出
-	if (bossWarningEffect) {
-		bossWarningEffect->Draw();
+	if (bossWarning) {
+		bossWarning->Draw();
 	}
 
 	//シーン変更演出描画
@@ -1109,7 +1109,7 @@ void GameScene::BossBattleStart()
 	const float isBossBattleStartPos = 1300;
 
 	//警告開始判定
-	if (!bossWarningEffect) {
+	if (!bossWarning) {
 		//カメラがボスバトル開始とする座標まで進んだら開始
 		const bool isBossBattleStart = gameCamera->GetPosition().z >= isBossBattleStartPos;
 		if (!isBossBattleStart) { return; }
@@ -1119,15 +1119,15 @@ void GameScene::BossBattleStart()
 
 		//ボス登場警告演出生成
 		const int warningTime = 300;
-		bossWarningEffect.reset(BossWarning::Create(warningTime));
+		bossWarning.reset(BossWarning::Create(warningTime));
 	}
 	//警告演出中の処理
 	else {
 		//ボス登場警告演出が削除状態でなければ抜ける
-		if (!bossWarningEffect->GetIsDelete()) { return; }
+		if (!bossWarning->GetIsDelete()) { return; }
 
 		//ボス登場警告演出はもう使用しないので解放
-		bossWarningEffect.reset();
+		bossWarning.reset();
 
 		//ボス生成
 		const float distance = 75;

@@ -509,11 +509,23 @@
     <ClCompile Include="SourceCode\engine\3d\LevelDataLoader.cpp">
       <Filter>ソース ファイル\engine\3d\object</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameSprite\UI\BossWarningSprites.cpp">
+    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\WarningLineBack.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\WarningText.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\WarningTextBack.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\BossWarning.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\BossWarningSprites.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -917,13 +929,22 @@
     <ClInclude Include="SourceCode\engine\3d\LevelDataLoader.h">
       <Filter>ソース ファイル\engine\3d\object</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameSprite\UI\BossWarningSprites.h">
-      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.h">
       <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameSprite\UI\BossWarningUI.h">
+    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\WarningLineBack.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\WarningText.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\WarningTextBack.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\BossWarning.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\BossWarningSprites.h">
       <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
     </ClInclude>
   </ItemGroup>
