@@ -203,7 +203,7 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\TitleUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\BossWarning.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\BossWarningSprites.cpp" />
-    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\WarningLine.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\WarningLineBack.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\WarningText.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\WarningTextBack.cpp" />
@@ -413,7 +413,7 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\TitleUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\BossWarning.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\BossWarningSprites.h" />
-    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\WarningLine.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\WarningLineBack.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\WarningText.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\WarningTextBack.h" />

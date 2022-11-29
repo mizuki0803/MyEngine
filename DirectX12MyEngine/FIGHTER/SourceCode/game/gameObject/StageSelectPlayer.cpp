@@ -170,7 +170,7 @@ void StageSelectPlayer::StageSelectMove()
 	if (!isStageSelectMove) { return; }
 
 	//移動にかかる時間
-	const float moveTime = 50;
+	const float moveTime = 40;
 	//タイマー更新
 	actionTimer++;
 	const float time = actionTimer / moveTime;

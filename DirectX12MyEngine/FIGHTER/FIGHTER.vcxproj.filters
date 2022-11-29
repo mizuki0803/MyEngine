@@ -509,7 +509,7 @@
     <ClCompile Include="SourceCode\engine\3d\LevelDataLoader.cpp">
       <Filter>ソース ファイル\engine\3d\object</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.cpp">
+    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\WarningLine.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\WarningLineBack.cpp">
@@ -929,7 +929,7 @@
     <ClInclude Include="SourceCode\engine\3d\LevelDataLoader.h">
       <Filter>ソース ファイル\engine\3d\object</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.h">
+    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\WarningLine.h">
       <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\WarningLineBack.h">

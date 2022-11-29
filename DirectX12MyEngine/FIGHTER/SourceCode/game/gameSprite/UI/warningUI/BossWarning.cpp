@@ -3,7 +3,7 @@
 #include "Easing.h"
 #include "WindowApp.h"
 
-const float BossWarning::warningColorAlpha = 0.4f;
+const float BossWarning::warningColorAlpha = 0.2f;
 
 BossWarning* BossWarning::Create(int32_t warningTime)
 {

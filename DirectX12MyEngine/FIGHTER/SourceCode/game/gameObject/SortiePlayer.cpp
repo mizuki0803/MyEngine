@@ -6,7 +6,7 @@ void (SortiePlayer::* SortiePlayer::sortieActionFuncTable[])() = {
 	&SortiePlayer::SortieBoost,
 };
 
-const float SortiePlayer::advanceSpeed = 1.0f;
+const float SortiePlayer::advanceSpeed = 1.3f;
 
 SortiePlayer* SortiePlayer::Create(ObjModel* model, const Vector3& startPosition)
 {
