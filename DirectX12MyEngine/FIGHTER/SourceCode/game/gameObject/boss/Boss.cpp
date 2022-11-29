@@ -178,7 +178,7 @@ bool Boss::AppearModeCount()
 	//Žw’è‚µ‚½ŽžŠÔ‚É‚È‚Á‚½‚çHPƒo[¶¬
 	const float hpUICreateTime = appearModeTime - 100;
 	if (appearModeTimer >= hpUICreateTime && !hpUI) {
-		const Vector2 hpUIPosition = { 30, 150 };
+		const Vector2 hpUIPosition = { 30, 170 };
 		hpUI.reset(BossHPUI::Create(hpUIPosition, HP));
 	}
 

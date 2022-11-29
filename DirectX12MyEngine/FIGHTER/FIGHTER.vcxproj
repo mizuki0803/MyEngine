@@ -60,7 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\warningUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -80,7 +80,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\warningUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -188,6 +188,7 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPLogo.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\bossUI\bossNameUI\BossNameUI.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\BossWarningSprites.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\EnemyDefeatCounter.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\HowToPlayUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\MultiHitUI.cpp" />
@@ -201,6 +202,7 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageStartUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageResultUI.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\UI\TitleUI.cpp" />
+    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -392,6 +394,8 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPLogo.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossUI\bossHPUI\BossHPUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\bossUI\bossNameUI\BossNameUI.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\BossWarningSprites.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\BossWarningUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\EnemyDefeatCounter.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\HowToPlayUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\MultiHitUI.h" />
@@ -405,6 +409,7 @@
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageSelectUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageStartUI.h" />
     <ClInclude Include="SourceCode\game\gameSprite\UI\TitleUI.h" />
+    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

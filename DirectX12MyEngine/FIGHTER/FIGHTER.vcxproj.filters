@@ -180,6 +180,9 @@
     <Filter Include="ソース ファイル\game\gameSprite\UI\bossUI\bossNameUI">
       <UniqueIdentifier>{10ca81e2-454f-470c-a874-65fa79abd9e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameSprite\UI\warningUI">
+      <UniqueIdentifier>{eba5c47b-85fb-49c1-8d1a-f77f8d436313}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\main.cpp">
@@ -505,6 +508,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\engine\3d\LevelDataLoader.cpp">
       <Filter>ソース ファイル\engine\3d\object</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\BossWarningSprites.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -907,6 +916,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\3d\LevelDataLoader.h">
       <Filter>ソース ファイル\engine\3d\object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\BossWarningSprites.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\warningLine.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\BossWarningUI.h">
+      <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

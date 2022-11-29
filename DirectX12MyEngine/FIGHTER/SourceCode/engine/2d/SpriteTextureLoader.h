@@ -20,6 +20,8 @@ public: //テクスチャ名
 		Reticle,			//レティクル
 		PlayerHPGaugeIn,	//自機HPバー
 		PlayerHPGaugeOut,	//自機HPバーフレーム
+		WarningText,		//警告文字「WARNING」
+		WarningLine,		//警告用ライン
 		BossHPLogo,			//ボスHPロゴ
 		BossHPGaugeIn,		//ボスHPバー
 		BossHPGaugeOut,		//ボスHPバーフレーム
