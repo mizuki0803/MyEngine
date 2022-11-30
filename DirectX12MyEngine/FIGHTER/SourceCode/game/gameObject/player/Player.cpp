@@ -428,8 +428,8 @@ void Player::Rotate()
 	//zŽ²‰ñ“]
 	{
 		//“®‚«‚ª‚È‚¢‚ÆŽâ‚µ‚¢‚Ì‚Å‚ä‚ç‚ä‚ç‚³‚¹‚Ä‚¨‚­
-		const float rotZSpeed = 0.03f;
-		const float rotZLimit = 0.8f;
+		const float rotZSpeed = 0.04f;
+		const float rotZLimit = 1.0f;
 		//‰E‰ñ“]
 		if (isRotZRight) {
 			swayZ += rotZSpeed;

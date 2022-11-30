@@ -30,6 +30,7 @@ ObjModel* BossMainBody::mainBodySleepModel = nullptr;
 ObjModel* BossMainBody::bulletModel = nullptr;
 const float BossMainBody::attackModeRotY = 180.0f;
 const float BossMainBody::waitModeRotY = 0.0f;
+const XMFLOAT4 BossMainBody::damageColor = { 1, 0.2f, 0.2f, 1 };
 
 BossMainBody* BossMainBody::Create(const Vector3& basePos)
 {
@@ -61,16 +62,16 @@ BossMainBody* BossMainBody::Create(const Vector3& basePos)
 
 void BossMainBody::Update()
 {
-	//ダメージ色状態のみの処理
-	if (isDamageColor) {
-		DamageColorMode();
+	//ダメージ状態のみの処理
+	if (isDamage) {
+		DamageMode();
 	}
 
 	//オブジェクト更新
 	ObjObject3d::Update();
 }
 
-void BossMainBody::Damage(int attackPower)
+void BossMainBody::Damage(int attackPower, const Vector3& collisionPos)
 {
 	//引数の攻撃力をダメージ量にセット
 	damageNum = attackPower;
@@ -93,12 +94,16 @@ void BossMainBody::Damage(int attackPower)
 	//HPが少ない状態のモデルをセットする
 	DamageModelChange();
 
-	//ダメージ色状態にする
-	isDamageColor = true;
-	const XMFLOAT4 damageColor = { 1, 0, 0, 1 };
+	//ダメージ状態にする
+	isDamage = true;
+	//ダメージ状態タイマー初期化
+	damageTimer = 0;
+	//色を変更
 	color = damageColor;
-	//ダメージ色状態タイマー初期化
-	damageColorTimer = 0;
+
+	//爆発生成する
+	DamageExplosion(collisionPos);
+	
 }
 
 void BossMainBody::DamageModelChange()
@@ -153,6 +158,9 @@ void BossMainBody::AttackTypeTracking(const Vector3& playerPosition)
 	position.x += velocity.x;
 	position.y += velocity.y;
 
+	//地面にめり込まないようにする
+	position.y = max(position.y, scale.y);
+
 	//行動
 	(this->*attackTypeTrackingPhaseFuncTable[static_cast<size_t>(attackTrackingPhase)])();
 }
@@ -192,6 +200,10 @@ void BossMainBody::AttackTypeAvatarGatling(const Vector3& playerPosition)
 	velocity = velocity.normalize() * moveSpeed;
 	position.x += velocity.x;
 	position.y += velocity.y;
+
+	//地面にめり込まないように調整
+	const float moveLimitGround = 8.5f;
+	position.y = max(position.y, moveLimitGround);
 }
 
 void BossMainBody::ChangeAttackMode(const float time)
@@ -267,6 +279,9 @@ void BossMainBody::DeadFall()
 	if (deadFallVel.y <= maxCrashSpeed) { deadFallVel.y = maxCrashSpeed; }
 	position += deadFallVel;
 
+	//爆発させる
+	DeadFallExplosion();
+
 	//Y座標が0以下になったら削除
 	if (GetWorldPos().y <= 0) {
 		isDelete = true;
@@ -315,17 +330,61 @@ void BossMainBody::ChargeBulletFire(const float scale, const float bulletSpeed)
 	gameScene->AddEnemyBullet(std::move(newBullet));
 }
 
+void BossMainBody::DamageMode()
+{
+	//ダメージ状態の時間
+	const int damageTime = 20;
+	damageTimer++;
+
+	//ダメージ色切り替え
+	DamageColorMode();
+
+	//タイマーが指定した時間になったら
+	if (damageTimer >= damageTime) {
+		//ダメージ状態を終了
+		isDamage = false;
+
+		//色を元に戻しておく
+		color = { 1, 1, 1, 1 };
+	}
+}
+
+void BossMainBody::DamageExplosion(const Vector3& position)
+{
+	//敵内部に演出が出てしまうことがあるので、敵の大きさ分押し戻す
+	Vector3 pos = position;
+	pos.z -= scale.z / 2;
+	//ランダムでずらす
+	const Vector3 randPos = { 2, 2, 1 };
+	pos.x += (float)((rand() % (int)randPos.x) - randPos.x / 2);
+	pos.y += (float)((rand() % (int)randPos.y) - randPos.y / 2);
+	pos.z += (float)((rand() % (int)randPos.z));
+
+	//ショット死亡演出用パーティクル生成
+	const float size = 0.75f;
+	ParticleEmitter::GetInstance()->Explosion(pos, size);
+}
+
 void BossMainBody::DamageColorMode()
 {
-	//ダメージ色にする時間
-	const float damageColorTime = 10;
-	damageColorTimer++;
+	//ダメージ色切り替え時間
+	const int damageColorChangeTime = 2;
 
-	//タイマーが指定した時間になったらダメージ色状態を解除する
-	if (damageColorTimer >= damageColorTime) {
-		//色を元に戻す
-		isDamageColor = false;
-		color = { 1,1,1,1 };
+	//タイマーが指定した時間になったら
+	if (damageTimer % damageColorChangeTime == 0) {
+		//ダメージ色状態を切り替える
+		if (isDamageColor) {
+			isDamageColor = false;
+
+			//色を元に戻す
+			color = { 1, 1, 1, 1 };
+		}
+		else {
+			isDamageColor = true;
+
+			//ダメージ色にする
+			color = damageColor;
+		}
 	}
 }
 
@@ -502,6 +561,34 @@ void BossMainBody::AttackTypeRotateMove()
 
 		//念の為Z軸回転を0に戻しておく
 		rotation.z = 0;
+	}
+}
+
+void BossMainBody::DeadFallExplosion()
+{
+	//爆発させる間隔の時間
+	int explosionTime = 3;
+	//タイマーを更新
+	deadFallExplosionTimer++;
+
+	//タイマーが指定した時間になったら
+	if (deadFallExplosionTimer >= explosionTime) {
+		//タイマー初期化
+		deadFallExplosionTimer = 0;
+
+		//爆発
+		//敵内部に演出が出てしまうことがあるので、敵の大きさ分押し戻す
+		Vector3 pos = position;
+		pos.z -= scale.z / 2;
+		//ランダムでずらす
+		const Vector3 randPos = { 2, 2, 1 };
+		pos.x += (float)((rand() % (int)randPos.x) - randPos.x / 2);
+		pos.y += (float)((rand() % (int)randPos.y) - randPos.y / 2);
+		pos.z += (float)((rand() % (int)randPos.z));
+
+		//ショット死亡演出用パーティクル生成
+		const float size = 1.0f;
+		ParticleEmitter::GetInstance()->Explosion(pos, size);
 	}
 }
 

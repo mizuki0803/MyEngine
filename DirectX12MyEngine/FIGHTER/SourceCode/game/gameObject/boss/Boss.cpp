@@ -119,7 +119,7 @@ void Boss::DrawUI()
 	}
 }
 
-void Boss::OnCollisionMainBody(const int damageNum)
+void Boss::OnCollisionMainBody(const int damageNum, const Vector3& collisionPos)
 {
 	//待機状態ならダメージを喰らう
 	const bool isWaitMode = (phase == Phase::Wait);
@@ -130,14 +130,14 @@ void Boss::OnCollisionMainBody(const int damageNum)
 	if (!(isMainBodyAttackMode && isWaitMode && isDamageRota)) { return; }
 
 	//本体にダメージ
-	mainBody->Damage(damageNum);
+	mainBody->Damage(damageNum, collisionPos);
 
 	//ボス全体にダメージ(ボス本体が実際に喰らったダメージ量をセット)
 	const int mainBodyDamageNum = mainBody->GetDamageNum();
 	Damage(mainBodyDamageNum);
 }
 
-void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum)
+void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum, const Vector3& collisionPos)
 {
 	//分身が既に死亡していたら抜ける
 	if (avatar->GetIsDead()) { return; }
@@ -151,7 +151,7 @@ void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum)
 	if (!(isWaitMode && isDamageRota)) { return; }
 
 	//衝突した分身にダメージ
-	avatar->Damage(damageNum);
+	avatar->Damage(damageNum, collisionPos);
 
 	//分身が全滅したかチェック
 	CheckAllAvatarDead();
@@ -584,11 +584,12 @@ bool Boss::DeadExplosion()
 	if ((explosionTimer % (int)explosionTime) == 0) {
 		//爆発演出用パーティクル生成
 		Vector3 particlePos = mainBody->GetWorldPos();
-		const float distance = 5.0f;
+		const float distance = 8.0f;
 		particlePos.x += (float)rand() / RAND_MAX * distance - distance / 2.0f;
 		particlePos.y += (float)rand() / RAND_MAX * distance - distance / 2.0f;
 		particlePos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
-		ParticleEmitter::GetInstance()->Explosion(particlePos);
+		const float size = 2.0f;
+		ParticleEmitter::GetInstance()->Explosion(particlePos, size);
 
 		//爆発演出回数更新
 		explosionCount++;
@@ -631,7 +632,8 @@ bool Boss::DeadFall()
 		particlePos.x += (float)rand() / RAND_MAX * distance - distance / 2.0f;
 		particlePos.y += (float)rand() / RAND_MAX * distance - distance / 2.0f;
 		particlePos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
-		ParticleEmitter::GetInstance()->Explosion(particlePos);
+		const float size = 5.0f;
+		ParticleEmitter::GetInstance()->Explosion(particlePos, size);
 	}
 
 	return true;

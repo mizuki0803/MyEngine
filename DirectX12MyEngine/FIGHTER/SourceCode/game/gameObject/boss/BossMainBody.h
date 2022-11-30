@@ -56,7 +56,7 @@ public: //メンバ関数
 	/// ダメージを喰らう
 	/// </summary>
 	/// <param name="attackPower">攻撃力</param>
-	void Damage(int attackPower);
+	void Damage(int attackPower, const Vector3& collisionPos);
 
 	/// <summary>
 	/// HPが少ない状態のモデルに変更する
@@ -156,6 +156,16 @@ private: //メンバ関数
 	void ChargeBulletFire(const float scale, const float bulletSpeed);
 
 	/// <summary>
+	/// ダメージ状態の処理
+	/// </summary>
+	void DamageMode();
+
+	/// <summary>
+	/// ダメージ爆発
+	/// </summary>
+	void DamageExplosion(const Vector3& position);
+
+	/// <summary>
 	/// ダメージを喰らった状態の色にする
 	/// </summary>
 	void DamageColorMode();
@@ -196,6 +206,11 @@ private: //メンバ関数
 	void AttackTypeRotateMove();
 
 	/// <summary>
+	/// 死亡時落下の爆発
+	/// </summary>
+	void DeadFallExplosion();
+
+	/// <summary>
 	/// 待機処理
 	/// </summary>
 	void Stay();
@@ -217,6 +232,8 @@ private: //静的メンバ変数
 	static const float attackModeRotY;
 	//待機状態のY軸回転
 	static const float waitModeRotY;
+	//ダメージ状態の色
+	static const XMFLOAT4 damageColor;
 	//攻撃内容:追従の行動遷移
 	static void (BossMainBody::* attackTypeTrackingPhaseFuncTable[])();
 	//攻撃内容:超巨大弾の行動遷移
@@ -235,10 +252,12 @@ private: //メンバ変数
 	bool isDelete = false;
 	//喰らうダメージ量
 	int damageNum;
-	//ダメージ色フラグ
+	//ダメージフラグ
+	bool isDamage = false;
+	//ダメージ状態タイマー
+	int32_t damageTimer = 0;
+	//ダメージ色か
 	bool isDamageColor = false;
-	//ダメージ色にする時間タイマー
-	int32_t damageColorTimer = 0;
 	//HPが少ない状態のモデルか
 	bool isDamageModel = false;
 	//弾発射タイマー
@@ -267,4 +286,6 @@ private: //メンバ変数
 	Vector3 deadRota;
 	//死亡時落下速度
 	Vector3 deadFallVel;
+	//死亡時落下爆発タイマー
+	int32_t deadFallExplosionTimer = 0;
 };

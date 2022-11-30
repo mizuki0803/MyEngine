@@ -404,15 +404,15 @@ void ParticleEmitter::BossChargeShotDead(const Vector3& position, const float si
 	}
 }
 
-void ParticleEmitter::Explosion(const Vector3& position)
+void ParticleEmitter::Explosion(const Vector3& position, const float size)
 {
 	for (int j = 0; j < 5; j++) {
 		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
 		const float md_pos = 2.0f;
 		Vector3 pos = position;
-		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		pos.y += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.x += ((float)rand() / RAND_MAX * md_pos - md_pos / 2.0f) * size;
+		pos.y += ((float)rand() / RAND_MAX * md_pos - md_pos / 2.0f) * size;
+		pos.z += ((float)rand() / RAND_MAX * md_pos - md_pos / 2.0f) * size;
 
 		for (int i = 0; i < 25; i++) {
 			//生存時間
@@ -420,21 +420,21 @@ void ParticleEmitter::Explosion(const Vector3& position)
 
 			//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
 			const float md_pos2 = 0.8f;
-			pos.x += (float)rand() / RAND_MAX * md_pos2 - md_pos2 / 2.0f;
-			pos.y += (float)rand() / RAND_MAX * md_pos2 - md_pos2 / 2.0f;
-			pos.z += (float)rand() / RAND_MAX * md_pos2 - md_pos2 / 2.0f;
+			pos.x += ((float)rand() / RAND_MAX * md_pos2 - md_pos2 / 2.0f) * size;
+			pos.y += ((float)rand() / RAND_MAX * md_pos2 - md_pos2 / 2.0f) * size;
+			pos.z += ((float)rand() / RAND_MAX * md_pos2 - md_pos2 / 2.0f) * size;
 
 			//X,Y,Z全て[-0.05f, +0.05f]でランダムに分布
 			const float md_vel = 0.05f;
 			Vector3 vel{};
-			vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.x = ((float)rand() / RAND_MAX * md_vel - md_vel / 2.0f) * size;
+			vel.y = ((float)rand() / RAND_MAX * md_vel - md_vel / 2.0f) * size;
+			vel.z = ((float)rand() / RAND_MAX * md_vel - md_vel / 2.0f) * size;
 			Vector3 acc{};
 
 			const float md_scale = 3.0f;
-			float startScale = 0.3f;
-			float endScale = 4.0f + (float)rand() / RAND_MAX * md_scale - md_scale / 2.0f;
+			float startScale = 0.3f * size;
+			float endScale = (4.0f + (float)rand() / RAND_MAX * md_scale - md_scale / 2.0f) * size;
 			//大きさ変更のイージング
 			std::function<float(const float, const float, const float) > outQuart =
 				std::bind(&Easing::OutQuart, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);

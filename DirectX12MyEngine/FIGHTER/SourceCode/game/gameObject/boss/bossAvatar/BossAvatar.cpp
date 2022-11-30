@@ -36,6 +36,7 @@ ObjModel* BossAvatar::bulletModel = nullptr;
 const float BossAvatar::attackModeRotY = 180.0f;
 const float BossAvatar::waitModeRotY = 0.0f;
 const float BossAvatar::attackAvatarGatlingLength = 1.25f;
+const XMFLOAT4 BossAvatar::damageColor = { 1, 0.2f, 0.2f, 1 };
 
 bool BossAvatar::Initialize()
 {
@@ -52,9 +53,9 @@ bool BossAvatar::Initialize()
 
 void BossAvatar::Update()
 {
-	//ダメージ色状態のみの処理
-	if (isDamageColor) {
-		DamageColorMode();
+	//ダメージ状態のみの処理
+	if (isDamage) {
+		DamageMode();
 	}
 
 	//死亡時の動き
@@ -66,7 +67,7 @@ void BossAvatar::Update()
 	ObjObject3d::Update();
 }
 
-void BossAvatar::Damage(int attackPower)
+void BossAvatar::Damage(int attackPower, const Vector3& collisionPos)
 {
 	//引数の攻撃力をダメージ量にセット
 	damageNum = attackPower;
@@ -82,18 +83,22 @@ void BossAvatar::Damage(int attackPower)
 		damageNum += HP;
 
 		//爆発演出用パーティクル生成
-		ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
+		const float size = 3.0f;
+		ParticleEmitter::GetInstance()->Explosion(GetWorldPos(), size);
 	}
 
 	//HPが少ない状態のモデルをセットする
 	DamageModelChange();
 
-	//ダメージ色状態にする
-	isDamageColor = true;
-	const XMFLOAT4 damageColor = { 1, 0, 0, 1 };
+	//ダメージ状態にする
+	isDamage = true;
+	//ダメージ状態タイマー初期化
+	damageTimer = 0;
+	//色を変更
 	color = damageColor;
-	//ダメージ色状態タイマー初期化
-	damageColorTimer = 0;
+
+	//爆発生成する
+	DamageExplosion(collisionPos);
 }
 
 void BossAvatar::DamageModelChange()
@@ -239,17 +244,64 @@ void BossAvatar::ChargeBulletFire(const float scale, const float bulletSpeed)
 	gameScene->AddEnemyBullet(std::move(newBullet));
 }
 
+void BossAvatar::DamageMode()
+{
+	//ダメージ状態の時間
+	const int damageTime = 20;
+	damageTimer++;
+
+	//ダメージ色切り替え
+	DamageColorMode();
+
+	//タイマーが指定した時間になったら
+	if (damageTimer >= damageTime) {
+		//ダメージ状態を終了
+		isDamage = false;
+
+		//色を元に戻しておく
+		color = { 1, 1, 1, 1 };
+	}
+}
+
+void BossAvatar::DamageExplosion(const Vector3& collisionPos)
+{
+	//敵内部に演出が出てしまうことがあるので、敵の大きさ分押し戻す
+	Vector3 pos = collisionPos;
+	float avatarSize = scale.z;
+	//親がいるときは親のスケールをかける
+	if (parent) { avatarSize *= parent->GetScale().z; }
+	pos.z -= avatarSize / 2;
+	//ランダムでずらす
+	const Vector3 randPos = { 2, 2, 1 };
+	pos.x += (float)((rand() % (int)randPos.x) - randPos.x / 2);
+	pos.y += (float)((rand() % (int)randPos.y) - randPos.y / 2);
+	pos.z += (float)((rand() % (int)randPos.z));
+
+	//ショット死亡演出用パーティクル生成
+	const float size = 0.75f;
+	ParticleEmitter::GetInstance()->Explosion(pos, size);
+}
+
 void BossAvatar::DamageColorMode()
 {
-	//ダメージ色にする時間
-	const float damageColorTime = 10;
-	damageColorTimer++;
+	//ダメージ色切り替え時間
+	const int damageColorChangeTime = 2;
 
-	//タイマーが指定した時間になったらダメージ色状態を解除する
-	if (damageColorTimer >= damageColorTime) {
-		//色を元に戻す
-		isDamageColor = false;
-		color = { 1,1,1,1 };
+	//タイマーが指定した時間になったら
+	if (damageTimer % damageColorChangeTime == 0) {
+		//ダメージ色状態を切り替える
+		if (isDamageColor) {
+			isDamageColor = false;
+
+			//色を元に戻す
+			color = { 1, 1, 1, 1 };
+		}
+		else {
+			isDamageColor = true;
+
+			//ダメージ色にする
+			color = damageColor;
+		}
 	}
 }
 

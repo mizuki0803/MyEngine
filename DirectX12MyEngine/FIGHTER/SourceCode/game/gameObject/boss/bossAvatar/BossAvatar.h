@@ -59,7 +59,7 @@ public: //メンバ関数
 	/// ダメージを喰らう
 	/// </summary>
 	/// <param name="attackPower">攻撃力</param>
-	void Damage(int attackPower);
+	void Damage(int attackPower, const Vector3& collisionPos);
 
 	/// <summary>
 	/// HPが少ない状態のモデルに変更する
@@ -131,6 +131,16 @@ protected: //メンバ関数
 	/// チャージ弾発射
 	/// </summary>
 	void ChargeBulletFire(const float scale, const float bulletSpeed);
+
+	/// <summary>
+	/// ダメージ状態の処理
+	/// </summary>
+	void DamageMode();
+
+	/// <summary>
+	/// ダメージ爆発
+	/// </summary>
+	void DamageExplosion(const Vector3& collisionPos);
 
 	/// <summary>
 	/// ダメージを喰らった状態の色にする
@@ -224,6 +234,8 @@ protected: //静的メンバ変数
 	static const float attackModeRotY;
 	//待機状態のY軸回転
 	static const float waitModeRotY;
+	//ダメージ状態の色
+	static const XMFLOAT4 damageColor;
 	//攻撃内容:分身体当たりの行動遷移
 	static void (BossAvatar::* attackTypeAvatarBodyBlowPhaseFuncTable[])();
 	//攻撃内容:分身ガトリング砲の行動遷移
@@ -242,10 +254,12 @@ protected: //メンバ変数
 	bool isDelete = false;
 	//喰らうダメージ量
 	int damageNum;
-	//ダメージ色フラグ
+	//ダメージフラグ
+	bool isDamage = false;
+	//ダメージ状態タイマー
+	int32_t damageTimer = 0;
+	//ダメージ色か
 	bool isDamageColor = false;
-	//ダメージ色にする時間タイマー
-	int32_t damageColorTimer = 0;
 	//HPが少ない状態のモデルか
 	bool isDamageModel = false;
 	//弾発射タイマー

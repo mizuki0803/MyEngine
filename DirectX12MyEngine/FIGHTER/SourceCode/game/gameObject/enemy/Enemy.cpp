@@ -38,6 +38,9 @@ void Enemy::Update()
 
 void Enemy::OnCollision()
 {
+	//爆発用大きさ
+	float explosionSize = 0.8f;
+
 	//死亡状態でなければ死亡させる
 	if (!isDead) {
 		isDead = true;
@@ -54,13 +57,16 @@ void Enemy::OnCollision()
 
 		//破壊
 		Break();
+
+		//爆発のサイズを大きくする
+		explosionSize = 1.6f;
 	}
 
 	//当たり判定がこのフレームで作用した
 	isCollisionFrame = true;
 
 	//爆発演出用パーティクル生成
-	ParticleEmitter::GetInstance()->Explosion(position);
+	ParticleEmitter::GetInstance()->Explosion(position, explosionSize);
 }
 
 Vector3 Enemy::GetWorldPos()

@@ -47,7 +47,7 @@ void SortieCamera::StayPlayer()
 void SortieCamera::RunningSideZoomPlayer()
 {
 	//自機をズームする時間
-	const float zoomTime = 300;
+	const float zoomTime = 200;
 	//タイマー更新
 	cameraActionTimer++;
 	const float time = cameraActionTimer / zoomTime;

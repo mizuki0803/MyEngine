@@ -725,7 +725,7 @@ void GameScene::CollisionCheck3d()
 
 		//ボスのコールバック関数を呼び出す
 		const int attackPower = 2;
-		boss->OnCollisionMainBody(attackPower);
+		boss->OnCollisionMainBody(attackPower, posB);
 		//自機弾のコールバック関数を呼び出す
 		bullet->OnCollision(radiusA);
 
@@ -758,7 +758,7 @@ void GameScene::CollisionCheck3d()
 
 			//ボスのコールバック関数を呼び出す
 			const int attackPower = 2;
-			boss->OnCollisionAvatar(bossAvatar.get(), attackPower);
+			boss->OnCollisionAvatar(bossAvatar.get(), attackPower, posA);
 			//自機弾のコールバック関数を呼び出す
 			bullet->OnCollision(radiusB);
 

@@ -99,7 +99,7 @@ public: //メンバ関数
 	/// 爆発演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
-	void Explosion(const Vector3& position);
+	void Explosion(const Vector3& position, const float size = 1);
 
 	/// <summary>
 	/// 黒煙演出

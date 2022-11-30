@@ -199,7 +199,7 @@ void GameCamera::Move()
 
 	//自機の移動速度変更に合わせて変更する
 	float moveSpeedPhaseSpeed = 1.0f;
-	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = 2.6f; }
+	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = 2.4f; }
 	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = 0.2f; }
 
 	//前進する場合はZ方向に移動
@@ -225,7 +225,7 @@ void GameCamera::Knockback()
 
 	//自機の移動速度変更に合わせて変更する
 	float moveSpeedPhaseSpeed = 1.0f;
-	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = 2.6f; }
+	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = 2.4f; }
 	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = 0.2f; }
 
 	//前進する場合はZ方向に移動

@@ -76,14 +76,14 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="bossAvatars">衝突した分身</param>
 	/// <param name="damageNum">ダメージ量</param>
-	void OnCollisionMainBody(const int damageNum);
+	void OnCollisionMainBody(const int damageNum, const Vector3& collisionPos);
 
 	/// <summary>
 	/// 衝突時コールバック関数(分身)
 	/// </summary>
 	/// <param name="avatars">衝突した分身</param>
 	/// <param name="damageNum">ダメージ量</param>
-	void OnCollisionAvatar(BossAvatar* avatar, const int damageNum);
+	void OnCollisionAvatar(BossAvatar* avatar, const int damageNum, const Vector3& collisionPos);
 
 	/// <summary>
 	/// 登場状態
