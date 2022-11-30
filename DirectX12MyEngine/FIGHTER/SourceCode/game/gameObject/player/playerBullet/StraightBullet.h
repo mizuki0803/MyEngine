@@ -22,7 +22,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	void OnCollision(float subjectSize) override;
+	void OnCollision(const Vector3& subjectsize, float subjectSize) override;
 
 private: //メンバ関数
 	/// <summary>

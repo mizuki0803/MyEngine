@@ -76,14 +76,14 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="bossAvatars">衝突した分身</param>
 	/// <param name="damageNum">ダメージ量</param>
-	void OnCollisionMainBody(const int damageNum, const Vector3& collisionPos);
+	void OnCollisionMainBody(const int damageNum, const Vector3& collisionPos, const Vector3& subjectVel);
 
 	/// <summary>
 	/// 衝突時コールバック関数(分身)
 	/// </summary>
 	/// <param name="avatars">衝突した分身</param>
 	/// <param name="damageNum">ダメージ量</param>
-	void OnCollisionAvatar(BossAvatar* avatar, const int damageNum, const Vector3& collisionPos);
+	void OnCollisionAvatar(BossAvatar* avatar, const int damageNum, const Vector3& collisionPos, const Vector3& subjectVel);
 
 	/// <summary>
 	/// 登場状態
@@ -248,6 +248,11 @@ private: //メンバ関数
 	/// 基準位置に戻るときの出発座標を記録する、弾発射状態解除
 	/// </summary>
 	void AttackEnd();
+
+	/// <summary>
+	/// 基準位置に戻るときの出発座標を記録する
+	/// </summary>
+	void SetReturnBasePosition();
 
 private: //静的メンバ変数
 	//プレイヤー自機

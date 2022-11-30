@@ -29,7 +29,7 @@ ObjModel* BossMainBody::mainBodyDamageModel = nullptr;
 ObjModel* BossMainBody::mainBodySleepModel = nullptr;
 ObjModel* BossMainBody::bulletModel = nullptr;
 const Vector3 BossMainBody::normalSize = { 4.5f, 4.5f, 4.5f };
-const Vector3 BossMainBody::damageSize = BossMainBody::normalSize * 1.05f;
+const Vector3 BossMainBody::damageSize = BossMainBody::normalSize * 1.1f;
 const float BossMainBody::attackModeRotY = 180.0f;
 const float BossMainBody::waitModeRotY = 0.0f;
 const XMFLOAT4 BossMainBody::damageColor = { 1, 0.2f, 0.2f, 1 };
@@ -73,7 +73,7 @@ void BossMainBody::Update()
 	ObjObject3d::Update();
 }
 
-void BossMainBody::Damage(int attackPower, const Vector3& collisionPos)
+void BossMainBody::Damage(int attackPower, const Vector3& collisionPos, const Vector3& subjectVel)
 {
 	//引数の攻撃力をダメージ量にセット
 	damageNum = attackPower;
@@ -105,6 +105,9 @@ void BossMainBody::Damage(int attackPower, const Vector3& collisionPos)
 
 	//サイズを少し大きくする
 	scale = damageSize;
+
+	//ノックバック情報をセット
+	SetDamageKnockback(subjectVel);
 
 	//爆発生成する
 	DamageExplosion(collisionPos);
@@ -225,6 +228,12 @@ void BossMainBody::ChangeWaitMode(const float time)
 	rotation.z = 0;
 }
 
+void BossMainBody::SetReturnBasePosition()
+{
+	//呼び出した瞬間の座標を基準位置に戻るときの出発座標として記録しておく
+	returnStartPos = position;
+}
+
 void BossMainBody::ReturnBasePosition(const float time)
 {
 	//基準の座標に戻す
@@ -341,6 +350,9 @@ void BossMainBody::DamageMode()
 	const int damageTime = 20;
 	damageTimer++;
 
+	//ノックバック
+	DamageKnockback();
+
 	//大きくしたサイズを戻す
 	DamageSizeReturn();
 
@@ -355,6 +367,30 @@ void BossMainBody::DamageMode()
 		//色を元に戻しておく
 		color = { 1, 1, 1, 1 };
 	}
+}
+
+void BossMainBody::SetDamageKnockback(const Vector3& subjectVel)
+{
+	//ノックバックする方向を決める(対象の速度の方向)
+	knockbackVec = subjectVel;
+	knockbackVec.normalize();
+}
+
+void BossMainBody::DamageKnockback()
+{
+	//ノックバックする時間
+	const float knockbackTime = 5;
+	//指定した時間以上なら抜ける
+	if (damageTimer > knockbackTime) { return; }
+
+	const float time = damageTimer / knockbackTime;
+
+	//速度を作成
+	const float knockbackBaseSpeed = 0.2f;
+	knockbackVel = knockbackVec * (1 - time) * knockbackBaseSpeed;
+
+	//自機をノックバックさせる
+	position += knockbackVel;
 }
 
 void BossMainBody::DamageSizeReturn()

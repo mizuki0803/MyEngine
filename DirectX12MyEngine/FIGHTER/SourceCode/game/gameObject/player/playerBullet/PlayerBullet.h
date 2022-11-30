@@ -29,11 +29,12 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	virtual void OnCollision(float subjectSize) = 0;
+	virtual void OnCollision(const Vector3& subjectsize, float subjectSize) = 0;
 
 	//getter
 	Vector3 GetWorldPos();
 	BulletType GetBulletType() { return bulletType; }
+	const Vector3& GetVelocity() { return velocity; }
 	bool GetIsDead() const { return isDead; }
 	Enemy* GetEnemy() { return enemy; }
 

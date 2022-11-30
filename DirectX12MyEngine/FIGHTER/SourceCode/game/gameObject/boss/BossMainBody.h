@@ -57,7 +57,7 @@ public: //メンバ関数
 	/// ダメージを喰らう
 	/// </summary>
 	/// <param name="attackPower">攻撃力</param>
-	void Damage(int attackPower, const Vector3& collisionPos);
+	void Damage(int attackPower, const Vector3& collisionPos, const Vector3& subjectVel);
 
 	/// <summary>
 	/// HPが少ない状態のモデルに変更する
@@ -113,6 +113,11 @@ public: //メンバ関数
 	void ChangeWaitMode(const float time);
 
 	/// <summary>
+	/// 基準位置に戻るときの出発座標を記録する
+	/// </summary>
+	void SetReturnBasePosition();
+
+	/// <summary>
 	/// 基準位置に戻る
 	/// </summary>
 	/// <param name="time">イージング用(0～1)の数値</param>
@@ -160,6 +165,17 @@ private: //メンバ関数
 	/// ダメージ状態の処理
 	/// </summary>
 	void DamageMode();
+
+	/// <summary>
+	/// ダメージ状態のノックバック情報をセット
+	/// </summary>
+	/// <param name="subjectVel">対象の速度</param>
+	void SetDamageKnockback(const Vector3& subjectVel);
+
+	/// <summary>
+	/// ダメージ状態のノックバック
+	/// </summary>
+	void DamageKnockback();
 
 	/// <summary>
 	/// ダメージ状態で大きくしたサイズを戻していく処理
@@ -270,6 +286,10 @@ private: //メンバ変数
 	bool isDamageColor = false;
 	//HPが少ない状態のモデルか
 	bool isDamageModel = false;
+	//ノックバック方向
+	Vector3 knockbackVec;
+	//ノックバック速度
+	Vector3 knockbackVel;
 	//弾発射タイマー
 	int32_t fireTimer = 0;
 	//弾発射座標

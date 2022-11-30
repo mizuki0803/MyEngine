@@ -34,7 +34,7 @@ ObjModel* BossAvatar::avatarDamageModel = nullptr;
 ObjModel* BossAvatar::avatarSleepModel = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
 const Vector3 BossAvatar::normalSize = { 0.75f, 0.75f, 0.75f };
-const Vector3 BossAvatar::damageSize = normalSize * 1.05f;
+const Vector3 BossAvatar::damageSize = normalSize * 1.1f;
 const float BossAvatar::attackModeRotY = 180.0f;
 const float BossAvatar::waitModeRotY = 0.0f;
 const float BossAvatar::attackAvatarGatlingLength = 1.25f;
@@ -69,7 +69,7 @@ void BossAvatar::Update()
 	ObjObject3d::Update();
 }
 
-void BossAvatar::Damage(int attackPower, const Vector3& collisionPos)
+void BossAvatar::Damage(int attackPower, const Vector3& collisionPos, const Vector3& subjectVel)
 {
 	//引数の攻撃力をダメージ量にセット
 	damageNum = attackPower;
@@ -101,6 +101,9 @@ void BossAvatar::Damage(int attackPower, const Vector3& collisionPos)
 
 	//サイズを少し大きくする
 	scale = damageSize;
+
+	//ノックバック情報をセット
+	SetDamageKnockback(subjectVel);
 
 	//爆発生成する
 	DamageExplosion(collisionPos);
@@ -173,6 +176,12 @@ void BossAvatar::ChangeWaitMode(const float time)
 	rotation.x = 0;
 	rotation.y = Easing::InOutBack(attackModeRotY, waitModeRotY, time);
 	rotation.z = 0;
+}
+
+void BossAvatar::SetReturnBasePosition()
+{
+	//呼び出した瞬間の座標を基準位置に戻るときの出発座標として記録しておく
+	returnStartPos = position;
 }
 
 void BossAvatar::ReturnBasePosition(const float time)
@@ -255,6 +264,9 @@ void BossAvatar::DamageMode()
 	const int damageTime = 20;
 	damageTimer++;
 
+	//ノックバック
+	DamageKnockback();
+
 	//大きくしたサイズを戻す
 	DamageSizeReturn();
 
@@ -269,6 +281,30 @@ void BossAvatar::DamageMode()
 		//色を元に戻しておく
 		color = { 1, 1, 1, 1 };
 	}
+}
+
+void BossAvatar::SetDamageKnockback(const Vector3& subjectVel)
+{
+	//ノックバックする方向を決める(対象の速度の方向)
+	knockbackVec = subjectVel;
+	knockbackVec.normalize();
+}
+
+void BossAvatar::DamageKnockback()
+{
+	//ノックバックする時間
+	const float knockbackTime = 5;
+	//指定した時間以上なら抜ける
+	if (damageTimer > knockbackTime) { return; }
+
+	const float time = damageTimer / knockbackTime;
+
+	//速度を作成
+	const float knockbackBaseSpeed = 0.2f;
+	knockbackVel = knockbackVec * (1 - time) * knockbackBaseSpeed;
+
+	//自機をノックバックさせる
+	position += knockbackVel;
 }
 
 void BossAvatar::DamageSizeReturn()

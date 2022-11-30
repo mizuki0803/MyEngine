@@ -74,7 +74,7 @@ void HomingBullet::Update()
 	ParticleEmitter::GetInstance()->ChargeShot(GetWorldPos(), scale.x);
 }
 
-void HomingBullet::OnCollision(float subjectSize)
+void HomingBullet::OnCollision(const Vector3& subjectsize, float subjectSize)
 {
 	//Ž€–S‚³‚¹‚é
 	isDead = true;

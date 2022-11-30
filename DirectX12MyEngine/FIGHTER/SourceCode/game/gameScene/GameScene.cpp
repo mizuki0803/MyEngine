@@ -516,7 +516,7 @@ void GameScene::CollisionCheck3d()
 			//敵のコールバック関数を呼び出す
 			enemy->OnCollision();
 			//自機弾のコールバック関数を呼び出す
-			bullet->OnCollision(radiusB);
+			bullet->OnCollision(posB, radiusB);
 
 			//弾は一つの敵しか倒せないのでenemyループを抜ける
 			break;
@@ -725,9 +725,9 @@ void GameScene::CollisionCheck3d()
 
 		//ボスのコールバック関数を呼び出す
 		const int attackPower = 2;
-		boss->OnCollisionMainBody(attackPower, posB);
+		boss->OnCollisionMainBody(attackPower, posB, bullet->GetVelocity());
 		//自機弾のコールバック関数を呼び出す
-		bullet->OnCollision(radiusA);
+		bullet->OnCollision(posA, radiusA);
 
 		break;
 	}
@@ -758,9 +758,9 @@ void GameScene::CollisionCheck3d()
 
 			//ボスのコールバック関数を呼び出す
 			const int attackPower = 2;
-			boss->OnCollisionAvatar(bossAvatar.get(), attackPower, posA);
+			boss->OnCollisionAvatar(bossAvatar.get(), attackPower, posA, bullet->GetVelocity());
 			//自機弾のコールバック関数を呼び出す
-			bullet->OnCollision(radiusB);
+			bullet->OnCollision(posB, radiusB);
 
 			break;
 		}

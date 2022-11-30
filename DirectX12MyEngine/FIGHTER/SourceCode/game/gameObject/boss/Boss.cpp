@@ -119,7 +119,7 @@ void Boss::DrawUI()
 	}
 }
 
-void Boss::OnCollisionMainBody(const int damageNum, const Vector3& collisionPos)
+void Boss::OnCollisionMainBody(const int damageNum, const Vector3& collisionPos, const Vector3& subjectVel)
 {
 	//待機状態ならダメージを喰らう
 	const bool isWaitMode = (phase == Phase::Wait);
@@ -130,14 +130,14 @@ void Boss::OnCollisionMainBody(const int damageNum, const Vector3& collisionPos)
 	if (!(isMainBodyAttackMode && isWaitMode && isDamageRota)) { return; }
 
 	//本体にダメージ
-	mainBody->Damage(damageNum, collisionPos);
+	mainBody->Damage(damageNum, collisionPos, subjectVel);
 
 	//ボス全体にダメージ(ボス本体が実際に喰らったダメージ量をセット)
 	const int mainBodyDamageNum = mainBody->GetDamageNum();
 	Damage(mainBodyDamageNum);
 }
 
-void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum, const Vector3& collisionPos)
+void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum, const Vector3& collisionPos, const Vector3& subjectVel)
 {
 	//分身が既に死亡していたら抜ける
 	if (avatar->GetIsDead()) { return; }
@@ -151,7 +151,7 @@ void Boss::OnCollisionAvatar(BossAvatar* avatar, const int damageNum, const Vect
 	if (!(isWaitMode && isDamageRota)) { return; }
 
 	//衝突した分身にダメージ
-	avatar->Damage(damageNum, collisionPos);
+	avatar->Damage(damageNum, collisionPos, subjectVel);
 
 	//分身が全滅したかチェック
 	CheckAllAvatarDead();
@@ -190,6 +190,9 @@ bool Boss::AppearModeCount()
 		for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
 			avatar->ChangeModel();
 		}
+
+		//基準座標に戻る情報をセット
+		SetReturnBasePosition();
 
 		//ボス名表示UIはもう使用しないので解放しておく
 		bossNameUI.reset();
@@ -463,6 +466,9 @@ bool Boss::AttackModeMainBodyRota()
 	//攻撃状態にするため本体を回転させる
 	mainBody->ChangeAttackMode(time);
 
+	//ノックバックによってずれた座標を基準座標に移動させる
+	mainBody->ReturnBasePosition(time);
+
 	return true;
 }
 
@@ -483,6 +489,9 @@ bool Boss::AttackModeAvatarRota()
 		if (avatar->GetIsDead()) { continue; }
 
 		avatar->ChangeAttackMode(time);
+
+		//ノックバックによってずれた座標を基準座標に移動させる
+		avatar->ReturnBasePosition(time);
 	}
 
 	return true;
@@ -502,6 +511,9 @@ bool Boss::WaitModeCount()
 
 		//次に待機状態になったときのためにタイマーを初期化しておく
 		waitModeTimer = 0;
+
+		//待機状態終了するので基準座標に戻る情報をセット
+		SetReturnBasePosition();
 
 		//待機状態を終えるのでfalseを返す
 		return false;
@@ -691,5 +703,18 @@ void Boss::AttackEnd()
 		if (avatar->GetIsDead()) { continue; }
 
 		avatar->AttackEnd();
+	}
+}
+
+void Boss::SetReturnBasePosition()
+{
+	//基準位置に戻るときの出発座標を記録する
+	mainBody->SetReturnBasePosition();
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		//分身が既に死亡していたら飛ばす
+		if (avatar->GetIsDead()) { continue; }
+
+		//基準座標に戻す位置をセット
+		avatar->SetReturnBasePosition();
 	}
 }

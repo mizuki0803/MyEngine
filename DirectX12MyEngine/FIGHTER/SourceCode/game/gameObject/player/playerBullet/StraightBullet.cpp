@@ -53,14 +53,14 @@ void StraightBullet::Update()
 	PlayerBullet::Update();
 }
 
-void StraightBullet::OnCollision(float subjectSize)
+void StraightBullet::OnCollision(const Vector3& subjectsize, float subjectSize)
 {
 	//死亡させる
 	isDead = true;
 
-	//敵内部に演出が出てしまうことがあるので、敵の大きさ分押し戻す
+	//敵内部に演出が出てしまうことがあるので、敵のZ座標から敵の大きさ分押し戻す
 	Vector3 pos = GetWorldPos();
-	pos.z -= subjectSize;
+	pos.z = subjectsize.z - subjectSize;
 	//ショット死亡演出用パーティクル生成
 	ParticleEmitter::GetInstance()->ShotDead(pos, scale.x);
 }
