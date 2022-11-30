@@ -33,6 +33,8 @@ ObjModel* BossAvatar::avatarModel = nullptr;
 ObjModel* BossAvatar::avatarDamageModel = nullptr;
 ObjModel* BossAvatar::avatarSleepModel = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
+const Vector3 BossAvatar::normalSize = { 0.75f, 0.75f, 0.75f };
+const Vector3 BossAvatar::damageSize = normalSize * 1.05f;
 const float BossAvatar::attackModeRotY = 180.0f;
 const float BossAvatar::waitModeRotY = 0.0f;
 const float BossAvatar::attackAvatarGatlingLength = 1.25f;
@@ -41,7 +43,7 @@ const XMFLOAT4 BossAvatar::damageColor = { 1, 0.2f, 0.2f, 1 };
 bool BossAvatar::Initialize()
 {
 	//大きさは本体の3/4
-	scale = { 0.75f, 0.75f, 0.75f };
+	scale = normalSize;
 
 	//オブジェクト初期化
 	if (!ObjObject3d::Initialize()) {
@@ -96,6 +98,9 @@ void BossAvatar::Damage(int attackPower, const Vector3& collisionPos)
 	damageTimer = 0;
 	//色を変更
 	color = damageColor;
+
+	//サイズを少し大きくする
+	scale = damageSize;
 
 	//爆発生成する
 	DamageExplosion(collisionPos);
@@ -250,6 +255,9 @@ void BossAvatar::DamageMode()
 	const int damageTime = 20;
 	damageTimer++;
 
+	//大きくしたサイズを戻す
+	DamageSizeReturn();
+
 	//ダメージ色切り替え
 	DamageColorMode();
 
@@ -261,6 +269,21 @@ void BossAvatar::DamageMode()
 		//色を元に戻しておく
 		color = { 1, 1, 1, 1 };
 	}
+}
+
+void BossAvatar::DamageSizeReturn()
+{
+	//大きくしたサイズを元に戻す時間
+	const float sizeReturnTime = 10;
+	//指定した時間以上なら抜ける
+	if (damageTimer > sizeReturnTime) { return; }
+	const float time = damageTimer / sizeReturnTime;
+
+	//大きさを元に戻す
+	scale = Easing::LerpVec3(damageSize, normalSize, time);
+
+	//親がいないときはボス本体の大きさを持ってきてスケールをかける
+	if (!parent) { scale *= BossMainBody::GetNormalSize().z; }
 }
 
 void BossAvatar::DamageExplosion(const Vector3& collisionPos)

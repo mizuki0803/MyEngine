@@ -27,7 +27,7 @@ bool BossWarningSprites::Initialize(const Vector2& leftTopPos)
 	for (int i = 0; i < 2; i++) {
 		//警告ライン用背景スプライト生成
 		//大きさ
-		const Vector2 backSize = { WindowApp::window_width, 29 };
+		const Vector2 backSize = { WindowApp::window_width, 30 };
 		//表示座標
 		Vector2 showPos = { WindowApp::window_width / 2, leftTopPos.y + backSize.y / 2 };
 		if (i == 1) {

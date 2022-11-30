@@ -95,7 +95,7 @@ void BossWarning::WarningStart(int32_t warningTimer)
 	//警告開始にかかる時間
 	const int warningStartTime = 20;
 	//タイマーが時間を越えていたら抜ける
-	if (warningTimer >= warningStartTime) { return; }
+	if (warningTimer > warningStartTime) { return; }
 
 	//イージング用時間計測
 	const float time = (float)warningTimer / warningStartTime;

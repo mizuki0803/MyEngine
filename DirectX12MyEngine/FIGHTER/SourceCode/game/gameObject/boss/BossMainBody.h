@@ -38,6 +38,7 @@ public: //静的メンバ関数
 
 	//getter
 	static const int GetMaxHP() { return BossMainBody::maxHP; }
+	static const Vector3& GetNormalSize() { return BossMainBody::normalSize; }
 
 	//setter
 	static void SetGameScene(GameScene* gameScene) { BossMainBody::gameScene = gameScene; }
@@ -161,6 +162,11 @@ private: //メンバ関数
 	void DamageMode();
 
 	/// <summary>
+	/// ダメージ状態で大きくしたサイズを戻していく処理
+	/// </summary>
+	void DamageSizeReturn();
+
+	/// <summary>
 	/// ダメージ爆発
 	/// </summary>
 	void DamageExplosion(const Vector3& position);
@@ -226,6 +232,10 @@ private: //静的メンバ変数
 	static ObjModel* mainBodySleepModel;
 	//敵弾のモデル
 	static ObjModel* bulletModel;
+	//通常サイズ
+	static const Vector3 normalSize;
+	//ダメージ状態のサイズ
+	static const Vector3 damageSize;
 	//体力
 	static const int maxHP = 60;
 	//攻撃状態のY軸回転

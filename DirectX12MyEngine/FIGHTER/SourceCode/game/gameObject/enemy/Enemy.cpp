@@ -3,6 +3,7 @@
 #include "GameScene.h"
 #include "EnemyDefeatCounter.h"
 #include "ParticleEmitter.h"
+#include "Easing.h"
 
 Player* Enemy::player = nullptr;
 GameScene* Enemy::gameScene = nullptr;
@@ -19,6 +20,11 @@ bool Enemy::Initialize()
 	const float scaleNum = 2;
 	scale = { scaleNum, scaleNum, scaleNum };
 
+	//通常サイズをセット
+	normalSize = scale;
+	//ダメージ状態のサイズをセット
+	damageSize = scale * 1.1f;
+
 	//回転
 	rotation.y = 180;
 
@@ -30,6 +36,11 @@ void Enemy::Update()
 	//当たり判定が作用したのは前フレームになるので、falseに戻しておく
 	if (isCollisionFrame) {
 		isCollisionFrame = false;
+	}
+
+	//ダメージ状態の処理
+	if (isDamage) {
+		DamageMode();
 	}
 
 	//オブジェクト更新
@@ -44,6 +55,12 @@ void Enemy::OnCollision()
 	//死亡状態でなければ死亡させる
 	if (!isDead) {
 		isDead = true;
+
+		//ダメージ状態
+		isDamage = true;
+
+		//サイズを少し大きくする
+		scale = damageSize;
 
 		//倒した数カウンターを増やす
 		EnemyDefeatCounter::AddCounter();
@@ -122,6 +139,34 @@ void Enemy::Fire()
 	std::unique_ptr<EnemyBullet> newBullet;
 	newBullet.reset(EnemyBullet::Create(bulletModel, position, velocity));
 	gameScene->AddEnemyBullet(std::move(newBullet));
+}
+
+void Enemy::DamageMode()
+{
+	//ダメージ状態の時間
+	const int damageTime = 20;
+	damageTimer++;
+
+	//大きくしたサイズを戻す
+	DamageSizeReturn();
+
+	//タイマーが指定した時間になったら
+	if (damageTimer >= damageTime) {
+		//ダメージ状態を終了
+		isDamage = false;
+	}
+}
+
+void Enemy::DamageSizeReturn()
+{
+	//大きくしたサイズを元に戻す時間
+	const float sizeReturnTime = 10;
+	//指定した時間以上なら抜ける
+	if (damageTimer > sizeReturnTime) { return; }
+	const float time = damageTimer / sizeReturnTime;
+
+	//大きさを元に戻す
+	scale = Easing::LerpVec3(damageSize, normalSize, time);
 }
 
 void Enemy::Break()

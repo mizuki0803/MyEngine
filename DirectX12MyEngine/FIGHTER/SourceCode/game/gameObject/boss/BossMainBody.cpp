@@ -28,6 +28,8 @@ ObjModel* BossMainBody::mainBodyModel = nullptr;
 ObjModel* BossMainBody::mainBodyDamageModel = nullptr;
 ObjModel* BossMainBody::mainBodySleepModel = nullptr;
 ObjModel* BossMainBody::bulletModel = nullptr;
+const Vector3 BossMainBody::normalSize = { 4.5f, 4.5f, 4.5f };
+const Vector3 BossMainBody::damageSize = BossMainBody::normalSize * 1.05f;
 const float BossMainBody::attackModeRotY = 180.0f;
 const float BossMainBody::waitModeRotY = 0.0f;
 const XMFLOAT4 BossMainBody::damageColor = { 1, 0.2f, 0.2f, 1 };
@@ -55,7 +57,7 @@ BossMainBody* BossMainBody::Create(const Vector3& basePos)
 	bossMainBody->basePos = basePos;
 
 	//大きさをセット
-	bossMainBody->scale = { 4.5f, 4.5f, 4.5f };
+	bossMainBody->scale = normalSize;
 
 	return bossMainBody;
 }
@@ -100,6 +102,9 @@ void BossMainBody::Damage(int attackPower, const Vector3& collisionPos)
 	damageTimer = 0;
 	//色を変更
 	color = damageColor;
+
+	//サイズを少し大きくする
+	scale = damageSize;
 
 	//爆発生成する
 	DamageExplosion(collisionPos);
@@ -336,6 +341,9 @@ void BossMainBody::DamageMode()
 	const int damageTime = 20;
 	damageTimer++;
 
+	//大きくしたサイズを戻す
+	DamageSizeReturn();
+
 	//ダメージ色切り替え
 	DamageColorMode();
 
@@ -347,6 +355,18 @@ void BossMainBody::DamageMode()
 		//色を元に戻しておく
 		color = { 1, 1, 1, 1 };
 	}
+}
+
+void BossMainBody::DamageSizeReturn()
+{
+	//大きくしたサイズを元に戻す時間
+	const float sizeReturnTime = 10;
+	//指定した時間以上なら抜ける
+	if (damageTimer > sizeReturnTime) { return; }
+	const float time = damageTimer / sizeReturnTime;
+
+	//大きさを元に戻す
+	scale = Easing::LerpVec3(damageSize, normalSize, time);
 }
 
 void BossMainBody::DamageExplosion(const Vector3& position)

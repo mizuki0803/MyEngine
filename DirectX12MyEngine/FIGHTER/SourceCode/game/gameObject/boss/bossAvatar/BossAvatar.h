@@ -138,6 +138,11 @@ protected: //メンバ関数
 	void DamageMode();
 
 	/// <summary>
+	/// ダメージ状態で大きくしたサイズを戻していく処理
+	/// </summary>
+	void DamageSizeReturn();
+
+	/// <summary>
 	/// ダメージ爆発
 	/// </summary>
 	void DamageExplosion(const Vector3& collisionPos);
@@ -228,6 +233,10 @@ protected: //静的メンバ変数
 	static ObjModel* avatarSleepModel;
 	//敵弾のモデル
 	static ObjModel* bulletModel;
+	//通常サイズ
+	static const Vector3 normalSize;
+	//ダメージ状態のサイズ
+	static const Vector3 damageSize;
 	//体力
 	static const int maxHP = 15;
 	//攻撃状態のY軸回転

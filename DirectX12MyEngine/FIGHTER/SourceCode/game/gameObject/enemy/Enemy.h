@@ -62,6 +62,16 @@ protected: //メンバ関数
 	void Fire();
 
 	/// <summary>
+	/// ダメージ状態の処理
+	/// </summary>
+	void DamageMode();
+
+	/// <summary>
+	/// ダメージ状態で大きくしたサイズを戻していく処理
+	/// </summary>
+	void DamageSizeReturn();
+
+	/// <summary>
 	/// 破壊
 	/// </summary>
 	virtual void Break();
@@ -89,6 +99,14 @@ protected: //静的メンバ変数
 	static ObjModel* bulletModel;
 
 protected: //メンバ変数
+	//通常サイズ
+	Vector3 normalSize;
+	//ダメージ状態のサイズ
+	Vector3 damageSize;
+	//ダメージ状態か
+	bool isDamage = false;
+	//ダメージ状態タイマー
+	int32_t damageTimer;
 	//当たり判定が作用したフレームか
 	bool isCollisionFrame = false;
 	//死亡フラグ
