@@ -74,13 +74,19 @@ void HomingBullet::Update()
 	ParticleEmitter::GetInstance()->ChargeShot(GetWorldPos(), scale.x);
 }
 
-void HomingBullet::OnCollision(const Vector3& subjectsize, float subjectSize)
+void HomingBullet::OnCollision(const Vector3& subjectPos, float subjectSize, bool isToDamage)
 {
 	//死亡させる
 	isDead = true;
 
+	//演出の大きさ
+	float effectSize = blastSize;
+	//ダメージが通らなかった場合は小さくする
+	const float noDamageEffectSize = 1.0f;
+	if (!isToDamage) { effectSize = noDamageEffectSize; }
+
 	//チャージショット死亡演出用パーティクル生成
-	ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos(), blastSize);
+	ParticleEmitter::GetInstance()->ChargeShotDead(GetWorldPos(), effectSize);
 }
 
 void HomingBullet::CollisionGround()

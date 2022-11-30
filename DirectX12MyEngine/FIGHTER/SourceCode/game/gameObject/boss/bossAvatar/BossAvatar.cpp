@@ -94,6 +94,8 @@ void BossAvatar::Damage(int attackPower, const Vector3& collisionPos, const Vect
 
 	//ダメージ状態にする
 	isDamage = true;
+	//ダメージを喰らった瞬間なのでtrue
+	isDamageTrigger = true;
 	//ダメージ状態タイマー初期化
 	damageTimer = 0;
 	//色を変更
@@ -272,6 +274,9 @@ void BossAvatar::DamageMode()
 
 	//ダメージ色切り替え
 	DamageColorMode();
+
+	//ダメージトリガーフラグがtrueなら下ろしておく
+	if (isDamageTrigger) { isDamageTrigger = false; }
 
 	//タイマーが指定した時間になったら
 	if (damageTimer >= damageTime) {

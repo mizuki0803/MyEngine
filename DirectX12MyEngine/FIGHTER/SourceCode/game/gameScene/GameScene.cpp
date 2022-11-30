@@ -727,7 +727,10 @@ void GameScene::CollisionCheck3d()
 		const int attackPower = 2;
 		boss->OnCollisionMainBody(attackPower, posB, bullet->GetVelocity());
 		//自機弾のコールバック関数を呼び出す
-		bullet->OnCollision(posA, radiusA);
+		//ダメージが通ったとき
+		if (boss->GetMainBody()->GetIsDamageTrigger()) { bullet->OnCollision(posA, radiusA); }
+		//ダメージが通らなかったとき
+		else { bullet->OnCollision(posA, radiusA, false); }
 
 		break;
 	}
@@ -760,7 +763,10 @@ void GameScene::CollisionCheck3d()
 			const int attackPower = 2;
 			boss->OnCollisionAvatar(bossAvatar.get(), attackPower, posA, bullet->GetVelocity());
 			//自機弾のコールバック関数を呼び出す
-			bullet->OnCollision(posB, radiusB);
+			//ダメージが通ったとき
+			if (bossAvatar->GetIsDamageTrigger()) { bullet->OnCollision(posB, radiusB); }
+			//ダメージが通らなかったとき
+			else { bullet->OnCollision(posB, radiusB, false); }
 
 			break;
 		}
@@ -1104,7 +1110,7 @@ void GameScene::BossBattleStart()
 {
 	//既にボスバトルなら抜ける
 	if (isBossBattle) { return; }
-	
+
 	//ボスバトル開始座標
 	const float isBossBattleStartPos = 1300;
 

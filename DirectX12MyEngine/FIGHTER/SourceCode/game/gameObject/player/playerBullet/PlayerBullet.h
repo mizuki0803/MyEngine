@@ -29,7 +29,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	virtual void OnCollision(const Vector3& subjectsize, float subjectSize) = 0;
+	virtual void OnCollision(const Vector3& subjectPos, float subjectSize, bool isToDamage = true) = 0;
 
 	//getter
 	Vector3 GetWorldPos();

@@ -25,7 +25,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	void OnCollision(const Vector3& subjectsize, float subjectSize) override;
+	void OnCollision(const Vector3& subjectPos, float subjectSize, bool isToDamage) override;
 
 private: //メンバ関数
 	/// <summary>

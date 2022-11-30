@@ -149,6 +149,7 @@ public: //メンバ関数
 	const bool GetIsDead() { return isDead; }
 	const bool GetIsDelete() { return isDelete; }
 	const int GetDamageNum() { return damageNum; }
+	const bool GetIsDamageTrigger() { return isDamageTrigger; }
 
 private: //メンバ関数
 	/// <summary>
@@ -280,6 +281,8 @@ private: //メンバ変数
 	int damageNum;
 	//ダメージフラグ
 	bool isDamage = false;
+	//ダメージを喰らった瞬間か
+	bool isDamageTrigger = false;
 	//ダメージ状態タイマー
 	int32_t damageTimer = 0;
 	//ダメージ色か
