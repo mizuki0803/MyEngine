@@ -644,11 +644,8 @@ bool Boss::DeadFall()
 		//爆発演出用パーティクル生成
 		Vector3 particlePos = mainBody->GetWorldPos();
 		const float distance = 5.0f;
-		particlePos.x += (float)rand() / RAND_MAX * distance - distance / 2.0f;
-		particlePos.y += (float)rand() / RAND_MAX * distance - distance / 2.0f;
-		particlePos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
-		const float size = 5.0f;
-		ParticleEmitter::GetInstance()->Explosion(particlePos, size);
+		particlePos.y += distance;
+		ParticleEmitter::GetInstance()->BossDeadExplosion(mainBody->GetWorldPos());
 	}
 
 	return true;

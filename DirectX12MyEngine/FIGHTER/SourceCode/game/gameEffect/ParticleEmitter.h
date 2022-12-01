@@ -102,6 +102,12 @@ public: //メンバ関数
 	void Explosion(const Vector3& position, const float size = 1);
 
 	/// <summary>
+	/// ボス死亡専用爆発演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	void BossDeadExplosion(const Vector3& position);
+
+	/// <summary>
 	/// 黒煙演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>

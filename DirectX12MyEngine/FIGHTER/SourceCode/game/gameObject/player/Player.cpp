@@ -613,7 +613,7 @@ void Player::SpeedChangeStart(bool isPushHighSpeedInput, bool isPushSlowSpeedInp
 
 		//ポストエフェクトのラジアルブラーを強める
 		if (GamePostEffect::GetPostEffect()->GetIsRadialBlur()) {
-			const float highSpeedBlur = 0.3f;
+			const float highSpeedBlur = 0.4f;
 			GamePostEffect::GetPostEffect()->SetRadialBlurStrength(highSpeedBlur);
 		}
 	}
