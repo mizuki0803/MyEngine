@@ -45,6 +45,7 @@ public: //静的メンバ関数
 	static void SetBossMainBodyModel(ObjModel* model) { BossMainBody::mainBodyModel = model; }
 	static void SetBossMainBodyDamageModel(ObjModel* model) { BossMainBody::mainBodyDamageModel = model; }
 	static void SetBossMainBodySleepModel(ObjModel* model) { BossMainBody::mainBodySleepModel = model; }
+	static void SetBossMainBodyDeadModel(ObjModel* model) { BossMainBody::mainBodyDeadModel = model; }
 	static void SetBulletModel(ObjModel* model) { BossMainBody::bulletModel = model; }
 
 public: //メンバ関数
@@ -143,6 +144,11 @@ public: //メンバ関数
 	/// 寝ている状態のモデルから起きている状態のモデルに変更
 	/// </summary>
 	void ChangeModel();
+
+	/// <summary>
+	/// 死亡状態のモデルに変更
+	/// </summary>
+	void ChangeDeadModel();
 
 	//getter
 	Vector3 GetWorldPos();
@@ -247,6 +253,8 @@ private: //静的メンバ変数
 	static ObjModel* mainBodyDamageModel;
 	//本体の寝ている状態のモデル
 	static ObjModel* mainBodySleepModel;
+	//本体の死亡状態のモデル
+	static ObjModel* mainBodyDeadModel;
 	//敵弾のモデル
 	static ObjModel* bulletModel;
 	//通常サイズ

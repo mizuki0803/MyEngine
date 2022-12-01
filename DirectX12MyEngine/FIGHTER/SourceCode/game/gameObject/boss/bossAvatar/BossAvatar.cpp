@@ -32,6 +32,7 @@ GameScene* BossAvatar::gameScene = nullptr;
 ObjModel* BossAvatar::avatarModel = nullptr;
 ObjModel* BossAvatar::avatarDamageModel = nullptr;
 ObjModel* BossAvatar::avatarSleepModel = nullptr;
+ObjModel* BossAvatar::avatarDeadModel = nullptr;
 ObjModel* BossAvatar::bulletModel = nullptr;
 const Vector3 BossAvatar::normalSize = { 0.75f, 0.75f, 0.75f };
 const Vector3 BossAvatar::damageSize = normalSize * 1.1f;
@@ -83,6 +84,9 @@ void BossAvatar::Damage(int attackPower, const Vector3& collisionPos, const Vect
 
 		//HPゲージバグを起こさないようマイナス分を0に調整
 		damageNum += HP;
+
+		//死亡用モデルに変更
+		model = avatarDeadModel;
 
 		//爆発演出用パーティクル生成
 		const float size = 3.0f;

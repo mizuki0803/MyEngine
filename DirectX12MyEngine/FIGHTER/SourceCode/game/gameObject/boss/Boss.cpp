@@ -613,6 +613,9 @@ bool Boss::DeadExplosion()
 			//倒した数カウンターを増やす(本体 + 分身数)
 			const int defeatNum = 5;
 			EnemyDefeatCounter::AddCounter(defeatNum);
+
+			//本体のモデルを変更
+			mainBody->ChangeDeadModel();
 		}
 	}
 

@@ -42,6 +42,7 @@ public: //静的メンバ関数
 	static void SetAvatarModel(ObjModel* model) { BossAvatar::avatarModel = model; }
 	static void SetAvatarDamageModel(ObjModel* model) { BossAvatar::avatarDamageModel = model; }
 	static void SetAvatarSleepModel(ObjModel* model) { BossAvatar::avatarSleepModel = model; }
+	static void SetAvatarDeadModel(ObjModel* model) { BossAvatar::avatarDeadModel = model; }
 	static void SetBulletModel(ObjModel* model) { BossAvatar::bulletModel = model; }
 
 public: //メンバ関数
@@ -248,6 +249,8 @@ protected: //静的メンバ変数
 	static ObjModel* avatarDamageModel;
 	//分身の寝ている状態のモデル
 	static ObjModel* avatarSleepModel;
+	//死亡状態のモデル
+	static ObjModel* avatarDeadModel;
 	//敵弾のモデル
 	static ObjModel* bulletModel;
 	//通常サイズ

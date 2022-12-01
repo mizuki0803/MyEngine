@@ -27,6 +27,7 @@ GameScene* BossMainBody::gameScene = nullptr;
 ObjModel* BossMainBody::mainBodyModel = nullptr;
 ObjModel* BossMainBody::mainBodyDamageModel = nullptr;
 ObjModel* BossMainBody::mainBodySleepModel = nullptr;
+ObjModel* BossMainBody::mainBodyDeadModel = nullptr;
 ObjModel* BossMainBody::bulletModel = nullptr;
 const Vector3 BossMainBody::normalSize = { 4.5f, 4.5f, 4.5f };
 const Vector3 BossMainBody::damageSize = BossMainBody::normalSize * 1.1f;
@@ -308,6 +309,12 @@ void BossMainBody::ChangeModel()
 {
 	//起きている状態のモデルをセット
 	model = mainBodyModel;
+}
+
+void BossMainBody::ChangeDeadModel()
+{
+	//死亡用モデルに変更
+	model = mainBodyDeadModel;
 }
 
 Vector3 BossMainBody::GetWorldPos()

@@ -68,9 +68,11 @@ void GameScene::Initialize()
 	modelBossMainBody.reset(ObjModel::LoadFromOBJ("bossMainBody", true));
 	modelBossMainBodyDamage.reset(ObjModel::LoadFromOBJ("bossMainBodyDamage", true));
 	modelBossMainBodySleep.reset(ObjModel::LoadFromOBJ("bossMainBodySleep", true));
+	modelBossMainBodyDead.reset(ObjModel::LoadFromOBJ("bossMainBodyDead", true));
 	modelBossAvatar.reset(ObjModel::LoadFromOBJ("bossAvatar", true));
 	modelBossAvatarDamage.reset(ObjModel::LoadFromOBJ("bossAvatarDamage", true));
 	modelBossAvatarSleep.reset(ObjModel::LoadFromOBJ("bossAvatarSleep", true));
+	modelBossAvatarDead.reset(ObjModel::LoadFromOBJ("bossAvatarDead", true));
 	modelHealingItem.reset(ObjModel::LoadFromOBJ("healingItem"));
 
 	//自機に必要な情報をセット
@@ -94,11 +96,13 @@ void GameScene::Initialize()
 	BossMainBody::SetBossMainBodyModel(modelBossMainBody.get());
 	BossMainBody::SetBossMainBodyDamageModel(modelBossMainBodyDamage.get());
 	BossMainBody::SetBossMainBodySleepModel(modelBossMainBodySleep.get());
+	BossMainBody::SetBossMainBodyDeadModel(modelBossMainBodyDead.get());
 	BossMainBody::SetBulletModel(modelSphere.get());
 	BossAvatar::SetGameScene(this);
 	BossAvatar::SetAvatarModel(modelBossAvatar.get());
 	BossAvatar::SetAvatarDamageModel(modelBossAvatarDamage.get());
 	BossAvatar::SetAvatarSleepModel(modelBossAvatarSleep.get());
+	BossAvatar::SetAvatarDeadModel(modelBossAvatarDead.get());
 	BossAvatar::SetBulletModel(modelSphere.get());
 
 	//回復アイテムに必要な情報をセット
