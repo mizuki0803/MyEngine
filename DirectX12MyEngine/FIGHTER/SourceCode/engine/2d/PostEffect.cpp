@@ -208,8 +208,14 @@ void PostEffect::Draw()
 	//定数バッファの転送
 	ConstBufferData* constMap = nullptr;
 	HRESULT result = constBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = XMMatrixIdentity();
-	constMap->color = color;
+	if (isRadialBlur) {
+		constMap->isRadialBlur = isRadialBlur;
+		constMap->radialBlurSampleNum = radialBlurSampleNum;
+		constMap->radialBlurStrength = radialBlurStrength;
+	}
+	else {
+		constMap->isRadialBlur = isRadialBlur;
+	}
 	constBuff->Unmap(0, nullptr);
 
 	//パイプラインステートの設定

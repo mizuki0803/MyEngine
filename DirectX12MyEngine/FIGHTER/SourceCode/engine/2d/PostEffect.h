@@ -8,7 +8,7 @@
 class PostEffect
 {
 private: // エイリアス
-// Microsoft::WRL::を省略
+	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -26,11 +26,17 @@ public: //サブクラス
 	//定数バッファ用データ構造体
 	struct ConstBufferData
 	{
-		XMFLOAT4 color;	//色(RGBA)
-		XMMATRIX mat;	//3変換行列
+		unsigned int isRadialBlur; //ラジアルブラーをかけるか
+		unsigned int radialBlurSampleNum; //ラジアルブラーのサンプル回数
+		float radialBlurStrength; //ラジアルブラーの広がる強さ
+		float pad1;
 	};
 
-public:
+public: //定数
+	//ラジアルブラーの最小サンプル回数
+	static const int radialBlurSampleNumMin = 1;
+
+public: //静的メンバ関数
 	/// <summary>
 	/// ポストエフェクト生成
 	/// </summary>
@@ -44,7 +50,7 @@ public:
 	/// <param name="cmdList">コマンドリスト</param>
 	static void PostEffectCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 
-public:
+public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -53,19 +59,16 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
 	void Draw();
 
 	/// <summary>
 	/// シーン描画前処理
 	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
 	void DrawScenePrev();
 
 	/// <summary>
 	/// シーン描画後処理
 	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
 	void DrawSceneRear();
 
 	/// <summary>
@@ -73,7 +76,17 @@ public:
 	/// </summary>
 	void CreateGraphicsPipelineState();
 
-private:
+	//getter
+	const bool GetIsRadialBlur() { return isRadialBlur; }
+	const int GetRadialBlurSampleNum() { return radialBlurSampleNum; }
+	const float GetRadialBlurStrength() { return radialBlurStrength; }
+
+	//setter
+	void SetRadialBlur(const bool isRadialBlur) { this->isRadialBlur = isRadialBlur; }
+	void SetRadialBlurSampleNum(const int radialBlurSampleNum) { this->radialBlurSampleNum = radialBlurSampleNum; }
+	void SetRadialBlurStrength(const float radialBlurStrength) { this->radialBlurStrength = radialBlurStrength; }
+
+private: //静的メンバ変数
 	//画面クリアカラー
 	static const float clearColor[4];
 	//デバイス
@@ -82,7 +95,8 @@ private:
 	static ID3D12GraphicsCommandList* cmdList;
 	//パイプラインセット
 	static PipelineSet pipelineSet;
-private:
+
+private: //メンバ変数
 	//頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;
 	//頂点バッファビュー
@@ -101,5 +115,11 @@ private:
 	ComPtr<ID3D12DescriptorHeap> descHeapDSV;
 	//色(RGBA)
 	XMFLOAT4 color = { 1, 1, 1, 1 };
+	//ラジアルブラーをかけるか
+	bool isRadialBlur = false;
+	//ラジアルブラーのサンプル回数
+	int radialBlurSampleNum = 10;
+	//ラジアルブラーの広がる強さ
+	float radialBlurStrength = 0.5f;
 };
 

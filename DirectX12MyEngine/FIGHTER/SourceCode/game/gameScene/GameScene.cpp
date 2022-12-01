@@ -15,6 +15,7 @@
 #include "ComeGoEnemy.h"
 #include "EnemyDefeatCounter.h"
 #include "SceneChangeEffect.h"
+#include "GamePostEffect.h"
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -74,6 +75,9 @@ void GameScene::Initialize()
 	modelBossAvatarSleep.reset(ObjModel::LoadFromOBJ("bossAvatarSleep", true));
 	modelBossAvatarDead.reset(ObjModel::LoadFromOBJ("bossAvatarDead", true));
 	modelHealingItem.reset(ObjModel::LoadFromOBJ("healingItem"));
+
+	//ポストエフェクトのブラーを解除しておく
+	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
 
 	//自機に必要な情報をセット
 	Player::SetGameScene(this);

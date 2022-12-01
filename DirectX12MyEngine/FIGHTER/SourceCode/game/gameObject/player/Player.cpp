@@ -6,6 +6,7 @@
 #include "StraightBullet.h"
 #include "HomingBullet.h"
 #include "ParticleEmitter.h"
+#include "GamePostEffect.h"
 
 void (Player::* Player::stageClearActionFuncTable[])() = {
 	&Player::StageClearSideMove,
@@ -25,6 +26,7 @@ const Vector2 Player::moveLimitMax = { 15.0f, Player::moveLimitMin.y + 12.0f };
 const float Player::moveBaseSpeed = 0.16f;
 const float Player::knockbackBaseSpeed = 0.2f;
 const float Player::maxSpeedChangeGauge = 100.0f;
+const float Player::normalSpeedBlurStrength = 0.03f;
 
 Player* Player::Create(ObjModel* model, const int startHP, const int maxHP)
 {
@@ -77,6 +79,15 @@ bool Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
 	speedChangeUI.reset(PlayerSpeedChangeUI::Create(speedChangeUIPosition, maxSpeedChangeGauge));
 	//ダメージ演出生成
 	damageEffect.reset(PlayerDamageEffect::Create());
+
+
+	//ポストエフェクトにラジアルブラーをかける
+	if (!GamePostEffect::GetPostEffect()->GetIsRadialBlur()) {
+		GamePostEffect::GetPostEffect()->SetRadialBlur(true);
+
+		//通常移動時のブラーの強さをセット
+		GamePostEffect::GetPostEffect()->SetRadialBlurStrength(normalSpeedBlurStrength);
+	}
 
 	return true;
 }
@@ -183,6 +194,9 @@ void Player::StageClearModeStart()
 	//回転速度をセット
 	stageClearRota = rotation;
 
+	//パーティクルの大きさを統一するため、移動はもうしないが通常移動状態にしておく
+	moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
+
 	//ステージクリア後の動きをする
 	isStageClearMode = true;
 }
@@ -200,9 +214,6 @@ void Player::StageClearReturnStart(const Vector3& cameraPos)
 	stageClearMoveVelocity = { 0, 0, 2.0f };
 	//帰還状態にする
 	stageClearModePhase = StageClearModePhase::Return;
-
-	//パーティクルの大きさを統一するため、移動はもうしないが通常移動状態にしておく
-	moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
 
 	//タイマー初期化
 	stageClearModeTimer = 0;
@@ -587,6 +598,8 @@ void Player::SpeedChange()
 
 	//加速or減速どちらでもない場合、元の位置に戻す
 	SpeedChangeNormalSpeed();
+	//ブラーの強さを通常移動時の強さに戻していく
+	SpeedChangeNormalBlur();
 }
 
 void Player::SpeedChangeStart(bool isPushHighSpeedInput, bool isPushSlowSpeedInput)
@@ -595,8 +608,24 @@ void Player::SpeedChangeStart(bool isPushHighSpeedInput, bool isPushSlowSpeedInp
 	if (!(isPushHighSpeedInput || isPushSlowSpeedInput)) { return; }
 
 	//加速状態をセット
-	if (isPushHighSpeedInput) { moveSpeedPhase = MoveSpeedPhase::HighSpeed; }
-	else if (isPushSlowSpeedInput) { moveSpeedPhase = MoveSpeedPhase::SlowSpeed; }
+	if (isPushHighSpeedInput) {
+		moveSpeedPhase = MoveSpeedPhase::HighSpeed;
+
+		//ポストエフェクトのラジアルブラーを強める
+		if (GamePostEffect::GetPostEffect()->GetIsRadialBlur()) {
+			const float highSpeedBlur = 0.3f;
+			GamePostEffect::GetPostEffect()->SetRadialBlurStrength(highSpeedBlur);
+		}
+	}
+	else if (isPushSlowSpeedInput) {
+		moveSpeedPhase = MoveSpeedPhase::SlowSpeed;
+
+		//ポストエフェクトのラジアルブラーを弱める
+		if (GamePostEffect::GetPostEffect()->GetIsRadialBlur()) {
+			const float slowSpeedBlur = 0.005f;
+			GamePostEffect::GetPostEffect()->SetRadialBlurStrength(slowSpeedBlur);
+		}
+	}
 
 	//速度変更状態にする
 	isSpeedChange = true;
@@ -624,10 +653,8 @@ void Player::SpeedChangeMode(bool isPushHighSpeedInput, bool isPushSlowSpeedInpu
 		}
 		//加速入力をやめた瞬間に速度変更を終了
 		else {
-			isSpeedChange = false;
-
-			//移動速度を通常に戻す状態にする
-			moveSpeedPhase = MoveSpeedPhase::ReturnNormalSpeed;
+			//速度変更終了
+			SetSpeedChangeModeEnd();
 		}
 	}
 	//減速状態のとき
@@ -641,10 +668,8 @@ void Player::SpeedChangeMode(bool isPushHighSpeedInput, bool isPushSlowSpeedInpu
 		}
 		//加速入力をやめた瞬間に速度変更を終了
 		else {
-			isSpeedChange = false;
-
-			//移動速度を通常に戻す状態にする
-			moveSpeedPhase = MoveSpeedPhase::ReturnNormalSpeed;
+			//速度変更終了
+			SetSpeedChangeModeEnd();
 		}
 	}
 
@@ -652,7 +677,14 @@ void Player::SpeedChangeMode(bool isPushHighSpeedInput, bool isPushSlowSpeedInpu
 	if (!(speedChangeGauge <= 0)) { return; }
 
 	//速度変更終了
+	SetSpeedChangeModeEnd();
+}
+
+void Player::SetSpeedChangeModeEnd()
+{
+	//速度変更を終了
 	isSpeedChange = false;
+
 	//移動速度を通常に戻す状態にする
 	moveSpeedPhase = MoveSpeedPhase::ReturnNormalSpeed;
 }
@@ -663,7 +695,7 @@ void Player::SpeedChangeModeEnd()
 	const float gaugeIncSpeed = 0.55f;
 	speedChangeGauge += gaugeIncSpeed;
 
-	//ゲージが最大まで溜まったていなければ抜ける
+	//ゲージが最大まで溜まっていなければ抜ける
 	if (speedChangeGauge < maxSpeedChangeGauge) { return; }
 
 	//速度変更開始可能にする
@@ -739,6 +771,38 @@ void Player::SpeedChangeNormalSpeed()
 	else if (position.z <= basePos.z - distanceBasePos) {
 		position.z += moveSpeed;
 	}
+}
+
+void Player::SpeedChangeNormalBlur()
+{
+	//通常移動に戻す状態でなければ抜ける
+	if (!(moveSpeedPhase == MoveSpeedPhase::NormalSpeed || moveSpeedPhase == MoveSpeedPhase::ReturnNormalSpeed)) { return; }
+
+	//ブラーをかけない状態なら抜ける
+	if (!(GamePostEffect::GetPostEffect()->GetIsRadialBlur())) { return; }
+
+	//ブラーの強さ変更させるか判定する差分
+	const float distanceBlurStrength = 0.01f;
+	//差分がない状態だったら抜ける
+	float blurStrength = GamePostEffect::GetPostEffect()->GetRadialBlurStrength();
+	if (blurStrength < normalSpeedBlurStrength + distanceBlurStrength && blurStrength > normalSpeedBlurStrength - distanceBlurStrength) {
+		//通常移動時のブラーの強さにしておく
+		GamePostEffect::GetPostEffect()->SetRadialBlurStrength(normalSpeedBlurStrength);
+
+		//抜ける
+		return;
+	}
+
+	//通常移動時のブラーの強さに戻していく
+	const float changeSpeed = 0.01f;
+	if (blurStrength >= normalSpeedBlurStrength + distanceBlurStrength) {
+		blurStrength -= distanceBlurStrength;
+	}
+	else if (blurStrength <= normalSpeedBlurStrength - distanceBlurStrength) {
+		blurStrength += distanceBlurStrength;
+	}
+	//変更した強さをセット
+	GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 }
 
 void Player::Attack()
@@ -956,6 +1020,9 @@ void Player::StageClearSideMove()
 	rotation.x = Easing::OutQuart(stageClearRota.x, 0, time);
 	rotation.y = Easing::OutQuart(stageClearRota.y, 0, time);
 	rotation.z = Easing::OutQuart(stageClearRota.z, maxRotZ, time);
+
+	//ブラーの強さを通常移動時の強さに戻していく
+	SpeedChangeNormalBlur();
 }
 
 void Player::StageClearReturn()

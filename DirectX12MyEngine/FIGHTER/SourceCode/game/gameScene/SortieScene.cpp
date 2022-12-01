@@ -7,6 +7,7 @@
 #include "Easing.h"
 #include "ParticleEmitter.h"
 #include "SceneChangeEffect.h"
+#include "GamePostEffect.h"
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -34,6 +35,9 @@ void SortieScene::Initialize()
 	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
+
+	//ポストエフェクトのブラーを解除しておく
+	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
 
 	//自機生成
 	player.reset(SortiePlayer::Create(modelFighter.get(), { 0, 20, -1000 }));

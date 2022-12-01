@@ -1,5 +1,6 @@
 #include "TitlePlayer.h"
 #include "ParticleEmitter.h"
+#include "GamePostEffect.h"
 
 TitlePlayer* TitlePlayer::Create(ObjModel* model, const Vector3& startPosition)
 {
@@ -39,26 +40,45 @@ void TitlePlayer::Update()
 
 void TitlePlayer::Sortie()
 {
+	//発射するまでの時間
 	const float sortieStartTime = 180;
-	if (sortieStartTimer <= sortieStartTime) {
-		sortieStartTimer++;
-	}
-	else {
-		//回転速度
-		const float rotSpeed = 0.2f;
-		//x軸回転
-		rotation.x -= rotSpeed;
-		const float rotLimit = -45.0f;
-		rotation.x = max(rotation.x, rotLimit);
-
-		//自機が傾いている角度に移動させる
-		Vector3 move = { 0, 0, 2.5f };
-		const float moveSpeed = 2.5f;
-		move.y = moveSpeed * (rotation.x / rotLimit);
-		position += move;
-
-	}
+	sortieStartTimer++;
 
 	//自機のジェット噴射演出用パーティクル生成
 	ParticleEmitter::GetInstance()->PlayerJet(matWorld);
+
+	if (sortieStartTimer <= sortieStartTime) { return; }
+
+	//回転速度
+	const float rotSpeed = 0.2f;
+	//x軸回転
+	rotation.x -= rotSpeed;
+	const float rotLimit = -45.0f;
+	rotation.x = max(rotation.x, rotLimit);
+
+	//自機が傾いている角度に移動させる
+	Vector3 move = { 0, 0, 2.5f };
+	const float moveSpeed = 2.5f;
+	move.y = moveSpeed * (rotation.x / rotLimit);
+	position += move;
+
+	//ポストエフェクトにラジアルブラーをかける
+	if (!GamePostEffect::GetPostEffect()->GetIsRadialBlur()) {
+		GamePostEffect::GetPostEffect()->SetRadialBlur(true);
+
+		//開始時のブラーの強さをセット
+		const float blurStrength = 0.5f;
+		GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
+	}
+	else {
+		//だんだんブラーを弱くする
+		const int blurChangeTime = 10; //10フレームずつ弱くする
+		if (sortieStartTimer % 10 != 0) { return; }
+		float blurStrength = GamePostEffect::GetPostEffect()->GetRadialBlurStrength();
+		blurStrength -= 0.02f;
+		//ブラーの広がる強さが指定した値を下回らないようにする
+		const float blurStrengthMin = 0.1f;
+		if (blurStrength <= blurStrengthMin) { blurStrength = blurStrengthMin; }
+		GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
+	}
 }

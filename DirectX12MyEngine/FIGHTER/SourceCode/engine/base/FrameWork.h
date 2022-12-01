@@ -5,7 +5,6 @@
 #include "Audio.h"
 #include "SpriteCommon.h"
 #include "DebugText.h"
-#include "PostEffect.h"
 #include "ShadowMap.h"
 #include "SceneManager.h"
 #include "AbstractSceneFactory.h"
@@ -63,8 +62,6 @@ protected: //メンバ変数
 	SpriteCommon* spriteCommon = nullptr;
 	//デバッグテキスト
 	DebugText* debugText = nullptr;
-	//ポストエフェクト
-	PostEffect* postEffect = nullptr;
 	//シャドウマップ
 	ShadowMap* shadowMap = nullptr;
 	//シーン工場

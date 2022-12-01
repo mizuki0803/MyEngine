@@ -198,6 +198,11 @@ private: //メンバ関数
 	void SpeedChangeMode(bool isPushHighSpeedInput, bool isPushSlowSpeedInput);
 
 	/// <summary>
+	/// 速度変更終了をセット
+	/// </summary>
+	void SetSpeedChangeModeEnd();
+
+	/// <summary>
 	/// 速度変更終了(元の速度に戻していく)の処理
 	/// </summary>
 	void SpeedChangeModeEnd();
@@ -216,6 +221,11 @@ private: //メンバ関数
 	/// 移動速度を通常に戻すときの処理
 	/// </summary>
 	void SpeedChangeNormalSpeed();
+
+	/// <summary>
+	/// 通常移動時のブラーの強さに戻すときの処理
+	/// </summary>
+	void SpeedChangeNormalBlur();
 
 	/// <summary>
 	/// 攻撃
@@ -302,6 +312,8 @@ private: //静的メンバ変数
 	static const float knockbackBaseSpeed;
 	//速度変更最大ゲージ数
 	static const float maxSpeedChangeGauge;
+	//通常移動時のブラーの強さ
+	static const float normalSpeedBlurStrength;
 	//ステージクリア後行動遷移
 	static void (Player::* stageClearActionFuncTable[])();
 

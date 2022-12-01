@@ -7,6 +7,7 @@
 #include "Easing.h"
 #include "ParticleEmitter.h"
 #include "SceneChangeEffect.h"
+#include "GamePostEffect.h"
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -40,6 +41,9 @@ void StageSelectScene::Initialize()
 	modelPlanetBasis.reset(ObjModel::LoadFromOBJ("planetBasis", true));
 	modelPlanetMautan.reset(ObjModel::LoadFromOBJ("planetMautan", true));
 	modelPlanetSoon.reset(ObjModel::LoadFromOBJ("planetSoon", true));
+
+	//ポストエフェクトのブラーを解除しておく
+	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
 
 	//ステージ選択フィールド生成
 	stageSelectField.reset(ObjObject3d::Create(modelStageSelect.get()));

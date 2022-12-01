@@ -7,6 +7,8 @@
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
 #include "LightGroup.h"
+#include "GamePostEffect.h"
+
 
 void FrameWork::Run()
 {
@@ -62,8 +64,8 @@ void FrameWork::Initialize()
 
 	//ポストエフェクト共通初期化処理
 	PostEffect::PostEffectCommon(dxbase->GetDevice(), dxbase->GetCmdList());
-	//ポストエフェクトの初期化
-	postEffect = PostEffect::Create();
+	//ゲーム共通ポストエフェクトの初期化
+	GamePostEffect::Initialize();
 
 	//シャドウマップ共通初期化処理
 	ShadowMap::ShadowMapCommon(dxbase->GetDevice(), dxbase->GetCmdList());
@@ -98,9 +100,6 @@ void FrameWork::Finalize()
 
 	//シャドウマップの解放
 	delete shadowMap;
-
-	//ポストエフェクトの解放
-	delete postEffect;
 
 	//FBXLoader解放
 	FbxLoader::GetInstance()->Finalize();
@@ -150,10 +149,10 @@ void FrameWork::Draw()
 	SceneManager::GetInstance()->Draw3DLightView();
 	shadowMap->DrawSceneRear();
 
-	//レンダーテクスチャへの描画
-	postEffect->DrawScenePrev();
+	//ゲームポストエフェクトへの描画
+	GamePostEffect::DrawScenePrev();
 	SceneManager::GetInstance()->Draw3D();
-	postEffect->DrawSceneRear();
+	GamePostEffect::DrawSceneRear();
 
 	//グラフィックスコマンド(前)
 	dxbase->GraphicsCommandPrev();
@@ -161,9 +160,8 @@ void FrameWork::Draw()
 	//シーンの背景スプライト描画
 	SceneManager::GetInstance()->DrawBackSprite();
 
-	//ポストエフェクトの描画
-	postEffect->Draw();
-
+	//ゲームポストエフェクトの描画
+	GamePostEffect::Draw();
 
 	//シーンの前景スプライト描画
 	SceneManager::GetInstance()->DrawFrontSprite();

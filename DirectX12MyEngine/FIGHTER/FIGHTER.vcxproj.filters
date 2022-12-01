@@ -527,6 +527,9 @@
     <ClCompile Include="SourceCode\game\gameSprite\UI\warningUI\BossWarningSprites.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameEffect\GamePostEffect.cpp">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -946,6 +949,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\warningUI\BossWarningSprites.h">
       <Filter>ソース ファイル\game\gameSprite\UI\warningUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameEffect\GamePostEffect.h">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

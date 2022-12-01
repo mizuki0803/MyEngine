@@ -28,6 +28,28 @@ float4 GaussianBlur(float2 uv, float sigma, float stepWidth)
 
 float4 main(VSOutput input) : SV_TARGET
 {
+	//ラジアンブラー
+	if (isRadialBlur) {
+		//最終的に使用する色
+		float4 color = { 0, 0, 0, 1 }; //黒で初期化
+		//中心座標
+		const float2 center = { 0.5f, 0.5f };
+		//中心を基準にしておく
+		float2 pos = input.uv - center;
+		//基準からの距離
+		float dist = length(pos);
+		//サンプル回数
+		float factor = radialBlurStrength / (float)radialBlurSampleNum * dist;
+		for (int i = 0; i < (int)radialBlurSampleNum; i++) {
+			float uvOffset = 1.0f - factor * float(i);
+			color += tex.Sample(smp, pos * uvOffset + center);
+		}
+		//平均を求める
+		color /= float(radialBlurSampleNum);
+		return color;
+	}
+	
+	//通常
 	float4 texColor = tex.Sample(smp, input.uv);
 	return float4(texColor.rgb, 1);
 

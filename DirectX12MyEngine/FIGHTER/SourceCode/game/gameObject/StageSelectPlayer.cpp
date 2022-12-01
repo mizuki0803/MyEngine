@@ -1,6 +1,7 @@
 #include "StageSelectPlayer.h"
 #include "Easing.h"
 #include "ParticleEmitter.h"
+#include "GamePostEffect.h"
 
 void (StageSelectPlayer::* StageSelectPlayer::actionFuncTable[])() = {
 	&StageSelectPlayer::GooutPlanet,
@@ -241,13 +242,22 @@ void StageSelectPlayer::EnterPlanetStay()
 		//パーティクルジェットを大きくする(加速用にする)
 		const int32_t particleSizePhase = 1;
 		particleJetSizePhaseNum = particleSizePhase;
+
+		//ポストエフェクトにラジアルブラーをかける
+		if (!GamePostEffect::GetPostEffect()->GetIsRadialBlur()) {
+			GamePostEffect::GetPostEffect()->SetRadialBlur(true);
+
+			//開始時のブラーの強さをセット
+			const float blurStrength = 0.2f;
+			GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
+		}
 	}
 }
 
 void StageSelectPlayer::EnterPlanetBoost()
 {
 	//惑星入るのにかかる時間
-	const float enterTime = 120;
+	const float enterTime = 100;
 	//タイマー更新
 	actionTimer++;
 	float time = actionTimer / enterTime;
@@ -272,7 +282,7 @@ void StageSelectPlayer::EnterPlanetBoost()
 	scale.z = Easing::OutQuint(1.5f, 0.2f, time);
 
 	//タイマーが惑星に入るのを終える時間になったら
-	const int endTime = 150;
+	const int endTime = 120;
 	if (actionTimer >= endTime) {
 		//ステージ選択で行う全ての行動を終える
 		isStageSelectModeEnd = true;
