@@ -1,4 +1,10 @@
 #include "GameMountainManager.h"
+#include "Player.h"
+#include "GameCamera.h"
+
+Player* GameMountainManager::player = nullptr;
+GameCamera* GameMountainManager::gameCamera = nullptr;
+bool GameMountainManager::isScrollMode = false;
 
 GameMountainManager* GameMountainManager::Create(ObjModel* model, float distance, int startNum)
 {
@@ -39,11 +45,11 @@ bool GameMountainManager::Initialize(ObjModel* model, float distance, int startN
 		newMountain.reset(Mountain::Create(model, { distance, 0, 0 + (float)i * 40 }));
 		mountains.push_back(std::move(newMountain));
 	}
-	
+
 	return true;
 }
 
-void GameMountainManager::Update(const Vector3& targetPos)
+void GameMountainManager::Update()
 {
 	//山の設置を可能にする
 	isCanCreate = true;
@@ -63,12 +69,15 @@ void GameMountainManager::Update(const Vector3& targetPos)
 		return sprite->GetIsDead();
 		});
 
-	//オブジェクト更新
+	//スクロール状態
+	ScrollMode();
+
 	for (const std::unique_ptr<Mountain>& mountain : mountains) {
+		//オブジェクト更新
 		mountain->Update();
 
 		//山と対象の距離を比較し手前まで行ったら削除
-		mountain->FrontOfScreenDelete(targetPos);
+		mountain->FrontOfScreenDelete(gameCamera->GetPosition());
 	}
 }
 
@@ -90,12 +99,18 @@ void GameMountainManager::DrawLightCameraView()
 
 void GameMountainManager::CreateNewMountain()
 {
+	//一番後ろの山の座標を取得
+	std::list<std::unique_ptr<Mountain>>::iterator itr = mountains.end();
+	--itr;
+	Mountain* lastMountain = itr->get();
+
 	//新たな山生成
+	const float mountainSize = 40;
 	std::unique_ptr<Mountain> newMountainLeft;
-	newMountainLeft.reset(Mountain::Create(model, { -distance, 0, 0 + (float)mountainNum * 40 }));
+	newMountainLeft.reset(Mountain::Create(model, { -distance, 0, lastMountain->GetPosition().z + mountainSize }));
 	mountains.push_back(std::move(newMountainLeft));
 	std::unique_ptr<Mountain> newMountainRight;
-	newMountainRight.reset(Mountain::Create(model, { distance, 0, 0 + (float)mountainNum * 40 }));
+	newMountainRight.reset(Mountain::Create(model, { distance, 0, lastMountain->GetPosition().z + mountainSize }));
 	mountains.push_back(std::move(newMountainRight));
 
 	//山の番号を更新
@@ -103,4 +118,24 @@ void GameMountainManager::CreateNewMountain()
 
 	//山の設置を不可能にする
 	isCanCreate = false;
+}
+
+void GameMountainManager::ScrollMode()
+{
+	//スクロール状態でなければ抜ける
+	if (!isScrollMode) { return; }
+	//自機とカメラのインスタンスがなければ抜ける
+	if (!player || !gameCamera) { return; }
+
+	//自機の移動速度状態によって山をカメラで移動していた速度で動かす
+	float moveSpeed = GameCamera::GetAdvanceSpeed();
+	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeed *= GameCamera::GetHighSpeedMagnification(); }
+	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeed *= GameCamera::GetSlowSpeedMagnification(); }
+
+	//計算した移動速度で移動させる
+	for (const std::unique_ptr<Mountain>& mountain : mountains) {
+		Vector3 pos = mountain->GetPosition();
+		pos.z -= moveSpeed;
+		mountain->SetPosition(pos);
+	}
 }

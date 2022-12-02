@@ -28,6 +28,8 @@ public: //静的メンバ関数
 
 	//getter
 	static float GetAdvanceSpeed() { return GameCamera::advanceSpeed; }
+	static float GetHighSpeedMagnification() { return GameCamera::highSpeedMagnification; }
+	static float GetSlowSpeedMagnification() { return GameCamera::slowSpeedMagnification; }
 
 public: //メンバ関数
 	/// <summary>
@@ -141,6 +143,10 @@ private: //静的メンバ変数
 	static void (GameCamera::* stageClearCameraActionFuncTable[])();
 	//ステージ内を前進する速さ
 	static const float advanceSpeed;
+	//ハイスピードで移動するときの速度倍率
+	static const float highSpeedMagnification;
+	//遅いスピードで移動するときの速度倍率
+	static const float slowSpeedMagnification;
 
 private: //メンバ変数
 	//プレイヤー自機

@@ -111,12 +111,36 @@ void ComeGoEnemy::Attack()
 		fireTimer = fireInterval;
 	}
 
+	//Z軸ゆらゆら回転
+	SwayZ();
+
 	//時間になったら次のフェーズへ
 	if (attackTimer >= attackTime) {
 		phase = Phase::Go;
 
 		//出発開始座標をセット
 		goStartPos = position;
+	}
+}
+
+void ComeGoEnemy::SwayZ()
+{
+	//動きがないと寂しいのでゆらゆらさせておく
+	const float rotZSpeed = 0.05f;
+	const float rotZLimit = 3.0f;
+	//右回転
+	if (isRotZRight) {
+		rotation.z += rotZSpeed;
+		if (rotation.z >= rotZLimit) {
+			isRotZRight = false;
+		}
+	}
+	//左回転
+	else {
+		rotation.z -= rotZSpeed;
+		if (rotation.z <= -rotZLimit) {
+			isRotZRight = true;
+		}
 	}
 }
 

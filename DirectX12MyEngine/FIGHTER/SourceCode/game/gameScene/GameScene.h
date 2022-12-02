@@ -13,7 +13,7 @@
 #include "BossWarning.h"
 #include "HealingItem.h"
 #include "Skydome.h"
-#include "Ground.h"
+#include "GameGroundManager.h"
 #include "GameMountainManager.h"
 #include "HowToPlayUI.h"
 #include "MultiHitUI.h"
@@ -238,7 +238,7 @@ private: //ƒƒ“ƒo•Ï”
 	//“V‹…
 	std::unique_ptr<Skydome> skydome;
 	//’n–Ê
-	std::unique_ptr<Ground> ground;
+	std::unique_ptr<GameGroundManager> gameGroundManager;
 	//”wŒi—p(RŠÇ—)
 	std::unique_ptr<GameMountainManager> gameMountainManager;
 	//—V‚Ñ•ûUI

@@ -40,7 +40,7 @@ void TitleScene::Initialize()
 	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
 
 	//©‹@¶¬
-	player.reset(TitlePlayer::Create(modelFighter.get(), { 0, 5, 0 }));
+	player.reset(TitlePlayer::Create(modelFighter.get(), { 0, 2, 0 }));
 
 	//ƒJƒƒ‰‰Šú‰»
 	titleCamera.reset(new TitleCamera());

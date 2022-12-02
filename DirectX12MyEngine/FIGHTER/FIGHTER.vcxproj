@@ -136,6 +136,7 @@
     <ClCompile Include="SourceCode\game\gameEffect\ParticleEmitter.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\PlayerDamageEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\SceneChangeEffect.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\background\GameGroundManager.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Ground.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\GameMountainManager.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Mountain.cpp" />
@@ -347,6 +348,7 @@
     <ClInclude Include="SourceCode\game\gameEffect\ParticleEmitter.h" />
     <ClInclude Include="SourceCode\game\gameEffect\PlayerDamageEffect.h" />
     <ClInclude Include="SourceCode\game\gameEffect\SceneChangeEffect.h" />
+    <ClInclude Include="SourceCode\game\gameObject\background\GameGroundManager.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Ground.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\GameMountainManager.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Mountain.h" />

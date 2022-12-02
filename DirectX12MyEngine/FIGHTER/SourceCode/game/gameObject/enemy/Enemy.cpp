@@ -50,7 +50,7 @@ void Enemy::Update()
 void Enemy::OnCollision()
 {
 	//爆発用大きさ
-	float explosionSize = 0.8f;
+	float explosionSize = 1.5f;
 
 	//死亡状態でなければ死亡させる
 	if (!isDead) {
@@ -76,7 +76,7 @@ void Enemy::OnCollision()
 		Break();
 
 		//爆発のサイズを大きくする
-		explosionSize = 1.6f;
+		explosionSize = 2.5f;
 	}
 
 	//当たり判定がこのフレームで作用した

@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include <array>
 
 /// <summary>
 /// 大砲敵
@@ -23,7 +24,7 @@ public: //静的メンバ関数
 
 	//setter
 	static void SetModel(ObjModel* model) { CannonEnemy::enemyModel = model; }
-	static void SetBreakModel(ObjModel* model) { CannonEnemy::breakModel = model; }
+	static void SetBreakModel(int modelNum, ObjModel* model);
 
 public: //メンバ関数
 	/// <summary>
@@ -47,6 +48,11 @@ private: //メンバ関数
 	/// </summary>
 	void Dead();
 
+	/// <summary>
+	/// 破壊
+	/// </summary>
+	void Break() override;
+
 private: //静的メンバ変数
 	//発射間隔
 	static const int fireInterval = 300;
@@ -54,12 +60,16 @@ private: //静的メンバ変数
 	static void (CannonEnemy::* actionFuncTable[])();
 	//モデル
 	static ObjModel* enemyModel;
-	//破壊されたモデル
-	static ObjModel* breakModel;
+	//破壊時に出すモデル
+	static std::array<ObjModel*, 5> breakModels;
 
 private: //メンバ変数
 	//行動
 	Phase phase = Phase::Attack;
 	//発射タイマー
 	int32_t fireTimer = 0;
+	//死亡時墜落速度
+	Vector3 crashVel = { 0, 0.1f, 0.0025f };
+	//死亡時墜落回転速度
+	Vector3 crashRotVel;
 };

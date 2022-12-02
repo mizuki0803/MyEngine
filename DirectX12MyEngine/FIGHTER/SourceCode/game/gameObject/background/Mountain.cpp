@@ -31,7 +31,7 @@ Mountain* Mountain::Create(ObjModel* model, const Vector3& position)
 void Mountain::FrontOfScreenDelete(const Vector3& pos)
 {
 	//座標が自機より手前(画面外手前)まで行ったら削除
-	const float flontOfScreenDiffence = 50;
+	const float flontOfScreenDiffence = 30;
 	const float deletePos = pos.z - flontOfScreenDiffence;
 
 	if (position.z <= deletePos) {

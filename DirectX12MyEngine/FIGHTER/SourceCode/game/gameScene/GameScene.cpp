@@ -116,10 +116,18 @@ void GameScene::Initialize()
 	skydome.reset(Skydome::Create(modelSkydome.get()));
 
 	//地面生成
-	ground.reset(Ground::Create(modelGround.get()));
+	gameGroundManager.reset(GameGroundManager::Create(modelGround.get()));
+	//地面に必要な情報をセット
+	GameGroundManager::SetPlayer(player.get());
+	GameGroundManager::SetGameCamera(gameCamera.get());
+	GameGroundManager::SetIsScroll(false);
 
 	//背景用(ゲーム用山管理)生成
-	gameMountainManager.reset(GameMountainManager::Create(modelMountain.get(), 75, 10));
+	gameMountainManager.reset(GameMountainManager::Create(modelMountain.get(), 75, 13));
+	//山に必要な情報をセット
+	GameMountainManager::SetPlayer(player.get());
+	GameMountainManager::SetGameCamera(gameCamera.get());
+	GameMountainManager::SetIsScroll(false);
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
@@ -196,9 +204,9 @@ void GameScene::Update()
 	//天球
 	skydome->Update();
 	//地面
-	ground->Update();
+	gameGroundManager->Update();
 	//背景用(山)
-	gameMountainManager->Update(gameCamera->GetPosition());
+	gameMountainManager->Update();
 
 	//3D衝突判定管理
 	CollisionCheck3d();
@@ -293,7 +301,7 @@ void GameScene::Draw3D()
 	//天球
 	skydome->Draw();
 	//地面
-	ground->Draw();
+	gameGroundManager->Draw();
 	//背景用(山)
 	gameMountainManager->Draw();
 
@@ -346,7 +354,7 @@ void GameScene::Draw3DLightView()
 	//天球
 	skydome->DrawLightCameraView();
 	//地面
-	ground->DrawLightCameraView();
+	//ground->DrawLightCameraView();
 	//背景用(山)
 	gameMountainManager->DrawLightCameraView();
 
@@ -485,6 +493,10 @@ void GameScene::ObjectRelease()
 			player->StageClearReturnStart(gameCamera->GetPosition());
 			//カメラのボス本体情報を解除させる
 			gameCamera->BossDelete();
+			//地面のスクロール状態を解除
+			GameGroundManager::SetIsScroll(false);
+			//山のスクロール状態を解除
+			GameMountainManager::SetIsScroll(false);
 
 			boss.reset();
 		}
@@ -859,8 +871,13 @@ void GameScene::InitializeEnemy()
 
 	//各種類の敵に必要な情報をセット
 	//大砲敵
-	CannonEnemy::SetModel(modelEnemyFighter.get()); //モデルをセット
-	CannonEnemy::SetBreakModel(modelSphere.get()); //破壊時に出すモデルをセット
+	CannonEnemy::SetModel(modelEnemyMiniRobot.get()); //モデルをセット
+	//破壊時に出すモデルをセット
+	for (int i = 0; i < modelEnemyMiniRobotBreak.size(); i++) {
+		//モデルが未設定なら飛ばす
+		if (!modelEnemyMiniRobotBreak[i]) { continue; }
+		CannonEnemy::SetBreakModel(i, modelEnemyMiniRobotBreak[i].get());
+	}
 
 	//円運動敵
 	CircularEnemy::SetModel(modelEnemyFighter.get()); //モデルをセット
@@ -1066,6 +1083,9 @@ void GameScene::UpdateEnemySetCommands()
 
 void GameScene::HowToPlay()
 {
+	//次に描画する遊び方UIがない場合は抜ける
+	if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::None) { return; }
+
 	//次に描画する遊び方UIが「ショット」の場合
 	if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Shot) {
 
@@ -1079,16 +1099,25 @@ void GameScene::HowToPlay()
 	//次に描画する遊び方UIが「チャージ」の場合
 	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Charge) {
 		//カメラのZ座標が指定した値以下なら抜ける
-		const float createPos = 235;
+		const float createPos = 550;
 		if (gameCamera->GetPosition().z <= createPos) { return; }
 
 		//遊び方UI(チャージ)生成
-		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Charge, HowToPlayUI::DrawUI::Boost);
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Charge, HowToPlayUI::DrawUI::Rolling);
+	}
+	//次に描画する遊び方UIが「ローリング」の場合
+	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Rolling) {
+		//カメラのZ座標が指定した値以下なら抜ける
+		const float createPos = 1020;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
+
+		//遊び方UI(ローリング)生成
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Rolling, HowToPlayUI::DrawUI::Boost);
 	}
 	//次に描画する遊び方UIが「ブースト」の場合
 	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Boost) {
 		//カメラのZ座標が指定した値以下なら抜ける
-		const float createPos = 500;
+		const float createPos = 1780;
 		if (gameCamera->GetPosition().z <= createPos) { return; }
 
 		//遊び方UI(ブースト)生成
@@ -1097,20 +1126,11 @@ void GameScene::HowToPlay()
 	//次に描画する遊び方UIが「ブレーキ」の場合
 	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Brake) {
 		//カメラのZ座標が指定した値以下なら抜ける
-		const float createPos = 750;
+		const float createPos = 2460;
 		if (gameCamera->GetPosition().z <= createPos) { return; }
 
 		//遊び方UI(ブレーキ)生成
-		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Brake, HowToPlayUI::DrawUI::Rolling);
-	}
-	//次に描画する遊び方UIが「ローリング」の場合
-	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Rolling) {
-		//カメラのZ座標が指定した値以下なら抜ける
-		const float createPos = 1000;
-		if (gameCamera->GetPosition().z <= createPos) { return; }
-
-		//遊び方UI(ローリング)生成
-		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Rolling, HowToPlayUI::DrawUI::None);
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Brake, HowToPlayUI::DrawUI::None);
 	}
 }
 
@@ -1120,7 +1140,7 @@ void GameScene::BossBattleStart()
 	if (isBossBattle) { return; }
 
 	//ボスバトル開始座標
-	const float isBossBattleStartPos = 1300;
+	const float isBossBattleStartPos = 3200;
 
 	//警告開始判定
 	if (!bossWarning) {
@@ -1130,6 +1150,11 @@ void GameScene::BossBattleStart()
 
 		//カメラの前進を止める
 		gameCamera->SetIsAdvance(false);
+
+		//地面をスクロール状態にする
+		GameGroundManager::SetIsScroll(true);
+		//山をスクロール状態にする
+		GameMountainManager::SetIsScroll(true);
 
 		//ボス登場警告演出生成
 		const int warningTime = 300;
@@ -1269,6 +1294,10 @@ void GameScene::GameOver()
 		isGameOver = true;
 		//カメラを墜落状態にする
 		gameCamera->CrashStart();
+		//地面のスクロール状態を解除
+		GameGroundManager::SetIsScroll(false);
+		//山のスクロール状態を解除
+		GameMountainManager::SetIsScroll(false);
 	}
 	//ゲームオーバーのとき
 	else {

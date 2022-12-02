@@ -15,6 +15,8 @@ void (GameCamera::* GameCamera::stageClearCameraActionFuncTable[])() = {
 };
 
 const float GameCamera::advanceSpeed = 0.5f;
+const float GameCamera::highSpeedMagnification = 2.8f;
+const float GameCamera::slowSpeedMagnification = 0.2f;
 
 void GameCamera::Initialize()
 {
@@ -199,8 +201,8 @@ void GameCamera::Move()
 
 	//自機の移動速度変更に合わせて変更する
 	float moveSpeedPhaseSpeed = 1.0f;
-	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = 2.4f; }
-	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = 0.2f; }
+	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = highSpeedMagnification; }
+	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = slowSpeedMagnification; }
 
 	//前進する場合はZ方向に移動
 	if (isAdvance) { velocity.z = advanceSpeed * moveSpeedPhaseSpeed; }
@@ -225,8 +227,8 @@ void GameCamera::Knockback()
 
 	//自機の移動速度変更に合わせて変更する
 	float moveSpeedPhaseSpeed = 1.0f;
-	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = 2.4f; }
-	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = 0.2f; }
+	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = highSpeedMagnification; }
+	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = slowSpeedMagnification; }
 
 	//前進する場合はZ方向に移動
 	const float knockBackSpeed = 0.3f;

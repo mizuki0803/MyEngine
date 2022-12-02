@@ -31,7 +31,7 @@ public: //メンバ関数
 
 protected: //静的メンバ変数
 	//寿命時間
-	static const int32_t lifeTime = 180;
+	static const int32_t lifeTime = 240;
 
 protected: //メンバ変数
 	//速度
