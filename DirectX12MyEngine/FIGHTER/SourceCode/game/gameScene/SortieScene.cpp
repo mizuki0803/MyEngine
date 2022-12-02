@@ -36,9 +36,6 @@ void SortieScene::Initialize()
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
 
-	//ポストエフェクトのブラーを解除しておく
-	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
-
 	//自機生成
 	player.reset(SortiePlayer::Create(modelFighter.get(), { 0, 20, -1000 }));
 
@@ -78,6 +75,11 @@ void SortieScene::Initialize()
 	ParticleManager::SetCamera(sortieCamera.get());
 	//画面にパーティクルが残ることがあるので全て削除しておく
 	ParticleEmitter::GetInstance()->AllDelete();
+
+	//ポストエフェクトのブラーをかける
+	GamePostEffect::GetPostEffect()->SetRadialBlur(true);
+	const float blurStrength = 0.2f;
+	GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 }
 
 void SortieScene::Update()

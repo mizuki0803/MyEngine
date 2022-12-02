@@ -26,5 +26,5 @@ private: //メンバ変数
 	//最大ゲージ数
 	float maxGaugeNum = 0;
 	//バーの長さ最大値
-	const float lengthMax = 400;
+	const float lengthMax = 350;
 };

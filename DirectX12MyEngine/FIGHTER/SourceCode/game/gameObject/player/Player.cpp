@@ -75,7 +75,7 @@ bool Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
 	const Vector2 hpUIPosition = { 20, 20 };
 	hpUI.reset(PlayerHPUI::Create(hpUIPosition, HP, maxHP));
 	//速度変更ゲージUI生成
-	const Vector2 speedChangeUIPosition = { 20, 80 };
+	const Vector2 speedChangeUIPosition = { 20, 70 };
 	speedChangeUI.reset(PlayerSpeedChangeUI::Create(speedChangeUIPosition, maxSpeedChangeGauge));
 	//ダメージ演出生成
 	damageEffect.reset(PlayerDamageEffect::Create());

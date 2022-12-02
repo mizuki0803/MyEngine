@@ -20,6 +20,8 @@ void SpriteTextureLoader::TextureLoad()
 	spriteCommon->LoadTexture(TextureName::Reticle, "reticle.png");
 	spriteCommon->LoadTexture(TextureName::PlayerHPGaugeIn, "HPGaugeIn.png");
 	spriteCommon->LoadTexture(TextureName::PlayerHPGaugeOut, "HPGaugeOut.png");
+	spriteCommon->LoadTexture(TextureName::SpeedChangeGaugeIn, "speedChangeGaugeIn.png");
+	spriteCommon->LoadTexture(TextureName::SpeedChangeGaugeOut, "speedChangeGaugeOut.png");
 	spriteCommon->LoadTexture(TextureName::WarningText, "warningText.png");
 	spriteCommon->LoadTexture(TextureName::WarningLine, "warningLine.png");
 	spriteCommon->LoadTexture(TextureName::BossHPLogo, "bossHPGaugeLogo.png");
