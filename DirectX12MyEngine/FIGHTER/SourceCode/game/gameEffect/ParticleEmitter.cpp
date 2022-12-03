@@ -404,7 +404,7 @@ void ParticleEmitter::BossChargeShotDead(const Vector3& position, const float si
 	}
 }
 
-void ParticleEmitter::Explosion(const Vector3& position, const float size)
+void ParticleEmitter::Explosion(const Vector3& position, const float size, const int time)
 {
 	for (int j = 0; j < 5; j++) {
 		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
@@ -416,7 +416,7 @@ void ParticleEmitter::Explosion(const Vector3& position, const float size)
 
 		for (int i = 0; i < 25; i++) {
 			//生存時間
-			int life = (rand() % 30) + 10;
+			int life = (rand() % 30) + time;
 
 			//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
 			const float md_pos2 = 0.8f;

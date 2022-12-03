@@ -299,6 +299,9 @@ void Player::CrashStart()
 	//カメラ追従解除により、ローカル座標にワールド座標を代入
 	position = GetWorldPos();
 
+	//パーティクルの大きさを統一するため、移動はもうしないが通常移動状態にしておく
+	moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
+
 	//墜落状態にする
 	isCrash = true;
 }
@@ -307,7 +310,7 @@ void Player::Crash()
 {
 	//座標移動
 	//墜落加速度
-	Vector3 crashAccel = { 0, -0.0075f, 0 };
+	Vector3 crashAccel = { 0, -0.009f, 0 };
 	crashVel += crashAccel;
 	position += crashVel;
 
@@ -320,12 +323,12 @@ void Player::Crash()
 		crashBoundCount++;
 
 		//バウンドさせる
-		const float boundStartVel = 0.4f;
+		const float boundStartVel = fabsf(crashVel.y) * 0.8f;
 		crashVel.y = boundStartVel;
 	}
 
 	//墜落回転する
-	const Vector3 rotSpeed = { 0, 1, 5 };
+	const Vector3 rotSpeed = { 0, 0.1f, 5 };
 	//バウンドするまではZ軸左回転
 	if (crashBoundCount == 0) { rotation.z += rotSpeed.z; }
 	//1回バウンドしたらZ軸右回転 & Y軸回転
@@ -337,7 +340,15 @@ void Player::Crash()
 	const int maxCrashCount = 2;
 	if (crashBoundCount >= maxCrashCount) {
 		isDead = true;
+
+		//爆発演出用パーティクル生成
+		const float explosionSize = 3.5f;
+		const int explosionTime = 60;
+		ParticleEmitter::GetInstance()->Explosion(position, explosionSize, explosionTime);
 	}
+
+	//ブラーの強さを通常移動時の強さに戻していく
+	SpeedChangeNormalBlur();
 }
 
 void Player::Heal()
