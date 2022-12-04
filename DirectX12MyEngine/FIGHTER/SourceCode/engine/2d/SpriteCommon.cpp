@@ -1,4 +1,5 @@
 #include "SpriteCommon.h"
+#include "DescHeapSRV.h"
 #include <cassert>
 #include <d3dcompiler.h>
 #include <string>
@@ -27,22 +28,12 @@ void SpriteCommon::Initialize(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdL
 	this->cmdList = cmdList;
 	this->directoryPath = directoryPath;
 
-	HRESULT result;
-
 	//スプライト用パイプライン生成
 	CreatePipeline();
-
 
 	//並行投影の射影行列生成
 	matProjection = XMMatrixOrthographicOffCenterLH(
 		0.0f, (float)window_width, (float)window_height, 0.0f, 0.0f, 1.0f);
-
-	//デスクリプタヒープを生成
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
-	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	descHeapDesc.NumDescriptors = spriteSRVCount;
-	result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
 }
 
 void SpriteCommon::DrawPrev()
@@ -53,10 +44,6 @@ void SpriteCommon::DrawPrev()
 	cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
 	//プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
-	//テクスチャ用デスクリプタヒープの設定
-	ID3D12DescriptorHeap *ppHeap[] = { descHeap.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeap), ppHeap);
 }
 
 void SpriteCommon::LoadTexture(UINT texNumber, const std::string &filename)
@@ -115,23 +102,8 @@ void SpriteCommon::LoadTexture(UINT texNumber, const std::string &filename)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	//ヒープのtexnumber番目にシェーダリソースビュー作成
-	dev->CreateShaderResourceView(
-		texBuff[texNumber].Get(),	//ビューと関連付けるバッファ
-		&srvDesc,	//テクスチャ設定情報
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), texNumber,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-		)
-	);
-}
-
-void SpriteCommon::SetGraphicsRootDescriptorTable(UINT rootParameterIndex, UINT texNumber)
-{
-	cmdList->SetGraphicsRootDescriptorTable(rootParameterIndex,
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			descHeap->GetGPUDescriptorHandleForHeapStart(),
-			texNumber,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+	//デスクリプタヒープにSRV作成
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texBuff[texNumber].Get());
 }
 
 void SpriteCommon::CreatePipeline()

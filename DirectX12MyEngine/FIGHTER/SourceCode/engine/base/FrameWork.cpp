@@ -76,7 +76,6 @@ void FrameWork::Initialize()
 
 	//objオブジェクト3d共通初期化処理
 	ObjObject3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
-	ObjModel::SetDescHeapDSV(shadowMap->GetDescHeapSRV());
 
 	//FBXLoader初期化
 	FbxLoader::GetInstance()->Initialize(dxbase->GetDevice());

@@ -218,7 +218,7 @@ void PostEffect::Draw()
 	//ルートパラメータ0番に定数バッファをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
-	//ルートパラメータ1番にシェーダリソースビューをセット
+	//シェーダリソースビューをセット
 	DescHeapSRV::SetGraphicsRootDescriptorTable(1, 0);
 
 	//ポリゴンの描画(4頂点で四角形)

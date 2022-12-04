@@ -76,7 +76,6 @@ public:
 	//getter
 	ID3D12Resource* GetDepthBuff() { return depthBuff.Get(); }
 	ID3D12DescriptorHeap* GetDescHeapDSV() { return descHeapDSV.Get(); }
-	ID3D12DescriptorHeap* GetDescHeapSRV() { return descHeapSRV.Get(); }
 
 private:
 	//画面クリアカラー
@@ -96,8 +95,6 @@ private:
 	ComPtr<ID3D12Resource> constBuff;
 	//テクスチャバッファ
 	ComPtr<ID3D12Resource> texBuff;
-	//SRV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 	//深度バッファ
 	ComPtr<ID3D12Resource> depthBuff;
 	//RTV用デスクリプタヒープ

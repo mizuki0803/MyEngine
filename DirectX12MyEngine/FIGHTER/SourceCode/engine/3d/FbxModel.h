@@ -120,8 +120,6 @@ private: //メンバ変数
 	D3D12_VERTEX_BUFFER_VIEW vbView = {};
 	//インデックスバッファビュー
 	D3D12_INDEX_BUFFER_VIEW ibView = {};
-	//SRV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 	//アンビエント係数
 	DirectX::XMFLOAT3 ambient = { 1,1,1 };
 	//ディフューズ係数

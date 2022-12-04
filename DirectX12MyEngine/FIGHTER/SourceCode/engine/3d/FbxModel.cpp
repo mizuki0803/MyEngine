@@ -1,4 +1,5 @@
 #include "FbxModel.h"
+#include "DescHeapSRV.h"
 
 FbxModel::~FbxModel()
 {
@@ -95,13 +96,6 @@ void FbxModel::CreateBuffers(ID3D12Device* device)
 		(UINT)img->slicePitch	//1枚サイズ
 	);
 
-	//SRV用デスクリプタヒープを生成
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
-	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;	//シェーダから見えるように
-	descHeapDesc.NumDescriptors = 1;	//テクスチャ枚数
-	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeapSRV));	//生成
-
 	//シェーダリソースビュー(SRV)作成
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	D3D12_RESOURCE_DESC resDesc = texBuff->GetDesc();
@@ -111,10 +105,8 @@ void FbxModel::CreateBuffers(ID3D12Device* device)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	device->CreateShaderResourceView(texBuff.Get(),	//ビューと関連付けるバッファ
-		&srvDesc,	//テクスチャ設定情報
-		descHeapSRV->GetCPUDescriptorHandleForHeapStart()	//ヒープの先頭アドレス
-	);
+	//デスクリプタヒープにSRV作成
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texBuff.Get());
 }
 
 void FbxModel::Draw(ID3D12GraphicsCommandList* cmdList)
@@ -124,12 +116,8 @@ void FbxModel::Draw(ID3D12GraphicsCommandList* cmdList)
 	//インデックスバッファをセット(IBV)
 	cmdList->IASetIndexBuffer(&ibView);
 
-	//デスクリプタヒープのセット
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	//シェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1,
-		descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+	DescHeapSRV::SetGraphicsRootDescriptorTable(1, 0);
 
 	//描画コマンド
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);

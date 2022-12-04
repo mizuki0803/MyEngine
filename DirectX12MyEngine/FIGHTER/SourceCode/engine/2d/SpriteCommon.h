@@ -61,13 +61,6 @@ public: //メンバ関数
 	/// <param name="filename">テクスチャファイル名</param>
 	void LoadTexture(UINT texNumber, const std::string& filename);
 
-	/// <summary>
-	/// ルートデスクリプタテーブルの設定
-	/// </summary>
-	/// <param name="rootParameterIndex">ルートパラメータ番号</param>
-	/// <param name="texNumber">テクスチャ番号</param>
-	void SetGraphicsRootDescriptorTable(UINT rootParameterIndex, UINT texNumber);
-
 private: //メンバ関数
 	/// <summary>
 	/// パイプライン生成
@@ -106,12 +99,6 @@ public: //getter
 	/// <returns>パイプラインステート</returns>
 	const PipelineSet& GetPipelineSet() { return pipelineSet; }
 
-	/// <summary>
-	/// テクスチャ用デスクリプタヒープ取得
-	/// </summary>
-	/// <returns>テクスチャ用デスクリプタヒープ</returns>
-	ComPtr<ID3D12DescriptorHeap> GetDescHeap() { return descHeap; };
-
 private: //メンバ変数
 	//デバイス
 	ID3D12Device* dev = nullptr;
@@ -121,8 +108,6 @@ private: //メンバ変数
 	PipelineSet pipelineSet;
 	//射影行列
 	XMMATRIX matProjection;
-	//テクスチャ用デスクリプタヒープの生成
-	ComPtr<ID3D12DescriptorHeap> descHeap;
 	//テクスチャリソース(テクスチャバッファ)の配列
 	ComPtr<ID3D12Resource> texBuff[spriteSRVCount];
 	//テクスチャ格納ディレクトリ

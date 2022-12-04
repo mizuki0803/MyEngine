@@ -67,12 +67,10 @@ public: //静的メンバ関数
 
 	//setter
 	static void SetDevice(ID3D12Device* device) { ObjModel::dev = device; };
-	static void SetDescHeapDSV(ID3D12DescriptorHeap* shadowDescHeapSRV) { ObjModel::shadowDescHeapSRV = shadowDescHeapSRV; }
 
 private: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* dev;
-	static ID3D12DescriptorHeap* shadowDescHeapSRV;
 
 private: //非公開のメンバ関数
 	/// <summary>
@@ -95,11 +93,6 @@ private: //非公開のメンバ関数
 	/// <param name="directoryPath">パス</param>
 	/// <param name="filename">ファイル名</param>
 	void LoadTexture(const std::string& directoryPath, const std::string& filename);
-
-	/// <summary>
-	/// デスクリプタヒープの初期化
-	/// </summary>
-	void InitializeDescHeap();
 
 	/// <summary>
 	/// 各種バッファ生成
@@ -141,8 +134,6 @@ public: //メンバ関数
 	void DrawLightCameraView(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
 
 private: //メンバ変数
-	//テクスチャ用デスクリプタヒープの生成
-	ComPtr<ID3D12DescriptorHeap> descHeap;
 	//テクスチャリソース(テクスチャバッファ)
 	ComPtr<ID3D12Resource> texBuff;
 	//頂点バッファ

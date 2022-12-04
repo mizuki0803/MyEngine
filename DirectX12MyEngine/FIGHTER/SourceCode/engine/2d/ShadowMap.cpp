@@ -1,7 +1,8 @@
 #include "ShadowMap.h"
 #include "WindowApp.h"
+#include "DescHeapSRV.h"
 #include <d3dx12.h>
-#include<d3dcompiler.h>
+#include <d3dcompiler.h>
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -127,15 +128,6 @@ bool ShadowMap::Initialize(const XMFLOAT2& size, const XMFLOAT2& center)
 		delete[] img;
 	}
 
-	//SRV用デスクリプタヒープ設定
-	D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
-	srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvDescHeapDesc.NumDescriptors = 1;
-	//SRV用デスクリプタヒープを生成
-	result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
-	assert(SUCCEEDED(result));
-
 	//SRV設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
 	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -144,10 +136,7 @@ bool ShadowMap::Initialize(const XMFLOAT2& size, const XMFLOAT2& center)
 	srvDesc.Texture2D.MipLevels = 1;
 
 	//デスクリプタヒープにSRV作成
-	dev->CreateShaderResourceView(texBuff.Get(),	//ビューと関連付けるバッファ
-		&srvDesc,
-		descHeapSRV->GetCPUDescriptorHandleForHeapStart()
-	);
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texBuff.Get());
 
 
 	//RTV用デスクリプタヒープ設定
@@ -213,18 +202,14 @@ void ShadowMap::Draw()
 	//プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	//テクスチャ用デスクリプタヒープの設定
-	ID3D12DescriptorHeap* ppHeap[] = { descHeapSRV.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeap), ppHeap);
-
 	//頂点バッファをセット
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 
 	//ルートパラメータ0番に定数バッファをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
-	//ルートパラメータ1番にシェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+	//シェーダリソースビューをセット
+	DescHeapSRV::SetGraphicsRootDescriptorTable(1, 0);
 
 	//ポリゴンの描画(4頂点で四角形)
 	cmdList->DrawInstanced(4, 1, 0, 0);

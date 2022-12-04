@@ -1,4 +1,5 @@
 #include "ParticleManager.h"
+#include "DescHeapSRV.h"
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include <fstream>
@@ -18,28 +19,9 @@ using namespace std;
 ID3D12Device* ParticleManager::dev = nullptr;
 ID3D12GraphicsCommandList* ParticleManager::cmdList = nullptr;
 PipelineSet ParticleManager::pipelineSet;
-ComPtr<ID3D12DescriptorHeap> ParticleManager::descHeap;
-//ComPtr<ID3D12Resource> ParticleManager::indexBuff;
-//D3D12_INDEX_BUFFER_VIEW ParticleManager::ibView{};
 ComPtr<ID3D12Resource> ParticleManager::texBuff[SRVCount];
 std::string ParticleManager::directoryPath;
 Camera* ParticleManager::camera = nullptr;
-//XMMATRIX ParticleManager::matView{};
-//XMMATRIX ParticleManager::matProjection{};
-//XMFLOAT3 ParticleManager::eye = { 0, 0, -20.0f };
-//XMFLOAT3 ParticleManager::target = { 0, 0, 0 };
-//XMFLOAT3 ParticleManager::up = { 0, 1, 0 };
-
-//std::vector<ParticleManager::Vertex> ParticleManager::vertices;
-//std::vector<unsigned short> ParticleManager::indices;
-//ParticleManager::Material ParticleManager::material;
-
-//ParticleManager::VertexPos ParticleManager::vertices[vertexCount];
-//unsigned short ParticleManager::indices[indexCount];
-
-//XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();
-//XMMATRIX ParticleManager::matBillboardY = XMMatrixIdentity();
-
 
 //XMFLOAT3同士の加算処理
 const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const DirectX::XMFLOAT3 rhs)
@@ -64,18 +46,6 @@ void ParticleManager::ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCom
 
 	// パイプライン初期化
 	CreatePipeline();
-
-	// デスクリプタヒープの初期化
-	CreateDescHeap();
-
-	// カメラ初期化
-	//InitializeCamera(WindowApp::window_width, WindowApp::window_height);
-
-	// テクスチャ読み込み
-	//LoadTexture();
-
-	// モデル生成
-	//CreateModel();
 }
 
 void ParticleManager::CreatePipeline()
@@ -284,19 +254,6 @@ void ParticleManager::CreatePipeline()
 	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineSet.pipelinestate));
 }
 
-void ParticleManager::CreateDescHeap()
-{
-	HRESULT result;
-
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};
-	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;	//シェーダーから見える
-	descHeapDesc.NumDescriptors = SRVCount;
-
-	//デスクリプタヒープの生成
-	result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
-}
-
 void ParticleManager::DrawPrev()
 {
 	//プリミティブ形状の設定コマンド(ポイントリスト)
@@ -390,13 +347,8 @@ bool ParticleManager::LoadTexture(UINT texNumber, const std::string& filename)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	dev->CreateShaderResourceView(
-		texBuff[texNumber].Get(), //ビューと関連付けるバッファ
-		&srvDesc, //テクスチャ設定情報
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), texNumber,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-		)
-	);
+	//デスクリプタヒープにSRV作成
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texBuff[texNumber].Get());
 
 	return true;
 }
@@ -579,19 +531,11 @@ void ParticleManager::Draw()
 {
 	//頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
-	//デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	//定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
-	// シェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1,
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			descHeap->GetGPUDescriptorHandleForHeapStart(),
-			texNumber,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
-	);
+	//シェーダリソースビューをセット
+	DescHeapSRV::SetGraphicsRootDescriptorTable(1, 0);
 
 	//パーティクルの要素数を取得
 	UINT particleNum = (UINT)std::distance(particles.begin(), particles.end());
