@@ -110,6 +110,7 @@
     <ClCompile Include="SourceCode\engine\3d\ParticleManager.cpp" />
     <ClCompile Include="SourceCode\engine\audio\Audio.cpp" />
     <ClCompile Include="SourceCode\engine\base\AndosGame.cpp" />
+    <ClCompile Include="SourceCode\engine\base\DescHeapSRV.cpp" />
     <ClCompile Include="SourceCode\engine\base\DirectXBase.cpp" />
     <ClCompile Include="SourceCode\engine\base\FpsCheck.cpp" />
     <ClCompile Include="SourceCode\engine\base\FrameWork.cpp" />
@@ -313,6 +314,7 @@
     <ClInclude Include="SourceCode\engine\3d\ParticleManager.h" />
     <ClInclude Include="SourceCode\engine\audio\Audio.h" />
     <ClInclude Include="SourceCode\engine\base\AndosGame.h" />
+    <ClInclude Include="SourceCode\engine\base\DescHeapSRV.h" />
     <ClInclude Include="SourceCode\engine\base\DirectXBase.h" />
     <ClInclude Include="SourceCode\engine\base\FpsCheck.h" />
     <ClInclude Include="SourceCode\engine\base\FrameWork.h" />

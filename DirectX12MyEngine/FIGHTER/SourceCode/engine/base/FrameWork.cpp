@@ -1,5 +1,6 @@
 #include "FrameWork.h"
 #include "FpsCheck.h"
+#include "DescHeapSRV.h"
 #include "SpriteTextureLoader.h"
 #include "ObjObject3d.h"
 #include "FbxLoader.h"
@@ -41,6 +42,9 @@ void FrameWork::Initialize()
 	//DirectX初期化
 	dxbase.reset(new DirectXBase());
 	dxbase->Initialize(win.get());
+
+	//SRV用デスクリプタヒープの初期化
+	DescHeapSRV::Initialize(dxbase->GetDevice(), dxbase->GetCmdList());
 
 	//入力の初期化
 	input = Input::GetInstance();
@@ -132,6 +136,9 @@ void FrameWork::Update()
 
 void FrameWork::Draw()
 {
+	//SRV用共通デスクリプタヒープSetDescriptorHeaps
+	DescHeapSRV::SetDescriptorHeaps();
+
 	//シャドウマップのレンダーテクスチャへの描画
 	shadowMap->DrawScenePrev();
 	SceneManager::GetInstance()->Draw3DLightView();
@@ -149,8 +156,12 @@ void FrameWork::Draw()
 	//シーンの背景スプライト描画
 	SceneManager::GetInstance()->DrawBackSprite();
 
+
+	//DescHeapSetしないとアカン
 	//ポストエフェクトの描画
 	postEffect->Draw();
+
+
 	
 	//シーンの前景スプライト描画
 	SceneManager::GetInstance()->DrawFrontSprite();
