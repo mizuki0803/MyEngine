@@ -1,4 +1,5 @@
 #pragma once
+#include "Texture.h"
 #include <wrl.h>
 #include <d3d12.h>
 
@@ -11,7 +12,7 @@ private: //エイリアス
 	//Microsoft::WRL::を省略
 	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-private:
+public:
 	//テクスチャの最大枚数
 	static const int SRVCount = 512;
 
@@ -30,22 +31,22 @@ public: //静的メンバ関数
 	/// <summary>
 	/// SRV共通CreateShaderResourceView
 	/// </summary>
-	static void CreateShaderResourceView(const D3D12_SHADER_RESOURCE_VIEW_DESC& srvDesc, ID3D12Resource* texBuff);
+	static void CreateShaderResourceView(const D3D12_SHADER_RESOURCE_VIEW_DESC& srvDesc, Texture& texture);
 
 	/// <summary>
 	/// SRV共通SetGraphicsRootDescriptorTable
 	/// </summary>
 	static void SetGraphicsRootDescriptorTable(UINT rootParameterIndex, UINT texNumber);
 
-	//ヒープの解放
-
 public: //静的メンバ変数  (たくさん使うので、使いやすいようにpublicにしておく)
+	//デスクリプタヒープ
+	static ComPtr<ID3D12DescriptorHeap> descHeapSRV;
+
+private: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* dev;
 	//コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList;
-	//デスクリプタヒープ
-	static ComPtr<ID3D12DescriptorHeap> descHeapSRV;
-	
-	static UINT texNumber;
+	//テクスチャ番号カウンター
+	static UINT texNumCount;
 };

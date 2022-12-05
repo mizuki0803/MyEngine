@@ -1,4 +1,5 @@
 #pragma once
+#include "Texture.h"
 #include <DirectXMath.h>
 #include <DirectXTex.h>
 #include <string>
@@ -115,7 +116,7 @@ private: //メンバ変数
 	//インデックスバッファ
 	ComPtr<ID3D12Resource> indexBuff;
 	//テクスチャバッファ
-	ComPtr<ID3D12Resource> texBuff;
+	Texture texture;
 	//頂点バッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vbView = {};
 	//インデックスバッファビュー

@@ -1,5 +1,6 @@
 #pragma once
 #include "PipelineSet.h"
+#include "Texture.h"
 #include <DirectXMath.h>
 #include <string>
 
@@ -108,8 +109,8 @@ private: //メンバ変数
 	PipelineSet pipelineSet;
 	//射影行列
 	XMMATRIX matProjection;
-	//テクスチャリソース(テクスチャバッファ)の配列
-	ComPtr<ID3D12Resource> texBuff[spriteSRVCount];
+	//テクスチャの配列
+	Texture texture[spriteSRVCount];
 	//テクスチャ格納ディレクトリ
 	std::string directoryPath;
 };

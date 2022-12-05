@@ -177,6 +177,9 @@
     <Filter Include="ソース ファイル\engine\base\descHeapSRV">
       <UniqueIdentifier>{6189d9e8-0c3a-447e-9906-2daffbc9ff1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\engine\base\texture">
+      <UniqueIdentifier>{9733e8db-cb37-4436-aeab-61e62faa30dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\main.cpp">
@@ -871,6 +874,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\base\DescHeapSRV.h">
       <Filter>ソース ファイル\engine\base\descHeapSRV</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\base\Texture.h">
+      <Filter>ソース ファイル\engine\base\texture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

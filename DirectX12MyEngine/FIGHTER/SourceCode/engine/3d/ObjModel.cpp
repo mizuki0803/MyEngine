@@ -281,10 +281,10 @@ void ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 		&texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&texBuff));
+		IID_PPV_ARGS(&texture.texBuff));
 
 	//テクスチャバッファにデータ転送
-	result = texBuff->WriteToSubresource(
+	result = texture.texBuff->WriteToSubresource(
 		0,
 		nullptr,	//全領域コピー
 		img->pixels,	//元データアドレス
@@ -300,7 +300,7 @@ void ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 	srvDesc.Texture2D.MipLevels = 1;
 
 	//デスクリプタヒープにSRV作成
-	DescHeapSRV::CreateShaderResourceView(srvDesc, texBuff.Get());
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texture);
 }
 
 void ObjModel::CreateBuffers()
@@ -427,7 +427,7 @@ void ObjModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMater
 	if (material.textureFilename.size() > 0)
 	{
 		//シェーダリソースビューをセット
-		DescHeapSRV::SetGraphicsRootDescriptorTable(2, 0);
+		DescHeapSRV::SetGraphicsRootDescriptorTable(2, texture.texNumber);
 	}
 
 	//描画コマンド
@@ -447,7 +447,7 @@ void ObjModel::DrawLightCameraView(ID3D12GraphicsCommandList* cmdList, UINT root
 	if (material.textureFilename.size() > 0)
 	{
 		//シェーダリソースビューをセット
-		DescHeapSRV::SetGraphicsRootDescriptorTable(2, 0);
+		DescHeapSRV::SetGraphicsRootDescriptorTable(2, texture.texNumber);
 	}
 
 

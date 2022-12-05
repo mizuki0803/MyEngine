@@ -1,6 +1,7 @@
 #pragma once
 #include <DirectXMath.h>
 #include "PipelineSet.h"
+#include "Texture.h"
 
 /// <summary>
 /// シャドウマップ
@@ -93,8 +94,8 @@ private:
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuff;
-	//テクスチャバッファ
-	ComPtr<ID3D12Resource> texBuff;
+	//テクスチャ
+	Texture texture;
 	//深度バッファ
 	ComPtr<ID3D12Resource> depthBuff;
 	//RTV用デスクリプタヒープ

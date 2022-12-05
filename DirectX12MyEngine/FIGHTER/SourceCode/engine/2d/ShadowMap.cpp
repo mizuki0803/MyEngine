@@ -103,7 +103,7 @@ bool ShadowMap::Initialize(const XMFLOAT2& size, const XMFLOAT2& center)
 		&texresDesc,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor),
-		IID_PPV_ARGS(&texBuff)
+		IID_PPV_ARGS(&texture.texBuff)
 	);
 	assert(SUCCEEDED(result));
 
@@ -122,7 +122,7 @@ bool ShadowMap::Initialize(const XMFLOAT2& size, const XMFLOAT2& center)
 		}
 
 		//テクスチャバッファにデータ転送
-		result = texBuff->WriteToSubresource(0, nullptr,
+		result = texture.texBuff->WriteToSubresource(0, nullptr,
 			img, rowPitch, depthPitch);
 		assert(SUCCEEDED(result));
 		delete[] img;
@@ -136,7 +136,7 @@ bool ShadowMap::Initialize(const XMFLOAT2& size, const XMFLOAT2& center)
 	srvDesc.Texture2D.MipLevels = 1;
 
 	//デスクリプタヒープにSRV作成
-	DescHeapSRV::CreateShaderResourceView(srvDesc, texBuff.Get());
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texture);
 
 
 	//RTV用デスクリプタヒープ設定
@@ -148,7 +148,7 @@ bool ShadowMap::Initialize(const XMFLOAT2& size, const XMFLOAT2& center)
 	assert(SUCCEEDED(result));
 
 	//デスクリプタヒープにRTV生成
-	dev->CreateRenderTargetView(texBuff.Get(),
+	dev->CreateRenderTargetView(texture.texBuff.Get(),
 		nullptr,
 		descHeapRTV->GetCPUDescriptorHandleForHeapStart()
 	);
@@ -209,7 +209,7 @@ void ShadowMap::Draw()
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
 	//シェーダリソースビューをセット
-	DescHeapSRV::SetGraphicsRootDescriptorTable(1, 0);
+	DescHeapSRV::SetGraphicsRootDescriptorTable(1, texture.texNumber);
 
 	//ポリゴンの描画(4頂点で四角形)
 	cmdList->DrawInstanced(4, 1, 0, 0);

@@ -146,6 +146,7 @@ void FrameWork::Draw()
 
 	//レンダーテクスチャへの描画
 	postEffect->DrawScenePrev();
+	shadowMap->Draw();
 	SceneManager::GetInstance()->Draw3D();
 	postEffect->DrawSceneRear();
 
@@ -156,10 +157,8 @@ void FrameWork::Draw()
 	SceneManager::GetInstance()->DrawBackSprite();
 
 
-	//DescHeapSetしないとアカン
 	//ポストエフェクトの描画
 	postEffect->Draw();
-
 
 	
 	//シーンの前景スプライト描画

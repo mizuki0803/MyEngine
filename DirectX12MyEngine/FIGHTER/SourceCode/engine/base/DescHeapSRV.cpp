@@ -7,7 +7,7 @@ using namespace Microsoft::WRL;
 ID3D12Device* DescHeapSRV::dev = nullptr;
 ID3D12GraphicsCommandList* DescHeapSRV::cmdList = nullptr;
 ComPtr<ID3D12DescriptorHeap> DescHeapSRV::descHeapSRV;
-UINT DescHeapSRV::texNumber;
+UINT DescHeapSRV::texNumCount = 0;
 
 void DescHeapSRV::Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 {
@@ -35,15 +35,19 @@ void DescHeapSRV::SetDescriptorHeaps()
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 
-void DescHeapSRV::CreateShaderResourceView(const D3D12_SHADER_RESOURCE_VIEW_DESC& srvDesc, ID3D12Resource* texBuff)
+void DescHeapSRV::CreateShaderResourceView(const D3D12_SHADER_RESOURCE_VIEW_DESC& srvDesc, Texture& texture)
 {
+	texture.texNumber = texNumCount;
+
 	dev->CreateShaderResourceView(
-		texBuff,	//ビューと関連付けるバッファ
+		texture.texBuff.Get(),	//ビューと関連付けるバッファ
 		&srvDesc,	//テクスチャ設定情報
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeapSRV->GetCPUDescriptorHandleForHeapStart(), texNumber,
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeapSRV->GetCPUDescriptorHandleForHeapStart(), texture.texNumber,
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
 		)
 	);
+	
+	texNumCount++;
 }
 
 void DescHeapSRV::SetGraphicsRootDescriptorTable(UINT rootParameterIndex, UINT texNumber)

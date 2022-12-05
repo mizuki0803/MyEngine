@@ -84,10 +84,10 @@ void SpriteCommon::LoadTexture(UINT texNumber, const std::string &filename)
 		&texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&texBuff[texNumber]));
+		IID_PPV_ARGS(&texture[texNumber].texBuff));
 
 	//テクスチャバッファにデータ転送
-	result = texBuff[texNumber]->WriteToSubresource(
+	result = texture[texNumber].texBuff->WriteToSubresource(
 		0,
 		nullptr,	//全領域コピー
 		img->pixels,	//元データアドレス
@@ -96,14 +96,14 @@ void SpriteCommon::LoadTexture(UINT texNumber, const std::string &filename)
 	);
 
 	//シェーダリソースビュー設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体	//TODO
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
 	srvDesc.Format = metadata.format;	//RGBA
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
 	//デスクリプタヒープにSRV作成
-	DescHeapSRV::CreateShaderResourceView(srvDesc, texBuff[texNumber].Get());
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texture[texNumber]);
 }
 
 void SpriteCommon::CreatePipeline()
@@ -281,5 +281,5 @@ void SpriteCommon::CreatePipeline()
 ID3D12Resource *SpriteCommon::GetTexBuff(int texNumber)
 {
 	assert(0 <= texNumber && texNumber < spriteSRVCount);
-	return texBuff[texNumber].Get();
+	return texture[texNumber].texBuff.Get();
 }

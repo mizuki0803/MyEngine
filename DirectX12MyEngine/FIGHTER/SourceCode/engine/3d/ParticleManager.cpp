@@ -19,7 +19,7 @@ using namespace std;
 ID3D12Device* ParticleManager::dev = nullptr;
 ID3D12GraphicsCommandList* ParticleManager::cmdList = nullptr;
 PipelineSet ParticleManager::pipelineSet;
-ComPtr<ID3D12Resource> ParticleManager::texBuff[SRVCount];
+Texture ParticleManager::texture[SRVCount];
 std::string ParticleManager::directoryPath;
 Camera* ParticleManager::camera = nullptr;
 
@@ -322,17 +322,16 @@ bool ParticleManager::LoadTexture(UINT texNumber, const std::string& filename)
 		(UINT16)metadata.mipLevels);
 
 	//テクスチャ用バッファの生成
-	//ID3D12Resource *texbuff = nullptr;
 	result = dev->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
 		D3D12_HEAP_FLAG_NONE,
 		&texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&texBuff[texNumber]));
+		IID_PPV_ARGS(&texture[texNumber].texBuff));
 
 	//テクスチャバッファにデータ転送
-	result = texBuff[texNumber]->WriteToSubresource(
+	result = texture[texNumber].texBuff->WriteToSubresource(
 		0,
 		nullptr,	//全領域コピー
 		img->pixels,	//元データアドレス
@@ -348,7 +347,7 @@ bool ParticleManager::LoadTexture(UINT texNumber, const std::string& filename)
 	srvDesc.Texture2D.MipLevels = 1;
 
 	//デスクリプタヒープにSRV作成
-	DescHeapSRV::CreateShaderResourceView(srvDesc, texBuff[texNumber].Get());
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texture[texNumber]);
 
 	return true;
 }
@@ -530,12 +529,12 @@ void ParticleManager::Update()
 void ParticleManager::Draw()
 {
 	//頂点バッファの設定
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
+ 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 
 	//定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 	//シェーダリソースビューをセット
-	DescHeapSRV::SetGraphicsRootDescriptorTable(1, 0);
+	DescHeapSRV::SetGraphicsRootDescriptorTable(1, texture[texNumber].texNumber);
 
 	//パーティクルの要素数を取得
 	UINT particleNum = (UINT)std::distance(particles.begin(), particles.end());

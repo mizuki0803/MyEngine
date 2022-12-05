@@ -319,6 +319,7 @@
     <ClInclude Include="SourceCode\engine\base\FpsCheck.h" />
     <ClInclude Include="SourceCode\engine\base\FrameWork.h" />
     <ClInclude Include="SourceCode\engine\base\PipelineSet.h" />
+    <ClInclude Include="SourceCode\engine\base\Texture.h" />
     <ClInclude Include="SourceCode\engine\base\WindowApp.h" />
     <ClInclude Include="SourceCode\engine\behaviorTree\Selector.h" />
     <ClInclude Include="SourceCode\engine\behaviorTree\Sequencer.h" />

@@ -1,4 +1,5 @@
 #pragma once
+#include "Texture.h"
 #include <Windows.h>
 #include <DirectXMath.h>
 #include "DirectXBase.h"
@@ -134,8 +135,8 @@ public: //メンバ関数
 	void DrawLightCameraView(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
 
 private: //メンバ変数
-	//テクスチャリソース(テクスチャバッファ)
-	ComPtr<ID3D12Resource> texBuff;
+	//テクスチャ
+	Texture texture;
 	//頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;
 	//頂点バッファビュー

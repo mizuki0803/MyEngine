@@ -6,6 +6,7 @@
 #include <functional>
 #include "Camera.h"
 #include "PipelineSet.h"
+#include "Texture.h"
 
 /// <summary>
 /// パーティクルマネージャー
@@ -152,7 +153,7 @@ private:
 	//パイプラインセット
 	static PipelineSet pipelineSet;
 	//テクスチャリソース(テクスチャバッファ)の配列
-	static ComPtr<ID3D12Resource> texBuff[SRVCount];
+	static Texture texture[SRVCount];
 	//テクスチャ格納ディレクトリ
 	static std::string directoryPath;
 	//頂点数

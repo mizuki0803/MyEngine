@@ -85,10 +85,10 @@ void FbxModel::CreateBuffers(ID3D12Device* device)
 		&texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,	//テクスチャ用指定
 		nullptr,
-		IID_PPV_ARGS(&texBuff));
+		IID_PPV_ARGS(&texture.texBuff));
 
 	//テクスチャバッファにデータ転送
-	result = texBuff->WriteToSubresource(
+	result = texture.texBuff->WriteToSubresource(
 		0,
 		nullptr,				//全領域へコピー
 		img->pixels,			//元データアドレス
@@ -98,7 +98,7 @@ void FbxModel::CreateBuffers(ID3D12Device* device)
 
 	//シェーダリソースビュー(SRV)作成
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	D3D12_RESOURCE_DESC resDesc = texBuff->GetDesc();
+	D3D12_RESOURCE_DESC resDesc = texture.texBuff->GetDesc();
 
 	srvDesc.Format = resDesc.Format;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
@@ -106,7 +106,7 @@ void FbxModel::CreateBuffers(ID3D12Device* device)
 	srvDesc.Texture2D.MipLevels = 1;
 
 	//デスクリプタヒープにSRV作成
-	DescHeapSRV::CreateShaderResourceView(srvDesc, texBuff.Get());
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texture);
 }
 
 void FbxModel::Draw(ID3D12GraphicsCommandList* cmdList)
@@ -117,7 +117,7 @@ void FbxModel::Draw(ID3D12GraphicsCommandList* cmdList)
 	cmdList->IASetIndexBuffer(&ibView);
 
 	//シェーダリソースビューをセット
-	DescHeapSRV::SetGraphicsRootDescriptorTable(1, 0);
+	DescHeapSRV::SetGraphicsRootDescriptorTable(1, texture.texNumber);
 
 	//描画コマンド
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
