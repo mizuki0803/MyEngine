@@ -86,6 +86,7 @@ void SortieScene::Update()
 
 	//カメラ更新
 	sortieCamera->Update();
+	lightCamera->Follow(player->GetPosition());
 	lightCamera->Update();
 
 	//オブジェクト更新

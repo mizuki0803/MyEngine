@@ -5,6 +5,7 @@ cbuffer cbuff0 : register(b0)
 	matrix world;		//ワールド行列
 	float3 cameraPos;	//カメラ座標(ワールド座標)
 	matrix lightViewproj;	//ライトビュープロジェクション行列
+	uint isShadowMap;	//影を付けるか
 };
 
 cbuffer cbuff1 : register(b1)

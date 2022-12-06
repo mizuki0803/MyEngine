@@ -4,6 +4,7 @@
 #include "ParticleEmitter.h"
 
 const float HomingBullet::blastSize = 16.0f;
+ObjModel* HomingBullet::bulletModel = nullptr;
 
 HomingBullet* HomingBullet::Create(const Vector3& position, const Vector3& velocity, const float size, Enemy* enemy)
 {
@@ -34,6 +35,9 @@ HomingBullet* HomingBullet::Create(const Vector3& position, const Vector3& veloc
 
 	//’Ç]‘ÎÛ‚Ì“G‚ðƒZƒbƒg
 	homingBullet->enemy = enemy;
+
+	//‰e•`‰æ—p‰¼ƒ‚ƒfƒ‹
+	homingBullet->model = bulletModel;
 
 	return homingBullet;
 }

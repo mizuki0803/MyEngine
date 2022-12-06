@@ -11,7 +11,7 @@
 class ObjModel
 {
 private: // エイリアス
-// Microsoft::WRL::を省略
+	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -68,10 +68,13 @@ public: //静的メンバ関数
 
 	//setter
 	static void SetDevice(ID3D12Device* device) { ObjModel::dev = device; };
+	static void SetShadowMapTexture(const Texture& shadowMapTexture) { ObjModel::shadowMapTexture = shadowMapTexture; };
 
 private: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* dev;
+	//テクスチャ
+	static Texture shadowMapTexture;
 
 private: //非公開のメンバ関数
 	/// <summary>

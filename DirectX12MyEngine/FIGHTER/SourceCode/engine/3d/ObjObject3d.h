@@ -32,6 +32,7 @@ public: //サブクラス
 		XMMATRIX world;		//ワールド行列
 		Vector3 cameraPos;	//カメラ座標(ワールド座標)
 		XMMATRIX lightViewproj;	//ライトビュープロジェクション行列
+		unsigned int isShadowMap;	//影を付けるか
 	};
 
 	struct ConstBufferDataLightViewB0
@@ -115,6 +116,7 @@ public: //メンバ関数
 	void SetColor(const XMFLOAT4& color) { this->color = color; }
 	void SetModel(ObjModel* model) { this->model = model; }
 	void SetIsCameraFollow(bool isCameraFollow) { this->isCameraFollow = isCameraFollow; }
+	void SetIsShadowMap(bool isShadowMap) { this->isShadowMap = isShadowMap; }
 	static void SetLightGroup(LightGroup* lightGroup) { ObjObject3d::lightGroup = lightGroup; }
 	static void SetCamera(Camera* camera) { ObjObject3d::camera = camera; }
 	static void SetLightCamera(LightCamera* lightCamera) { ObjObject3d::lightCamera = lightCamera; }
@@ -153,4 +155,6 @@ protected: //メンバ変数
 	ObjModel* model = nullptr;
 	//カメラに追従するか
 	bool isCameraFollow = false;
+	//影を付けるか
+	bool isShadowMap = false;
 };

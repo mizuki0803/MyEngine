@@ -1,6 +1,5 @@
 #pragma once
 #include <DirectXMath.h>
-#include "PipelineSet.h"
 #include "Texture.h"
 
 /// <summary>
@@ -18,12 +17,6 @@ private: // エイリアス
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public: //サブクラス
-	struct VertexPosUv
-	{
-		XMFLOAT3 pos;	//xyz座標
-		XMFLOAT2 uv;	//uv座標
-	};
-
 	//定数バッファ用データ構造体
 	struct ConstBufferData
 	{
@@ -35,8 +28,8 @@ public:
 	/// <summary>
 	/// シャドウマップ生成
 	/// </summary>
-	/// <returns>Sprite</returns>
-	static ShadowMap* Create(const XMFLOAT2& size = { 1.0f, 1.0f }, const XMFLOAT2& center = { 0, 0 });
+	/// <returns>シャドウマップ</returns>
+	static ShadowMap* Create();
 
 	/// <summary>
 	/// シャドウマップ共通部分の初期化
@@ -49,60 +42,33 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	bool Initialize(const XMFLOAT2& size, const XMFLOAT2& center);
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
-	void Draw();
+	bool Initialize();
 
 	/// <summary>
 	/// シーン描画前処理
 	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
 	void DrawScenePrev();
 
 	/// <summary>
 	/// シーン描画後処理
 	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
 	void DrawSceneRear();
 
-	/// <summary>
-	/// パイプライン生成
-	/// </summary>
-	void CreateGraphicsPipelineState();
-
 	//getter
-	ID3D12Resource* GetDepthBuff() { return depthBuff.Get(); }
-	ID3D12DescriptorHeap* GetDescHeapDSV() { return descHeapDSV.Get(); }
+	const Texture& GetTexture() { return depthTexture; }
 
 private:
-	//画面クリアカラー
-	static const float clearColor[4];
 	//デバイス
 	static ID3D12Device* dev;
 	//コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList;
-	//パイプラインセット
-	static PipelineSet pipelineSet;
+
 private:
-	//頂点バッファ
-	ComPtr<ID3D12Resource> vertBuff;
-	//頂点バッファビュー
-	D3D12_VERTEX_BUFFER_VIEW vbView{};
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuff;
 	//テクスチャ
-	Texture texture;
-	//深度バッファ
-	ComPtr<ID3D12Resource> depthBuff;
-	//RTV用デスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> descHeapRTV;
+	Texture depthTexture;
 	//DSV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapDSV;
-	//色(RGBA)
-	XMFLOAT4 color = { 1, 1, 1, 1 };
 };
 

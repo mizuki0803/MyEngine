@@ -20,3 +20,12 @@ void LightCamera::UpdateMatProjection()
 		0.1f, 2000.0f
 	);
 }
+
+void LightCamera::Follow(const Vector3& targetPosition)
+{
+	eye = { targetPosition.x, 500, targetPosition.z };
+	target = { targetPosition.x, 0, targetPosition.z };
+
+	dirtyView = true;
+	dirtyProjection = true;
+}

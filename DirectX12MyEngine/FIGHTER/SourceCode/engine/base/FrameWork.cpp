@@ -72,10 +72,11 @@ void FrameWork::Initialize()
 	//シャドウマップ共通初期化処理
 	ShadowMap::ShadowMapCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	//シャドウマップの初期化
-	shadowMap.reset(ShadowMap::Create({ 0.25f, 0.25f }, { -0.6f, 0.6f }));
+	shadowMap.reset(ShadowMap::Create());
 
 	//objオブジェクト3d共通初期化処理
 	ObjObject3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
+	ObjModel::SetShadowMapTexture(shadowMap->GetTexture());
 
 	//FBXLoader初期化
 	FbxLoader::GetInstance()->Initialize(dxbase->GetDevice());
@@ -146,7 +147,6 @@ void FrameWork::Draw()
 
 	//レンダーテクスチャへの描画
 	postEffect->DrawScenePrev();
-	shadowMap->Draw();
 	SceneManager::GetInstance()->Draw3D();
 	postEffect->DrawSceneRear();
 

@@ -44,6 +44,7 @@ void StageSelectScene::Initialize()
 	//ステージ選択フィールド生成
 	stageSelectField.reset(ObjObject3d::Create(modelStageSelect.get()));
 	stageSelectField->SetScale({ 5, 5, 5 });
+	stageSelectField->SetIsShadowMap(true);
 
 	//惑星生成
 	CreatePlanets();
@@ -64,7 +65,7 @@ void StageSelectScene::Initialize()
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
-	skydome->SetScale({ 10,10,10 });
+	skydome->SetIsShadowMap(true);
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(stageSelectCamera.get());
@@ -99,6 +100,7 @@ void StageSelectScene::Update()
 
 	//カメラ更新
 	stageSelectCamera->Update();
+	lightCamera->Follow(player->GetPosition());
 	lightCamera->Update();
 
 	//オブジェクト更新
@@ -126,11 +128,6 @@ void StageSelectScene::Update()
 	ParticleEmitter::GetInstance()->Update();
 
 
-	//自機の出撃行動が完了したら
-	//if (player->GetIsSortieEnd()) {
-		//ゲームシーンへシーン変更を開始する
-		//SceneChangeStart({ 1,1,1,0 }, 10, 0, 20, "GAME");
-	//}
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("GAME");

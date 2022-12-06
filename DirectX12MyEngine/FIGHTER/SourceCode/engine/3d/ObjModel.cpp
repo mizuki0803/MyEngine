@@ -17,6 +17,7 @@ using namespace std;
 
 //静的メンバ変数の実体
 ID3D12Device* ObjModel::dev = nullptr;
+Texture ObjModel::shadowMapTexture;
 
 ObjModel* ObjModel::LoadFromOBJ(const std::string& modelname, const bool smoothing)
 {
@@ -428,6 +429,8 @@ void ObjModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMater
 	{
 		//シェーダリソースビューをセット
 		DescHeapSRV::SetGraphicsRootDescriptorTable(2, texture.texNumber);
+
+		DescHeapSRV::SetGraphicsRootDescriptorTable(3, shadowMapTexture.texNumber);
 	}
 
 	//描画コマンド

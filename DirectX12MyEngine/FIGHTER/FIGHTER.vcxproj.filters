@@ -165,9 +165,6 @@
     <Filter Include="リソース ファイル\PostEffect">
       <UniqueIdentifier>{06decd9c-9d01-4b5b-b81f-7e120c0a4b3c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="リソース ファイル\ShadowMap">
-      <UniqueIdentifier>{63771d91-6185-4857-b04a-3ddbd9bd4362}</UniqueIdentifier>
-    </Filter>
     <Filter Include="リソース ファイル\Sprite">
       <UniqueIdentifier>{46b64092-2c65-4a9c-89fd-9c83a298720a}</UniqueIdentifier>
     </Filter>
@@ -502,9 +499,6 @@
     <None Include="Resources\shaders\PostEffect.hlsli">
       <Filter>リソース ファイル\PostEffect</Filter>
     </None>
-    <None Include="Resources\shaders\ShadowMap.hlsli">
-      <Filter>リソース ファイル\ShadowMap</Filter>
-    </None>
     <None Include="Resources\shaders\Sprite.hlsli">
       <Filter>リソース ファイル\Sprite</Filter>
     </None>
@@ -542,12 +536,6 @@
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
       <Filter>リソース ファイル\PostEffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
-      <Filter>リソース ファイル\ShadowMap</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
-      <Filter>リソース ファイル\ShadowMap</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
       <Filter>リソース ファイル\Sprite</Filter>

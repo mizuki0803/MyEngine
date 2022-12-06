@@ -103,10 +103,6 @@ void TitleScene::Update()
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
-	//デバックテキスト
-	//X座標,Y座標,縮尺を指定して表示
-	//debugText->Print("GAME SCENE", 1000, 50);
-
 	//自機が空まで行って見えなくなったら
 	const bool isPlayerSky = (player->GetPosition().y >= 500);
 	if (isPlayerSky) {

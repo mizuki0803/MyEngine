@@ -13,4 +13,10 @@ public: //メンバ関数
 	/// 射影行列を更新
 	/// </summary>
 	void UpdateMatProjection() override;
+
+	/// <summary>
+	/// 追従
+	/// </summary>
+	/// <param name="targetPosition">座標</param>
+	void Follow(const Vector3& targetPosition);
 };

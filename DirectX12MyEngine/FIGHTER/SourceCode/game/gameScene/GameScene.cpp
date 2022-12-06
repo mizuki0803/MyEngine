@@ -70,6 +70,9 @@ void GameScene::Initialize()
 	player.reset(Player::Create(modelFighter.get()));
 	player->SetIsCameraFollow(true);
 
+	//ホーミング弾用モデルをセット
+	HomingBullet::SetBulletModel(modelSphere.get());
+
 	//ゲームカメラに自機のポインタをセット
 	gameCamera->SetPlayer(player.get());
 
@@ -151,6 +154,7 @@ void GameScene::Update()
 
 	//カメラ更新
 	gameCamera->Update();
+	lightCamera->Follow(gameCamera->GetPosition());
 	lightCamera->Update();
 
 	//オブジェクト更新
@@ -219,29 +223,6 @@ void GameScene::Update()
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
-	//デバックテキスト
-	{
-		//std::string itemNum = std::to_string(healingItems.size());
-		//DebugText::GetInstance()->Print("ItemNum : " + itemNum, 100, 200);
-		//X座標,Y座標,縮尺を指定して表示
-		//debugText->Print("GAME SCENE", 1000, 50);
-		/*std::string enemyDefeat = std::to_string(EnemyDefeatCounter::GetDefeatCount());
-		DebugText::GetInstance()->Print("EnemyDefeatCount : " + enemyDefeat, 100, 160);
-		std::string highScore = std::to_string(EnemyDefeatCounter::GetHighScore());
-		DebugText::GetInstance()->Print("HighScore : " + highScore, 100, 180);
-		std::string enemyNum = std::to_string(enemys.size());
-		DebugText::GetInstance()->Print("EnemyNum : " + enemyNum, 100, 200);
-		if (isStageClear) {
-			DebugText::GetInstance()->Print("STAGE CLEAR", 100, 250);
-		}*/
-		/*std::string playerHP = std::to_string(player->GetHP());
-		if (!player->GetIsDead()) {
-			DebugText::GetInstance()->Print("PlayerHP : " + playerHP, 200, 200);
-		}
-		else {
-			DebugText::GetInstance()->Print("PlayerDead", 200, 200);
-		}*/
-	}
 
 	if (input->TriggerKey(DIK_RETURN))
 	{
@@ -319,7 +300,6 @@ void GameScene::Draw3DLightView()
 	player->DrawLightCameraView();
 	//自機弾
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-		if (!(bullet->GetBulletType() == PlayerBullet::BulletType::Straight)) { continue; }
 		bullet->DrawLightCameraView();
 	}
 	//敵
