@@ -48,6 +48,7 @@ void StageSelectScene::Initialize()
 	//ステージ選択フィールド生成
 	stageSelectField.reset(ObjObject3d::Create(modelStageSelect.get()));
 	stageSelectField->SetScale({ 5, 5, 5 });
+	stageSelectField->SetIsShadowMap(true);
 
 	//惑星生成
 	CreatePlanets();
@@ -65,10 +66,13 @@ void StageSelectScene::Initialize()
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
 	lightCamera->Initialize({ 0, 500, 0 });
+	const Vector2 projectionMaxNum = { 30, 30 };
+	const Vector2 projectionMinNum = { -30, -30 };
+	lightCamera->SetProjectionNum(projectionMaxNum, projectionMinNum);
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
-	skydome->SetScale({ 10,10,10 });
+	skydome->SetIsShadowMap(true);
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(stageSelectCamera.get());
@@ -103,6 +107,7 @@ void StageSelectScene::Update()
 
 	//カメラ更新
 	stageSelectCamera->Update();
+	lightCamera->Follow(player->GetPosition());
 	lightCamera->Update();
 
 	//オブジェクト更新
@@ -129,12 +134,7 @@ void StageSelectScene::Update()
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
-
-	//自機の出撃行動が完了したら
-	//if (player->GetIsSortieEnd()) {
-		//ゲームシーンへシーン変更を開始する
-		//SceneChangeStart({ 1,1,1,0 }, 10, 0, 20, "GAME");
-	//}
+	//デバッグ用シーン切り替え
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("GAME");
@@ -184,7 +184,7 @@ void StageSelectScene::Draw3D()
 void StageSelectScene::Draw3DLightView()
 {
 	//Object3d共通コマンド
-	ObjObject3d::DrawPrev();
+	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
 	//自機

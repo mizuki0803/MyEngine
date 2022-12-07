@@ -31,6 +31,16 @@ public: //サブクラス
 		XMMATRIX viewproj;	//ビュープロジェクション行列
 		XMMATRIX world;		//ワールド行列
 		Vector3 cameraPos;	//カメラ座標(ワールド座標)
+		XMMATRIX lightViewproj;	//ライトビュープロジェクション行列
+		unsigned int isShadowMap;	//影を付けるか
+	};
+
+	struct ConstBufferDataLightViewB0
+	{
+		XMFLOAT4 color;		//色
+		XMMATRIX viewproj;	//ビュープロジェクション行列
+		XMMATRIX world;		//ワールド行列
+		Vector3 cameraPos;	//カメラ座標(ワールド座標)
 	};
 
 
@@ -48,9 +58,19 @@ public: //静的メンバ関数
 	static void CreatePipeline();
 
 	/// <summary>
+	/// パイプライン生成
+	/// </summary>
+	static void CreateLightViewPipeline();
+
+	/// <summary>
 	/// 描画前処理
 	/// </summary>
 	static void DrawPrev();
+
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
+	static void DrawLightViewPrev();
 
 	/// <summary>
 	/// 生成処理
@@ -94,9 +114,9 @@ public: //メンバ関数
 	void SetRotation(const Vector3& rotation) { this->rotation = rotation; }
 	void SetScale(const Vector3& scale) { this->scale = scale; }
 	void SetColor(const XMFLOAT4& color) { this->color = color; }
-	void SetParent(ObjObject3d* parent) { this->parent = parent; }
 	void SetModel(ObjModel* model) { this->model = model; }
 	void SetIsCameraFollow(bool isCameraFollow) { this->isCameraFollow = isCameraFollow; }
+	void SetIsShadowMap(bool isShadowMap) { this->isShadowMap = isShadowMap; }
 	static void SetLightGroup(LightGroup* lightGroup) { ObjObject3d::lightGroup = lightGroup; }
 	static void SetCamera(Camera* camera) { ObjObject3d::camera = camera; }
 	static void SetLightCamera(LightCamera* lightCamera) { ObjObject3d::lightCamera = lightCamera; }
@@ -109,6 +129,8 @@ protected: //静的メンバ変数
 	static ID3D12GraphicsCommandList* cmdList;
 	//パイプラインセット
 	static PipelineSet pipelineSet;
+	//パイプラインセット
+	static PipelineSet pipelineSetLightView;
 	//ライト
 	static LightGroup* lightGroup;
 	//カメラ
@@ -118,7 +140,8 @@ protected: //静的メンバ変数
 
 protected: //メンバ変数
 	//定数バッファ
-	ComPtr<ID3D12Resource> constBuffB0[2];
+	ComPtr<ID3D12Resource> constBuffB0;
+	ComPtr<ID3D12Resource> constBuffLightViewB0;
 	//アフィン変換情報
 	Vector3 scale = { 1, 1, 1 };
 	Vector3 rotation = { 0, 0, 0 };
@@ -132,4 +155,6 @@ protected: //メンバ変数
 	ObjModel* model = nullptr;
 	//カメラに追従するか
 	bool isCameraFollow = false;
+	//影を付けるか
+	bool isShadowMap = false;
 };

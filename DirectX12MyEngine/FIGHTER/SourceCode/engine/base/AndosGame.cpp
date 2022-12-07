@@ -8,9 +8,9 @@ void AndosGame::Initialize()
 	FrameWork::Initialize();
 
 	//シーン工場を生成、マネージャーにセット
-	BaseScene::SetDirectXbase(dxbase);
-	sceneFactory = new SceneFactory();
-	SceneManager::GetInstance()->SetSceneFactory(sceneFactory);
+	BaseScene::SetDirectXbase(dxbase.get());
+	sceneFactory.reset(new SceneFactory());
+	SceneManager::GetInstance()->SetSceneFactory(sceneFactory.get());
 
 	//シーンマネージャーに最初のシーンをセット
 	SceneManager::GetInstance()->ChangeScene("TITLE");

@@ -1,4 +1,5 @@
 #pragma once
+#include "Texture.h"
 #include <Windows.h>
 #include <DirectXMath.h>
 #include "DirectXBase.h"
@@ -10,7 +11,7 @@
 class ObjModel
 {
 private: // エイリアス
-// Microsoft::WRL::を省略
+	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -67,11 +68,13 @@ public: //静的メンバ関数
 
 	//setter
 	static void SetDevice(ID3D12Device* device) { ObjModel::dev = device; };
+	static void SetShadowMapTexture(const Texture& shadowMapTexture) { ObjModel::shadowMapTexture = shadowMapTexture; };
 
 private: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* dev;
-
+	//テクスチャ
+	static Texture shadowMapTexture;
 
 private: //非公開のメンバ関数
 	/// <summary>
@@ -94,11 +97,6 @@ private: //非公開のメンバ関数
 	/// <param name="directoryPath">パス</param>
 	/// <param name="filename">ファイル名</param>
 	void LoadTexture(const std::string& directoryPath, const std::string& filename);
-
-	/// <summary>
-	/// デスクリプタヒープの初期化
-	/// </summary>
-	void InitializeDescHeap();
 
 	/// <summary>
 	/// 各種バッファ生成
@@ -132,11 +130,16 @@ public: //メンバ関数
 	/// <param name="rootOaramIndexMaterial">ルートパラメータの数字</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
 
+	/// <summary>
+	/// 影用光源ライトから見た視点での描画
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	/// <param name="rootOaramIndexMaterial">ルートパラメータの数字</param>
+	void DrawLightCameraView(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
+
 private: //メンバ変数
-	//テクスチャ用デスクリプタヒープの生成
-	ComPtr<ID3D12DescriptorHeap> descHeap;
-	//テクスチャリソース(テクスチャバッファ)
-	ComPtr<ID3D12Resource> texBuff;
+	//テクスチャ
+	Texture texture;
 	//頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;
 	//頂点バッファビュー

@@ -1,4 +1,4 @@
-#include "Obj.hlsli"
+#include "ObjLightView.hlsli"
 
 VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOORD)
 {
@@ -13,9 +13,6 @@ VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOOR
 	output.worldpos = wpos;
 	output.normal = wnormal.xyz;
 	output.uv = uv;
-
-	//ライト視点から見た座標
-	output.shadowpos = mul(mul(lightViewproj, world), pos);
 
 	return output;
 }

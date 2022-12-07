@@ -16,6 +16,9 @@ public: //静的メンバ関数
 	//getter
 	static const float GetBlastSize() { return HomingBullet::blastSize; }
 
+	//setter
+	static void SetBulletModel(ObjModel* model) { HomingBullet::bulletModel = model; }
+
 public: //メンバ関数
 	/// <summary>
 	/// 更新
@@ -38,6 +41,8 @@ private: //静的メンバ変数
 	static const int32_t lifeTime = 240;
 	//死亡時の判定の大きさ
 	static const float blastSize;
+	//影描画用仮モデル
+	static ObjModel* bulletModel;
 
 private: //メンバ変数
 	//寿命タイマー

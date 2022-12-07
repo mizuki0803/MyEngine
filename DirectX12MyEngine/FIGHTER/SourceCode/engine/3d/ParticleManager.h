@@ -6,6 +6,7 @@
 #include <functional>
 #include "Camera.h"
 #include "PipelineSet.h"
+#include "Texture.h"
 
 /// <summary>
 /// パーティクルマネージャー
@@ -84,11 +85,6 @@ public:
 	static void CreatePipeline();
 
 	/// <summary>
-	/// デスクリプタヒープ生成
-	/// </summary>
-	static void CreateDescHeap();
-
-	/// <summary>
 	/// 描画前処理
 	/// </summary>
 	static void DrawPrev();
@@ -156,10 +152,8 @@ private:
 	static ID3D12GraphicsCommandList* cmdList;
 	//パイプラインセット
 	static PipelineSet pipelineSet;
-	//テクスチャ用デスクリプタヒープの生成
-	static ComPtr<ID3D12DescriptorHeap> descHeap;
 	//テクスチャリソース(テクスチャバッファ)の配列
-	static ComPtr<ID3D12Resource> texBuff[SRVCount];
+	static Texture texture[SRVCount];
 	//テクスチャ格納ディレクトリ
 	static std::string directoryPath;
 	//頂点数

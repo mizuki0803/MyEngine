@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "DescHeapSRV.h"
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include <d3dx12.h>
@@ -193,8 +194,8 @@ void Sprite::Draw()
 	//ルートパラメータ0番に定数バッファをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
-	//ルートパラメータ1番にシェーダリソースビューをセット
-	spriteCommon->SetGraphicsRootDescriptorTable(1, texNumber);
+	//シェーダリソースビューをセット
+	DescHeapSRV::SetGraphicsRootDescriptorTable(1, texNumber);
 
 	//ポリゴンの描画(4頂点で四角形)
 	cmdList->DrawInstanced(4, 1, 0, 0);

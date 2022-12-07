@@ -9,7 +9,6 @@
 #include "SceneManager.h"
 #include "AbstractSceneFactory.h"
 
-
 /// <summary>
 /// フレームワーク
 /// </summary>
@@ -51,9 +50,9 @@ protected: //メンバ変数
 	//ゲームループ終了リクエスト
 	bool isEndRequest = false;
 	//ウィンドウアプリケーション
-	WindowApp* win = nullptr;
+	std::unique_ptr<WindowApp> win;
 	//DirectX基盤
-	DirectXBase* dxbase = nullptr;
+	std::unique_ptr<DirectXBase> dxbase;
 	//入力
 	Input* input = nullptr;
 	//音
@@ -62,8 +61,8 @@ protected: //メンバ変数
 	SpriteCommon* spriteCommon = nullptr;
 	//デバッグテキスト
 	DebugText* debugText = nullptr;
-	//シャドウマップ
-	ShadowMap* shadowMap = nullptr;
+	//シャドウマップレンダーターゲット(影生成ライト視点用)
+	std::unique_ptr<ShadowMap> shadowMap;
 	//シーン工場
-	AbstractSceneFactory* sceneFactory = nullptr;
+	std::unique_ptr<AbstractSceneFactory> sceneFactory;
 };

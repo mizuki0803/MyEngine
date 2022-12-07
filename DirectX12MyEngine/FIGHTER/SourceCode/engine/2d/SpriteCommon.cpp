@@ -1,4 +1,5 @@
 #include "SpriteCommon.h"
+#include "DescHeapSRV.h"
 #include <cassert>
 #include <d3dcompiler.h>
 #include <string>
@@ -10,14 +11,14 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-SpriteCommon *SpriteCommon::GetInstance()
+SpriteCommon* SpriteCommon::GetInstance()
 {
 	static SpriteCommon instance;
 
 	return &instance;
 }
 
-void SpriteCommon::Initialize(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdList, int window_width, int window_height, const std::string &directoryPath)
+void SpriteCommon::Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height, const std::string& directoryPath)
 {
 	//nullptrチェック
 	assert(dev);
@@ -27,22 +28,12 @@ void SpriteCommon::Initialize(ID3D12Device *dev, ID3D12GraphicsCommandList *cmdL
 	this->cmdList = cmdList;
 	this->directoryPath = directoryPath;
 
-	HRESULT result;
-
 	//スプライト用パイプライン生成
 	CreatePipeline();
-
 
 	//並行投影の射影行列生成
 	matProjection = XMMatrixOrthographicOffCenterLH(
 		0.0f, (float)window_width, (float)window_height, 0.0f, 0.0f, 1.0f);
-
-	//デスクリプタヒープを生成
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
-	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	descHeapDesc.NumDescriptors = spriteSRVCount;
-	result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
 }
 
 void SpriteCommon::DrawPrev()
@@ -53,13 +44,9 @@ void SpriteCommon::DrawPrev()
 	cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
 	//プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
-	//テクスチャ用デスクリプタヒープの設定
-	ID3D12DescriptorHeap *ppHeap[] = { descHeap.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeap), ppHeap);
 }
 
-void SpriteCommon::LoadTexture(UINT texNumber, const std::string &filename)
+void SpriteCommon::LoadTexture(UINT texNumber, const std::string& filename)
 {
 	HRESULT result;
 
@@ -80,7 +67,7 @@ void SpriteCommon::LoadTexture(UINT texNumber, const std::string &filename)
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
-	const Image *img = scratchImg.GetImage(0, 0, 0);	//生データ抽出
+	const Image* img = scratchImg.GetImage(0, 0, 0);	//生データ抽出
 
 	//リソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -97,10 +84,10 @@ void SpriteCommon::LoadTexture(UINT texNumber, const std::string &filename)
 		&texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&texBuff[texNumber]));
+		IID_PPV_ARGS(&texture[texNumber].texBuff));
 
 	//テクスチャバッファにデータ転送
-	result = texBuff[texNumber]->WriteToSubresource(
+	result = texture[texNumber].texBuff->WriteToSubresource(
 		0,
 		nullptr,	//全領域コピー
 		img->pixels,	//元データアドレス
@@ -109,29 +96,14 @@ void SpriteCommon::LoadTexture(UINT texNumber, const std::string &filename)
 	);
 
 	//シェーダリソースビュー設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体	//TODO
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
 	srvDesc.Format = metadata.format;	//RGBA
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	//ヒープのtexnumber番目にシェーダリソースビュー作成
-	dev->CreateShaderResourceView(
-		texBuff[texNumber].Get(),	//ビューと関連付けるバッファ
-		&srvDesc,	//テクスチャ設定情報
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), texNumber,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-		)
-	);
-}
-
-void SpriteCommon::SetGraphicsRootDescriptorTable(UINT rootParameterIndex, UINT texNumber)
-{
-	cmdList->SetGraphicsRootDescriptorTable(rootParameterIndex,
-		CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			descHeap->GetGPUDescriptorHandleForHeapStart(),
-			texNumber,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+	//デスクリプタヒープにSRV作成
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texture[texNumber]);
 }
 
 void SpriteCommon::CreatePipeline()
@@ -158,7 +130,7 @@ void SpriteCommon::CreatePipeline()
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char *)errorBlob->GetBufferPointer(),
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -184,7 +156,7 @@ void SpriteCommon::CreatePipeline()
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char *)errorBlob->GetBufferPointer(),
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -224,7 +196,7 @@ void SpriteCommon::CreatePipeline()
 	gpipeline.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;		//常に上書きルール
 
 	//レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC &blenddesc = gpipeline.BlendState.RenderTarget[0];
+	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = gpipeline.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	//環境設定
 
 	//共通設定
@@ -306,8 +278,8 @@ void SpriteCommon::CreatePipeline()
 	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineSet.pipelinestate));
 }
 
-ID3D12Resource *SpriteCommon::GetTexBuff(int texNumber)
+ID3D12Resource* SpriteCommon::GetTexBuff(int texNumber)
 {
 	assert(0 <= texNumber && texNumber < spriteSRVCount);
-	return texBuff[texNumber].Get();
+	return texture[texNumber].texBuff.Get();
 }

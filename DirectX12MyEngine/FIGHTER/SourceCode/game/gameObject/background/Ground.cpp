@@ -22,5 +22,8 @@ Ground* Ground::Create(ObjModel* model)
 	//大きさをセット
 	ground->scale = { 20, 20, 20 };
 
+	//シャドウマップで影を付ける
+	ground->isShadowMap = true;
+
 	return ground;
 }

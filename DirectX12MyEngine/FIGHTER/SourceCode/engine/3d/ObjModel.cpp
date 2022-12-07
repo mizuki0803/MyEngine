@@ -1,4 +1,5 @@
 #include "ObjModel.h"
+#include "DescHeapSRV.h"
 #include <cassert>
 #include <string>
 #include <fstream>
@@ -16,15 +17,12 @@ using namespace std;
 
 //静的メンバ変数の実体
 ID3D12Device* ObjModel::dev = nullptr;
-
+Texture ObjModel::shadowMapTexture;
 
 ObjModel* ObjModel::LoadFromOBJ(const std::string& modelname, const bool smoothing)
 {
 	//新たなObjModel型のインスタンスのメモリを確保
 	ObjModel* model = new ObjModel();
-
-	//デスクリプタヒープの生成
-	model->InitializeDescHeap();
 
 	//objファイルからデータ読み込み
 	model->LoadFromOBJInternal(modelname, smoothing);
@@ -278,17 +276,16 @@ void ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 		(UINT16)metadata.mipLevels);
 
 	//テクスチャ用バッファの生成
-	//ID3D12Resource *texbuff = nullptr;
 	result = dev->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
 		D3D12_HEAP_FLAG_NONE,
 		&texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&texBuff));
+		IID_PPV_ARGS(&texture.texBuff));
 
 	//テクスチャバッファにデータ転送
-	result = texBuff->WriteToSubresource(
+	result = texture.texBuff->WriteToSubresource(
 		0,
 		nullptr,	//全領域コピー
 		img->pixels,	//元データアドレス
@@ -303,27 +300,8 @@ void ObjModel::LoadTexture(const std::string& directoryPath, const std::string& 
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	//シェーダリソースビュー作成
-	dev->CreateShaderResourceView(
-		texBuff.Get(),	//ビューと関連付けるバッファ
-		&srvDesc,	//テクスチャ設定情報
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-		)
-	);
-}
-
-void ObjModel::InitializeDescHeap()
-{
-	HRESULT result;
-
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc{};	//TODO
-	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;	//シェーダーから見える
-	descHeapDesc.NumDescriptors = 1;
-
-	//デスクリプタヒープの生成
-	result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
+	//デスクリプタヒープにSRV作成
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texture);
 }
 
 void ObjModel::CreateBuffers()
@@ -366,7 +344,6 @@ void ObjModel::CreateBuffers()
 	VertexPosNormalUv* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
-		//memcpy(vertMap, vertices, sizeof(vertices));
 		std::copy(vertices.begin(), vertices.end(), vertMap);
 		vertBuff->Unmap(0, nullptr);
 	}
@@ -448,18 +425,32 @@ void ObjModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMater
 	//定数バッファビューをセット(マテリアル)
 	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1->GetGPUVirtualAddress());
 
-	//デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	if (material.textureFilename.size() > 0)
+	{
+		//シェーダリソースビューをセット
+		DescHeapSRV::SetGraphicsRootDescriptorTable(2, texture.texNumber);
+
+		DescHeapSRV::SetGraphicsRootDescriptorTable(3, shadowMapTexture.texNumber);
+	}
+
+	//描画コマンド
+	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
+}
+
+void ObjModel::DrawLightCameraView(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial)
+{
+	//頂点バッファビューの設定
+	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	//インデックスバッファビューの設定
+	cmdList->IASetIndexBuffer(&ibView);
+
+	//定数バッファビューをセット(マテリアル)
+	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1->GetGPUVirtualAddress());
 
 	if (material.textureFilename.size() > 0)
 	{
 		//シェーダリソースビューをセット
-		cmdList->SetGraphicsRootDescriptorTable(2,
-			CD3DX12_GPU_DESCRIPTOR_HANDLE(
-				descHeap->GetGPUDescriptorHandleForHeapStart(),
-				0,
-				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+		DescHeapSRV::SetGraphicsRootDescriptorTable(2, texture.texNumber);
 	}
 
 

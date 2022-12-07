@@ -156,9 +156,6 @@
     <Filter Include="リソース ファイル\PostEffect">
       <UniqueIdentifier>{178b0d42-45b1-4a40-87d9-4f3ae5805efe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="リソース ファイル\ShadowMap">
-      <UniqueIdentifier>{ee7bcb7b-0e1f-476e-8ec0-be6882100c7f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="リソース ファイル\Sprite">
       <UniqueIdentifier>{a49c621a-1c22-4e1b-a3ec-301a8d6df201}</UniqueIdentifier>
     </Filter>
@@ -182,6 +179,18 @@
     </Filter>
     <Filter Include="ソース ファイル\game\gameSprite\UI\warningUI">
       <UniqueIdentifier>{eba5c47b-85fb-49c1-8d1a-f77f8d436313}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\engine\2d\shadowMap">
+      <UniqueIdentifier>{76e5901b-bfe5-4564-89ac-e1f3c12d9973}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\engine\base\descHeapSRV">
+      <UniqueIdentifier>{c613f853-eb16-4d99-bc26-7549e97a14bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\engine\base\texture">
+      <UniqueIdentifier>{17dc299f-bff6-4d70-a27d-c713d9cca2e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\ObjLightView">
+      <UniqueIdentifier>{c4afe928-973d-41e8-b263-97af5c453ead}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -470,9 +479,6 @@
     <ClCompile Include="SourceCode\engine\camera\LightCamera.cpp">
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\ShadowMap.cpp">
-      <Filter>ソース ファイル\engine\2d</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPBar.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerHPUI</Filter>
     </ClCompile>
@@ -533,6 +539,12 @@
     <ClCompile Include="SourceCode\game\gameObject\background\GameGroundManager.cpp">
       <Filter>ソース ファイル\game\gameObject\background\ground</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\ShadowMap.cpp">
+      <Filter>ソース ファイル\engine\2d\shadowMap</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\base\DescHeapSRV.cpp">
+      <Filter>ソース ファイル\engine\base\descHeapSRV</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -547,11 +559,11 @@
     <None Include="Resources\shaders\PostEffect.hlsli">
       <Filter>リソース ファイル\PostEffect</Filter>
     </None>
-    <None Include="Resources\shaders\ShadowMap.hlsli">
-      <Filter>リソース ファイル\ShadowMap</Filter>
-    </None>
     <None Include="Resources\shaders\Sprite.hlsli">
       <Filter>リソース ファイル\Sprite</Filter>
+    </None>
+    <None Include="Resources\shaders\ObjLightView.hlsli">
+      <Filter>リソース ファイル\ObjLightView</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -582,17 +594,17 @@
     <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
       <Filter>リソース ファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
-      <Filter>リソース ファイル\ShadowMap</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
-      <Filter>リソース ファイル\ShadowMap</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
       <Filter>リソース ファイル\Sprite</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
       <Filter>リソース ファイル\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjLightViewPS.hlsl">
+      <Filter>リソース ファイル\ObjLightView</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjLightViewVS.hlsl">
+      <Filter>リソース ファイル\ObjLightView</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -896,9 +908,6 @@
     <ClInclude Include="SourceCode\engine\camera\LightCamera.h">
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
-      <Filter>ソース ファイル\engine\2d</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\playerUI\playerHPUI\PlayerHPBar.h">
       <Filter>ソース ファイル\game\gameSprite\UI\playerUI\playerHPUI</Filter>
     </ClInclude>
@@ -958,6 +967,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\background\GameGroundManager.h">
       <Filter>ソース ファイル\game\gameObject\background\ground</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
+      <Filter>ソース ファイル\engine\2d\shadowMap</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\base\DescHeapSRV.h">
+      <Filter>ソース ファイル\engine\base\descHeapSRV</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\base\Texture.h">
+      <Filter>ソース ファイル\engine\base\texture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

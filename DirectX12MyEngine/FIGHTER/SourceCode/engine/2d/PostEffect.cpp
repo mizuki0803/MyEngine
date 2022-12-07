@@ -1,7 +1,8 @@
 #include "PostEffect.h"
 #include "WindowApp.h"
+#include "DescHeapSRV.h"
 #include <d3dx12.h>
-#include<d3dcompiler.h>
+#include <d3dcompiler.h>
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -102,7 +103,7 @@ bool PostEffect::Initialize()
 		&texresDesc,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor),
-		IID_PPV_ARGS(&texBuff)
+		IID_PPV_ARGS(&texture.texBuff)
 	);
 	assert(SUCCEEDED(result));
 
@@ -121,20 +122,11 @@ bool PostEffect::Initialize()
 		}
 
 		//テクスチャバッファにデータ転送
-		result = texBuff->WriteToSubresource(0, nullptr,
+		result = texture.texBuff->WriteToSubresource(0, nullptr,
 			img, rowPitch, depthPitch);
 		assert(SUCCEEDED(result));
 		delete[] img;
 	}
-
-	//SRV用デスクリプタヒープ設定
-	D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
-	srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvDescHeapDesc.NumDescriptors = 1;
-	//SRV用デスクリプタヒープを生成
-	result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
-	assert(SUCCEEDED(result));
 
 	//SRV設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
@@ -142,12 +134,8 @@ bool PostEffect::Initialize()
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
-
 	//デスクリプタヒープにSRV作成
-	dev->CreateShaderResourceView(texBuff.Get(),	//ビューと関連付けるバッファ
-		&srvDesc,
-		descHeapSRV->GetCPUDescriptorHandleForHeapStart()
-	);
+	DescHeapSRV::CreateShaderResourceView(srvDesc, texture);
 
 	//RTV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
@@ -158,7 +146,7 @@ bool PostEffect::Initialize()
 	assert(SUCCEEDED(result));
 
 	//デスクリプタヒープにRTV生成
-	dev->CreateRenderTargetView(texBuff.Get(),
+	dev->CreateRenderTargetView(texture.texBuff.Get(),
 		nullptr,
 		descHeapRTV->GetCPUDescriptorHandleForHeapStart()
 	);
@@ -225,18 +213,14 @@ void PostEffect::Draw()
 	//プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	//テクスチャ用デスクリプタヒープの設定
-	ID3D12DescriptorHeap* ppHeap[] = { descHeapSRV.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeap), ppHeap);
-
 	//頂点バッファをセット
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 
 	//ルートパラメータ0番に定数バッファをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
-	//ルートパラメータ1番にシェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+	//シェーダリソースビューをセット
+	DescHeapSRV::SetGraphicsRootDescriptorTable(1, texture.texNumber);
 
 	//ポリゴンの描画(4頂点で四角形)
 	cmdList->DrawInstanced(4, 1, 0, 0);
@@ -246,7 +230,7 @@ void PostEffect::DrawScenePrev()
 {
 	//リソースバリアを変更(シェーダリソース→描画可能)
 	cmdList->ResourceBarrier(1,
-		&CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
+		&CD3DX12_RESOURCE_BARRIER::Transition(texture.texBuff.Get(),
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			D3D12_RESOURCE_STATE_RENDER_TARGET));
 
@@ -276,7 +260,7 @@ void PostEffect::DrawScenePrev()
 void PostEffect::DrawSceneRear()
 {
 	//リソースバリアを変更(描画可能→シェーダリソース)
-	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
+	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(texture.texBuff.Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 }
 

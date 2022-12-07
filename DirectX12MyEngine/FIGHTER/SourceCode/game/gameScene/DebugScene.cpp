@@ -535,7 +535,7 @@ void DebugScene::Draw3D()
 void DebugScene::Draw3DLightView()
 {
 	//Object3d‹¤’ÊƒRƒ}ƒ“ƒh
-	ObjObject3d::DrawPrev();
+	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d•`‰æ‚±‚±‚©‚ç-------///
 
 

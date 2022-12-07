@@ -1,5 +1,6 @@
 #include "FrameWork.h"
 #include "FpsCheck.h"
+#include "DescHeapSRV.h"
 #include "SpriteTextureLoader.h"
 #include "ObjObject3d.h"
 #include "FbxLoader.h"
@@ -8,7 +9,6 @@
 #include "ParticleEmitter.h"
 #include "LightGroup.h"
 #include "GamePostEffect.h"
-
 
 void FrameWork::Run()
 {
@@ -37,20 +37,23 @@ void FrameWork::Run()
 void FrameWork::Initialize()
 {
 	//ウインドウ作成
-	win = new WindowApp();
+	win.reset(new WindowApp());
 	win->WindowCreate(L"FIGHTER");
 
 	//DirectX初期化
-	dxbase = new DirectXBase();
-	dxbase->Initialize(win);;
+	dxbase.reset(new DirectXBase());
+	dxbase->Initialize(win.get());
 
 	//入力の初期化
 	input = Input::GetInstance();
-	input->Initialize(win);
+	input->Initialize(win.get());
 
 	//音声初期化
 	audio = Audio::GetInstance();
 	audio->Initialize();
+
+	//SRV用デスクリプタヒープの初期化
+	DescHeapSRV::Initialize(dxbase->GetDevice(), dxbase->GetCmdList());
 
 	//スプライト共通部分初期化
 	spriteCommon = SpriteCommon::GetInstance();
@@ -70,10 +73,11 @@ void FrameWork::Initialize()
 	//シャドウマップ共通初期化処理
 	ShadowMap::ShadowMapCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	//シャドウマップの初期化
-	shadowMap = ShadowMap::Create();
+	shadowMap.reset(ShadowMap::Create());
 
 	//objオブジェクト3d共通初期化処理
 	ObjObject3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
+	ObjModel::SetShadowMapTexture(shadowMap->GetTexture());
 
 	//FBXLoader初期化
 	FbxLoader::GetInstance()->Initialize(dxbase->GetDevice());
@@ -91,29 +95,21 @@ void FrameWork::Initialize()
 	ParticleManager::ParticleManagerCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	//パーティクルエミッター初期化
 	ParticleEmitter::GetInstance()->Initialize();
+
+	//全シーンで使用するテクスチャの枚数を確定させる
+	DescHeapSRV::SetAllSceneTextureNum();
 }
 
 void FrameWork::Finalize()
 {
-	//シーン工場解放
-	delete sceneFactory;
-
-	//シャドウマップの解放
-	delete shadowMap;
-
 	//FBXLoader解放
 	FbxLoader::GetInstance()->Finalize();
 
 	//audio解放
 	audio->Finalize();
 
-	//DirectX解放
-	delete dxbase;
-
 	//ウインドウ解放
 	win->WindowRelease();
-	delete win;
-	win = nullptr;
 }
 
 void FrameWork::Update()
@@ -144,6 +140,9 @@ void FrameWork::Update()
 
 void FrameWork::Draw()
 {
+	//SRV用共通デスクリプタヒープSetDescriptorHeaps
+	DescHeapSRV::SetDescriptorHeaps();
+
 	//シャドウマップのレンダーテクスチャへの描画
 	shadowMap->DrawScenePrev();
 	SceneManager::GetInstance()->Draw3DLightView();

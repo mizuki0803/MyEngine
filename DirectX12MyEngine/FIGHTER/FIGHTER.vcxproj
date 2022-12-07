@@ -111,6 +111,7 @@
     <ClCompile Include="SourceCode\engine\3d\ParticleManager.cpp" />
     <ClCompile Include="SourceCode\engine\audio\Audio.cpp" />
     <ClCompile Include="SourceCode\engine\base\AndosGame.cpp" />
+    <ClCompile Include="SourceCode\engine\base\DescHeapSRV.cpp" />
     <ClCompile Include="SourceCode\engine\base\DirectXBase.cpp" />
     <ClCompile Include="SourceCode\engine\base\FpsCheck.cpp" />
     <ClCompile Include="SourceCode\engine\base\FrameWork.cpp" />
@@ -216,9 +217,9 @@
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli" />
     <None Include="Resources\shaders\Obj.hlsli" />
+    <None Include="Resources\shaders\ObjLightView.hlsli" />
     <None Include="Resources\shaders\Particle.hlsli" />
     <None Include="Resources\shaders\PostEffect.hlsli" />
-    <None Include="Resources\shaders\ShadowMap.hlsli" />
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +234,18 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjLightViewPS.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjLightViewVS.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ObjPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -276,18 +289,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ShadowMapPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ShadowMapVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
@@ -317,10 +318,12 @@
     <ClInclude Include="SourceCode\engine\3d\ParticleManager.h" />
     <ClInclude Include="SourceCode\engine\audio\Audio.h" />
     <ClInclude Include="SourceCode\engine\base\AndosGame.h" />
+    <ClInclude Include="SourceCode\engine\base\DescHeapSRV.h" />
     <ClInclude Include="SourceCode\engine\base\DirectXBase.h" />
     <ClInclude Include="SourceCode\engine\base\FpsCheck.h" />
     <ClInclude Include="SourceCode\engine\base\FrameWork.h" />
     <ClInclude Include="SourceCode\engine\base\PipelineSet.h" />
+    <ClInclude Include="SourceCode\engine\base\Texture.h" />
     <ClInclude Include="SourceCode\engine\base\WindowApp.h" />
     <ClInclude Include="SourceCode\engine\behaviorTree\Selector.h" />
     <ClInclude Include="SourceCode\engine\behaviorTree\Sequencer.h" />

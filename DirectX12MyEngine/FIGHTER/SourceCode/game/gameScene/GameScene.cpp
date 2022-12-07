@@ -88,6 +88,9 @@ void GameScene::Initialize()
 	player.reset(Player::Create(modelFighter.get(), startHP, maxHP));
 	player->SetIsCameraFollow(true);
 
+	//ホーミング弾用モデルをセット
+	HomingBullet::SetBulletModel(modelSphere.get());
+
 	//ゲームカメラに自機のポインタをセット
 	gameCamera->SetPlayer(player.get());
 
@@ -172,6 +175,7 @@ void GameScene::Update()
 
 	//カメラ更新
 	gameCamera->Update();
+	lightCamera->Follow(gameCamera->GetPosition());
 	lightCamera->Update();
 
 	//オブジェクト更新
@@ -321,14 +325,13 @@ void GameScene::Draw3D()
 void GameScene::Draw3DLightView()
 {
 	//Object3d共通コマンド
-	ObjObject3d::DrawPrev();
+	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
 	//自機
 	player->DrawLightCameraView();
 	//自機弾
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-		if (!(bullet->GetBulletType() == PlayerBullet::BulletType::Straight)) { continue; }
 		bullet->DrawLightCameraView();
 	}
 	//敵
