@@ -62,6 +62,9 @@ void StageSelectScene::Initialize()
 	//‰e—pŒõŒ¹ƒJƒƒ‰‰Šú‰»
 	lightCamera.reset(new LightCamera());
 	lightCamera->Initialize({ 0, 500, 0 });
+	const Vector2 projectionMaxNum = { 30, 30 };
+	const Vector2 projectionMinNum = { -30, -30 };
+	lightCamera->SetProjectionNum(projectionMaxNum, projectionMinNum);
 
 	//“V‹…¶¬
 	skydome.reset(Skydome::Create(modelSkydome.get()));

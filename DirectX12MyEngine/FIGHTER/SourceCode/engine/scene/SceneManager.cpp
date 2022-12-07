@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "DescHeapSRV.h"
 #include <cassert>
 
 SceneManager::~SceneManager()
@@ -29,6 +30,9 @@ void SceneManager::Update()
 		scene = nextScene;
 		//次のシーンは空にしておく
 		nextScene = nullptr;
+
+		//全シーン共通で使用するテクスチャの枚数までインデックスを戻す
+		DescHeapSRV::TextureDestruction();
 
 		//新しいシーン初期化
 		scene->Initialize();

@@ -15,8 +15,8 @@ void LightCamera::Initialize(const Vector3& eye, const Vector3& target)
 void LightCamera::UpdateMatProjection()
 {
 	matProjection = XMMatrixOrthographicOffCenterLH(
-		-120, 120,
-		-120, 120,
+		projectionMin.x, projectionMax.x,
+		projectionMin.y, projectionMax.y,
 		0.1f, 2000.0f
 	);
 }

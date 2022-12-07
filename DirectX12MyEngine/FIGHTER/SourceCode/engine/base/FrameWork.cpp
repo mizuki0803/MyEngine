@@ -94,6 +94,9 @@ void FrameWork::Initialize()
 	ParticleManager::ParticleManagerCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	//パーティクルエミッター初期化
 	ParticleEmitter::GetInstance()->Initialize();
+
+	//全シーンで使用するテクスチャの枚数を確定させる
+	DescHeapSRV::SetAllSceneTextureNum();
 }
 
 void FrameWork::Finalize()

@@ -135,10 +135,6 @@ bool PostEffect::Initialize()
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	//Texture
-	//--------
-	//SRV
-
 	//デスクリプタヒープにSRV作成
 	DescHeapSRV::CreateShaderResourceView(srvDesc, texture);
 

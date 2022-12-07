@@ -23,6 +23,16 @@ public: //静的メンバ関数
 	static void Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 
 	/// <summary>
+	/// 全シーン共通で使用するテクスチャ枚数を確定させる
+	/// </summary>
+	static void SetAllSceneTextureNum();
+
+	/// <summary>
+	/// シーン切り替え時に全シーン共通テクスチャ以外の分インデックスを戻す
+	/// </summary>
+	static void TextureDestruction();
+
+	/// <summary>
 	/// SRV共通SetDescriptorHeaps
 	/// </summary>
 	/// <param name="cmdList">コマンドリスト</param>
@@ -47,6 +57,8 @@ private: //静的メンバ変数
 	static ID3D12Device* dev;
 	//コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList;
+	//全シーン共通で使用するテクスチャの枚数
+	static UINT allSceneTextureNum;
 	//テクスチャ番号カウンター
 	static UINT texNumCount;
 };

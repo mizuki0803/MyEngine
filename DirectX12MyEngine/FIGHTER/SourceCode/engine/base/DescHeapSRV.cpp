@@ -7,6 +7,7 @@ using namespace Microsoft::WRL;
 ID3D12Device* DescHeapSRV::dev = nullptr;
 ID3D12GraphicsCommandList* DescHeapSRV::cmdList = nullptr;
 ComPtr<ID3D12DescriptorHeap> DescHeapSRV::descHeapSRV;
+UINT DescHeapSRV::allSceneTextureNum = 0;
 UINT DescHeapSRV::texNumCount = 0;
 
 void DescHeapSRV::Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
@@ -28,6 +29,18 @@ void DescHeapSRV::Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdLi
 	assert(SUCCEEDED(result));
 }
 
+void DescHeapSRV::SetAllSceneTextureNum()
+{
+	//全シーン共通で使用するテクスチャの枚数を確定させる
+	allSceneTextureNum = texNumCount;
+}
+
+void DescHeapSRV::TextureDestruction()
+{
+	//全シーン共通で使用するテクスチャの枚数をインデックス値に割り当て値を戻す
+	texNumCount = allSceneTextureNum;
+}
+
 void DescHeapSRV::SetDescriptorHeaps()
 {
 	//デスクリプタヒープのセット
@@ -37,6 +50,7 @@ void DescHeapSRV::SetDescriptorHeaps()
 
 void DescHeapSRV::CreateShaderResourceView(const D3D12_SHADER_RESOURCE_VIEW_DESC& srvDesc, Texture& texture)
 {
+	//テクスチャにインデックス番号を割り当て
 	texture.texNumber = texNumCount;
 
 	dev->CreateShaderResourceView(
@@ -47,6 +61,7 @@ void DescHeapSRV::CreateShaderResourceView(const D3D12_SHADER_RESOURCE_VIEW_DESC
 		)
 	);
 	
+	//次に読み込んだ時のためにインデックス番号を次へ
 	texNumCount++;
 }
 
