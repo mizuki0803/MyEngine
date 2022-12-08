@@ -75,7 +75,8 @@ protected: //メンバ関数
 	/// 死亡後の黒煙エフェクト
 	/// </summary>
 	/// <param name="size">エフェクトの大きさ</param>
-	void DeadSmokeEffect(const float size);
+	/// <param name="smokeStartTime">死亡してから黒煙を出すまでの時間</param>
+	void DeadSmokeEffect(const float size, const int smokeStartTime = 30);
 
 	/// <summary>
 	/// 破壊

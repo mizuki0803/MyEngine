@@ -115,7 +115,7 @@ public: //メンバ関数
 	Vector3 GetWorldPos();
 	const XMMATRIX& GetMatWorld() { return matWorld; }
 	const int GetHP() { return HP; }
-	const bool GetIsDamage() { return isDamage; }
+	const bool GetIsDamageKnockback() { return isDamageKnockBack; }
 	const bool GetIsCrash() { return isCrash; }
 	const int GetCrashBoundCount() { return crashBoundCount; }
 	const bool GetIsDead() { return isDead; }
@@ -134,9 +134,40 @@ private: //メンバ関数
 	void Action();
 
 	/// <summary>
+	/// 自機のジェットエフェクト管理
+	/// </summary>
+	void JetEffectManager();
+
+	/// <summary>
+	/// 墜落時の黒煙エフェクト
+	/// </summary>
+	void CrashBlackSmoke();
+
+	/// <summary>
 	/// ダメージを喰らう
 	/// </summary>
 	void Damage();
+
+	/// <summary>
+	/// ダメージ状態の処理
+	/// </summary>
+	void DamageMode();
+
+	/// <summary>
+	/// ダメージ状態のノックバック情報をセット
+	/// </summary>
+	/// <param name="subjectPos">対象の座標</param>
+	void SetDamageKnockback(const Vector3& subjectPos);
+
+	/// <summary>
+	/// ダメージ状態のノックバック
+	/// </summary>
+	void DamageKnockback();
+
+	/// <summary>
+	/// ダメージを喰らった状態の色をチカチカさせる処理
+	/// </summary>
+	void DamageColorChange();
 
 	/// <summary>
 	/// 墜落開始
@@ -258,16 +289,6 @@ private: //メンバ関数
 	void ShotHomingBullet();
 
 	/// <summary>
-	/// ノックバック情報をセット
-	/// </summary>
-	void SetKnockback(const Vector3& subjectPos);
-
-	/// <summary>
-	/// ノックバック
-	/// </summary>
-	void Knockback();
-
-	/// <summary>
 	/// ステージクリア後の横移動
 	/// </summary>
 	void StageClearSideMove();
@@ -306,6 +327,8 @@ private: //静的メンバ変数
 	//自機の移動限界
 	static const Vector2 moveLimitMax;
 	static const Vector2 moveLimitMin;
+	//ダメージ状態の色
+	static const XMFLOAT4 damageColor;
 	//自機の移動の基準の速さ
 	static const float moveBaseSpeed;
 	//自機のノックバックの基準の速さ
@@ -328,8 +351,20 @@ private: //メンバ変数
 	std::unique_ptr<PlayerDamageEffect> damageEffect;
 	//ダメージフラグ
 	bool isDamage = false;
+	//ダメージ状態タイマー
+	int32_t damageTimer = 0;
+	//ダメージノックバック状態か
+	bool isDamageKnockBack = false;
+	//ノックバック方向
+	Vector3 knockbackVec;
+	//ノックバック速度
+	Vector3 knockbackVel;
+	//ダメージ色か
+	bool isDamageColor = false;
 	//墜落中か
 	bool isCrash = false;
+	//黒煙用タイマー
+	int32_t blackSmokeTimer = 0;
 	//墜落バウンド回数
 	int crashBoundCount = 0;
 	//墜落速度
@@ -356,12 +391,6 @@ private: //メンバ変数
 	MoveSpeedPhase moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
 	//速度変更用タイマー
 	int32_t speedChangeTimer = 0;
-	//ノックバック用タイマー
-	int32_t knockbackTimer = 0;
-	//ノックバック方向
-	Vector3 knockbackVec;
-	//ノックバック速度
-	Vector3 knockbackVel;
 	//レティクル
 	std::unique_ptr<PlayerReticles> reticles;
 	//弾発射座標

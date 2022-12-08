@@ -596,8 +596,8 @@ void GameScene::CollisionCheck3d()
 	if (player->GetIsDead()) { return; }
 
 #pragma region 自機と敵の衝突判定
-	//自機が緊急回避をしていない && ダメージ状態でなければ判定する
-	if (!player->GetIsRoll() && !player->GetIsDamage()) {
+	//自機が緊急回避をしていない && ダメージノックバック状態でなければ判定する
+	if (!player->GetIsRoll() && !player->GetIsDamageKnockback()) {
 		//自機座標
 		posA = player->GetWorldPos();
 		//自機半径
@@ -636,8 +636,8 @@ void GameScene::CollisionCheck3d()
 
 		//自機と全ての敵弾の衝突判定
 		for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
-			//自機がダメージ状態なら飛ばす
-			if (player->GetIsDamage()) { continue; }
+			//自機がダメージノックバック状態なら飛ばす
+			if (player->GetIsDamageKnockback()) { continue; }
 
 			//敵弾座標
 			posB = bullet->GetWorldPos();
@@ -705,8 +705,8 @@ void GameScene::CollisionCheck3d()
 		//ボス分身のリストを持ってくる
 		const std::list<std::unique_ptr<BossAvatar>>& bossAvatars = boss->GetAvatars();
 		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
-			//自機がダメージ状態なら飛ばす
-			if (player->GetIsDamage()) { continue; }
+			//自機がダメージノックバック状態なら飛ばす
+			if (player->GetIsDamageKnockback()) { continue; }
 
 			//ボス分身座標
 			posB = bossAvatar->GetWorldPos();

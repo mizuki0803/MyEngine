@@ -114,7 +114,8 @@ void UpDownEnemy::Dead()
 
 	//黒煙パーティクル生成
 	const float smokeSize = scale.x * 2.0f;
-	DeadSmokeEffect(smokeSize);
+	const int smokeStartTime = 10;
+	DeadSmokeEffect(smokeSize, smokeStartTime);
 
 	//Y座標が0以下になったら削除
 	if (position.y <= 0) {

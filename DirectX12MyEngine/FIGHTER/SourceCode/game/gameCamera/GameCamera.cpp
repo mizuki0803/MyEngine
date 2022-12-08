@@ -135,8 +135,8 @@ void GameCamera::CameraAction()
 		//回転
 		Rotate();
 
-		//プレイヤーがダメージ状態ならノックバックする
-		if (player->GetIsDamage()) {
+		//プレイヤーがダメージノックバック状態ならノックバックする
+		if (player->GetIsDamageKnockback()) {
 			Knockback();
 		}
 		//ダメージ状態でないなら通常移動

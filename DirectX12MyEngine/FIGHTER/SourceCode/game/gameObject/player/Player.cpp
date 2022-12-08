@@ -23,8 +23,9 @@ const Vector3 Player::basePos = { 0, 3, 15 };
 const Vector2 Player::rotLimit = { 35.0f, 25.0f };
 const Vector2 Player::moveLimitMin = { -15.0f, -4.0f };
 const Vector2 Player::moveLimitMax = { 15.0f, Player::moveLimitMin.y + 12.0f };
+const XMFLOAT4 Player::damageColor = { 1, 0, 0, 1 };
 const float Player::moveBaseSpeed = 0.16f;
-const float Player::knockbackBaseSpeed = 0.2f;
+const float Player::knockbackBaseSpeed = 0.25f;
 const float Player::maxSpeedChangeGauge = 100.0f;
 const float Player::normalSpeedBlurStrength = 0.03f;
 
@@ -107,7 +108,7 @@ void Player::Update()
 	reticles->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
 
 	//自機のジェット噴射演出用パーティクル生成
-	ParticleEmitter::GetInstance()->PlayerJet(matWorld, (int)moveSpeedPhase);
+	JetEffectManager();
 }
 
 void Player::Draw()
@@ -156,7 +157,7 @@ void Player::OnCollisionDamage(const Vector3& subjectPos)
 	Damage();
 
 	//ノックバック情報をセット
-	SetKnockback(subjectPos);
+	SetDamageKnockback(subjectPos);
 
 	//ダメージを喰らったのでHPバーの長さを変更する
 	hpUI->Damage(HP);
@@ -244,33 +245,72 @@ void Player::Action()
 		//ステージクリア後行動
 		(this->*stageClearActionFuncTable[static_cast<size_t>(stageClearModePhase)])();
 	}
-	//墜落状態
-	else if (isCrash) {
-		Crash();
-	}
-	//それ以外
+	//ステージクリア以外の状態
 	else {
-		//回転
-		Rotate();
-
-		//緊急回避
-		Roll();
-
-		//速度変更
-		SpeedChange();
-
-		//ダメージ状態ならノックバックする
-		if (isDamage) {
-			Knockback();
+		//墜落状態
+		if (isCrash) {
+			Crash();
 		}
-		//ダメージ状態でないなら通常移動
+		//それ以外
 		else {
-			Move();
-		}
+			//回転
+			Rotate();
 
-		//攻撃
-		Attack();
+			//緊急回避
+			Roll();
+
+			//速度変更
+			SpeedChange();
+
+			//ダメージノックバック状態
+			if (isDamageKnockBack) {
+				DamageKnockback();
+			}
+			//ダメージ状態でないなら通常移動
+			else {
+				Move();
+			}
+
+			//攻撃
+			Attack();
+		}
 	}
+
+	//ダメージ状態
+	if (isDamage) {
+		DamageMode();
+	}
+}
+
+void Player::JetEffectManager()
+{
+	//墜落状態以外なら通常ジェット演出
+	if (!isCrash) {
+		ParticleEmitter::GetInstance()->PlayerJet(matWorld, (int)moveSpeedPhase);
+	}
+	//墜落状態なら黒煙をジェットの代わりに出す
+	else {
+		CrashBlackSmoke();
+	}
+}
+
+void Player::CrashBlackSmoke()
+{
+	//墜落開始してから黒煙を出すまでの時間
+	const int smokeStartTime = 30;
+	//黒煙用タイマー更新
+	blackSmokeTimer++;
+
+	//タイマーが黒煙を出すまでの時間以下なら抜ける
+	if (blackSmokeTimer < smokeStartTime) { return; }
+
+	//毎フレーム出すと多いので間隔を設定
+	const int smokeInterval = 4;
+	//指定した間隔以外なら抜ける
+	if (blackSmokeTimer % smokeInterval != 0) { return; }
+
+	//黒煙パーティクル生成
+	ParticleEmitter::GetInstance()->PlayerBlackSmokeJet(matWorld);
 }
 
 void Player::Damage()
@@ -286,10 +326,93 @@ void Player::Damage()
 		HP = 0;
 	}
 
-	color = { 1,0,0,1 };
-
 	//ダメージ状態にする
 	isDamage = true;
+	//ダメージ状態タイマー初期化
+	damageTimer = 0;
+	//ノックバック状態にする
+	isDamageKnockBack = true;
+	//ダメージ状態色に変更
+	color = damageColor;
+}
+
+void Player::DamageMode()
+{
+	//ダメージ状態の時間
+	const int damageTime = 80;
+	//ダメージ状態タイマーを更新
+	damageTimer++;
+
+	//ダメージ色切り替え
+	DamageColorChange();
+
+	//タイマーが指定した時間になったら
+	if (damageTimer >= damageTime) {
+		//ダメージ状態を終了
+		isDamage = false;
+
+		//色を元に戻しておく
+		color = { 1, 1, 1, 1 };
+	}
+}
+
+void Player::SetDamageKnockback(const Vector3& subjectPos)
+{
+	//ノックバックする方向を決める(自機のワールド座標 - 対象のワールド座標)
+	knockbackVec = GetWorldPos() - subjectPos;
+	//ベクトルを正規化
+	knockbackVec.normalize();
+}
+
+void Player::DamageKnockback()
+{
+	//ノックバックする時間
+	const float knockbackTime = 35;
+	//指定した時間以上なら抜ける
+	if (damageTimer > knockbackTime) {
+		//ノックバック状態なら解除してから抜ける
+		if (isDamageKnockBack) { isDamageKnockBack = false; }
+		return;
+	}
+
+	const float time = damageTimer / knockbackTime;
+
+	//速度を作成(ノックバック速度 * 基準の速度 * 時間による減速)
+	knockbackVel = knockbackVec * knockbackBaseSpeed * (1 - time);
+	//Z軸方向には移動しないようにする
+	knockbackVel.z = 0;
+
+	//自機をノックバックさせる
+	position += knockbackVel;
+
+	//移動限界から出ないようにする
+	position.x = max(position.x, moveLimitMin.x);
+	position.x = min(position.x, moveLimitMax.x);
+	position.y = max(position.y, moveLimitMin.y);
+	position.y = min(position.y, moveLimitMax.y);
+}
+
+void Player::DamageColorChange()
+{
+	//ダメージ色切り替え間隔時間
+	const int colorChangeInterval = 3;
+
+	//タイマーが指定した間隔以外なら抜ける
+	if (damageTimer % colorChangeInterval != 0) { return; }
+
+	//ダメージ色状態を切り替える
+	if (isDamageColor) {
+		isDamageColor = false;
+
+		//色を元に戻す
+		color = { 1, 1, 1, 1 };
+	}
+	else {
+		isDamageColor = true;
+
+		//ダメージ色にする
+		color = damageColor;
+	}
 }
 
 void Player::CrashStart()
@@ -314,19 +437,6 @@ void Player::Crash()
 	crashVel += crashAccel;
 	position += crashVel;
 
-	//Y座標が0以下になったら
-	if (position.y <= 0) {
-		//座標は0以下にならない
-		position.y = 0;
-
-		//墜落バウンド回数を増加させる
-		crashBoundCount++;
-
-		//バウンドさせる
-		const float boundStartVel = fabsf(crashVel.y) * 0.8f;
-		crashVel.y = boundStartVel;
-	}
-
 	//墜落回転する
 	const Vector3 rotSpeed = { 0, 0.1f, 5 };
 	//バウンドするまではZ軸左回転
@@ -336,19 +446,41 @@ void Player::Crash()
 		rotation -= rotSpeed;
 	}
 
-	//墜落バウンド回数が2回に達したら死亡
-	const int maxCrashCount = 2;
-	if (crashBoundCount >= maxCrashCount) {
-		isDead = true;
-
-		//爆発演出用パーティクル生成
-		const float explosionSize = 3.5f;
-		const int explosionTime = 60;
-		ParticleEmitter::GetInstance()->Explosion(position, explosionSize, explosionTime);
-	}
-
 	//ブラーの強さを通常移動時の強さに戻していく
 	SpeedChangeNormalBlur();
+
+	//Y座標が0以下でなければ抜ける
+	if (!(position.y <= 0)) { return; }
+	//座標は0以下にならない
+	position.y = 0;
+
+	//墜落バウンド回数を増加させる
+	crashBoundCount++;
+
+	//爆発演出用変数
+	float explosionSize;
+	int explosionTime;
+
+	//墜落バウンド回数が一回目ならバウンドさせる
+	if (crashBoundCount == 1) {
+		//バウンド
+		const float boundStartVel = fabsf(crashVel.y) * 0.8f;
+		crashVel.y = boundStartVel;
+
+		//バウンド用爆発演出用設定
+		explosionSize = 0.5f;
+		explosionTime = 20;
+	}
+	//墜落バウンド回数が二回目なら死亡
+	else if (crashBoundCount >= 2) {
+		isDead = true;
+
+		//死亡用爆発演出用設定
+		explosionSize = 3.5f;
+		explosionTime = 60;
+	}
+	//爆発演出用パーティクル生成
+	ParticleEmitter::GetInstance()->Explosion(position, explosionSize, explosionTime);
 }
 
 void Player::Heal()
@@ -964,47 +1096,6 @@ void Player::ShotHomingBullet()
 	std::unique_ptr<PlayerBullet> newBullet;
 	newBullet.reset(HomingBullet::Create(bulletShotPos, velocity, homingBulletSize, reticles->GetLockonEnemy()));
 	gameScene->AddPlayerBullet(std::move(newBullet));
-}
-
-void Player::SetKnockback(const Vector3& subjectPos)
-{
-	//ノックバックする方向を決める(自機のワールド座標 - 対象のワールド座標)
-	knockbackVec = GetWorldPos() - subjectPos;
-	//ベクトルを正規化
-	knockbackVec.normalize();
-
-	//ノックバックタイマーを初期化
-	knockbackTimer = 0;
-}
-
-void Player::Knockback()
-{
-	//ノックバックする時間
-	const float knockbackTime = 30;
-	knockbackTimer++;
-	const float time = knockbackTimer / knockbackTime;
-
-	//速度を作成
-	knockbackVel = knockbackVec;
-	//Z軸方向には移動しないようにする
-	knockbackVel.z = 0;
-	//ノックバック時間を速度にかけて減速っぽくする
-	knockbackVel *= (1 - time);
-
-	//自機をノックバックさせる
-	position += knockbackVel *= knockbackBaseSpeed;
-
-	//移動限界から出ないようにする
-	position.x = max(position.x, moveLimitMin.x);
-	position.x = min(position.x, moveLimitMax.x);
-	position.y = max(position.y, moveLimitMin.y);
-	position.y = min(position.y, moveLimitMax.y);
-
-	//ノックバックが終了したらダメージ状態を解除する
-	if (knockbackTimer >= knockbackTime) {
-		isDamage = false;
-		color = { 1,1,1,1 };
-	}
 }
 
 void Player::StageClearSideMove()

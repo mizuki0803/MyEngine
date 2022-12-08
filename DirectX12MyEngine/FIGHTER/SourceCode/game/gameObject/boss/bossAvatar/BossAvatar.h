@@ -166,9 +166,9 @@ protected: //メンバ関数
 	void DamageExplosion(const Vector3& collisionPos);
 
 	/// <summary>
-	/// ダメージを喰らった状態の色にする
+	/// ダメージを喰らった状態の色をチカチカさせる処理
 	/// </summary>
-	void DamageColorMode();
+	void DamageColorChange();
 
 	/// <summary>
 	/// 攻撃内容:分身体当たりのロックオン処理

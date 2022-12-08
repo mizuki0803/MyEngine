@@ -226,6 +226,54 @@ void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld, const int player
 	}
 }
 
+void ParticleEmitter::PlayerBlackSmokeJet(const XMMATRIX& playerMatWorld)
+{
+	//自機の中心座標からの距離
+	const Vector3 distancePos = { 0, -0.25f, -1.2f };
+	//平行移動行列の計算
+	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
+	//ワールド行列の合成
+	XMMATRIX matWorld;
+	matWorld = XMMatrixIdentity();	//変形をリセット
+	matWorld *= matTrans;	//ワールド行列に平行移動を反映
+	//自機オブジェクトのワールド行列をかける
+	matWorld *= playerMatWorld;
+	//パーティクル生成座標を取得
+	Vector3 pos = { matWorld.r[3].m128_f32[0], matWorld.r[3].m128_f32[1], matWorld.r[3].m128_f32[2] };
+
+	//座標を元に黒煙エフェクトを作成
+	for (int i = 0; i < 2; i++) {
+		//生存時間
+		int life = (rand() % 30) + 60;
+
+		//X,Y,Zランダムに分布
+		const Vector3 md_vel = { 0.01f, 0.05f, 0.01f };
+		Vector3 vel{};
+		vel.x = ((float)rand() / RAND_MAX * md_vel.x - md_vel.x / 2.0f);
+		vel.y = ((float)rand() / RAND_MAX * md_vel.y);
+		vel.z = ((float)rand() / RAND_MAX * md_vel.z - md_vel.z / 2.0f);
+		Vector3 acc{};
+		const float md_acc = 0.001f;
+		acc.y = (float)rand() / RAND_MAX * md_acc;
+
+		//大きさをセット
+		const float md_scale = 2.5f;
+		const float randScale((float)rand() / RAND_MAX * md_scale);
+		const float startScale = randScale;
+		const float endScale = randScale * 5.0f;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerpFloat =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
+		//色
+		const XMFLOAT4 startColor = { 0.15f, 0.15f, 0.15f, 1 }; //薄い黒
+		const XMFLOAT4 endColor = { 0.01f, 0.01f, 0.01f, 1 }; //うっすい黒
+
+		//追加
+		blackSmokeParticle->Add(life, pos, vel, acc, startScale, endScale, lerpFloat, startColor, endColor);
+	}
+}
+
 void ParticleEmitter::ShotDead(const Vector3& position, const float size)
 {
 	//色
@@ -532,8 +580,8 @@ void ParticleEmitter::BlackSmoke(const Vector3& position, const float size)
 		const float md_acc = 0.003f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
 
-		const float md_scale = 2.5f;
-		const float randScale((float)rand() / RAND_MAX * md_scale - md_scale / 2.0f);
+		const float md_scale = 1.3f;
+		const float randScale((float)rand() / RAND_MAX * md_scale);
 		const float startScale = randScale * size;
 		const float endScale = randScale * size * 2.0f;
 		//大きさ変更のイージング

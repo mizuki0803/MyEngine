@@ -102,7 +102,7 @@ void BossAvatar::Damage(int attackPower, const Vector3& collisionPos, const Vect
 	isDamageTrigger = true;
 	//ダメージ状態タイマー初期化
 	damageTimer = 0;
-	//色を変更
+	//ダメージ状態色に変更
 	color = damageColor;
 
 	//サイズを少し大きくする
@@ -277,7 +277,7 @@ void BossAvatar::DamageMode()
 	DamageSizeReturn();
 
 	//ダメージ色切り替え
-	DamageColorMode();
+	DamageColorChange();
 
 	//ダメージトリガーフラグがtrueなら下ろしておく
 	if (isDamageTrigger) { isDamageTrigger = false; }
@@ -350,26 +350,26 @@ void BossAvatar::DamageExplosion(const Vector3& collisionPos)
 	ParticleEmitter::GetInstance()->Explosion(pos, size);
 }
 
-void BossAvatar::DamageColorMode()
+void BossAvatar::DamageColorChange()
 {
-	//ダメージ色切り替え時間
-	const int damageColorChangeTime = 2;
+	//ダメージ色切り替え間隔時間
+	const int colorChangeInterval = 2;
 
-	//タイマーが指定した時間になったら
-	if (damageTimer % damageColorChangeTime == 0) {
-		//ダメージ色状態を切り替える
-		if (isDamageColor) {
-			isDamageColor = false;
+	//タイマーが指定した間隔以外なら抜ける
+	if (damageTimer % colorChangeInterval != 0) { return; }
 
-			//色を元に戻す
-			color = { 1, 1, 1, 1 };
-		}
-		else {
-			isDamageColor = true;
+	//ダメージ色状態を切り替える
+	if (isDamageColor) {
+		isDamageColor = false;
 
-			//ダメージ色にする
-			color = damageColor;
-		}
+		//色を元に戻す
+		color = { 1, 1, 1, 1 };
+	}
+	else {
+		isDamageColor = true;
+
+		//ダメージ色にする
+		color = damageColor;
 	}
 }
 
@@ -592,7 +592,7 @@ void BossAvatar::DeadBlackSmoke()
 	if (deadTimer < smokeStartTime) { return; }
 
 	//毎フレーム出すと多いので間隔を設定
-	const int smokeInterval = 4;
+	const int smokeInterval = 5;
 	//指定した間隔以外なら抜ける
 	if (deadTimer % smokeInterval != 0) { return; }
 
