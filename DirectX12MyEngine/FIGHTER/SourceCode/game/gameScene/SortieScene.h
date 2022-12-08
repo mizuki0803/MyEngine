@@ -59,6 +59,11 @@ public: //メンバ関数
 
 private: //メンバ関数
 	/// <summary>
+	/// 影生成用ライトカメラ更新
+	/// </summary>
+	void LightCameraUpdate();
+
+	/// <summary>
 	/// 出撃
 	/// </summary>
 	void SortieAction();

@@ -15,16 +15,16 @@ public: //ƒƒ“ƒoŠÖ”
 	/// </summary>
 	void UpdateMatProjection() override;
 
-	/// <summary>
-	/// ’Ç]
-	/// </summary>
-	/// <param name="targetPosition">À•W</param>
-	void Follow(const Vector3& targetPosition);
-
 	//setter
+	void SetEyeTarget(const Vector3& eye, const Vector3& target) {
+		this->eye = eye;
+		this->target = target;
+		dirtyView = true;
+	}
 	void SetProjectionNum(const Vector2& projectionMax, const Vector2& projectionMin) {
 		this->projectionMax = projectionMax;
 		this->projectionMin = projectionMin;
+		dirtyProjection = true;
 	}
 
 private: //ƒƒ“ƒo•Ï”

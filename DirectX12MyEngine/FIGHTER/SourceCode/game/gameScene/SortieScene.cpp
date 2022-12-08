@@ -92,8 +92,8 @@ void SortieScene::Update()
 
 	//カメラ更新
 	sortieCamera->Update();
-	lightCamera->Follow(player->GetPosition());
-	lightCamera->Update();
+	//影生成用ライトカメラ
+	LightCameraUpdate();
 
 	//オブジェクト更新
 	//自機
@@ -110,9 +110,6 @@ void SortieScene::Update()
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
-	//デバックテキスト
-	//X座標,Y座標,縮尺を指定して表示
-	//debugText->Print("GAME SCENE", 1000, 50);
 
 	//自機の出撃行動が完了したら
 	if (player->GetIsSortieEnd()) {
@@ -191,6 +188,18 @@ void SortieScene::DrawFrontSprite()
 
 
 	///-------スプライト描画ここまで-------///
+}
+
+void SortieScene::LightCameraUpdate()
+{
+	//ターゲットになる座標
+	const Vector3 targetPos = player->GetPosition();
+	//ターゲットと視点の距離
+	const Vector3 targetDistance = { 0, 500, 350 };
+	//ライトカメラ用の視点
+	const Vector3 lightEye = targetPos + targetDistance;
+	lightCamera->SetEyeTarget(lightEye, targetPos);
+	lightCamera->Update();
 }
 
 void SortieScene::SortieAction()

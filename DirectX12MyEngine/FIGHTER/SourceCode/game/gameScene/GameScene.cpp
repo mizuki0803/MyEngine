@@ -176,8 +176,8 @@ void GameScene::Update()
 
 	//カメラ更新
 	gameCamera->Update();
-	lightCamera->Follow(gameCamera->GetPosition());
-	lightCamera->Update();
+	//影生成用ライトカメラ
+	LightCameraUpdate();
 
 	//オブジェクト更新
 	//自機
@@ -403,6 +403,18 @@ void GameScene::DrawFrontSprite()
 	SceneChangeEffect::Draw();
 
 	///-------スプライト描画ここまで-------///
+}
+
+void GameScene::LightCameraUpdate()
+{
+	//ターゲットになる座標
+	const Vector3 targetPos = gameCamera->GetPosition();
+	//ターゲットと視点の距離
+	const Vector3 targetDistance = { 0, 500, -350 };
+	//ライトカメラ用の視点
+	const Vector3 lightEye = targetPos + targetDistance;
+	lightCamera->SetEyeTarget(lightEye, targetPos);
+	lightCamera->Update();
 }
 
 void GameScene::ObjectRelease()

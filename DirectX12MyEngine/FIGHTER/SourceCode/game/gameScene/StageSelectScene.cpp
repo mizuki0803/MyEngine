@@ -107,8 +107,8 @@ void StageSelectScene::Update()
 
 	//カメラ更新
 	stageSelectCamera->Update();
-	lightCamera->Follow(player->GetPosition());
-	lightCamera->Update();
+	//影生成用ライトカメラ
+	LightCameraUpdate();
 
 	//オブジェクト更新
 	//自機
@@ -214,6 +214,18 @@ void StageSelectScene::DrawFrontSprite()
 
 
 	///-------スプライト描画ここまで-------///
+}
+
+void StageSelectScene::LightCameraUpdate()
+{
+	//ターゲットになる座標
+	const Vector3 targetPos = player->GetPosition();
+	//ターゲットと視点の距離
+	const Vector3 targetDistance = { 0, 500, -100 };
+	//ライトカメラ用の視点
+	const Vector3 lightEye = targetPos + targetDistance;
+	lightCamera->SetEyeTarget(lightEye, targetPos);
+	lightCamera->Update();
 }
 
 void StageSelectScene::CreatePlanets()

@@ -71,6 +71,11 @@ public: //メンバ関数
 	void DrawFrontSprite() override;
 
 	/// <summary>
+	/// 影生成用ライトカメラ更新
+	/// </summary>
+	void LightCameraUpdate();
+
+	/// <summary>
 	/// オブジェクトの解放
 	/// </summary>
 	void ObjectRelease();

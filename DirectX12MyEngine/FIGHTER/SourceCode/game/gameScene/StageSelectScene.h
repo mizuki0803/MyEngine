@@ -60,6 +60,11 @@ public: //メンバ関数
 
 private: //メンバ関数
 	/// <summary>
+	/// 影生成用ライトカメラ更新
+	/// </summary>
+	void LightCameraUpdate();
+
+	/// <summary>
 	/// 惑星生成
 	/// </summary>
 	void CreatePlanets();
