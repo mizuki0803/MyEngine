@@ -100,7 +100,6 @@ public: //メンバ関数
 	/// <summary>
 	/// 影用光源ライトから見た視点での描画
 	/// </summary>
-	/// <returns></returns>
 	virtual void DrawLightCameraView();
 
 	//getter

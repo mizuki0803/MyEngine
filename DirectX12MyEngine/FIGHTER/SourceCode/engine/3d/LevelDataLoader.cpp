@@ -33,6 +33,14 @@ void LevelDataLoader::Draw()
 	}
 }
 
+void LevelDataLoader::DrawLightCameraView()
+{
+	//オブジェクト描画
+	for (const std::unique_ptr<ObjObject3d>& object : objects) {
+		object->DrawLightCameraView();
+	}
+}
+
 void LevelDataLoader::InsertModel(const std::string& filename, ObjModel* model)
 {
 	//モデルをコンテナに格納
@@ -67,6 +75,8 @@ void LevelDataLoader::CreateLevelDataObjects()
 		newObject->SetRotation(objectData.rotation);
 		//スケーリング
 		newObject->SetScale(objectData.scaling);
+		//シャドウマップでの影描画を可能にしておく
+		newObject->SetIsShadowMap(true);
 
 		//配列に登録
 		objects.push_back(std::move(newObject));

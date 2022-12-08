@@ -35,6 +35,15 @@ void TitleScene::Initialize()
 	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
+	modelWarehouse01.reset(ObjModel::LoadFromOBJ("warehouse01"));
+	modelWarehouse02.reset(ObjModel::LoadFromOBJ("warehouse02"));
+	modelControlTower.reset(ObjModel::LoadFromOBJ("controlTower"));
+
+	//背景マップレベルデータ生成
+	backgroundMapData.reset(LevelDataLoader::Create("demoMap.json"));
+	backgroundMapData->InsertModel("sphere", modelSphere.get());
+	backgroundMapData->InsertModel("mountain", modelWarehouse01.get());
+	backgroundMapData->CreateLevelDataObjects();
 
 	//ポストエフェクトのブラーを解除しておく
 	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
@@ -88,6 +97,8 @@ void TitleScene::Update()
 	lightCamera->Update();
 
 	//オブジェクト更新
+	//背景マップレベルデータ
+	backgroundMapData->Update();
 	//自機
 	player->Update();
 	//天球
@@ -137,6 +148,8 @@ void TitleScene::Draw3D()
 	ObjObject3d::DrawPrev();
 	///-------Object3d描画ここから-------///
 
+	//背景マップレベルデータ
+	backgroundMapData->Draw();
 	//自機
 	player->Draw();
 	//天球
@@ -150,9 +163,6 @@ void TitleScene::Draw3D()
 
 	///-------Object3d描画ここまで-------///
 
-
-	//パーティクル共通コマンド
-	ParticleManager::DrawPrev();
 	///-------パーティクル描画ここから-------///
 
 	//パーティクル描画
@@ -167,6 +177,8 @@ void TitleScene::Draw3DLightView()
 	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
+	//背景マップレベルデータ
+	backgroundMapData->DrawLightCameraView();
 	//自機
 	player->DrawLightCameraView();
 	//天球

@@ -169,6 +169,25 @@ void Enemy::DamageSizeReturn()
 	scale = Easing::LerpVec3(damageSize, normalSize, time);
 }
 
+void Enemy::DeadSmokeEffect(const float size)
+{
+	//死亡タイマー更新
+	deadTimer++;
+	//死亡してから黒煙を出すまでの時間
+	const int smokeStartTime = 30;
+
+	//タイマーが黒煙を出すまでの時間以下なら抜ける
+	if (deadTimer < smokeStartTime) { return; }
+
+	//毎フレーム出すと多いので間隔を設定
+	const int smokeInterval = 4;
+	//指定した間隔以外なら抜ける
+	if (deadTimer % smokeInterval != 0) { return; }
+
+	//黒煙パーティクル生成
+	ParticleEmitter::GetInstance()->BlackSmoke(position, size);
+}
+
 void Enemy::Break()
 {
 	//破壊用エフェクト追加

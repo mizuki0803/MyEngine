@@ -72,6 +72,12 @@ protected: //メンバ関数
 	void DamageSizeReturn();
 
 	/// <summary>
+	/// 死亡後の黒煙エフェクト
+	/// </summary>
+	/// <param name="size">エフェクトの大きさ</param>
+	void DeadSmokeEffect(const float size);
+
+	/// <summary>
 	/// 破壊
 	/// </summary>
 	virtual void Break();
@@ -111,6 +117,8 @@ protected: //メンバ変数
 	bool isCollisionFrame = false;
 	//死亡フラグ
 	bool isDead = false;
+	//死亡してからの時間タイマー
+	int32_t deadTimer = 0;
 	//削除フラグ
 	bool isDelete = false;
 	//被弾して削除か

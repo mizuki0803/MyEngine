@@ -80,14 +80,24 @@ public:
 	static void ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, const std::string& directoryPath = "Resources/particleTexture/");
 
 	/// <summary>
-	/// パイプライン生成
+	/// 加算合成パイプライン生成
 	/// </summary>
-	static void CreatePipeline();
+	static void CreateAddBlendPipeline();
 
 	/// <summary>
-	/// 描画前処理
+	/// 減算合成パイプライン生成
 	/// </summary>
-	static void DrawPrev();
+	static void CreateSubBlendPipeline();
+
+	/// <summary>
+	/// 加算合成描画前処理
+	/// </summary>
+	static void DrawPrevAddBlend();
+
+	/// <summary>
+	/// 減算合成描画前処理
+	/// </summary>
+	static void DrawPrevSubBlend();
 
 	/// <summary>
 	/// 生成処理
@@ -150,8 +160,10 @@ private:
 	static ID3D12Device* dev;
 	//コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList;
-	//パイプラインセット
-	static PipelineSet pipelineSet;
+	//加算合成パイプラインセット
+	static PipelineSet addBlendPipelineSet;
+	//減算合成パイプラインセット
+	static PipelineSet subBlendPipelineSet;
 	//テクスチャリソース(テクスチャバッファ)の配列
 	static Texture texture[SRVCount];
 	//テクスチャ格納ディレクトリ

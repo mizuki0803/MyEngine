@@ -140,6 +140,9 @@ void BossAvatarType03::DeadAction()
 	if (crashVel.z <= 0) { crashVel.z = 0; }
 	position += crashVel;
 
+	//黒煙パーティクル生成
+	DeadBlackSmoke();
+
 	//Y座標が0以下になったら削除
 	if (GetWorldPos().y <= 0) {
 		isDelete = true;

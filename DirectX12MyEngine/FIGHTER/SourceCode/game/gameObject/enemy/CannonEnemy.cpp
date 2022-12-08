@@ -70,8 +70,8 @@ void CannonEnemy::OnCollision()
 	phase = Phase::Dead;
 
 	//死亡時墜落回転速度を乱数でセット
-	const Vector3 randRotVel = { -1.0f, 0.4f, 0.4f };
-	const float randRotBaseVelX = -0.25f;
+	const Vector3 randRotVel = { -2.0f, 0.4f, 0.4f };
+	const float randRotBaseVelX = -1.75f;
 	crashRotVel.x = (float)rand() / RAND_MAX * randRotVel.x + randRotBaseVelX;
 	crashRotVel.y = (float)rand() / RAND_MAX * randRotVel.y - randRotVel.y / 2;
 	crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z - randRotVel.z / 2;
@@ -95,12 +95,16 @@ void CannonEnemy::Dead()
 	rotation += crashRotVel;
 
 	//墜落するため、速度に加速度を加える
-	Vector3 crashAccel = { 0, -0.005f, 0 };
+	Vector3 crashAccel = { 0, -0.005f, 0.001f };
 	crashVel += crashAccel;
 	//落下する速度の最大値を設定
 	const float maxCrashSpeed = -0.2f;
 	if (crashVel.y <= maxCrashSpeed) { crashVel.y = maxCrashSpeed; }
 	position += crashVel;
+
+	//黒煙パーティクル生成
+	const float smokeSize = scale.x * 2.0f;
+	DeadSmokeEffect(smokeSize);
 
 	//Y座標が0以下になったら削除
 	if (position.y <= 0) {

@@ -72,10 +72,11 @@ void ComeGoEnemy::OnCollision()
 	phase = Phase::Dead;
 
 	//死亡時墜落回転速度を乱数でセット
-	const Vector3 randRotVel = { 0, 0.4f, 4.0f };
+	const Vector3 randRotVel = { 0, 0.4f, 5.0f };
+	const float randRotBaseVelZ = -1.25f;
 	crashRotVel.x = (float)rand() / RAND_MAX * randRotVel.x - randRotVel.y / 2;
 	crashRotVel.y = (float)rand() / RAND_MAX * randRotVel.y - randRotVel.y / 2;
-	crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z - randRotVel.z / 2;
+	crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z + randRotBaseVelZ;
 }
 
 void ComeGoEnemy::Come()
@@ -166,12 +167,16 @@ void ComeGoEnemy::Dead()
 	rotation += crashRotVel;
 
 	//墜落するため、速度に加速度を加える
-	Vector3 crashAccel = { 0, -0.005f, 0 };
+	Vector3 crashAccel = { 0, -0.005f, 0.001f };
 	crashVel += crashAccel;
 	//落下する速度の最大値を設定
 	const float maxCrashSpeed = -0.2f;
 	if (crashVel.y <= maxCrashSpeed) { crashVel.y = maxCrashSpeed; }
 	position += crashVel;
+
+	//黒煙パーティクル生成
+	const float smokeSize = scale.x * 2.0f;
+	DeadSmokeEffect(smokeSize);
 
 	//Y座標が0以下になったら削除
 	if (position.y <= 0) {

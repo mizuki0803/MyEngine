@@ -32,8 +32,6 @@ void main(
 	//4点分まわす
 	for (uint i = 0; i < vnum; i++)
 	{
-
-		//float4 offset = mul(matBillboard, offset_array[i]);
 		float4 offset = offset_array[i] * input[0].scale;
 		//中心からのオフセットをビルボード回転(モデル座標)
 		offset = mul(matBillboard, offset);

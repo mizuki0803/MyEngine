@@ -50,6 +50,11 @@ public: //メンバ関数
 	void Draw();
 
 	/// <summary>
+	/// 影用光源ライトから見た視点での描画
+	/// </summary>
+	void DrawLightCameraView();
+
+	/// <summary>
 	/// モデルを格納
 	/// </summary>
 	/// <param name="model">モデル</param>

@@ -12,6 +12,7 @@
 #include "Ground.h"
 #include "Mountain.h"
 #include "TitleUI.h"
+#include "LevelDataLoader.h"
 
 #include <sstream>
 
@@ -111,6 +112,12 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelMountain;
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
+	std::unique_ptr<ObjModel> modelWarehouse01;
+	std::unique_ptr<ObjModel> modelWarehouse02;
+	std::unique_ptr<ObjModel> modelControlTower;
+
+	//背景マップレベルデータ
+	std::unique_ptr<LevelDataLoader> backgroundMapData;
 
 	//タイトルシーン用自機
 	std::unique_ptr<TitlePlayer> player;

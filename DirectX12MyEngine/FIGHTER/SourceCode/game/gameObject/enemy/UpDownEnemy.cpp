@@ -105,12 +105,16 @@ void UpDownEnemy::Dead()
 	rotation += crashRotVel;
 
 	//墜落するため、速度に加速度を加える
-	Vector3 crashAccel = { 0, -0.01f, 0 };
+	Vector3 crashAccel = { 0, -0.01f, 0.001f };
 	crashVel += crashAccel;
 	//落下する速度の最大値を設定
 	const float maxCrashSpeed = -0.5f;
 	if (crashVel.y <= maxCrashSpeed) { crashVel.y = maxCrashSpeed; }
 	position += crashVel;
+
+	//黒煙パーティクル生成
+	const float smokeSize = scale.x * 2.0f;
+	DeadSmokeEffect(smokeSize);
 
 	//Y座標が0以下になったら削除
 	if (position.y <= 0) {

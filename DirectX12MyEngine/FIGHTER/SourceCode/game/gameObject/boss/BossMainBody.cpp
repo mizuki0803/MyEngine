@@ -114,7 +114,6 @@ void BossMainBody::Damage(int attackPower, const Vector3& collisionPos, const Ve
 
 	//爆発生成する
 	DamageExplosion(collisionPos);
-	
 }
 
 void BossMainBody::DamageModelChange()
@@ -635,29 +634,26 @@ void BossMainBody::AttackTypeRotateMove()
 void BossMainBody::DeadFallExplosion()
 {
 	//爆発させる間隔の時間
-	int explosionTime = 3;
+	const int explosionInterval = 3;
 	//タイマーを更新
 	deadFallExplosionTimer++;
 
-	//タイマーが指定した時間になったら
-	if (deadFallExplosionTimer >= explosionTime) {
-		//タイマー初期化
-		deadFallExplosionTimer = 0;
+	//指定した間隔以外なら抜ける
+	if (deadFallExplosionTimer % explosionInterval != 0) { return; }
 
-		//爆発
-		//敵内部に演出が出てしまうことがあるので、敵の大きさ分押し戻す
-		Vector3 pos = position;
-		pos.z -= scale.z / 2;
-		//ランダムでずらす
-		const Vector3 randPos = { 2, 2, 1 };
-		pos.x += (float)((rand() % (int)randPos.x) - randPos.x / 2);
-		pos.y += (float)((rand() % (int)randPos.y) - randPos.y / 2);
-		pos.z += (float)((rand() % (int)randPos.z));
+	//爆発
+	//敵内部に演出が出てしまうことがあるので、敵の大きさ分押し戻す
+	Vector3 pos = position;
+	pos.z -= scale.z / 2;
+	//ランダムでずらす
+	const Vector3 randPos = { 2, 2, 1 };
+	pos.x += (float)((rand() % (int)randPos.x) - randPos.x / 2);
+	pos.y += (float)((rand() % (int)randPos.y) - randPos.y / 2);
+	pos.z += (float)((rand() % (int)randPos.z));
 
-		//ショット死亡演出用パーティクル生成
-		const float size = 1.0f;
-		ParticleEmitter::GetInstance()->Explosion(pos, size);
-	}
+	//死亡爆発演出用パーティクル生成
+	const float size = 1.0f;
+	ParticleEmitter::GetInstance()->Explosion(pos, size);
 }
 
 void BossMainBody::Stay()

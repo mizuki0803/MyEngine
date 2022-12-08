@@ -18,6 +18,7 @@ void ParticleEmitter::Initialize()
 	//パーティクルマネージャー生成
 	circleParticle.reset(ParticleManager::Create(1));
 	explosionParticle.reset(ParticleManager::Create(2));
+	blackSmokeParticle.reset(ParticleManager::Create(2));
 }
 
 void ParticleEmitter::Update()
@@ -25,13 +26,24 @@ void ParticleEmitter::Update()
 	//パーティクルマネージャー更新
 	circleParticle->Update();
 	explosionParticle->Update();
+	blackSmokeParticle->Update();
 }
 
 void ParticleEmitter::DrawAll()
 {
+	//加算合成描画前処理
+	ParticleManager::DrawPrevAddBlend();
+
 	//パーティクルマネージャー描画
 	circleParticle->Draw();
 	explosionParticle->Draw();
+
+
+	//減算合成描画前処理
+	ParticleManager::DrawPrevSubBlend();
+
+	//パーティクルマネージャー描画
+	blackSmokeParticle->Draw();
 }
 
 void ParticleEmitter::DemoEffect()
@@ -494,6 +506,46 @@ void ParticleEmitter::BossDeadExplosion(const Vector3& position)
 			//追加
 			explosionParticle->Add(life, pos, vel, acc, startScale, endScale, outQuart, startColor, endColor);
 		}
+	}
+}
+
+void ParticleEmitter::BlackSmoke(const Vector3& position, const float size)
+{
+	for (int i = 0; i < 2; i++) {
+		//生存時間
+		int life = (rand() % 30) + 30;
+
+		//X,Y,Zごとにでランダムに分布
+		const float md_pos = 0.1f;
+		Vector3 pos = position;
+		pos.x += ((float)rand() / RAND_MAX * md_pos - md_pos / 2.0f);
+		pos.y += ((float)rand() / RAND_MAX * md_pos - md_pos / 2.0f) + 1.0f;
+		pos.z += ((float)rand() / RAND_MAX * md_pos - md_pos / 2.0f);
+
+		//X,Y,Z全て[-0.25f, +0.25f]でランダムに分布
+		const Vector3 md_vel = { 0.01f, 0.05f, 0.01f };
+		Vector3 vel{};
+		vel.x = ((float)rand() / RAND_MAX * md_vel.x - md_vel.x / 2.0f);
+		vel.y = ((float)rand() / RAND_MAX * md_vel.y);
+		vel.z = ((float)rand() / RAND_MAX * md_vel.z - md_vel.z / 2.0f);
+		Vector3 acc{};
+		const float md_acc = 0.003f;
+		acc.y = (float)rand() / RAND_MAX * md_acc;
+
+		const float md_scale = 2.5f;
+		const float randScale((float)rand() / RAND_MAX * md_scale - md_scale / 2.0f);
+		const float startScale = randScale * size;
+		const float endScale = randScale * size * 2.0f;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerpFloat =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+
+		//色
+		const XMFLOAT4 startColor = { 0.15f, 0.15f, 0.15f, 1 }; //薄い黒
+		const XMFLOAT4 endColor = { 0.01f, 0.01f, 0.01f, 1 }; //うっすい黒
+
+		//追加
+		blackSmokeParticle->Add(life, pos, vel, acc, startScale, endScale, lerpFloat, startColor, endColor);
 	}
 }
 

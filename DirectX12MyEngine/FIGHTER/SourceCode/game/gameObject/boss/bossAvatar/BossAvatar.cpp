@@ -569,6 +569,9 @@ void BossAvatar::DeadAction()
 	if (crashVel.y <= maxCrashSpeed) { crashVel.y = maxCrashSpeed; }
 	position += crashVel;
 
+	//黒煙パーティクル生成
+	DeadBlackSmoke();
+
 	//Y座標が0以下になったら削除
 	if (GetWorldPos().y <= 0) {
 		isDelete = true;
@@ -576,4 +579,24 @@ void BossAvatar::DeadAction()
 		//爆発演出用パーティクル生成
 		ParticleEmitter::GetInstance()->Explosion(GetWorldPos());
 	}
+}
+
+void BossAvatar::DeadBlackSmoke()
+{
+	//死亡タイマー更新
+	deadTimer++;
+	//死亡してから黒煙を出すまでの時間
+	const int smokeStartTime = 30;
+
+	//タイマーが黒煙を出すまでの時間以下なら抜ける
+	if (deadTimer < smokeStartTime) { return; }
+
+	//毎フレーム出すと多いので間隔を設定
+	const int smokeInterval = 4;
+	//指定した間隔以外なら抜ける
+	if (deadTimer % smokeInterval != 0) { return; }
+
+	//黒煙パーティクル生成
+	const float smokeSize = scale.x * 1.5f;
+	ParticleEmitter::GetInstance()->BlackSmoke(position, smokeSize);
 }

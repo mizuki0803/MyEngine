@@ -160,6 +160,7 @@ void GameScene::Update()
 	//デバッグテキストのインスタンスを取得
 	DebugText* debugText = DebugText::GetInstance();
 
+
 	//オブジェクト解放
 	ObjectRelease();
 	//敵発生コマンド更新
@@ -311,9 +312,6 @@ void GameScene::Draw3D()
 
 	///-------Object3d描画ここまで-------///
 
-
-	//パーティクル共通コマンド
-	ParticleManager::DrawPrev();
 	///-------パーティクル描画ここから-------///
 
 	//パーティクル描画

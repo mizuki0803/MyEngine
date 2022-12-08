@@ -111,7 +111,7 @@ public: //メンバ関数
 	/// 黒煙演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
-	void BlackSmoke(const Vector3& position);
+	void BlackSmoke(const Vector3& position, const float size);
 
 	/// <summary>
 	/// 全削除
@@ -129,4 +129,6 @@ private: //メンバ変数
 	std::unique_ptr<ParticleManager> circleParticle;
 	//パーティクルマネージャー(爆発)
 	std::unique_ptr<ParticleManager> explosionParticle;
+	//パーティクルマネージャー(黒煙)
+	std::unique_ptr<ParticleManager> blackSmokeParticle;
 };

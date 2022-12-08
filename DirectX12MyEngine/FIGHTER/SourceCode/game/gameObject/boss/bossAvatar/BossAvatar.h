@@ -240,6 +240,11 @@ protected: //メンバ関数
 	/// </summary>
 	virtual void DeadAction();
 
+	/// <summary>
+	/// 死亡後の黒煙エフェクト
+	/// </summary>
+	void DeadBlackSmoke();
+
 protected: //静的メンバ変数
 	//ゲームシーン
 	static GameScene* gameScene;
@@ -279,6 +284,8 @@ protected: //メンバ変数
 	int HP = maxHP;
 	//死亡フラグ
 	bool isDead = false;
+	//死亡してからの時間タイマー
+	int32_t deadTimer = 0;
 	//削除フラグ
 	bool isDelete = false;
 	//喰らうダメージ量

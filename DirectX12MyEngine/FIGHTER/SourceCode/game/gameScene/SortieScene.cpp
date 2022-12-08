@@ -152,9 +152,6 @@ void SortieScene::Draw3D()
 
 	///-------Object3d描画ここまで-------///
 
-
-	//パーティクル共通コマンド
-	ParticleManager::DrawPrev();
 	///-------パーティクル描画ここから-------///
 
 	//パーティクル描画
