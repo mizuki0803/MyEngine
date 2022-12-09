@@ -127,8 +127,8 @@ void ComeGoEnemy::Attack()
 void ComeGoEnemy::SwayZ()
 {
 	//“®‚«‚ª‚È‚¢‚ÆŽâ‚µ‚¢‚Ì‚Å‚ä‚ç‚ä‚ç‚³‚¹‚Ä‚¨‚­
-	const float rotZSpeed = 0.05f;
-	const float rotZLimit = 3.0f;
+	const float rotZSpeed = 0.15f;
+	const float rotZLimit = 5.0f;
 	//‰E‰ñ“]
 	if (isRotZRight) {
 		rotation.z += rotZSpeed;

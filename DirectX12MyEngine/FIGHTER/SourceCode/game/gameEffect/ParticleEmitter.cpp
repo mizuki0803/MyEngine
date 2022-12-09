@@ -599,39 +599,41 @@ void ParticleEmitter::BlackSmoke(const Vector3& position, const float size)
 	}
 }
 
-void ParticleEmitter::ItemShine(const Vector3& position, const float size)
+void ParticleEmitter::ItemShine(const Vector3& position, const float size, const int num)
 {
 	//生存時間
-	int life = (rand() % 30) + 30;
+	for (int i = 0; i < num;  i++) {
+		int life = (rand() % 30) + 30;
 
-	//X,Y,Zにでランダムに分布
-	const float mdPos = 4.0f;
-	Vector3 pos = position;
-	pos.x += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f);
-	pos.y += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f);
-	pos.z += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f);
+		//X,Y,Zにでランダムに分布
+		const float mdPos = 4.0f;
+		Vector3 pos = position;
+		pos.x += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f);
+		pos.y += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f);
+		pos.z += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f);
 
-	//移動しないので速度は変更なし
-	Vector3 vel{};
-	Vector3 acc{};
-	const float mdScale = 2.0f * size;
-	const float randScale = ((float)rand() / RAND_MAX * mdScale) + (1.0f * size);
-	const float scale = randScale;
-	//大きさ変更のイージング
-	std::function<float(const float, const float, const float) > lerpFloat =
-		std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		//移動しないので速度は変更なし
+		Vector3 vel{};
+		Vector3 acc{};
+		const float mdScale = 2.0f * size;
+		const float randScale = ((float)rand() / RAND_MAX * mdScale) + (1.0f * size);
+		const float scale = randScale;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerpFloat =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
-	//色
-	const XMFLOAT4 startColor = { 0.8f, 0.8f, 0.6f, 1 }; //黄色
-	const XMFLOAT4 endColor = { 0.4f, 0.4f, 0.3f, 1 }; //薄い黄色
+		//色
+		const XMFLOAT4 startColor = { 0.8f, 0.8f, 0.6f, 1 }; //黄色
+		const XMFLOAT4 endColor = { 0.4f, 0.4f, 0.3f, 1 }; //薄い黄色
 
-	//回転速度
-	const float mdRotSpeed = 5.0f;
-	const float baseSpeed = 10.0f;
-	const float rotSpeed = ((float)rand() / RAND_MAX * mdRotSpeed) + baseSpeed;
+		//回転速度
+		const float mdRotSpeed = 5.0f;
+		const float baseSpeed = 10.0f * ((float)num / 2);
+		const float rotSpeed = ((float)rand() / RAND_MAX * mdRotSpeed) + baseSpeed;
 
-	//追加
-	shineParticle->Add(life, pos, vel, acc, scale, scale, lerpFloat, startColor, endColor, rotSpeed);
+		//追加
+		shineParticle->Add(life, pos, vel, acc, scale, scale, lerpFloat, startColor, endColor, rotSpeed);
+	}
 }
 
 void ParticleEmitter::AllDelete()

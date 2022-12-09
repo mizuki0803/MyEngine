@@ -84,6 +84,8 @@ private: //メンバ変数
 	float shineEffectSize = 0;
 	//キラキラ演出生成間隔
 	int shineEffectInterval = shineEffectCreateInterval;
+	//キラキラ演出生成数
+	int shineEffectNum = 5;
 	//接触フラグ
 	bool isTouched = false;
 	//接触後タイマー

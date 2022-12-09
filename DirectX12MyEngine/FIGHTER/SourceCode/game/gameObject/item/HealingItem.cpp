@@ -70,6 +70,8 @@ void HealingItem::OnCollision()
 	shineEffectSize = shineEffectCreateSize;
 	//キラキラ演出生成間隔をセット
 	shineEffectInterval = shineEffectCreateInterval;
+	//キラキラ演出生成数をセット
+	shineEffectNum = 5;
 }
 
 Vector3 HealingItem::GetWorldPos()
@@ -105,7 +107,7 @@ void HealingItem::FrontOfScreenDelete()
 void HealingItem::ShineEffect()
 {
 	//接触後一定時間経っていたら抜ける
-	const int touchedAfterEffectCreateTime = 60;
+	const int touchedAfterEffectCreateTime = 30;
 	if (touchedTimer >= touchedAfterEffectCreateTime) { return; }
 
 	//キラキラ演出用タイマー更新
@@ -120,7 +122,11 @@ void HealingItem::ShineEffect()
 	if (shineEffectTimer % shineEffectInterval != 0) { return; }
 
 	//キラキラ演出用パーティクル生成
-	ParticleEmitter::GetInstance()->ItemShine(position, shineEffectSize);
+	ParticleEmitter::GetInstance()->ItemShine(position, shineEffectSize, shineEffectNum);
+
+	//生成数変更
+	shineEffectNum--;
+	shineEffectNum = max(shineEffectNum, 1);
 }
 
 void HealingItem::ShineEffectSizeChange()

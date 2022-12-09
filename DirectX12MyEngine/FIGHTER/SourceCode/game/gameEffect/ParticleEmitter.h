@@ -131,7 +131,8 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
 	/// <param name="size">パーティクル大きさ</param>
-	void ItemShine(const Vector3& position, const float size);
+	/// <param name="size">一度に出す数</param>
+	void ItemShine(const Vector3& position, const float size, const int num);
 
 	/// <summary>
 	/// 全削除
