@@ -1,8 +1,10 @@
 #include "HealingItem.h"
 #include "Player.h"
 #include "Easing.h"
+#include "ParticleEmitter.h"
 
 Player* HealingItem::player = nullptr;
+const float HealingItem::shineEffectCreateSize = 1.5f;
 
 HealingItem* HealingItem::Create(ObjModel* model, const Vector3& position, const float size)
 {
@@ -29,6 +31,9 @@ HealingItem* HealingItem::Create(ObjModel* model, const Vector3& position, const
 	//大きさをセット
 	healingItem->scale = { size, size, size };
 
+	//キラキラ演出サイズをセット
+	healingItem->shineEffectSize = shineEffectCreateSize;
+
 	return healingItem;
 }
 
@@ -41,6 +46,9 @@ void HealingItem::Update()
 	if (isTouched) {
 		TouchedAction();
 	}
+
+	//キラキラ演出
+	ShineEffect();
 
 	//3Dオブジェクトの更新
 	ObjObject3d::Update();
@@ -57,6 +65,11 @@ void HealingItem::OnCollision()
 	//回転の速さをアップ
 	const float deadRotSpeed = 15.0f;
 	rotSpeed = deadRotSpeed;
+
+	//キラキラ演出サイズを大きく
+	shineEffectSize = shineEffectCreateSize;
+	//キラキラ演出生成間隔をセット
+	shineEffectInterval = shineEffectCreateInterval;
 }
 
 Vector3 HealingItem::GetWorldPos()
@@ -87,6 +100,55 @@ void HealingItem::FrontOfScreenDelete()
 	if (worldPos.z <= deletePos) {
 		isDelete = true;
 	}
+}
+
+void HealingItem::ShineEffect()
+{
+	//接触後一定時間経っていたら抜ける
+	const int touchedAfterEffectCreateTime = 60;
+	if (touchedTimer >= touchedAfterEffectCreateTime) { return; }
+
+	//キラキラ演出用タイマー更新
+	shineEffectTimer++;
+
+	//大きさ変更
+	ShineEffectSizeChange();
+	//生成間隔変更
+	ShineEffectIntervalChange();
+
+	//指定した間隔以外なら抜ける
+	if (shineEffectTimer % shineEffectInterval != 0) { return; }
+
+	//キラキラ演出用パーティクル生成
+	ParticleEmitter::GetInstance()->ItemShine(position, shineEffectSize);
+}
+
+void HealingItem::ShineEffectSizeChange()
+{
+	//最小サイズ
+	const float shineEffectSizeMin = 0.8f;
+	//既に最小値なら抜ける
+	if (shineEffectSize <= shineEffectSizeMin) { return; }
+
+	//1フレームで小さくする値
+	const float sizeChangeNum = 0.01f;
+	shineEffectSize -= sizeChangeNum;
+}
+
+void HealingItem::ShineEffectIntervalChange()
+{
+	//キラキラ演出生成間隔の最大値
+	const int intarvalMax = 15;
+	//既に最大値なら抜ける
+	if (shineEffectInterval >= intarvalMax) { return; }
+
+	//キラキラ演出生成間隔を変更する時間
+	const int shineEffectIntervalChangeTime = 10;
+	//指定した間隔以外なら抜ける
+	if (shineEffectTimer % shineEffectIntervalChangeTime != 0) { return; }
+
+	//生成間隔を大きくする
+	shineEffectInterval++;
 }
 
 void HealingItem::TouchedAction()

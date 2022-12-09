@@ -52,15 +52,21 @@ public: //メンバ関数
 	/// <summary>
 	/// 自機のジェット噴射演出
 	/// </summary>
-	/// <param name="matWorld">自機ワールド行列</param>
+	/// <param name="playerMatWorld">自機ワールド行列</param>
 	/// <param name="playerSpeedPhase">自機移動速度フェーズ</param>
 	void PlayerJet(const XMMATRIX& playerMatWorld, const int playerSpeedPhase = 0);
 
 	/// <summary>
 	/// 自機の死亡ジェット黒煙噴射演出
 	/// </summary>
-	/// <param name="matWorld">自機ワールド行列</param>
+	/// <param name="playerMatWorld">自機ワールド行列</param>
 	void PlayerBlackSmokeJet(const XMMATRIX& playerMatWorld);
+
+	/// <summary>
+	/// 自機の翼から出る飛行機雲(ヴェイパー)
+	/// </summary>
+	/// <param name="playerMatWorld">自機ワールド行列</param>
+	void PlayerVapour(const XMMATRIX& playerMatWorld);
 
 	/// <summary>
 	/// ショット死亡演出
@@ -117,7 +123,15 @@ public: //メンバ関数
 	/// 黒煙演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">パーティクル大きさ</param>
 	void BlackSmoke(const Vector3& position, const float size);
+
+	/// <summary>
+	/// アイテムのキラキラ
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">パーティクル大きさ</param>
+	void ItemShine(const Vector3& position, const float size);
 
 	/// <summary>
 	/// 全削除
@@ -137,4 +151,6 @@ private: //メンバ変数
 	std::unique_ptr<ParticleManager> explosionParticle;
 	//パーティクルマネージャー(黒煙)
 	std::unique_ptr<ParticleManager> blackSmokeParticle;
+	//パーティクルマネージャー(キラキラ)
+	std::unique_ptr<ParticleManager> shineParticle;
 };

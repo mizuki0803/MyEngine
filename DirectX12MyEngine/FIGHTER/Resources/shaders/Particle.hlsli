@@ -9,6 +9,7 @@ struct VSOutput
 {
 	float4 pos : POSITION;	//頂点座標
 	float scale : TEXCOORD;	//スケール
+	float rot : ROTATION; //回転角
 	float4 color : COLOR;	//色
 };
 

@@ -40,7 +40,18 @@ void main(
 		element.svpos = input[0].pos + offset;
 		//ビュープロジェクション行列
 		element.svpos = mul(mat, element.svpos);
-		element.uv = uv_array[i];
+
+		//回転角からラジアンを算出
+		float radian = (input[0].rot * 3.141592f / 360);
+		float s = sin(radian);
+		float c = cos(radian);
+		float2x2 rotMatrix = float2x2(c, -s, s, c);
+		//uv値をずらして回転させる
+		float2 uv = uv_array[i] - float2(0.5f, 0.5f);
+		uv = mul(rotMatrix, uv);
+		uv += float2(0.5f, 0.5f);
+		element.uv = uv;
+
 		element.color = input[0].color;
 		output.Append(element);
 	}

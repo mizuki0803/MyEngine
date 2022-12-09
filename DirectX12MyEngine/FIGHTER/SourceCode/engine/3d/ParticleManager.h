@@ -32,6 +32,7 @@ public:
 	{
 		Vector3 pos;	//xyz座標
 		float scale;	//スケール
+		float rot;	//回転角
 		XMFLOAT4 color;	//色
 	};
 
@@ -54,21 +55,25 @@ public:
 		//現在フレーム
 		int frame = 0;
 		//終了フレーム
-		int num_frame = 0;
+		int numFrame = 0;
 		//スケール
 		float scale = 1.0f;
 		//初期値
-		float s_scale = 1.0f;
+		float startScale = 1.0f;
 		//最終値
-		float e_scale = 0.0f;
+		float endScale = 0.0f;
 		//スケール変更速さ
-		std::function<float(const float, const float, const float)> easing_scale;
+		std::function<float(const float, const float, const float)> easingScale;
+		//回転角
+		float rotation = 0;
+		//回転速度
+		float rotSpeed = 0;
 		//色
 		XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		//色初期値
-		XMFLOAT4 s_color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		XMFLOAT4 startColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 		//色終了値
-		XMFLOAT4 e_color = { 0.0f, 0.0f, 0.0f, 0.0f };
+		XMFLOAT4 endColor = { 0.0f, 0.0f, 0.0f, 0.0f };
 	};
 
 public:
@@ -118,13 +123,15 @@ public:
 	/// <param name="position">座標</param>
 	/// <param name="velocity">速度</param>
 	/// <param name="accel">加速度</param>
-	/// <param name="start_scale">スケール初期値</param>
-	/// <param name="end_scale">スケール終了値</param>
-	/// <param name="easing_scale">イージングスケール変更</param>
-	/// <param name="start_color">色初期値</param>
-	/// <param name="end_color">色終了値</param>
+	/// <param name="startScale">スケール初期値</param>
+	/// <param name="endScale">スケール終了値</param>
+	/// <param name="easingScale">イージングスケール変更</param>
+	/// <param name="startColor">色初期値</param>
+	/// <param name="endColor">色終了値</param>
+	/// <param name="rotSpeed">回転速度</param>
 	void Add(const int life, const Vector3& position, const Vector3& velocity, const Vector3& accel,
-		const float start_scale, const float end_scale, std::function<float(const float, const float, const float)> easing_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color);
+		const float startScale, const float endScale, std::function<float(const float, const float, const float)> easingScale,
+		const XMFLOAT4& startColor, const XMFLOAT4& endColor, const float rotSpeed = 0);
 
 	/// <summary>
 	/// パーティクルの形生成

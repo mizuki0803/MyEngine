@@ -149,6 +149,11 @@ void ParticleManager::CreateAddBlendPipeline()
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
+		{	//回転角
+			"ROTATION", 0, DXGI_FORMAT_R32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
 		{	//色
 			"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
@@ -352,6 +357,11 @@ void ParticleManager::CreateSubBlendPipeline()
 		},
 		{	//スケール
 			"TEXCOORD", 0, DXGI_FORMAT_R32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
+		{	//回転角
+			"ROTATION", 0, DXGI_FORMAT_R32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
@@ -572,7 +582,8 @@ bool ParticleManager::LoadTexture(UINT texNumber, const std::string& filename)
 }
 
 void ParticleManager::Add(const int life, const Vector3& position, const Vector3& velocity, const Vector3& accel,
-	const float start_scale, const float end_scale, std::function<float(const float, const float, const float)> easing_scale, const XMFLOAT4& start_color, const XMFLOAT4& end_color)
+	const float startScale, const float endScale, std::function<float(const float, const float, const float)> easingScale,
+	const XMFLOAT4& startColor, const XMFLOAT4& endColor, const float rotSpeed)
 {
 	//パーティクルの要素数が頂点数以上なら追加できないようにする
 	UINT particleNum = (UINT)std::distance(particles.begin(), particles.end());
@@ -586,14 +597,15 @@ void ParticleManager::Add(const int life, const Vector3& position, const Vector3
 	p.position = position;
 	p.velocity = velocity;
 	p.accel = accel;
-	p.num_frame = life;
-	p.s_scale = start_scale;
-	p.e_scale = end_scale;
-	p.easing_scale = easing_scale;
-	p.scale = start_scale;
-	p.s_color = start_color;
-	p.e_color = end_color;
-	p.color = start_color;
+	p.numFrame = life;
+	p.startScale = startScale;
+	p.endScale = endScale;
+	p.easingScale = easingScale;
+	p.scale = startScale;
+	p.startColor = startColor;
+	p.endColor = endColor;
+	p.color = startColor;
+	p.rotSpeed = rotSpeed;
 }
 
 bool ParticleManager::CreateModel(UINT texNumber)
@@ -667,7 +679,7 @@ void ParticleManager::Update()
 	//寿命が尽きたパーティクルを全削除
 	particles.remove_if(
 		[](Particle& x) {
-			return x.frame >= x.num_frame;
+			return x.frame >= x.numFrame;
 		}
 	);
 
@@ -689,24 +701,27 @@ void ParticleManager::Update()
 		it->position = it->position + it->velocity;
 
 		//進行度を0～1の範囲に換算
-		float f = (float)it->num_frame / it->frame;
+		float f = (float)it->numFrame / it->frame;
 
 		//スケールのイージング補間
-		const float time = (float)it->frame / it->num_frame;
-		it->scale = it->easing_scale(it->s_scale, it->e_scale, time);
+		const float time = (float)it->frame / it->numFrame;
+		it->scale = it->easingScale(it->startScale, it->endScale, time);
 
 		//色の線形補間
-		it->color.x = (it->e_color.x - it->s_color.x) / f;
-		it->color.x += it->s_color.x;
+		it->color.x = (it->endColor.x - it->startColor.x) / f;
+		it->color.x += it->startColor.x;
 
-		it->color.y = (it->e_color.y - it->s_color.y) / f;
-		it->color.y += it->s_color.y;
+		it->color.y = (it->endColor.y - it->startColor.y) / f;
+		it->color.y += it->startColor.y;
 
-		it->color.z = (it->e_color.z - it->s_color.z) / f;
-		it->color.z += it->s_color.z;
+		it->color.z = (it->endColor.z - it->startColor.z) / f;
+		it->color.z += it->startColor.z;
 
-		it->color.w = (it->e_color.w - it->s_color.w) / f;
-		it->color.w += it->s_color.w;
+		it->color.w = (it->endColor.w - it->startColor.w) / f;
+		it->color.w += it->startColor.w;
+
+		//回転
+		it->rotation += it->rotSpeed;
 	}
 
 	//頂点バッファへデータ転送
@@ -727,6 +742,8 @@ void ParticleManager::Update()
 			vertMap->pos = it->position;
 			//スケール
 			vertMap->scale = it->scale;
+			//回転角
+			vertMap->rot = it->rotation;
 			//色
 			vertMap->color = it->color;
 			//次の頂点へ

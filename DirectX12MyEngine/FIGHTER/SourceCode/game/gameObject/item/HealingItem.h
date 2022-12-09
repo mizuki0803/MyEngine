@@ -48,6 +48,21 @@ private: //メンバ関数
 	void FrontOfScreenDelete();
 
 	/// <summary>
+	/// キラキラ演出管理
+	/// </summary>
+	void ShineEffect();
+
+	/// <summary>
+	/// キラキラ演出サイズ変更
+	/// </summary>
+	void ShineEffectSizeChange();
+
+	/// <summary>
+	/// キラキラ演出生成間隔変更
+	/// </summary>
+	void ShineEffectIntervalChange();
+
+	/// <summary>
 	/// 接触後の動き
 	/// </summary>
 	void TouchedAction();
@@ -55,10 +70,20 @@ private: //メンバ関数
 private: //静的メンバ変数
 	//プレイヤー自機
 	static Player* player;
+	//キラキラ演出の初期サイズ
+	static const float shineEffectCreateSize;
+	//キラキラ演出の初期生成間隔
+	static const int shineEffectCreateInterval = 5;
 
 private: //メンバ変数
 	//回転の速さ
 	float rotSpeed = 2.0f;
+	//キラキラ演出用タイマー
+	int32_t shineEffectTimer = 0;
+	//キラキラ演出サイズ
+	float shineEffectSize = 0;
+	//キラキラ演出生成間隔
+	int shineEffectInterval = shineEffectCreateInterval;
 	//接触フラグ
 	bool isTouched = false;
 	//接触後タイマー
