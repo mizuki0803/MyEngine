@@ -1072,7 +1072,7 @@ void Player::ShotStraightBullet()
 	Vector3 shotPos = GetWorldPos();
 
 	//弾の速度を設定
-	const float bulletSpeed = 5;
+	const float bulletSpeed = 6;
 	//自機からレティクルへのベクトルに合わせて飛ばす
 	Vector3 velocity = reticles->GetNearReticleWorldPos() - GetWorldPos();
 	velocity = velocity.normalize() * bulletSpeed;
@@ -1081,6 +1081,9 @@ void Player::ShotStraightBullet()
 	std::unique_ptr<PlayerBullet> newBullet;
 	newBullet.reset(StraightBullet::Create(bulletModel, bulletShotPos, velocity));
 	gameScene->AddPlayerBullet(std::move(newBullet));
+
+	//チャージショット演出用パーティクル生成
+	ParticleEmitter::GetInstance()->Shot(bulletShotPos);
 }
 
 void Player::ShotHomingBullet()
@@ -1088,9 +1091,11 @@ void Player::ShotHomingBullet()
 	//発射位置を自機のワールド座標に設定
 	Vector3 shotPos = GetWorldPos();
 
+	//弾の速度を設定
+	const float bulletSpeed = 1.75f;
 	//自機からレティクルへのベクトルに合わせて飛ばす
 	Vector3 velocity = reticles->GetNearReticleWorldPos() - GetWorldPos();
-	velocity.normalize();
+	velocity = velocity.normalize() * bulletSpeed;
 
 	//ホーミング弾を生成
 	std::unique_ptr<PlayerBullet> newBullet;

@@ -1,18 +1,5 @@
 #include "PlayerBullet.h"
 
-bool PlayerBullet::Initialize()
-{
-	scale = { 0.6f, 0.6f, 0.6f };
-
-	//3Dオブジェクトの初期化
-	if (!ObjObject3d::Initialize())
-	{
-		return false;
-	}
-
-	return true;
-}
-
 void PlayerBullet::Update()
 {
 	//地面に触れたとき

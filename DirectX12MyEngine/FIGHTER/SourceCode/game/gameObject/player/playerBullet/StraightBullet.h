@@ -12,7 +12,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>直進弾</returns>
-	static StraightBullet* Create(ObjModel* model, const Vector3& position, const Vector3& velocity);
+	static StraightBullet* Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float size = 1.0f);
 
 	/// <summary>
 	/// 更新

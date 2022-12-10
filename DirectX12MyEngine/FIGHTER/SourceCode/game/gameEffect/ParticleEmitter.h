@@ -69,6 +69,12 @@ public: //メンバ関数
 	void PlayerVapour(const XMMATRIX& playerMatWorld);
 
 	/// <summary>
+	/// ショット演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	void Shot(const Vector3& position);
+
+	/// <summary>
 	/// ショット死亡演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>

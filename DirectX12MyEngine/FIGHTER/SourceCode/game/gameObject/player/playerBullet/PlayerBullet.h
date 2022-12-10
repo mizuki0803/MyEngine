@@ -17,11 +17,6 @@ public: //enum
 
 public: //ƒƒ“ƒoŠÖ”
 	/// <summary>
-	/// ‰Šú‰»
-	/// </summary>
-	bool Initialize() override;
-
-	/// <summary>
 	/// XV
 	/// </summary>
 	void Update() override;

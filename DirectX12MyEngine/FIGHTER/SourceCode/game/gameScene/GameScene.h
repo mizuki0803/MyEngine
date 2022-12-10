@@ -181,7 +181,9 @@ private: //ƒƒ“ƒo•Ï”
 	std::unique_ptr<ObjModel> modelGround;
 	std::unique_ptr<ObjModel> modelMountain;
 	std::unique_ptr<ObjModel> modelSphere;
+	std::unique_ptr<ObjModel> modelPlayerBullet;
 	std::unique_ptr<ObjModel> modelFighter;
+	std::unique_ptr<ObjModel> modelEnemyBullet;
 	std::unique_ptr<ObjModel> modelEnemyFighter;
 	std::array<std::unique_ptr<ObjModel>, 5> modelEnemyFighterBreak;
 	std::unique_ptr<ObjModel> modelEnemyMiniRobot;

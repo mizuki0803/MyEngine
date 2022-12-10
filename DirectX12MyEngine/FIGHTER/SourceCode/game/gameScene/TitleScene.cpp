@@ -17,7 +17,7 @@ void TitleScene::Initialize()
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
 	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightActive(1, false);
+	lightGroup->SetDirLightActive(1, true);
 	lightGroup->SetDirLightActive(2, false);
 
 	//objからモデルデータを読み込む
@@ -92,6 +92,8 @@ void TitleScene::Update()
 	lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
 	lightGroup->SetDirLightDir(0, XMVECTOR({ lightDir0[0], lightDir0[1], lightDir0[2], 0 }));
 	lightGroup->SetDirLightColor(0, XMFLOAT3(lightColor0));
+	lightGroup->SetDirLightDir(1, XMVECTOR({ lightDir1[0], lightDir1[1], lightDir1[2], 0 }));
+	lightGroup->SetDirLightColor(1, XMFLOAT3(lightColor1));
 	lightGroup->Update();
 
 	//オブジェクト更新

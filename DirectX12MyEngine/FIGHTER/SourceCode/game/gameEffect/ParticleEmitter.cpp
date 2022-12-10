@@ -276,6 +276,37 @@ void ParticleEmitter::PlayerBlackSmokeJet(const XMMATRIX& playerMatWorld)
 	}
 }
 
+void ParticleEmitter::Shot(const Vector3& position)
+{
+	//生存時間
+	const int life = 3;
+	//速度、加速度は0
+	const Vector3 vel{};
+	const Vector3 acc{};
+	//大きさ変更のイージング
+	std::function<float(const float, const float, const float) > lerp =
+		std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+	//色
+	const XMFLOAT4 green = { 0.1f, 0.3f, 0.1f, 1.0f }; //薄い緑
+	for (int i = 0; i < 3; i++) {
+		//大きさ
+		const float scale = 2.5f;
+
+		//追加
+		circleParticle->Add(life, position, vel, acc, scale, scale, lerp, green, green);
+	}
+
+	//色
+	const XMFLOAT4 white = { 0.1f, 0.1f, 0.1f, 1.0f }; //薄い白
+	for (int i = 0; i < 3; i++) {
+		//大きさ
+		const float scale = 1.25f;
+
+		//追加
+		circleParticle->Add(life, position, vel, acc, scale, scale, lerp, white, white);
+	}
+}
+
 void ParticleEmitter::ShotDead(const Vector3& position, const float size)
 {
 	//色
@@ -602,7 +633,7 @@ void ParticleEmitter::BlackSmoke(const Vector3& position, const float size)
 void ParticleEmitter::ItemShine(const Vector3& position, const float size, const int num)
 {
 	//生存時間
-	for (int i = 0; i < num;  i++) {
+	for (int i = 0; i < num; i++) {
 		int life = (rand() % 30) + 30;
 
 		//X,Y,Zにでランダムに分布

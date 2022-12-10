@@ -44,7 +44,9 @@ void GameScene::Initialize()
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
+	modelPlayerBullet.reset(ObjModel::LoadFromOBJ("playerBullet", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
+	modelEnemyBullet.reset(ObjModel::LoadFromOBJ("enemyBullet", true));
 	modelEnemyFighter.reset(ObjModel::LoadFromOBJ("enemyFighter"));
 	modelEnemyFighterBreak[0].reset(ObjModel::LoadFromOBJ("enemyFighterBreak01"));
 	modelEnemyFighterBreak[1].reset(ObjModel::LoadFromOBJ("enemyFighterBreak02"));
@@ -72,7 +74,7 @@ void GameScene::Initialize()
 
 	//自機に必要な情報をセット
 	Player::SetGameScene(this);
-	Player::SetBulletModel(modelSphere.get());
+	Player::SetBulletModel(modelPlayerBullet.get());
 	//自機生成
 	const int maxHP = 101; //最大HP
 	const int startHP = maxHP / 2 + 1; //開始時HP
@@ -877,7 +879,7 @@ void GameScene::InitializeEnemy()
 	//全敵に必要な情報をセット
 	Enemy::SetGameScene(this); //全敵にゲームシーンを教える
 	Enemy::SetPlayer(player.get()); //自機をセット
-	Enemy::SetBulletModel(modelSphere.get()); //弾のモデルをセット
+	Enemy::SetBulletModel(modelEnemyBullet.get()); //弾のモデルをセット
 
 	//各種類の敵に必要な情報をセット
 	//大砲敵

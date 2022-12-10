@@ -83,8 +83,10 @@ private: //メンバ変数
 	std::unique_ptr<LightGroup> lightGroup;
 	float ambientColor0[3] = { 1,1,1 };
 	// 光線方向初期値
-	float lightDir0[3] = { 1,-1,-12 };
+	float lightDir0[3] = { 2,-1,-6 };
 	float lightColor0[3] = { 1,1,1 };
+	float lightDir1[3] = { -2,-1,6 };
+	float lightColor1[3] = { 0.4f,0.4f,0.4f };
 
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;

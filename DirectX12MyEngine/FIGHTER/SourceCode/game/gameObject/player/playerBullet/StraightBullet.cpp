@@ -1,7 +1,7 @@
 #include "StraightBullet.h"
 #include "ParticleEmitter.h"
 
-StraightBullet* StraightBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity)
+StraightBullet* StraightBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float size)
 {
 	//直進弾のインスタンスを生成
 	StraightBullet* straightBullet = new StraightBullet();
@@ -28,6 +28,9 @@ StraightBullet* StraightBullet::Create(ObjModel* model, const Vector3& position,
 
 	//速度をセット
 	straightBullet->velocity = velocity;
+
+	//大きさをセット
+	straightBullet->scale = { size, size, size };
 
 	return straightBullet;
 }

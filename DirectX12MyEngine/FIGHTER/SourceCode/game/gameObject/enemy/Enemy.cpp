@@ -127,7 +127,7 @@ void Enemy::Fire()
 	if (GetWorldPos().z <= player->GetWorldPos().z) { return; }
 
 	//’e‚Ì‘¬“x‚ðÝ’è
-	const float bulletSpeed = 0.5f;
+	const float bulletSpeed = 1.0f;
 
 	Vector3 playerPos = player->GetWorldPos();
 	Vector3 enemyPos = GetWorldPos();
