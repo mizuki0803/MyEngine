@@ -1,5 +1,6 @@
 #include "TitlePlayer.h"
 #include "ParticleEmitter.h"
+#include "Easing.h"
 #include "GamePostEffect.h"
 
 TitlePlayer* TitlePlayer::Create(ObjModel* model, const Vector3& startPosition)
@@ -63,22 +64,25 @@ void TitlePlayer::Sortie()
 	position += move;
 
 	//ポストエフェクトにラジアルブラーをかける
+	const float blurStrengthMax = 0.6f; //ブラー最大の広がる強さ
 	if (!GamePostEffect::GetPostEffect()->GetIsRadialBlur()) {
 		GamePostEffect::GetPostEffect()->SetRadialBlur(true);
 
 		//開始時のブラーの強さをセット
-		const float blurStrength = 0.5f;
-		GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
+		GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrengthMax);
 	}
 	else {
-		//だんだんブラーを弱くする
-		const int blurChangeTime = 10; //10フレームずつ弱くする
-		if (sortieStartTimer % 10 != 0) { return; }
-		float blurStrength = GamePostEffect::GetPostEffect()->GetRadialBlurStrength();
-		blurStrength -= 0.02f;
-		//ブラーの広がる強さが指定した値を下回らないようにする
-		const float blurStrengthMin = 0.1f;
-		if (blurStrength <= blurStrengthMin) { blurStrength = blurStrengthMin; }
+		//だんだんブラーを弱くする時間
+		const int blurChangeTime = 300;
+		//既に弱くしたら抜ける
+		if ((sortieStartTimer - sortieStartTime) > blurChangeTime) { return; }
+
+		//ブラー最小の広がる強さ
+		const float blurStrengthMin = 0.05f;
+
+		//イージングで強さを変更
+		const float time = (float)(sortieStartTimer - sortieStartTime) / blurChangeTime;
+		const float blurStrength = Easing::OutQuad(blurStrengthMax, blurStrengthMin, time);
 		GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 	}
 }

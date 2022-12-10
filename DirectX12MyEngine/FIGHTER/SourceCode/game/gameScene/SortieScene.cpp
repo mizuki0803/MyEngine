@@ -16,18 +16,9 @@ void SortieScene::Initialize()
 {
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
-
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightActive(1, true);
 	lightGroup->SetDirLightActive(2, true);
-	pointLightPos[0] = 0.5f;
-	pointLightPos[1] = 1.0f;
-	pointLightPos[2] = 0.0f;
-	lightGroup->SetPointLightActive(0, false);
-	lightGroup->SetPointLightActive(1, false);
-	lightGroup->SetPointLightActive(2, false);
-	//lightGroup->SetSpotLightActive(0, true);
-	lightGroup->SetCircleShadowActive(0, true);
 
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
@@ -94,6 +85,12 @@ void SortieScene::Update()
 	sortieCamera->Update();
 	//影生成用ライトカメラ
 	LightCameraUpdate();
+
+	//ライト更新
+	lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
+	lightGroup->SetDirLightDir(0, XMVECTOR({ lightDir0[0], lightDir0[1], lightDir0[2], 0 }));
+	lightGroup->SetDirLightColor(0, XMFLOAT3(lightColor0));
+	lightGroup->Update();
 
 	//オブジェクト更新
 	//自機

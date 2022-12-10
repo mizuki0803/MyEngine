@@ -22,14 +22,6 @@ void StageSelectScene::Initialize()
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightActive(1, true);
 	lightGroup->SetDirLightActive(2, true);
-	pointLightPos[0] = 0.5f;
-	pointLightPos[1] = 1.0f;
-	pointLightPos[2] = 0.0f;
-	lightGroup->SetPointLightActive(0, false);
-	lightGroup->SetPointLightActive(1, false);
-	lightGroup->SetPointLightActive(2, false);
-	//lightGroup->SetSpotLightActive(0, true);
-	lightGroup->SetCircleShadowActive(0, true);
 
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeSpace"));
@@ -109,6 +101,18 @@ void StageSelectScene::Update()
 	stageSelectCamera->Update();
 	//影生成用ライトカメラ
 	LightCameraUpdate();
+
+	//ライト更新
+	{
+		lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
+		lightGroup->SetDirLightDir(0, XMVECTOR({ lightDir0[0], lightDir0[1], lightDir0[2], 0 }));
+		lightGroup->SetDirLightColor(0, XMFLOAT3(lightColor0));
+		lightGroup->SetDirLightDir(1, XMVECTOR({ lightDir1[0], lightDir1[1], lightDir1[2], 0 }));
+		lightGroup->SetDirLightColor(1, XMFLOAT3(lightColor1));
+		lightGroup->SetDirLightDir(2, XMVECTOR({ lightDir2[0], lightDir2[1], lightDir2[2], 0 }));
+		lightGroup->SetDirLightColor(2, XMFLOAT3(lightColor2));
+	}
+	lightGroup->Update();
 
 	//オブジェクト更新
 	//自機

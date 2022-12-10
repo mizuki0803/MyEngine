@@ -16,33 +16,27 @@ void TitleScene::Initialize()
 {
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
-
 	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightActive(1, true);
-	lightGroup->SetDirLightActive(2, true);
-	pointLightPos[0] = 0.5f;
-	pointLightPos[1] = 1.0f;
-	pointLightPos[2] = 0.0f;
-	lightGroup->SetPointLightActive(0, false);
-	lightGroup->SetPointLightActive(1, false);
-	lightGroup->SetPointLightActive(2, false);
-	//lightGroup->SetSpotLightActive(0, true);
-	lightGroup->SetCircleShadowActive(0, true);
+	lightGroup->SetDirLightActive(1, false);
+	lightGroup->SetDirLightActive(2, false);
 
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
-	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
-	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
-	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
+	modelbaseField.reset(ObjModel::LoadFromOBJ("baseField"));
+	modelRoad.reset(ObjModel::LoadFromOBJ("road"));
 	modelWarehouse01.reset(ObjModel::LoadFromOBJ("warehouse01"));
 	modelWarehouse02.reset(ObjModel::LoadFromOBJ("warehouse02"));
 	modelControlTower.reset(ObjModel::LoadFromOBJ("controlTower"));
 
 	//背景マップレベルデータ生成
-	backgroundMapData.reset(LevelDataLoader::Create("demoMap.json"));
-	backgroundMapData->InsertModel("sphere", modelSphere.get());
-	backgroundMapData->InsertModel("mountain", modelWarehouse01.get());
+	backgroundMapData.reset(LevelDataLoader::Create("titleMap.json"));
+	backgroundMapData->InsertModel("fighter", modelFighter.get());
+	backgroundMapData->InsertModel("baseField", modelbaseField.get());
+	backgroundMapData->InsertModel("road", modelRoad.get());
+	backgroundMapData->InsertModel("controlTower", modelControlTower.get());
+	backgroundMapData->InsertModel("warehouse01", modelWarehouse01.get());
+	backgroundMapData->InsertModel("warehouse02", modelWarehouse02.get());
 	backgroundMapData->CreateLevelDataObjects();
 
 	//ポストエフェクトのブラーを解除しておく
@@ -57,13 +51,11 @@ void TitleScene::Initialize()
 	titleCamera->Initialize();
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
-	lightCamera->Initialize({ 0, 500, 0 });
+	lightCamera->Initialize({ 0, 100, 20 });
+	lightCamera->SetProjectionNum({ 20, 20 }, { -20, -20 });
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
-
-	//地面生成
-	ground.reset(Ground::Create(modelGround.get()));
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(titleCamera.get());
@@ -96,6 +88,12 @@ void TitleScene::Update()
 	titleCamera->Update();
 	lightCamera->Update();
 
+	//ライト更新
+	lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
+	lightGroup->SetDirLightDir(0, XMVECTOR({ lightDir0[0], lightDir0[1], lightDir0[2], 0 }));
+	lightGroup->SetDirLightColor(0, XMFLOAT3(lightColor0));
+	lightGroup->Update();
+
 	//オブジェクト更新
 	//背景マップレベルデータ
 	backgroundMapData->Update();
@@ -103,12 +101,6 @@ void TitleScene::Update()
 	player->Update();
 	//天球
 	skydome->Update();
-	//地面
-	ground->Update();
-	//背景用(山)
-	for (const std::unique_ptr<Mountain>& mountain : mountains) {
-		mountain->Update();
-	}
 
 	//スプライト更新
 	//タイトルUI更新
@@ -154,12 +146,6 @@ void TitleScene::Draw3D()
 	player->Draw();
 	//天球
 	skydome->Draw();
-	//地面
-	ground->Draw();
-	//背景用(山)
-	for (const std::unique_ptr<Mountain>& mountain : mountains) {
-		mountain->Draw();
-	}
 
 	///-------Object3d描画ここまで-------///
 
@@ -183,12 +169,6 @@ void TitleScene::Draw3DLightView()
 	player->DrawLightCameraView();
 	//天球
 	skydome->DrawLightCameraView();
-	//地面
-	ground->DrawLightCameraView();
-	//背景用(山)
-	for (const std::unique_ptr<Mountain>& mountain : mountains) {
-		mountain->DrawLightCameraView();
-	}
 
 	///-------Object3d描画ここまで-------///
 }
