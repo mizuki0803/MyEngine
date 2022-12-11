@@ -9,8 +9,6 @@
 #include "Collision.h"
 #include "TitlePlayer.h"
 #include "Skydome.h"
-#include "Ground.h"
-#include "Mountain.h"
 #include "TitleUI.h"
 #include "LevelDataLoader.h"
 
@@ -92,6 +90,7 @@ private: //ƒƒ“ƒo•Ï”
 	std::unique_ptr<ObjModel> modelSkydome;
 	std::unique_ptr<ObjModel> modelFighter;
 	std::unique_ptr<ObjModel> modelbaseField;
+	std::unique_ptr<ObjModel> modelbaseField02;
 	std::unique_ptr<ObjModel> modelRoad;
 	std::unique_ptr<ObjModel> modelWarehouse01;
 	std::unique_ptr<ObjModel> modelWarehouse02;

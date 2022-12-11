@@ -58,10 +58,9 @@ void TitlePlayer::Sortie()
 	rotation.x = max(rotation.x, rotLimit);
 
 	//自機が傾いている角度に移動させる
-	Vector3 move = { 0, 0, 2.5f };
-	const float moveSpeed = 2.5f;
-	move.y = moveSpeed * (rotation.x / rotLimit);
-	position += move;
+	Vector3 moveSpeed = { 0, 5, 5 };
+	moveSpeed.y = moveSpeed.y * (rotation.x / rotLimit);
+	position += moveSpeed;
 
 	//ポストエフェクトにラジアルブラーをかける
 	const float blurStrengthMax = 0.6f; //ブラー最大の広がる強さ

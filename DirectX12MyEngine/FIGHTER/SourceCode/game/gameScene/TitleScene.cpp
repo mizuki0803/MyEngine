@@ -24,6 +24,7 @@ void TitleScene::Initialize()
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
 	modelbaseField.reset(ObjModel::LoadFromOBJ("baseField"));
+	modelbaseField02.reset(ObjModel::LoadFromOBJ("baseField02"));
 	modelRoad.reset(ObjModel::LoadFromOBJ("road"));
 	modelWarehouse01.reset(ObjModel::LoadFromOBJ("warehouse01"));
 	modelWarehouse02.reset(ObjModel::LoadFromOBJ("warehouse02"));
@@ -33,6 +34,7 @@ void TitleScene::Initialize()
 	backgroundMapData.reset(LevelDataLoader::Create("titleMap.json"));
 	backgroundMapData->InsertModel("fighter", modelFighter.get());
 	backgroundMapData->InsertModel("baseField", modelbaseField.get());
+	backgroundMapData->InsertModel("baseField02", modelbaseField02.get());
 	backgroundMapData->InsertModel("road", modelRoad.get());
 	backgroundMapData->InsertModel("controlTower", modelControlTower.get());
 	backgroundMapData->InsertModel("warehouse01", modelWarehouse01.get());
@@ -113,7 +115,7 @@ void TitleScene::Update()
 	ParticleEmitter::GetInstance()->Update();
 
 	//自機が空まで行って見えなくなったら
-	const bool isPlayerSky = (player->GetPosition().y >= 400);
+	const bool isPlayerSky = (player->GetPosition().y >= 500);
 	if (isPlayerSky) {
 		//ステージ選択へシーン変更を開始する
 		SceneChangeStart({ 0,0,0,0 }, 40, 60, 60, "STAGESELECT");
