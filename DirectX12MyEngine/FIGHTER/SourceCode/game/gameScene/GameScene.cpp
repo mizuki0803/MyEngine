@@ -249,6 +249,11 @@ void GameScene::Update()
 	//2D衝突判定管理
 	CollisionCheck2d();
 
+
+	//ボス死亡後の演出
+	if (bossDeadEffect) {
+		bossDeadEffect->Update();
+	}
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
@@ -509,7 +514,10 @@ void GameScene::ObjectRelease()
 			GameGroundManager::SetIsScroll(false);
 			//山のスクロール状態を解除
 			GameMountainManager::SetIsScroll(false);
+			//死亡後演出を生成
+			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetMainBody()->GetWorldPos()));
 
+			//解放
 			boss.reset();
 		}
 	}

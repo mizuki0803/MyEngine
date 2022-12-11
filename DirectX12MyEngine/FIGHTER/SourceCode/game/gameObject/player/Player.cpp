@@ -95,6 +95,9 @@ bool Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
 
 void Player::Update()
 {
+	//自機のジェット噴射演出用パーティクル生成
+	JetEffectManager();
+
 	//死亡状態なら抜ける
 	if (isDead) { return; }
 
@@ -106,9 +109,6 @@ void Player::Update()
 
 	//レティクル更新
 	reticles->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
-
-	//自機のジェット噴射演出用パーティクル生成
-	JetEffectManager();
 }
 
 void Player::Draw()
@@ -1092,7 +1092,7 @@ void Player::ShotHomingBullet()
 	Vector3 shotPos = GetWorldPos();
 
 	//弾の速度を設定
-	const float bulletSpeed = 1.75f;
+	const float bulletSpeed = 1.6f;
 	//自機からレティクルへのベクトルに合わせて飛ばす
 	Vector3 velocity = reticles->GetNearReticleWorldPos() - GetWorldPos();
 	velocity = velocity.normalize() * bulletSpeed;

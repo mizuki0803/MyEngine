@@ -11,6 +11,7 @@
 #include "Enemy.h"
 #include "Boss.h"
 #include "BossWarning.h"
+#include "BossDeadEffect.h"
 #include "HealingItem.h"
 #include "Skydome.h"
 #include "GameGroundManager.h"
@@ -220,6 +221,8 @@ private: //メンバ変数
 	bool isBossBattle = false;
 	//ボス登場警告
 	std::unique_ptr<BossWarning> bossWarning;
+	//ボス死亡後の演出管理
+	std::unique_ptr<BossDeadEffect> bossDeadEffect;
 	//回復アイテム
 	std::list<std::unique_ptr<HealingItem>> healingItems;
 	//天球

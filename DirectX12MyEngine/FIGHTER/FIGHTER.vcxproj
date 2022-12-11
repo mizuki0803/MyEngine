@@ -134,6 +134,7 @@
     <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\StageSelectCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\TitleCamera.cpp" />
+    <ClCompile Include="SourceCode\game\gameEffect\BossDeadEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\EnemyBreakEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\GamePostEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameEffect\ParticleEmitter.cpp" />
@@ -348,6 +349,7 @@
     <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\StageSelectCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\TitleCamera.h" />
+    <ClInclude Include="SourceCode\game\gameEffect\BossDeadEffect.h" />
     <ClInclude Include="SourceCode\game\gameEffect\EnemyBreakEffect.h" />
     <ClInclude Include="SourceCode\game\gameEffect\GamePostEffect.h" />
     <ClInclude Include="SourceCode\game\gameEffect\ParticleEmitter.h" />

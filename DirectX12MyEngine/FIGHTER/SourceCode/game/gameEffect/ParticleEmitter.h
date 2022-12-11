@@ -130,7 +130,8 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
 	/// <param name="size">パーティクル大きさ</param>
-	void BlackSmoke(const Vector3& position, const float size);
+	/// <param name="time">生存時間</param>
+	void BlackSmoke(const Vector3& position, const float size, const int time = 30);
 
 	/// <summary>
 	/// アイテムのキラキラ

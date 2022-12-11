@@ -246,7 +246,7 @@ void ParticleEmitter::PlayerBlackSmokeJet(const XMMATRIX& playerMatWorld)
 	//座標を元に黒煙エフェクトを作成
 	for (int i = 0; i < 2; i++) {
 		//生存時間
-		int life = (rand() % 30) + 60;
+		int life = (rand() % 30) + 180;
 
 		//X,Y,Zランダムに分布
 		const Vector3 mdVel = { 0.01f, 0.05f, 0.01f };
@@ -547,7 +547,7 @@ void ParticleEmitter::BossDeadExplosion(const Vector3& position)
 {
 	for (int j = 0; j < 20; j++) {
 		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
-		const float mdPos = 2.5f;
+		const float mdPos = 3.0f;
 		Vector3 pos = position;
 		pos.x += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f);
 		pos.y += ((float)rand() / RAND_MAX * mdPos);
@@ -555,7 +555,7 @@ void ParticleEmitter::BossDeadExplosion(const Vector3& position)
 
 		for (int i = 0; i < 30; i++) {
 			//生存時間
-			int life = (rand() % 30) + 40;
+			int life = (rand() % 30) + 80;
 
 			//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
 			const float mdPos2 = 2.5f;
@@ -590,11 +590,11 @@ void ParticleEmitter::BossDeadExplosion(const Vector3& position)
 	}
 }
 
-void ParticleEmitter::BlackSmoke(const Vector3& position, const float size)
+void ParticleEmitter::BlackSmoke(const Vector3& position, const float size, const int time)
 {
 	for (int i = 0; i < 2; i++) {
 		//生存時間
-		int life = (rand() % 30) + 30;
+		int life = (rand() % 30) + time;
 
 		//X,Y,Zごとにでランダムに分布
 		const float mdPos = 0.1f;
@@ -672,6 +672,8 @@ void ParticleEmitter::AllDelete()
 	//全パーティクルの削除
 	circleParticle->AllDelete();
 	explosionParticle->AllDelete();
+	blackSmokeParticle->AllDelete();
+	shineParticle->AllDelete();
 }
 
 void ParticleEmitter::LoadTexture()

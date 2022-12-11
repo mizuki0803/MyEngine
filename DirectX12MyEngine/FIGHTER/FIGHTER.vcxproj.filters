@@ -545,6 +545,9 @@
     <ClCompile Include="SourceCode\engine\base\DescHeapSRV.cpp">
       <Filter>ソース ファイル\engine\base\descHeapSRV</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameEffect\BossDeadEffect.cpp">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -976,6 +979,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\base\Texture.h">
       <Filter>ソース ファイル\engine\base\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameEffect\BossDeadEffect.h">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
