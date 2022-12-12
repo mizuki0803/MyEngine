@@ -3,7 +3,7 @@
 #include "Easing.h"
 #include <DirectXMath.h>
 
-MultiHitUI* MultiHitUI::Create(const Vector3& position, Camera* camera, const int enemyHitNum)
+MultiHitUI* MultiHitUI::Create(const Vector3& position, GameCamera* camera, const int enemyHitNum)
 {
 	//複数撃破UIのインスタンスを生成
 	MultiHitUI* multiHitUI = new MultiHitUI();
@@ -21,7 +21,7 @@ MultiHitUI* MultiHitUI::Create(const Vector3& position, Camera* camera, const in
 	return multiHitUI;
 }
 
-bool MultiHitUI::Initialize(const Vector3& position, Camera* camera, const int enemyHitNum)
+bool MultiHitUI::Initialize(const Vector3& position, GameCamera* camera, const int enemyHitNum)
 {
 	//HITワールド座標取得
 	this->hitWorldPos = position;
@@ -54,7 +54,7 @@ bool MultiHitUI::Initialize(const Vector3& position, Camera* camera, const int e
 		std::unique_ptr<NumberSprite> newNumberSprite;
 		const Vector2 size = { 36, 36 };
 		const Vector2 texSize = { 48, 48 };
-		const Vector2 pos = { hitTextPos.x + 48 + ((hitNumDigit - i) * size.x), hitTextPos.y };
+		const Vector2 pos = { hitTextPos.x + texSize.x + ((hitNumDigit - i) * size.x), hitTextPos.y };
 		newNumberSprite.reset(NumberSprite::Create(SpriteTextureLoader::HitPlusNumber, pos, size, texSize));
 		//割る数
 		int divisionNum = 1;
@@ -84,6 +84,9 @@ void MultiHitUI::Update()
 	//テキストをワールド座標上で上に動かす
 	TextMove();
 
+	//カメラより手前にあるか確認
+	FrontOfScreenDelete();
+
 	//「HIT」テキスト更新
 	hitTextSprite->Update();
 
@@ -104,7 +107,7 @@ void MultiHitUI::Draw()
 	}
 }
 
-Vector2 MultiHitUI::GetScreenPos(const Vector3& position, Camera* camera)
+Vector2 MultiHitUI::GetScreenPos(const Vector3& position, GameCamera* camera)
 {
 	Vector3 worldPos = position;
 
@@ -140,14 +143,22 @@ void MultiHitUI::TextMove()
 	//スクリーン座標に変換
 	Vector2 screenPos = GetScreenPos(worldPos, camera);
 
-	//枠スプライト生成
+	//HITスプライトの座標をセット
 	const Vector2 hitTextPos = { screenPos.x - 10, screenPos.y };
 	hitTextSprite->SetPosition(hitTextPos);
 
-	//桁数の分、数字スプライト生成
+	//桁数の分、数字スプライトの座標をセット
 	for (int i = 0; i < hitNumDigit; i++) {
 		const Vector2 size = numberSprites[i]->GetSize();
 		const Vector2 pos = { hitTextPos.x + 48 + ((hitNumDigit - i) * size.x), hitTextPos.y };
 		numberSprites[i]->SetPosition(pos);
 	}
+}
+
+void MultiHitUI::FrontOfScreenDelete()
+{
+	//座標がカメラより手前(画面外手前)まで行ったら削除
+	if (hitWorldPos.z > camera->GetPosition().z) { return; }
+
+	isDead = true;
 }

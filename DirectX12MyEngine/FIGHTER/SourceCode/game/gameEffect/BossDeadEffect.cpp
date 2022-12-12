@@ -39,7 +39,7 @@ void BossDeadEffect::Explosion()
 
 	//爆発演出用パーティクル生成
 	Vector3 explosionPos = deadPos;
-	const float distance = 30.0f;
+	const float distance = 15.0f;
 	explosionPos.x += (float)rand() / RAND_MAX * distance - distance / 2.0f;
 	explosionPos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
 	ParticleEmitter::GetInstance()->BossDeadExplosion(explosionPos);

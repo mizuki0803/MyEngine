@@ -1,6 +1,6 @@
 #pragma once
 #include "NumberSprite.h"
-#include "Camera.h"
+#include "GameCamera.h"
 #include <vector>
 #include <memory>
 
@@ -14,14 +14,14 @@ public: //静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <returns>複数撃破UI</returns>
-	static MultiHitUI* Create(const Vector3& position, Camera* camera, const int enemyHitNum);
+	static MultiHitUI* Create(const Vector3& position, GameCamera* camera, const int enemyHitNum);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <returns>成否</returns>
-	bool Initialize(const Vector3& position, Camera* camera, const int enemyHitNum);
+	bool Initialize(const Vector3& position, GameCamera* camera, const int enemyHitNum);
 
 	/// <summary>
 	/// 更新
@@ -40,12 +40,17 @@ private: //メンバ関数
 	/// <summary>
 	/// スクリーン座標取得
 	/// </summary>
-	Vector2 GetScreenPos(const Vector3& position, Camera* camera);
+	Vector2 GetScreenPos(const Vector3& position, GameCamera* camera);
 
 	/// <summary>
 	/// テキストを上に動かす
 	/// </summary>
 	void TextMove();
+
+	/// <summary>
+	/// 画面手前まで行ったら削除する処理
+	/// </summary>
+	void FrontOfScreenDelete();
 
 private: //静的メンバ変数
 	//寿命時間
@@ -53,7 +58,7 @@ private: //静的メンバ変数
 
 private: //メンバ変数
 	//カメラ
-	Camera* camera = nullptr;
+	GameCamera* camera = nullptr;
 	//「HIT」テキストスプライト
 	std::unique_ptr<Sprite> hitTextSprite;
 	//数字スプライト
