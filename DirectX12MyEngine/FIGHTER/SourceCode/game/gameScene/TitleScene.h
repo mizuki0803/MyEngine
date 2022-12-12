@@ -95,6 +95,7 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelWarehouse01;
 	std::unique_ptr<ObjModel> modelWarehouse02;
 	std::unique_ptr<ObjModel> modelControlTower;
+	std::unique_ptr<ObjModel> modelControlRoom;
 
 	//背景マップレベルデータ
 	std::unique_ptr<LevelDataLoader> backgroundMapData;

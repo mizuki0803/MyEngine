@@ -31,6 +31,7 @@ void GameScene::Initialize()
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
 	lightCamera->Initialize({ 0, 500, 0 });
+	lightCamera->SetProjectionNum({ 150, 150 }, { -150, -150 });
 
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
@@ -358,8 +359,6 @@ void GameScene::Draw3DLightView()
 	}
 	//天球
 	skydome->DrawLightCameraView();
-	//地面
-	//ground->DrawLightCameraView();
 	//背景用(山)
 	gameMountainManager->DrawLightCameraView();
 

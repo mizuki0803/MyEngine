@@ -70,8 +70,8 @@
             "name": "円柱.001_円柱.002",
             "transform": {
                 "translation": [
-                    -200.0,
-                    50.0,
+                    -230.0,
+                    60.0,
                     0.0
                 ],
                 "rotation": [
@@ -80,9 +80,9 @@
                     0.0
                 ],
                 "scaling": [
-                    7.5,
-                    7.5,
-                    7.402748107910156
+                    10.0,
+                    10.0,
+                    10.0
                 ]
             },
             "file_name": "controlTower"
@@ -366,9 +366,9 @@
                     -179.99998474121094
                 ],
                 "scaling": [
-                    8.0,
-                    8.0,
-                    8.0
+                    10.0,
+                    10.0,
+                    10.0
                 ]
             },
             "file_name": "warehouse02"
@@ -388,9 +388,9 @@
                     -179.99998474121094
                 ],
                 "scaling": [
-                    8.0,
-                    8.0,
-                    8.0
+                    10.0,
+                    10.0,
+                    10.0
                 ]
             },
             "file_name": "warehouse02"
@@ -1853,7 +1853,7 @@
             "transform": {
                 "translation": [
                     240.0,
-                    240.0,
+                    235.0,
                     2.5
                 ],
                 "rotation": [
@@ -1875,7 +1875,7 @@
             "transform": {
                 "translation": [
                     80.0,
-                    180.0,
+                    175.0,
                     2.5
                 ],
                 "rotation": [
@@ -1890,50 +1890,6 @@
                 ]
             },
             "file_name": "fighter"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.149",
-            "transform": {
-                "translation": [
-                    -80.0,
-                    -160.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.150",
-            "transform": {
-                "translation": [
-                    -40.0,
-                    -160.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
         },
         {
             "type": "MESH",
@@ -1981,319 +1937,11 @@
         },
         {
             "type": "MESH",
-            "name": "平面.153",
-            "transform": {
-                "translation": [
-                    80.0,
-                    -160.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.154",
-            "transform": {
-                "translation": [
-                    40.0,
-                    -160.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.156",
-            "transform": {
-                "translation": [
-                    -40.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.157",
-            "transform": {
-                "translation": [
-                    0.0,
-                    -160.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
             "name": "平面.158",
             "transform": {
                 "translation": [
                     -80.0,
                     -40.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.159",
-            "transform": {
-                "translation": [
-                    -120.0,
-                    -160.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.160",
-            "transform": {
-                "translation": [
-                    -160.0,
-                    -160.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.161",
-            "transform": {
-                "translation": [
-                    -200.0,
-                    -160.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.162",
-            "transform": {
-                "translation": [
-                    -160.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.163",
-            "transform": {
-                "translation": [
-                    -120.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.164",
-            "transform": {
-                "translation": [
-                    -80.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.165",
-            "transform": {
-                "translation": [
-                    0.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.166",
-            "transform": {
-                "translation": [
-                    -40.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.168",
-            "transform": {
-                "translation": [
-                    40.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.169",
-            "transform": {
-                "translation": [
-                    80.0,
-                    -120.0,
                     0.0
                 ],
                 "rotation": [
@@ -2531,50 +2179,6 @@
         },
         {
             "type": "MESH",
-            "name": "平面.183",
-            "transform": {
-                "translation": [
-                    -200.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.184",
-            "transform": {
-                "translation": [
-                    -200.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
             "name": "平面.196",
             "transform": {
                 "translation": [
@@ -2602,336 +2206,6 @@
                 "translation": [
                     120.0,
                     -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.198",
-            "transform": {
-                "translation": [
-                    80.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.199",
-            "transform": {
-                "translation": [
-                    40.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.201",
-            "transform": {
-                "translation": [
-                    -40.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.202",
-            "transform": {
-                "translation": [
-                    0.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.203",
-            "transform": {
-                "translation": [
-                    -80.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.204",
-            "transform": {
-                "translation": [
-                    -120.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.205",
-            "transform": {
-                "translation": [
-                    -160.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.207",
-            "transform": {
-                "translation": [
-                    -200.0,
-                    -240.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.208",
-            "transform": {
-                "translation": [
-                    -160.0,
-                    -240.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.209",
-            "transform": {
-                "translation": [
-                    -120.0,
-                    -240.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.210",
-            "transform": {
-                "translation": [
-                    -80.0,
-                    -240.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.211",
-            "transform": {
-                "translation": [
-                    0.0,
-                    -240.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.212",
-            "transform": {
-                "translation": [
-                    -40.0,
-                    -240.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.214",
-            "transform": {
-                "translation": [
-                    40.0,
-                    -240.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.215",
-            "transform": {
-                "translation": [
-                    80.0,
-                    -240.0,
                     0.0
                 ],
                 "rotation": [
@@ -3279,99 +2553,11 @@
         },
         {
             "type": "MESH",
-            "name": "平面.237",
-            "transform": {
-                "translation": [
-                    -240.0,
-                    -240.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.240",
-            "transform": {
-                "translation": [
-                    -240.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.241",
-            "transform": {
-                "translation": [
-                    -240.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
             "name": "平面.242",
             "transform": {
                 "translation": [
                     -240.0,
                     -40.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.243",
-            "transform": {
-                "translation": [
-                    -240.0,
-                    -160.0,
                     0.0
                 ],
                 "rotation": [
@@ -3785,28 +2971,6 @@
         },
         {
             "type": "MESH",
-            "name": "平面.274",
-            "transform": {
-                "translation": [
-                    -280.0,
-                    -160.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
             "name": "平面.275",
             "transform": {
                 "translation": [
@@ -3829,165 +2993,11 @@
         },
         {
             "type": "MESH",
-            "name": "平面.276",
-            "transform": {
-                "translation": [
-                    -280.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.277",
-            "transform": {
-                "translation": [
-                    -280.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.280",
-            "transform": {
-                "translation": [
-                    -280.0,
-                    -240.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.262",
-            "transform": {
-                "translation": [
-                    -320.0,
-                    -240.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.269",
-            "transform": {
-                "translation": [
-                    -320.0,
-                    -200.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.270",
-            "transform": {
-                "translation": [
-                    -320.0,
-                    -120.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
             "name": "平面.273",
             "transform": {
                 "translation": [
                     -320.0,
                     -40.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.281",
-            "transform": {
-                "translation": [
-                    -320.0,
-                    -160.0,
                     0.0
                 ],
                 "rotation": [
@@ -4426,7 +3436,7 @@
             "name": "平面.308",
             "transform": {
                 "translation": [
-                    240.0,
+                    250.0,
                     -200.0,
                     0.0
                 ],
@@ -5567,72 +4577,6 @@
         },
         {
             "type": "MESH",
-            "name": "平面.136",
-            "transform": {
-                "translation": [
-                    -280.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.138",
-            "transform": {
-                "translation": [
-                    -320.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.139",
-            "transform": {
-                "translation": [
-                    -240.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
             "name": "平面.140",
             "transform": {
                 "translation": [
@@ -5681,182 +4625,6 @@
             "transform": {
                 "translation": [
                     120.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.143",
-            "transform": {
-                "translation": [
-                    80.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.144",
-            "transform": {
-                "translation": [
-                    40.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.146",
-            "transform": {
-                "translation": [
-                    -40.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.147",
-            "transform": {
-                "translation": [
-                    0.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.148",
-            "transform": {
-                "translation": [
-                    -80.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.230",
-            "transform": {
-                "translation": [
-                    -120.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.231",
-            "transform": {
-                "translation": [
-                    -160.0,
-                    -280.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.232",
-            "transform": {
-                "translation": [
-                    -200.0,
                     -280.0,
                     0.0
                 ],
@@ -5937,7 +4705,7 @@
                     1.0
                 ]
             },
-            "file_name": "baseField"
+            "file_name": "baseField02"
         },
         {
             "type": "MESH",
@@ -5959,7 +4727,7 @@
                     1.0
                 ]
             },
-            "file_name": "baseField"
+            "file_name": "baseField02"
         },
         {
             "type": "MESH",
@@ -5981,7 +4749,7 @@
                     1.0
                 ]
             },
-            "file_name": "baseField"
+            "file_name": "baseField02"
         },
         {
             "type": "MESH",
@@ -6003,7 +4771,7 @@
                     1.0
                 ]
             },
-            "file_name": "baseField"
+            "file_name": "baseField02"
         },
         {
             "type": "MESH",
@@ -6025,7 +4793,7 @@
                     1.0
                 ]
             },
-            "file_name": "baseField"
+            "file_name": "baseField02"
         },
         {
             "type": "MESH",
@@ -6047,7 +4815,7 @@
                     1.0
                 ]
             },
-            "file_name": "baseField"
+            "file_name": "baseField02"
         },
         {
             "type": "MESH",
@@ -6055,28 +4823,6 @@
             "transform": {
                 "translation": [
                     40.0,
-                    -320.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "file_name": "baseField"
-        },
-        {
-            "type": "MESH",
-            "name": "平面.301",
-            "transform": {
-                "translation": [
-                    80.0,
                     -320.0,
                     0.0
                 ],
@@ -6179,7 +4925,7 @@
                     1.0
                 ]
             },
-            "file_name": "baseField"
+            "file_name": "baseField02"
         },
         {
             "type": "MESH",
@@ -6201,7 +4947,7 @@
                     1.0
                 ]
             },
-            "file_name": "baseField"
+            "file_name": "baseField02"
         },
         {
             "type": "MESH",
@@ -6223,7 +4969,7 @@
                     1.0
                 ]
             },
-            "file_name": "baseField"
+            "file_name": "baseField02"
         },
         {
             "type": "MESH",
@@ -7616,7 +6362,7 @@
             "name": "Cube.022",
             "transform": {
                 "translation": [
-                    257.5,
+                    247.5,
                     -215.0,
                     0.0
                 ],
@@ -7638,7 +6384,7 @@
             "name": "Cube.023",
             "transform": {
                 "translation": [
-                    222.5,
+                    212.5,
                     -215.0,
                     0.0
                 ],
@@ -7660,7 +6406,7 @@
             "name": "Cube.027",
             "transform": {
                 "translation": [
-                    187.5,
+                    177.5,
                     -215.0,
                     0.0
                 ],
@@ -7682,7 +6428,7 @@
             "name": "Cube.035",
             "transform": {
                 "translation": [
-                    170.0,
+                    160.0,
                     -150.0,
                     0.0
                 ],
@@ -7704,7 +6450,7 @@
             "name": "Cube.036",
             "transform": {
                 "translation": [
-                    205.0,
+                    195.0,
                     -150.0,
                     0.0
                 ],
@@ -7726,7 +6472,7 @@
             "name": "Cube.037",
             "transform": {
                 "translation": [
-                    240.0,
+                    230.0,
                     -150.0,
                     0.0
                 ],
@@ -7748,7 +6494,7 @@
             "name": "Cube.041",
             "transform": {
                 "translation": [
-                    152.5,
+                    142.5,
                     -215.0,
                     0.0
                 ],
@@ -7770,7 +6516,7 @@
             "name": "Cube.021",
             "transform": {
                 "translation": [
-                    152.5,
+                    142.5,
                     -290.0,
                     0.0
                 ],
@@ -7792,7 +6538,7 @@
             "name": "Cube.038",
             "transform": {
                 "translation": [
-                    187.5,
+                    177.5,
                     -290.0,
                     0.0
                 ],
@@ -7814,7 +6560,7 @@
             "name": "Cube.039",
             "transform": {
                 "translation": [
-                    222.5,
+                    212.5,
                     -290.0,
                     0.0
                 ],
@@ -7836,7 +6582,7 @@
             "name": "Cube.040",
             "transform": {
                 "translation": [
-                    257.5,
+                    247.5,
                     -290.0,
                     0.0
                 ],
@@ -8028,6 +6774,1458 @@
                 ]
             },
             "file_name": "fighter"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.002_立方体.002",
+            "transform": {
+                "translation": [
+                    -300.0,
+                    -190.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    8.0,
+                    8.0
+                ]
+            },
+            "file_name": "controlRoom"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.002_立方体.001",
+            "transform": {
+                "translation": [
+                    -110.0,
+                    -190.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    8.0,
+                    8.0
+                ]
+            },
+            "file_name": "controlRoom"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.143",
+            "transform": {
+                "translation": [
+                    80.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "road"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.153",
+            "transform": {
+                "translation": [
+                    80.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "road"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.169",
+            "transform": {
+                "translation": [
+                    80.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "road"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.198",
+            "transform": {
+                "translation": [
+                    80.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "road"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.215",
+            "transform": {
+                "translation": [
+                    80.0,
+                    -320.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "road"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.299",
+            "transform": {
+                "translation": [
+                    80.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "road"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.050",
+            "transform": {
+                "translation": [
+                    317.5,
+                    -290.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -90.00000762939453
+                ],
+                "scaling": [
+                    9.0,
+                    9.0,
+                    9.0
+                ]
+            },
+            "file_name": "warehouse01"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.051",
+            "transform": {
+                "translation": [
+                    282.5,
+                    -290.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -90.00000762939453
+                ],
+                "scaling": [
+                    9.0,
+                    9.0,
+                    9.0
+                ]
+            },
+            "file_name": "warehouse01"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.052",
+            "transform": {
+                "translation": [
+                    282.5,
+                    -215.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -90.00000762939453
+                ],
+                "scaling": [
+                    9.0,
+                    9.0,
+                    9.0
+                ]
+            },
+            "file_name": "warehouse01"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.053",
+            "transform": {
+                "translation": [
+                    317.5,
+                    -215.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -90.00000762939453
+                ],
+                "scaling": [
+                    9.0,
+                    9.0,
+                    9.0
+                ]
+            },
+            "file_name": "warehouse01"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.055",
+            "transform": {
+                "translation": [
+                    300.0,
+                    -150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -90.00000762939453
+                ],
+                "scaling": [
+                    7.0,
+                    7.0,
+                    7.0
+                ]
+            },
+            "file_name": "warehouse01"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.056",
+            "transform": {
+                "translation": [
+                    265.0,
+                    -150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -90.00000762939453
+                ],
+                "scaling": [
+                    7.0,
+                    7.0,
+                    7.0
+                ]
+            },
+            "file_name": "warehouse01"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.002_立方体.003",
+            "transform": {
+                "translation": [
+                    -315.0,
+                    -285.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    12.0,
+                    12.0,
+                    12.0
+                ]
+            },
+            "file_name": "controlRoom"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.002_立方体.004",
+            "transform": {
+                "translation": [
+                    -125.0,
+                    -284.99951171875,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    12.0,
+                    12.0,
+                    12.0
+                ]
+            },
+            "file_name": "controlRoom"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.136",
+            "transform": {
+                "translation": [
+                    -280.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.138",
+            "transform": {
+                "translation": [
+                    -320.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.139",
+            "transform": {
+                "translation": [
+                    -240.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.144",
+            "transform": {
+                "translation": [
+                    40.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.146",
+            "transform": {
+                "translation": [
+                    -40.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.147",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.148",
+            "transform": {
+                "translation": [
+                    -80.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.149",
+            "transform": {
+                "translation": [
+                    -135.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.150",
+            "transform": {
+                "translation": [
+                    -160.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.154",
+            "transform": {
+                "translation": [
+                    -200.0,
+                    -280.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.156",
+            "transform": {
+                "translation": [
+                    -280.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.157",
+            "transform": {
+                "translation": [
+                    -320.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.159",
+            "transform": {
+                "translation": [
+                    -240.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.160",
+            "transform": {
+                "translation": [
+                    40.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.161",
+            "transform": {
+                "translation": [
+                    -40.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.162",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.163",
+            "transform": {
+                "translation": [
+                    -80.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.164",
+            "transform": {
+                "translation": [
+                    -120.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.165",
+            "transform": {
+                "translation": [
+                    -160.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.166",
+            "transform": {
+                "translation": [
+                    -200.0,
+                    -240.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.168",
+            "transform": {
+                "translation": [
+                    -200.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.183",
+            "transform": {
+                "translation": [
+                    -160.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.184",
+            "transform": {
+                "translation": [
+                    -120.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.199",
+            "transform": {
+                "translation": [
+                    -80.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.201",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.202",
+            "transform": {
+                "translation": [
+                    -40.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.203",
+            "transform": {
+                "translation": [
+                    40.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.204",
+            "transform": {
+                "translation": [
+                    -240.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.205",
+            "transform": {
+                "translation": [
+                    -320.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.207",
+            "transform": {
+                "translation": [
+                    -280.0,
+                    -200.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.208",
+            "transform": {
+                "translation": [
+                    -280.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.209",
+            "transform": {
+                "translation": [
+                    -320.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.210",
+            "transform": {
+                "translation": [
+                    -240.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.211",
+            "transform": {
+                "translation": [
+                    40.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.212",
+            "transform": {
+                "translation": [
+                    -40.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.214",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.230",
+            "transform": {
+                "translation": [
+                    -80.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.231",
+            "transform": {
+                "translation": [
+                    -120.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.232",
+            "transform": {
+                "translation": [
+                    -160.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.237",
+            "transform": {
+                "translation": [
+                    -200.0,
+                    -160.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField02"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.240",
+            "transform": {
+                "translation": [
+                    -200.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.241",
+            "transform": {
+                "translation": [
+                    -160.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.243",
+            "transform": {
+                "translation": [
+                    -120.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.262",
+            "transform": {
+                "translation": [
+                    -80.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.269",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.270",
+            "transform": {
+                "translation": [
+                    -40.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.274",
+            "transform": {
+                "translation": [
+                    40.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.276",
+            "transform": {
+                "translation": [
+                    -240.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.277",
+            "transform": {
+                "translation": [
+                    -320.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.280",
+            "transform": {
+                "translation": [
+                    -280.0,
+                    -120.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "baseField"
         }
     ]
 }

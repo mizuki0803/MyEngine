@@ -9,7 +9,7 @@ void LightCamera::Initialize(const Vector3& eye, const Vector3& target)
 	//視点、注視点をセット
 	this->eye = eye;
 	this->target = target;
-	up = { 1, 0, 0 };
+	up = { 0, 1, 0 };
 }
 
 void LightCamera::UpdateMatProjection()

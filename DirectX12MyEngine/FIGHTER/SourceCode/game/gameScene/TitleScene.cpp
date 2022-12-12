@@ -21,14 +21,15 @@ void TitleScene::Initialize()
 	lightGroup->SetDirLightActive(2, false);
 
 	//objからモデルデータを読み込む
-	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
+	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeBase"));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
 	modelbaseField.reset(ObjModel::LoadFromOBJ("baseField"));
 	modelbaseField02.reset(ObjModel::LoadFromOBJ("baseField02"));
 	modelRoad.reset(ObjModel::LoadFromOBJ("road"));
 	modelWarehouse01.reset(ObjModel::LoadFromOBJ("warehouse01"));
-	modelWarehouse02.reset(ObjModel::LoadFromOBJ("warehouse02"));
-	modelControlTower.reset(ObjModel::LoadFromOBJ("controlTower"));
+	modelWarehouse02.reset(ObjModel::LoadFromOBJ("warehouse02", true));
+	modelControlTower.reset(ObjModel::LoadFromOBJ("controlTower", true));
+	modelControlRoom.reset(ObjModel::LoadFromOBJ("controlRoom", true));
 
 	//背景マップレベルデータ生成
 	backgroundMapData.reset(LevelDataLoader::Create("titleMap.json"));
@@ -37,6 +38,7 @@ void TitleScene::Initialize()
 	backgroundMapData->InsertModel("baseField02", modelbaseField02.get());
 	backgroundMapData->InsertModel("road", modelRoad.get());
 	backgroundMapData->InsertModel("controlTower", modelControlTower.get());
+	backgroundMapData->InsertModel("controlRoom", modelControlRoom.get());
 	backgroundMapData->InsertModel("warehouse01", modelWarehouse01.get());
 	backgroundMapData->InsertModel("warehouse02", modelWarehouse02.get());
 	backgroundMapData->CreateLevelDataObjects();
@@ -53,7 +55,7 @@ void TitleScene::Initialize()
 	titleCamera->Initialize();
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
-	lightCamera->Initialize({ 0, 100, 20 });
+	lightCamera->Initialize({ 2, 100, -5 });
 	lightCamera->SetProjectionNum({ 20, 20 }, { -20, -20 });
 
 	//天球生成
@@ -115,7 +117,8 @@ void TitleScene::Update()
 	ParticleEmitter::GetInstance()->Update();
 
 	//自機が空まで行って見えなくなったら
-	const bool isPlayerSky = (player->GetPosition().y >= 500);
+	const float stageChangePlayerPos = 550;
+	const bool isPlayerSky = (player->GetPosition().y >= stageChangePlayerPos);
 	if (isPlayerSky) {
 		//ステージ選択へシーン変更を開始する
 		SceneChangeStart({ 0,0,0,0 }, 40, 60, 60, "STAGESELECT");
