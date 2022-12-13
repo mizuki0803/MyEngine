@@ -80,10 +80,14 @@ void GameCamera::CrashStart()
 	moveCrashBeforePos = position;
 }
 
-void GameCamera::ShakeStart()
+void GameCamera::ShakeStart(const float shakePower, const float shakeTime)
 {
 	//シェイクタイマーをリセット
 	shakeTimer = 0;
+	//シェイクする時間をセット
+	this->shakeTime = shakeTime;
+	//シェイク最大の強さをセット
+	this->maxShakePower = shakePower;
 	//シェイク状態にする
 	isShake = true;
 }
@@ -247,13 +251,9 @@ void GameCamera::Knockback()
 
 void GameCamera::Shake()
 {
-	//シェイクする時間を設定
-	const float shakeTime = 30;
 	//タイマーをカウント
 	shakeTimer++;
 	const float time = shakeTimer / shakeTime;
-	//シェイクの最大の強さを設定
-	const float maxShakePower = 20;
 
 	//シェイクする値を計算
 	const float randShake = maxShakePower * (1 - time);

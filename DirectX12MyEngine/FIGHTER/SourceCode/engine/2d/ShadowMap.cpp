@@ -1,5 +1,4 @@
 #include "ShadowMap.h"
-#include "WindowApp.h"
 #include "DescHeapSRV.h"
 #include <d3dx12.h>
 #include <d3dcompiler.h>
@@ -57,8 +56,8 @@ bool ShadowMap::Initialize()
 	CD3DX12_RESOURCE_DESC depthResDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
 			DXGI_FORMAT_D32_FLOAT,
-			WindowApp::window_width,
-			WindowApp::window_height,
+			shadowMapTexSize,
+			shadowMapTexSize,
 			1, 0,
 			1, 0,
 			D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
@@ -118,10 +117,10 @@ void ShadowMap::DrawScenePrev()
 
 	//ビューポートの設定
 	cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f,
-		WindowApp::window_width, WindowApp::window_height));
+		shadowMapTexSize, shadowMapTexSize));
 	//シザリング矩形の設定
-	cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, WindowApp::window_width,
-		WindowApp::window_height));
+	cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0,
+		shadowMapTexSize, shadowMapTexSize));
 
 	//深度バッファのクリア
 	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0,

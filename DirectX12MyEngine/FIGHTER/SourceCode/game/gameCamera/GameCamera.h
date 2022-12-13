@@ -50,7 +50,7 @@ public: //メンバ関数
 	/// <summary>
 	/// シェイク開始
 	/// </summary>
-	void ShakeStart();
+	void ShakeStart(const float shakePower = 20, const float shakeTime = 30);
 
 	/// <summary>
 	/// ステージクリア後の動きを開始する
@@ -171,6 +171,10 @@ private: //メンバ変数
 	bool isShake = false;
 	//カメラシェイク用タイマー
 	int32_t shakeTimer = 0;
+	//シェイクする時間
+	float shakeTime = 0;
+	//シェイク最大の強さ
+	float maxShakePower = 0;
 	//ステージクリア後の動きをするか
 	bool isStageClearMode = false;
 	//ステージクリア後カメラ挙動

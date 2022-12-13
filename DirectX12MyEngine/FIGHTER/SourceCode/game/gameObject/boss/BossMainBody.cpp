@@ -291,7 +291,7 @@ void BossMainBody::DeadFall()
 	Vector3 crashAccel = { 0, -0.0025f, 0 };
 	deadFallVel += crashAccel;
 	//—‰º‚·‚é‘¬“x‚ÌÅ‘å’l‚ğİ’è
-	const float maxCrashSpeed = -0.15f;
+	const float maxCrashSpeed = -0.20f;
 	if (deadFallVel.y <= maxCrashSpeed) { deadFallVel.y = maxCrashSpeed; }
 	position += deadFallVel;
 

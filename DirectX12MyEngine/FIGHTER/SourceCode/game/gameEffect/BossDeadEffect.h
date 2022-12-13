@@ -20,6 +20,7 @@ public: //メンバ関数
 	/// </summary>
 	void Update();
 
+
 private: //メンバ関数
 	/// <summary>
 	/// 爆発
@@ -38,6 +39,4 @@ private: //メンバ変数
 	int32_t timer = 0;
 	//爆発回数
 	int explosionCount = 0;
-	//削除フラグ
-	bool isDelete = false;
 };

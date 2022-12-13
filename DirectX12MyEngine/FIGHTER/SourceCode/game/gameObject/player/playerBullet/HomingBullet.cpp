@@ -53,7 +53,7 @@ void HomingBullet::Update()
 		homingTimer++;
 		homingTimer = min(homingTimer, maxTime);
 		const float time = homingTimer / maxTime;
-		const float speed = 1.5f;
+		const float speed = 1.6f;
 		velocity = Easing::LerpVec3(velocity, toPlayer, time) * speed;
 	}
 	position += velocity;

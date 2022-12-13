@@ -555,7 +555,7 @@ void ParticleEmitter::BossDeadExplosion(const Vector3& position)
 
 		for (int i = 0; i < 30; i++) {
 			//¶‘¶ŽžŠÔ
-			int life = (rand() % 30) + 80;
+			int life = (rand() % 30) + 50;
 
 			//X,Y,Z‘S‚Ä[-5.0f, +5.0f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
 			const float mdPos2 = 2.5f;

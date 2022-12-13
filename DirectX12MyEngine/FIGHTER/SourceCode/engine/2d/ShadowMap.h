@@ -24,7 +24,7 @@ public: //サブクラス
 		XMMATRIX mat;	//3変換行列
 	};
 
-public:
+public: //静的メンバ関数
 	/// <summary>
 	/// シャドウマップ生成
 	/// </summary>
@@ -38,7 +38,7 @@ public:
 	/// <param name="cmdList">コマンドリスト</param>
 	static void ShadowMapCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 
-public:
+public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -57,13 +57,15 @@ public:
 	//getter
 	const Texture& GetTexture() { return depthTexture; }
 
-private:
+private: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* dev;
 	//コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList;
+	//シャドウマップテクスチャサイズ(4K)
+	static const int shadowMapTexSize = 4096;
 
-private:
+private: //メンバ変数
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuff;
 	//テクスチャ

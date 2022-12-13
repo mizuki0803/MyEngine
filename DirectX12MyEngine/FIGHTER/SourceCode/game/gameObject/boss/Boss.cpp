@@ -640,12 +640,6 @@ bool Boss::DeadFall()
 	//本体が削除状態なら削除
 	if (mainBody->GetIsDelete()) {
 		isDelete = true;
-
-		//爆発演出用パーティクル生成
-		Vector3 particlePos = mainBody->GetWorldPos();
-		const float distance = 5.0f;
-		particlePos.y += distance;
-		ParticleEmitter::GetInstance()->BossDeadExplosion(mainBody->GetWorldPos());
 	}
 
 	return true;

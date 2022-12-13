@@ -18,7 +18,7 @@ void (Player::* Player::stageClearActionFuncTable[])() = {
 
 GameScene* Player::gameScene = nullptr;
 ObjModel* Player::bulletModel = nullptr;
-const float Player::homingBulletSize = 2.0f;
+const float Player::homingBulletSize = 2.5f;
 const Vector3 Player::basePos = { 0, 3, 16 };
 const Vector2 Player::rotLimit = { 35.0f, 25.0f };
 const Vector2 Player::moveLimitMin = { -15.0f, -4.0f };

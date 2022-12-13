@@ -515,6 +515,10 @@ void GameScene::ObjectRelease()
 			GameMountainManager::SetIsScroll(false);
 			//死亡後演出を生成
 			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetMainBody()->GetWorldPos()));
+			//カメラをシェイクさせる
+			const float shakePower = 25;
+			const float shakeTime = 80;
+			gameCamera->ShakeStart(shakePower, shakeTime);
 
 			//解放
 			boss.reset();

@@ -29,11 +29,11 @@ void BossDeadEffect::Update()
 void BossDeadEffect::Explosion()
 {
 	//既に爆発回数が十分なら抜ける
-	const int explosionNum = 7;
+	const int explosionNum = 6;
 	if (explosionCount >= explosionNum) { return; }
 
 	//毎フレーム出すと多いので間隔を設定
-	const int explosionInterval = 12;
+	const int explosionInterval = 10;
 	//指定した間隔以外なら抜ける
 	if (timer % explosionInterval != 0) { return; }
 

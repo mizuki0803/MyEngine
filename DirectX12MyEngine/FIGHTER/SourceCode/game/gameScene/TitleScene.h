@@ -84,7 +84,7 @@ private: //メンバ変数
 	float lightDir0[3] = { 2,-1,-6 };
 	float lightColor0[3] = { 1,1,1 };
 	float lightDir1[3] = { -2,-1,6 };
-	float lightColor1[3] = { 0.4f,0.4f,0.4f };
+	float lightColor1[3] = { 0.3f,0.3f,0.3f };
 
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;
