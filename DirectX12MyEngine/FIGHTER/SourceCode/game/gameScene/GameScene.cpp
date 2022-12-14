@@ -98,13 +98,13 @@ void GameScene::Initialize()
 	BossMainBody::SetBossMainBodyDamageModel(modelBossMainBodyDamage.get());
 	BossMainBody::SetBossMainBodySleepModel(modelBossMainBodySleep.get());
 	BossMainBody::SetBossMainBodyDeadModel(modelBossMainBodyDead.get());
-	BossMainBody::SetBulletModel(modelSphere.get());
+	BossMainBody::SetBulletModel(modelEnemyBullet.get());
 	BossAvatar::SetGameScene(this);
 	BossAvatar::SetAvatarModel(modelBossAvatar.get());
 	BossAvatar::SetAvatarDamageModel(modelBossAvatarDamage.get());
 	BossAvatar::SetAvatarSleepModel(modelBossAvatarSleep.get());
 	BossAvatar::SetAvatarDeadModel(modelBossAvatarDead.get());
-	BossAvatar::SetBulletModel(modelSphere.get());
+	BossAvatar::SetBulletModel(modelEnemyBullet.get());
 
 	//回復アイテムに必要な情報をセット
 	HealingItem::SetPlayer(player.get());

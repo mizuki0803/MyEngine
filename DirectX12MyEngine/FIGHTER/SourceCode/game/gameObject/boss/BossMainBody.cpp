@@ -291,7 +291,7 @@ void BossMainBody::DeadFall()
 	Vector3 crashAccel = { 0, -0.0025f, 0 };
 	deadFallVel += crashAccel;
 	//—‰º‚·‚é‘¬“x‚ÌÅ‘å’l‚ğİ’è
-	const float maxCrashSpeed = -0.20f;
+	const float maxCrashSpeed = -0.18f;
 	if (deadFallVel.y <= maxCrashSpeed) { deadFallVel.y = maxCrashSpeed; }
 	position += deadFallVel;
 
@@ -299,7 +299,7 @@ void BossMainBody::DeadFall()
 	DeadFallExplosion();
 
 	//YÀ•W‚ª0ˆÈ‰º‚É‚È‚Á‚½‚çíœ
-	if (GetWorldPos().y <= 0) {
+	if (GetWorldPos().y - (scale.y / 2) <= 0) {
 		isDelete = true;
 	}
 }

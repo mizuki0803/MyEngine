@@ -55,8 +55,8 @@ void TitleScene::Initialize()
 	titleCamera->Initialize();
 	//‰e—pŒõŒ¹ƒJƒƒ‰‰Šú‰»
 	lightCamera.reset(new LightCamera());
-	lightCamera->Initialize({ -100, 400, -250 });
-	lightCamera->SetProjectionNum({ 350, 350 }, { -350, -350 });
+	lightCamera->Initialize({ 0, 300, 10 });
+	lightCamera->SetProjectionNum({ 100, 100 }, { -100, -100 });
 
 	//“V‹…¶¬
 	skydome.reset(Skydome::Create(modelSkydome.get()));

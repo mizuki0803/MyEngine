@@ -458,8 +458,8 @@ void Player::Crash()
 	crashBoundCount++;
 
 	//爆発演出用変数
-	float explosionSize;
-	int explosionTime;
+	float explosionSize = 0;
+	int explosionTime = 0;
 
 	//墜落バウンド回数が一回目ならバウンドさせる
 	if (crashBoundCount == 1) {
@@ -513,9 +513,8 @@ void Player::Rotate()
 		//キー入力で回転させる
 		if (input->PushKey(DIK_A) || input->PushKey(DIK_D)) {
 			if (input->PushKey(DIK_A)) { rot.y -= rotSpeed; }
-			if (input->PushKey(DIK_D)) { rot.y += rotSpeed; }
+			else if (input->PushKey(DIK_D)) { rot.y += rotSpeed; }
 		}
-
 		//パッドスティックX軸の判定を取る
 		else if (input->TiltGamePadLStickX(stickNum) || input->TiltGamePadLStickX(-stickNum)) {
 			//自機はスティックを倒した方向に動く
@@ -524,7 +523,6 @@ void Player::Rotate()
 			const float padStickIncline = input->GetPadLStickIncline().x;
 			rot.y = rotSpeed * cosf(moveAngle) * fabsf(padStickIncline);
 		}
-
 		//キー入力なし&スティックを倒していない場合
 		else {
 			//角度修正速度倍率
@@ -551,7 +549,6 @@ void Player::Rotate()
 			if (input->PushKey(DIK_W)) { rot.x -= rotSpeed; }
 			if (input->PushKey(DIK_S)) { rot.x += rotSpeed; }
 		}
-
 		//パッドスティックY軸の判定を取る
 		else if (input->TiltGamePadLStickY(stickNum) || input->TiltGamePadLStickY(-stickNum)) {
 			//自機はスティックを倒した方向に動く
@@ -670,11 +667,12 @@ void Player::RollStart()
 	if (isDamage) { return; }
 
 	Input* input = Input::GetInstance();
-	//緊急回避キーを押していなければ抜ける
-	if (!(input->TriggerKey(DIK_RSHIFT) || input->TriggerKey(DIK_LSHIFT) ||
-		input->TriggerGamePadButton(Input::PAD_RB) || input->TriggerGamePadButton(Input::PAD_LB))) {
-		return;
-	}
+	//移動方向の入力かつ正しい方向の緊急回避入力をしていなければ抜ける
+	bool isInputRightRoll = (input->TriggerKey(DIK_RSHIFT) || input->TriggerGamePadButton(Input::PAD_RB));
+	bool isInputLeftRoll = (input->TriggerKey(DIK_LSHIFT) || input->TriggerGamePadButton(Input::PAD_LB));
+
+	if (!(isInputRightRoll || isInputLeftRoll)) {return;}
+
 	//緊急回避状態にする
 	isRoll = true;
 	//タイマーを初期化
@@ -684,8 +682,8 @@ void Player::RollStart()
 
 	//緊急回避終了時のZ軸角度をセット
 	const float rotAmount = 360; //回転量
-	if (input->TriggerKey(DIK_RSHIFT) || input->TriggerGamePadButton(Input::PAD_RB)) { rollEndRot = -rotAmount; }		//右回転
-	else if (input->TriggerKey(DIK_LSHIFT) || input->TriggerGamePadButton(Input::PAD_LB)) { rollEndRot = rotAmount; }	//左回転
+	if (isInputRightRoll) { rollEndRot = -rotAmount; }		//右回転
+	else if (isInputLeftRoll) { rollEndRot = rotAmount; }	//左回転
 }
 
 void Player::RollMode()

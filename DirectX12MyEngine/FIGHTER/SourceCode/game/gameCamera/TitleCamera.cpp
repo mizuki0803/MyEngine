@@ -39,8 +39,7 @@ void TitleCamera::SortieStart()
 {
 	//oŒ‚ŠJŽnˆêŽü‚ÌŠJŽnŠp“x‚ðƒZƒbƒg
 	beforeRoundRotAngle = rotAngle;
-	//ˆêŽü•ª‚ÉC³
-	beforeRoundRotAngle = (float)((int)beforeRoundRotAngle % 360);
+	//1`2Žü‚É’²®‚·‚éˆ×1Žü•ª‚Ì’l‚ð‰ÁŽZ
 	beforeRoundRotAngle += 360;
 }
 
@@ -49,6 +48,10 @@ void TitleCamera::RoundPlayer()
 	//Šp“x‚ð•ÏX‚µ‘±‚¯‚é
 	const float rotSpeed = 0.5f;
 	rotAngle += rotSpeed;
+	
+	//360‚ð‰z‚¦‚È‚¢‚æ‚¤‚É‚·‚é
+	if (rotAngle >= 360) { rotAngle -= 360; }
+
 	const float radian = XMConvertToRadians(rotAngle);
 	const float distance = eyeDistance.z;
 	eye.z = distance * cosf(radian);
