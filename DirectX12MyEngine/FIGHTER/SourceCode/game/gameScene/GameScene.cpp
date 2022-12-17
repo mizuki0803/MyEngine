@@ -30,20 +30,24 @@ void GameScene::Initialize()
 	gameCamera->Initialize();
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
-	lightCamera->Initialize({ 0, 500, 0 });
-	lightCamera->SetProjectionNum({ 150, 150 }, { -150, -150 });
+	lightCamera->Initialize({ -300, 100, -300 });
+	lightCamera->SetProjectionNum({ 400, 400 }, { -400, -400 });
+	//頭上からの影用光源カメラ初期化
+	topLightCamera.reset(new LightCamera());
+	topLightCamera->Initialize({ -300, 100, -300 });
+	topLightCamera->SetProjectionNum({ 150, 150 }, { -150, -150 });
 
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightActive(1, true);
-	lightGroup->SetDirLightActive(2, true);
+	lightGroup->SetDirLightActive(2, false);
 
 
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
-	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
+	modelMountain.reset(ObjModel::LoadFromOBJ("building01"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelPlayerBullet.reset(ObjModel::LoadFromOBJ("playerBullet", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
@@ -122,7 +126,7 @@ void GameScene::Initialize()
 	GameGroundManager::SetIsScroll(false);
 
 	//背景用(ゲーム用山管理)生成
-	gameMountainManager.reset(GameMountainManager::Create(modelMountain.get(), 75, 13));
+	gameMountainManager.reset(GameMountainManager::Create(modelMountain.get(), 85, 30, 20));
 	//山に必要な情報をセット
 	GameMountainManager::SetPlayer(player.get());
 	GameMountainManager::SetGameCamera(gameCamera.get());
@@ -131,6 +135,7 @@ void GameScene::Initialize()
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
 	ObjObject3d::SetLightCamera(lightCamera.get());
+	ObjObject3d::SetTopLightCamera(topLightCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
@@ -178,6 +183,8 @@ void GameScene::Update()
 	lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
 	lightGroup->SetDirLightDir(0, XMVECTOR({ lightDir0[0], lightDir0[1], lightDir0[2], 0 }));
 	lightGroup->SetDirLightColor(0, XMFLOAT3(lightColor0));
+	lightGroup->SetDirLightDir(1, XMVECTOR({ lightDir1[0], lightDir1[1], lightDir1[2], 0 }));
+	lightGroup->SetDirLightColor(1, XMFLOAT3(lightColor1));
 	lightGroup->Update();
 
 	//オブジェクト更新
@@ -332,31 +339,43 @@ void GameScene::Draw3DLightView()
 	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
+	//背景用(山)
+	gameMountainManager->DrawLightCameraView();
+
+	///-------Object3d描画ここまで-------///
+}
+
+void GameScene::Draw3DTopLightView()
+{
+	//Object3d共通コマンド
+	ObjObject3d::DrawLightViewPrev();
+	///-------Object3d描画ここから-------///
+
 	//自機
-	player->DrawLightCameraView();
+	player->DrawTopLightCameraView();
 	//自機弾
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-		bullet->DrawLightCameraView();
+		bullet->DrawTopLightCameraView();
 	}
 	//敵
 	for (const std::unique_ptr<Enemy>& enemy : enemys) {
-		enemy->DrawLightCameraView();
+		enemy->DrawTopLightCameraView();
 	}
 	//敵弾
 	for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets) {
-		bullet->DrawLightCameraView();
+		bullet->DrawTopLightCameraView();
 	}
 	//敵破壊エフェクト
 	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
-		breakEffect->DrawLightCameraView();
+		breakEffect->DrawTopLightCameraView();
 	}
 	//ボス
 	if (boss) {
-		boss->DrawLightCameraView();
+		boss->DrawTopLightCameraView();
 	}
 	//回復アイテム
 	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
-		healingItem->DrawLightCameraView();
+		healingItem->DrawTopLightCameraView();
 	}
 
 	///-------Object3d描画ここまで-------///
@@ -410,11 +429,19 @@ void GameScene::LightCameraUpdate()
 	//ターゲットになる座標
 	const Vector3 targetPos = gameCamera->GetPosition();
 	//ターゲットと視点の距離
-	const Vector3 targetDistance = { 0, 500, -350 };
+	const Vector3 targetDistance = { -300, 200, -300 };
 	//ライトカメラ用の視点
 	const Vector3 lightEye = targetPos + targetDistance;
 	lightCamera->SetEyeTarget(lightEye, targetPos);
 	lightCamera->Update();
+
+
+	//頭上からのライトカメラ用ターゲットと視点の距離
+	const Vector3 topCameraTargetDistance = { 0, 500, -350 };
+	//頭上からのライトカメラ用の視点
+	const Vector3 topLightEye = targetPos + topCameraTargetDistance;
+	topLightCamera->SetEyeTarget(topLightEye, targetPos);
+	topLightCamera->Update();
 }
 
 void GameScene::ObjectRelease()

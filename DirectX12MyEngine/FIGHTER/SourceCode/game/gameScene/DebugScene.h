@@ -52,6 +52,11 @@ public: //メンバ関数
 	void Draw3DLightView() override;
 
 	/// <summary>
+	/// 3Dシーン描画(頭上からのライトから見た視点)
+	/// </summary>
+	void Draw3DTopLightView() override;
+
+	/// <summary>
 	/// 前景スプライト描画
 	/// </summary>
 	void DrawFrontSprite() override;

@@ -67,6 +67,11 @@ public: //メンバ関数
 	void Draw3DLightView() override;
 
 	/// <summary>
+	/// 3Dシーン描画(頭上からのライトから見た視点)
+	/// </summary>
+	void Draw3DTopLightView() override;
+
+	/// <summary>
 	/// 前景スプライト描画
 	/// </summary>
 	void DrawFrontSprite() override;
@@ -169,13 +174,17 @@ private: //メンバ変数
 	std::unique_ptr<GameCamera> gameCamera;
 	//影用光源カメラ
 	std::unique_ptr<LightCamera> lightCamera;
+	//頭上からの影用光源カメラ
+	std::unique_ptr<LightCamera> topLightCamera;
 
 	//ライト
 	std::unique_ptr<LightGroup> lightGroup;
 	float ambientColor0[3] = { 1,1,1 };
 	// 光線方向初期値
-	float lightDir0[3] = { 0,-10,1 };
+	float lightDir0[3] = { 2,-1,1 };
 	float lightColor0[3] = { 1,1,1 };
+	float lightDir1[3] = { -2,-1,-6 };
+	float lightColor1[3] = { 0.3f,0.3f,0.3f };
 
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;

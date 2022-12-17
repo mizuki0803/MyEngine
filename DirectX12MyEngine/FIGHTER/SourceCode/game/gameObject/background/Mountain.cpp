@@ -23,7 +23,7 @@ Mountain* Mountain::Create(ObjModel* model, const Vector3& position)
 	mountain->position = position;
 
 	//大きさをセット
-	mountain->scale = { 10, 10, 10 };
+	mountain->scale = { 5, 5, 5 };
 
 	return mountain;
 }
@@ -31,7 +31,7 @@ Mountain* Mountain::Create(ObjModel* model, const Vector3& position)
 void Mountain::FrontOfScreenDelete(const Vector3& pos)
 {
 	//座標が自機より手前(画面外手前)まで行ったら削除
-	const float flontOfScreenDiffence = 30;
+	const float flontOfScreenDiffence = 80;
 	const float deletePos = pos.z - flontOfScreenDiffence;
 
 	if (position.z <= deletePos) {

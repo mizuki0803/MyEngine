@@ -542,7 +542,21 @@ void DebugScene::Draw3DLightView()
 	objSkydome->DrawLightCameraView();
 	objSphere->DrawLightCameraView();
 
-	fbxObject1->Draw();
+
+	///-------Object3d•`‰æ‚±‚±‚Ü‚Å-------///
+}
+
+void DebugScene::Draw3DTopLightView()
+{
+	//Object3d‹¤’ÊƒRƒ}ƒ“ƒh
+	ObjObject3d::DrawLightViewPrev();
+	///-------Object3d•`‰æ‚±‚±‚©‚ç-------///
+
+
+	objMan->DrawTopLightCameraView();
+	objGround->DrawTopLightCameraView();
+	objSkydome->DrawTopLightCameraView();
+	objSphere->DrawTopLightCameraView();
 
 
 	///-------Object3d•`‰æ‚±‚±‚Ü‚Å-------///

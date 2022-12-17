@@ -37,6 +37,11 @@ void SortieScene::Initialize()
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
 	lightCamera->Initialize({ 0, 500, 0 });
+	lightCamera->SetProjectionNum({ 100, 100 }, { -100, -100 });
+	//頭上からの影用光源カメラ初期化
+	topLightCamera.reset(new LightCamera());
+	topLightCamera->Initialize({ 0, 500, 0 });
+	topLightCamera->SetProjectionNum({ 100, 100 }, { -100, -100 });
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
@@ -61,6 +66,7 @@ void SortieScene::Initialize()
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(sortieCamera.get());
 	ObjObject3d::SetLightCamera(lightCamera.get());
+	ObjObject3d::SetTopLightCamera(topLightCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
@@ -162,16 +168,22 @@ void SortieScene::Draw3DLightView()
 	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
-	//自機
-	player->DrawLightCameraView();
-	//天球
-	skydome->DrawLightCameraView();
-	//地面
-	ground->DrawLightCameraView();
 	//背景用(山)
-	/*for (const std::unique_ptr<Mountain>& mountain : mountains) {
+	for (const std::unique_ptr<Mountain>& mountain : mountains) {
 		mountain->DrawLightCameraView();
-	}*/
+	}
+
+	///-------Object3d描画ここまで-------///
+}
+
+void SortieScene::Draw3DTopLightView()
+{
+	//Object3d共通コマンド
+	ObjObject3d::DrawLightViewPrev();
+	///-------Object3d描画ここから-------///
+
+	//自機
+	player->DrawTopLightCameraView();
 
 	///-------Object3d描画ここまで-------///
 }
@@ -192,13 +204,21 @@ void SortieScene::DrawFrontSprite()
 void SortieScene::LightCameraUpdate()
 {
 	//ターゲットになる座標
-	const Vector3 targetPos = player->GetPosition();
+	const Vector3 targetPos = sortieCamera->GetEye();
 	//ターゲットと視点の距離
-	const Vector3 targetDistance = { 0, 500, 350 };
+	const Vector3 targetDistance = { -300, 200, -300 };
 	//ライトカメラ用の視点
 	const Vector3 lightEye = targetPos + targetDistance;
 	lightCamera->SetEyeTarget(lightEye, targetPos);
 	lightCamera->Update();
+
+
+	//頭上からのライトカメラ用ターゲットと視点の距離
+	const Vector3 topCameraTargetDistance = { 0, 500, 350 };
+	//頭上からのライトカメラ用の視点
+	const Vector3 topLightEye = targetPos + topCameraTargetDistance;
+	topLightCamera->SetEyeTarget(topLightEye, targetPos);
+	topLightCamera->Update();
 }
 
 void SortieScene::SortieAction()

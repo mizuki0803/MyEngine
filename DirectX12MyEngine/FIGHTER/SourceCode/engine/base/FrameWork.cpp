@@ -74,10 +74,12 @@ void FrameWork::Initialize()
 	ShadowMap::ShadowMapCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	//シャドウマップの初期化
 	shadowMap.reset(ShadowMap::Create());
+	shadowMapTopView.reset(ShadowMap::Create());
 
 	//objオブジェクト3d共通初期化処理
 	ObjObject3d::Object3dCommon(dxbase->GetDevice(), dxbase->GetCmdList());
 	ObjModel::SetShadowMapTexture(shadowMap->GetTexture());
+	ObjModel::SetTopShadowMapTexture(shadowMapTopView->GetTexture());
 
 	//FBXLoader初期化
 	FbxLoader::GetInstance()->Initialize(dxbase->GetDevice());
@@ -147,6 +149,11 @@ void FrameWork::Draw()
 	shadowMap->DrawScenePrev();
 	SceneManager::GetInstance()->Draw3DLightView();
 	shadowMap->DrawSceneRear();
+
+	//頭上視点用シャドウマップのレンダーテクスチャへの描画
+	shadowMapTopView->DrawScenePrev();
+	SceneManager::GetInstance()->Draw3DTopLightView();
+	shadowMapTopView->DrawSceneRear();
 
 	//ゲームポストエフェクトへの描画
 	GamePostEffect::DrawScenePrev();

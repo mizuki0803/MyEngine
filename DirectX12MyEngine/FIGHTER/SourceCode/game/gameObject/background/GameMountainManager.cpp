@@ -6,7 +6,7 @@ Player* GameMountainManager::player = nullptr;
 GameCamera* GameMountainManager::gameCamera = nullptr;
 bool GameMountainManager::isScrollMode = false;
 
-GameMountainManager* GameMountainManager::Create(ObjModel* model, float distance, int startNum)
+GameMountainManager* GameMountainManager::Create(ObjModel* model, float centerDistance, float objectDistance, int startNum)
 {
 	//山のインスタンスを生成
 	GameMountainManager* gameMountainManager = new GameMountainManager();
@@ -15,7 +15,7 @@ GameMountainManager* GameMountainManager::Create(ObjModel* model, float distance
 	}
 
 	// 初期化
-	if (!gameMountainManager->Initialize(model, distance, startNum)) {
+	if (!gameMountainManager->Initialize(model, centerDistance, objectDistance, startNum)) {
 		delete gameMountainManager;
 		assert(0);
 		return nullptr;
@@ -24,25 +24,29 @@ GameMountainManager* GameMountainManager::Create(ObjModel* model, float distance
 	return gameMountainManager;
 }
 
-bool GameMountainManager::Initialize(ObjModel* model, float distance, int startNum)
+bool GameMountainManager::Initialize(ObjModel* model, float centerDistance, float objectDistance, int startNum)
 {
 	//モデルをセット
 	assert(model);
 	this->model = model;
 	//中心からの距離をセット
-	this->distance = distance;
+	this->centerDistance = centerDistance;
+	//オブジェクト同士の距離をセット
+	this->objectDistance = objectDistance;
 	//山の番号をセット
 	mountainNum = startNum;
 
 	//初期からある山をセット
 	for (int i = 0; i < mountainNum; i++) {
 		std::unique_ptr<Mountain> newMountain;
-		newMountain.reset(Mountain::Create(model, { -distance, 0, 0 + (float)i * 40 }));
+		newMountain.reset(Mountain::Create(model, { -centerDistance, 0, 0 + (float)i * objectDistance }));
+		//左側はオブジェクトを反転させる
+		newMountain->SetRotation({ 0, 180, 0 });
 		mountains.push_back(std::move(newMountain));
 	}
 	for (int i = 0; i < mountainNum; i++) {
 		std::unique_ptr<Mountain> newMountain;
-		newMountain.reset(Mountain::Create(model, { distance, 0, 0 + (float)i * 40 }));
+		newMountain.reset(Mountain::Create(model, { centerDistance, 0, 0 + (float)i * objectDistance }));
 		mountains.push_back(std::move(newMountain));
 	}
 
@@ -105,12 +109,12 @@ void GameMountainManager::CreateNewMountain()
 	Mountain* lastMountain = itr->get();
 
 	//新たな山生成
-	const float mountainSize = 40;
 	std::unique_ptr<Mountain> newMountainLeft;
-	newMountainLeft.reset(Mountain::Create(model, { -distance, 0, lastMountain->GetPosition().z + mountainSize }));
+	newMountainLeft.reset(Mountain::Create(model, { -centerDistance, 0, lastMountain->GetPosition().z + objectDistance }));
+	newMountainLeft->SetRotation({ 0, 180, 0 });
 	mountains.push_back(std::move(newMountainLeft));
 	std::unique_ptr<Mountain> newMountainRight;
-	newMountainRight.reset(Mountain::Create(model, { distance, 0, lastMountain->GetPosition().z + mountainSize }));
+	newMountainRight.reset(Mountain::Create(model, { centerDistance, 0, lastMountain->GetPosition().z + objectDistance }));
 	mountains.push_back(std::move(newMountainRight));
 
 	//山の番号を更新

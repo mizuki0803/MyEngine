@@ -56,6 +56,11 @@ public: //メンバ関数
 	void Draw3DLightView() override;
 
 	/// <summary>
+	/// 3Dシーン描画(頭上からのライトから見た視点)
+	/// </summary>
+	void Draw3DTopLightView() override;
+
+	/// <summary>
 	/// 前景スプライト描画
 	/// </summary>
 	void DrawFrontSprite() override;
@@ -76,6 +81,8 @@ private: //メンバ変数
 	std::unique_ptr<TitleCamera> titleCamera;
 	//影用光源カメラ
 	std::unique_ptr<LightCamera> lightCamera;
+	//頭上からの影用光源カメラ
+	std::unique_ptr<LightCamera> topLightCamera;
 
 	//ライト
 	std::unique_ptr<LightGroup> lightGroup;

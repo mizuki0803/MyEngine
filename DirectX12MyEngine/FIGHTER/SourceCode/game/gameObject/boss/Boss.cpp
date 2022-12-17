@@ -107,6 +107,15 @@ void Boss::DrawLightCameraView()
 	}
 }
 
+void Boss::DrawTopLightCameraView()
+{
+	//頭上からの影用光源ライトから見た視点での描画
+	mainBody->DrawTopLightCameraView();//本体
+	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
+		avatar->DrawTopLightCameraView();//分身
+	}
+}
+
 void Boss::DrawUI()
 {
 	//HPUI描画

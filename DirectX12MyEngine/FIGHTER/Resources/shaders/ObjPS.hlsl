@@ -2,6 +2,7 @@
 
 Texture2D<float4> tex : register(t0);	//0番スロットに設定されたテクスチャ
 Texture2D<float4> shadowMap : register(t1);	//1番スロットに設定されたテクスチャ
+Texture2D<float4> topShadowMap : register(t2);	//2番スロットに設定されたテクスチャ
 SamplerState smp : register(s0);		//0番スロットに設定されたサンプラー
 
 float4 main(VSOutput input) : SV_TARGET
@@ -129,7 +130,19 @@ float4 main(VSOutput input) : SV_TARGET
 		//uv座標で0～1なら影判定をする
 		if (shadowTexUV.x >= 0 && shadowTexUV.x <= 1.0f && shadowTexUV.y >= 0 && shadowTexUV.y <= 1.0f) {
 			if (shadowMap.Sample(smp, shadowTexUV).x + 0.0005f < input.shadowpos.z * w) {
-				shadow = 0.5f;
+				shadow *= 0.5f;
+			}
+		}
+
+		//頭上シャドウマップのZ値を参照
+		float topW = 1.0f / input.topshadowpos.w;
+		float2 topShadowTexUV;
+		topShadowTexUV.x = (1.0f + input.topshadowpos.x * w) * 0.5f;
+		topShadowTexUV.y = (1.0f - input.topshadowpos.y * w) * 0.5f;
+		//uv座標で0～1なら影判定をする
+		if (topShadowTexUV.x >= 0 && topShadowTexUV.x <= 1.0f && topShadowTexUV.y >= 0 && topShadowTexUV.y <= 1.0f) {
+			if (topShadowMap.Sample(smp, topShadowTexUV).x + 0.0005f < input.topshadowpos.z * w) {
+				shadow *= 0.5f;
 			}
 		}
 	}

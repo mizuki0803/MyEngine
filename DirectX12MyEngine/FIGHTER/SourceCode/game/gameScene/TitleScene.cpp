@@ -55,16 +55,20 @@ void TitleScene::Initialize()
 	titleCamera->Initialize();
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
-	lightCamera->Initialize({ 0, 300, 10 });
-	lightCamera->SetProjectionNum({ 100, 100 }, { -100, -100 });
+	lightCamera->Initialize({ -100, 100, -300 });
+	lightCamera->SetProjectionNum({ 400, 400 }, { -400, -400 });
+	//頭上からの影用光源カメラ初期化
+	topLightCamera.reset(new LightCamera());
+	topLightCamera->Initialize({ 0, 300, 10 });
+	topLightCamera->SetProjectionNum({ 100, 100 }, { -100, -100 });
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(titleCamera.get());
-	//objオブジェクトにカメラをセット
 	ObjObject3d::SetLightCamera(lightCamera.get());
+	ObjObject3d::SetTopLightCamera(topLightCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
@@ -91,6 +95,7 @@ void TitleScene::Update()
 	//カメラ更新
 	titleCamera->Update();
 	lightCamera->Update();
+	topLightCamera->Update();
 
 	//ライト更新
 	lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
@@ -175,10 +180,18 @@ void TitleScene::Draw3DLightView()
 
 	//背景マップレベルデータ
 	backgroundMapData->DrawLightCameraView();
+
+	///-------Object3d描画ここまで-------///
+}
+
+void TitleScene::Draw3DTopLightView()
+{
+	//Object3d共通コマンド
+	ObjObject3d::DrawLightViewPrev();
+	///-------Object3d描画ここから-------///
+
 	//自機
-	player->DrawLightCameraView();
-	//天球
-	skydome->DrawLightCameraView();
+	player->DrawTopLightCameraView();
 
 	///-------Object3d描画ここまで-------///
 }

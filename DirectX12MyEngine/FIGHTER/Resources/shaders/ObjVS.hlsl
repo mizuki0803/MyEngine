@@ -17,5 +17,8 @@ VSOutput main(float4 pos : POSITION, float3 normal : NORMAL, float2 uv : TEXCOOR
 	//ライト視点から見た座標
 	output.shadowpos = mul(mul(lightViewproj, world), pos);
 
+	//頭上ライト視点から見た座標
+	output.topshadowpos = mul(mul(topLightViewproj, world), pos);
+
 	return output;
 }

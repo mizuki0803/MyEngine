@@ -40,6 +40,11 @@ public:
 	virtual void Draw3DLightView() = 0;
 
 	/// <summary>
+	/// 3Dシーン描画(頭上からのライトから見た視点)
+	/// </summary>
+	virtual void Draw3DTopLightView() = 0;
+
+	/// <summary>
 	/// 前景スプライト描画
 	/// </summary>
 	virtual void DrawFrontSprite() = 0;

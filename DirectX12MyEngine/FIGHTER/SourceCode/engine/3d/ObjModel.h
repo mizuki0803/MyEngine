@@ -69,12 +69,15 @@ public: //静的メンバ関数
 	//setter
 	static void SetDevice(ID3D12Device* device) { ObjModel::dev = device; };
 	static void SetShadowMapTexture(const Texture& shadowMapTexture) { ObjModel::shadowMapTexture = shadowMapTexture; };
+	static void SetTopShadowMapTexture(const Texture& topShadowMapTexture) { ObjModel::topShadowMapTexture = topShadowMapTexture; };
 
 private: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* dev;
-	//テクスチャ
+	//影用深度テクスチャ
 	static Texture shadowMapTexture;
+	//頭上影用深度テクスチャ
+	static Texture topShadowMapTexture;
 
 private: //非公開のメンバ関数
 	/// <summary>

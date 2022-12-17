@@ -32,12 +32,19 @@ public: //サブクラス
 		XMMATRIX world;		//ワールド行列
 		Vector3 cameraPos;	//カメラ座標(ワールド座標)
 		XMMATRIX lightViewproj;	//ライトビュープロジェクション行列
+		XMMATRIX topLightViewproj;	//頭上ライトビュープロジェクション行列
 		unsigned int isShadowMap;	//影を付けるか
 	};
-
+	//影用
 	struct ConstBufferDataLightViewB0
 	{
-		XMFLOAT4 color;		//色
+		XMMATRIX viewproj;	//ビュープロジェクション行列
+		XMMATRIX world;		//ワールド行列
+		Vector3 cameraPos;	//カメラ座標(ワールド座標)
+	};
+	//頭上からの影様
+	struct ConstBufferDataTopLightViewB0
+	{
 		XMMATRIX viewproj;	//ビュープロジェクション行列
 		XMMATRIX world;		//ワールド行列
 		Vector3 cameraPos;	//カメラ座標(ワールド座標)
@@ -102,6 +109,11 @@ public: //メンバ関数
 	/// </summary>
 	virtual void DrawLightCameraView();
 
+	/// <summary>
+	/// 頭上からの影用光源ライトから見た視点での描画
+	/// </summary>
+	virtual void DrawTopLightCameraView();
+
 	//getter
 	const Vector3& GetPosition() { return position; }
 	const Vector3& GetRotation() { return rotation; }
@@ -119,6 +131,7 @@ public: //メンバ関数
 	static void SetLightGroup(LightGroup* lightGroup) { ObjObject3d::lightGroup = lightGroup; }
 	static void SetCamera(Camera* camera) { ObjObject3d::camera = camera; }
 	static void SetLightCamera(LightCamera* lightCamera) { ObjObject3d::lightCamera = lightCamera; }
+	static void SetTopLightCamera(LightCamera* lightCamera) { ObjObject3d::topLightCamera = lightCamera; }
 
 
 protected: //静的メンバ変数
@@ -136,11 +149,15 @@ protected: //静的メンバ変数
 	static Camera* camera;
 	//影用光源カメラ
 	static LightCamera* lightCamera;
+	//頭上からの影用光源カメラ
+	static LightCamera* topLightCamera;
+
 
 protected: //メンバ変数
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuffB0;
 	ComPtr<ID3D12Resource> constBuffLightViewB0;
+	ComPtr<ID3D12Resource> constBuffTopLightViewB0;
 	//アフィン変換情報
 	Vector3 scale = { 1, 1, 1 };
 	Vector3 rotation = { 0, 0, 0 };

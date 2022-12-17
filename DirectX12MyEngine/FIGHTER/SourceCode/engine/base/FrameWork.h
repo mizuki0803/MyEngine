@@ -61,8 +61,10 @@ protected: //メンバ変数
 	SpriteCommon* spriteCommon = nullptr;
 	//デバッグテキスト
 	DebugText* debugText = nullptr;
-	//シャドウマップレンダーターゲット(影生成ライト視点用)
+	//シャドウマップ(影生成ライト視点用)
 	std::unique_ptr<ShadowMap> shadowMap;
+	//シャドウマップ(影生成頭上ライト視点用)
+	std::unique_ptr<ShadowMap> shadowMapTopView;
 	//シーン工場
 	std::unique_ptr<AbstractSceneFactory> sceneFactory;
 };

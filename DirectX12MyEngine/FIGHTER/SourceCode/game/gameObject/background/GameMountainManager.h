@@ -17,7 +17,7 @@ public:  //静的メンバ変数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <returns>ゲームで使う山管理</returns>
-	static GameMountainManager* Create(ObjModel* model, float distance, int startNum);
+	static GameMountainManager* Create(ObjModel* model, float centerDistance, float objectDistance, int startNum);
 
 	//setter
 	static void SetPlayer(Player* player) { GameMountainManager::player = player; }
@@ -28,7 +28,7 @@ public: //メンバ変数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	bool Initialize(ObjModel* model, float distance, int startNum);
+	bool Initialize(ObjModel* model, float centerDistance, float objectDistance, int startNum);
 
 	/// <summary>
 	/// 更新
@@ -70,7 +70,9 @@ private: //メンバ変数
 	//山モデル
 	ObjModel* model = nullptr;
 	//中心からの距離
-	float distance = 0;
+	float centerDistance = 0;
+	//オブジェクト同士の距離
+	float objectDistance = 0;
 	//基準位置からの山の番号
 	int mountainNum = 0;
 	//新たな山を設置可能か

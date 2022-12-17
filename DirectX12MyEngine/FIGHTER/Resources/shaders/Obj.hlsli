@@ -5,6 +5,7 @@ cbuffer cbuff0 : register(b0)
 	matrix world;		//ワールド行列
 	float3 cameraPos;	//カメラ座標(ワールド座標)
 	matrix lightViewproj;	//ライトビュープロジェクション行列
+	matrix topLightViewproj; //頭上ライトビュープロジェクション行列
 	uint isShadowMap;	//影を付けるか
 };
 
@@ -76,4 +77,5 @@ struct VSOutput
 	float3 normal : NORMAL;	//法線
 	float2 uv : TEXCOORD;	//uv値
 	float4 shadowpos : POSITION1;
+	float4 topshadowpos : POSITION2;
 };

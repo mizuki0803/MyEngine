@@ -56,10 +56,12 @@ void StageSelectScene::Initialize()
 
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
-	lightCamera->Initialize({ 0, 500, 0 });
-	const Vector2 projectionMaxNum = { 30, 30 };
-	const Vector2 projectionMinNum = { -30, -30 };
-	lightCamera->SetProjectionNum(projectionMaxNum, projectionMinNum);
+	lightCamera->Initialize({ 0, -500, 0 });
+	lightCamera->SetProjectionNum({ 30, 30 }, { -30, -30 });
+	//頭上からの影用光源カメラ初期化
+	topLightCamera.reset(new LightCamera());
+	topLightCamera->Initialize({ 0, 500, 0 });
+	topLightCamera->SetProjectionNum({ 30, 30 }, { -30, -30 });
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
@@ -68,6 +70,7 @@ void StageSelectScene::Initialize()
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(stageSelectCamera.get());
 	ObjObject3d::SetLightCamera(lightCamera.get());
+	ObjObject3d::SetTopLightCamera(topLightCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
@@ -187,8 +190,6 @@ void StageSelectScene::Draw3DLightView()
 	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
-	//自機
-	player->DrawLightCameraView();
 	//惑星
 	for (const std::unique_ptr<StageSelectPlanet>& planet : planets) {
 		planet->DrawLightCameraView();
@@ -197,6 +198,18 @@ void StageSelectScene::Draw3DLightView()
 	skydome->DrawLightCameraView();
 	//ステージ選択フィールド
 	stageSelectField->DrawLightCameraView();
+
+	///-------Object3d描画ここまで-------///
+}
+
+void StageSelectScene::Draw3DTopLightView()
+{
+	//Object3d共通コマンド
+	ObjObject3d::DrawLightViewPrev();
+	///-------Object3d描画ここから-------///
+
+	//自機
+	player->DrawTopLightCameraView();
 
 	///-------Object3d描画ここまで-------///
 }
@@ -227,8 +240,8 @@ void StageSelectScene::LightCameraUpdate()
 	const Vector3 targetDistance = { 0, 500, -100 };
 	//ライトカメラ用の視点
 	const Vector3 lightEye = targetPos + targetDistance;
-	lightCamera->SetEyeTarget(lightEye, targetPos);
-	lightCamera->Update();
+	topLightCamera->SetEyeTarget(lightEye, targetPos);
+	topLightCamera->Update();
 }
 
 void StageSelectScene::CreatePlanets()

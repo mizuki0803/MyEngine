@@ -63,8 +63,12 @@ public: //メンバ関数
 	/// <summary>
 	/// 影用光源ライトから見た視点での描画
 	/// </summary>
-	/// <returns></returns>
 	void DrawLightCameraView();
+
+	/// <summary>
+	/// 頭上からの影用光源ライトから見た視点での描画
+	/// </summary>
+	void DrawTopLightCameraView();
 
 	/// <summary>
 	/// UI描画
