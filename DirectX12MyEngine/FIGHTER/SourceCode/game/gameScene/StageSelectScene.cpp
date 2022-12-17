@@ -24,13 +24,10 @@ void StageSelectScene::Initialize()
 
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeSpace"));
-	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
-	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
-	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
 	modelStageSelect.reset(ObjModel::LoadFromOBJ("stageSelect", true));
 	modelPlanetBasis.reset(ObjModel::LoadFromOBJ("planetBasis", true));
-	modelPlanetMautan.reset(ObjModel::LoadFromOBJ("planetMautan", true));
+	modelPlanetTrial.reset(ObjModel::LoadFromOBJ("planetTrial", true));
 	modelPlanetSoon.reset(ObjModel::LoadFromOBJ("planetSoon", true));
 
 	//ポストエフェクトのブラーを解除しておく
@@ -263,7 +260,7 @@ void StageSelectScene::CreatePlanets()
 
 	//ステージ01用惑星生成
 	std::unique_ptr<StageSelectPlanet> stage01Planet;
-	stage01Planet.reset(StageSelectPlanet::Create(modelPlanetMautan.get(), stageSelectFieldPos[1] + planetFieldDistance));
+	stage01Planet.reset(StageSelectPlanet::Create(modelPlanetTrial.get(), stageSelectFieldPos[1] + planetFieldDistance));
 	planets.push_back(std::move(stage01Planet));
 
 	//まだないステージ用惑星生成

@@ -64,7 +64,7 @@ void DebugScene::Initialize()
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
-	modelMountain.reset(ObjModel::LoadFromOBJ("mountain"));
+	modelBuilding.reset(ObjModel::LoadFromOBJ("mountain"));
 
 	//objオブジェクト生成
 	objMan.reset(ObjObject3d::Create(modelMan.get()));
@@ -124,7 +124,7 @@ void DebugScene::Initialize()
 	//デモマップレベルデータ生成
 	demoMapData.reset(LevelDataLoader::Create("demoMap.json"));
 	demoMapData->InsertModel("sphere", modelSphere.get());
-	demoMapData->InsertModel("mountain", modelMountain.get());
+	demoMapData->InsertModel("mountain", modelBuilding.get());
 	demoMapData->CreateLevelDataObjects();
 }
 

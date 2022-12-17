@@ -7,8 +7,9 @@
 #include "SortiePlayer.h"
 #include "Skydome.h"
 #include "Ground.h"
-#include "Mountain.h"
+#include "Building.h"
 
+#include <array>
 #include <sstream>
 
 /// <summary>
@@ -90,14 +91,15 @@ private: //メンバ変数
 	std::unique_ptr<LightGroup> lightGroup;
 	float ambientColor0[3] = { 1,1,1 };
 	// 光線方向初期値
-	float lightDir0[3] = { 0,-1,0 };
+	float lightDir0[3] = { 2,-1,1 };
 	float lightColor0[3] = { 1,1,1 };
+	float lightDir1[3] = { -2,-1,-6 };
+	float lightColor1[3] = { 0.3f,0.3f,0.3f };
 
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;
 	std::unique_ptr<ObjModel> modelGround;
-	std::unique_ptr<ObjModel> modelMountain;
-	std::unique_ptr<ObjModel> modelSphere;
+	std::array<std::unique_ptr<ObjModel>, 2> modelBuilding;
 	std::unique_ptr<ObjModel> modelFighter;
 
 	//出撃シーン用自機
@@ -106,6 +108,6 @@ private: //メンバ変数
 	std::unique_ptr<Skydome> skydome;
 	//地面
 	std::unique_ptr<Ground> ground;
-	//背景用(山)
-	std::list<std::unique_ptr<Mountain>> mountains;
+	//背景用(ビル)
+	std::list<std::unique_ptr<Building>> buildings;
 };

@@ -100,7 +100,7 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelGround;
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
-	std::unique_ptr<ObjModel> modelMountain;
+	std::unique_ptr<ObjModel> modelBuilding;
 
 	//objオブジェクト
 	std::unique_ptr<ObjObject3d> objMan;

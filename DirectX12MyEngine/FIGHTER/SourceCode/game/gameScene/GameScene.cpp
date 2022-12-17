@@ -47,7 +47,8 @@ void GameScene::Initialize()
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
-	modelMountain.reset(ObjModel::LoadFromOBJ("building01"));
+	modelBuilding[0].reset(ObjModel::LoadFromOBJ("building01"));
+	modelBuilding[1].reset(ObjModel::LoadFromOBJ("building02"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelPlayerBullet.reset(ObjModel::LoadFromOBJ("playerBullet", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
@@ -125,12 +126,18 @@ void GameScene::Initialize()
 	GameGroundManager::SetGameCamera(gameCamera.get());
 	GameGroundManager::SetIsScroll(false);
 
-	//背景用(ゲーム用山管理)生成
-	gameMountainManager.reset(GameMountainManager::Create(modelMountain.get(), 85, 30, 20));
-	//山に必要な情報をセット
-	GameMountainManager::SetPlayer(player.get());
-	GameMountainManager::SetGameCamera(gameCamera.get());
-	GameMountainManager::SetIsScroll(false);
+	//ビルに必要な情報をセット
+	//モデルをセット
+	for (int i = 0; i < modelBuilding.size(); i++) {
+		//モデルが未設定なら飛ばす
+		if (!modelBuilding[i]) { continue; }
+		GameBuildingManager::SetBuidingModel(i, modelBuilding[i].get());
+	}
+	GameBuildingManager::SetPlayer(player.get());
+	GameBuildingManager::SetGameCamera(gameCamera.get());
+	GameBuildingManager::SetIsScroll(false);
+	//背景用(ゲーム用ビル管理)生成
+	gameBuildingManager.reset(GameBuildingManager::Create(85, 25, 25, {0, 0, -20}));
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
@@ -218,8 +225,8 @@ void GameScene::Update()
 	skydome->Update();
 	//地面
 	gameGroundManager->Update();
-	//背景用(山)
-	gameMountainManager->Update();
+	//背景用(ビル)
+	gameBuildingManager->Update();
 
 	//3D衝突判定管理
 	CollisionCheck3d();
@@ -320,8 +327,8 @@ void GameScene::Draw3D()
 	skydome->Draw();
 	//地面
 	gameGroundManager->Draw();
-	//背景用(山)
-	gameMountainManager->Draw();
+	//背景用(ビル)
+	gameBuildingManager->Draw();
 
 	///-------Object3d描画ここまで-------///
 
@@ -339,8 +346,8 @@ void GameScene::Draw3DLightView()
 	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
-	//背景用(山)
-	gameMountainManager->DrawLightCameraView();
+	//背景用(ビル)
+	gameBuildingManager->DrawLightCameraView();
 
 	///-------Object3d描画ここまで-------///
 }
@@ -429,7 +436,7 @@ void GameScene::LightCameraUpdate()
 	//ターゲットになる座標
 	const Vector3 targetPos = gameCamera->GetPosition();
 	//ターゲットと視点の距離
-	const Vector3 targetDistance = { -300, 200, -300 };
+	const Vector3 targetDistance = { -300, 200, -150 };
 	//ライトカメラ用の視点
 	const Vector3 lightEye = targetPos + targetDistance;
 	lightCamera->SetEyeTarget(lightEye, targetPos);
@@ -535,8 +542,8 @@ void GameScene::ObjectRelease()
 			gameCamera->BossDelete();
 			//地面のスクロール状態を解除
 			GameGroundManager::SetIsScroll(false);
-			//山のスクロール状態を解除
-			GameMountainManager::SetIsScroll(false);
+			//ビルのスクロール状態を解除
+			GameBuildingManager::SetIsScroll(false);
 			//死亡後演出を生成
 			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetMainBody()->GetWorldPos()));
 			//カメラをシェイクさせる
@@ -1200,8 +1207,8 @@ void GameScene::BossBattleStart()
 
 		//地面をスクロール状態にする
 		GameGroundManager::SetIsScroll(true);
-		//山をスクロール状態にする
-		GameMountainManager::SetIsScroll(true);
+		//ビルをスクロール状態にする
+		GameBuildingManager::SetIsScroll(true);
 
 		//ボス登場警告演出生成
 		const int warningTime = 300;
@@ -1343,8 +1350,8 @@ void GameScene::GameOver()
 		gameCamera->CrashStart();
 		//地面のスクロール状態を解除
 		GameGroundManager::SetIsScroll(false);
-		//山のスクロール状態を解除
-		GameMountainManager::SetIsScroll(false);
+		//ビルのスクロール状態を解除
+		GameBuildingManager::SetIsScroll(false);
 	}
 	//ゲームオーバーのとき
 	else {

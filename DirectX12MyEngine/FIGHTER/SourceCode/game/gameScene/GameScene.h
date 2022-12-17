@@ -15,7 +15,7 @@
 #include "HealingItem.h"
 #include "Skydome.h"
 #include "GameGroundManager.h"
-#include "GameMountainManager.h"
+#include "GameBuildingManager.h"
 #include "HowToPlayUI.h"
 #include "MultiHitUI.h"
 #include "StageStartUI.h"
@@ -189,7 +189,7 @@ private: //メンバ変数
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;
 	std::unique_ptr<ObjModel> modelGround;
-	std::unique_ptr<ObjModel> modelMountain;
+	std::array<std::unique_ptr<ObjModel>, 2> modelBuilding;
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelPlayerBullet;
 	std::unique_ptr<ObjModel> modelFighter;
@@ -238,8 +238,8 @@ private: //メンバ変数
 	std::unique_ptr<Skydome> skydome;
 	//地面
 	std::unique_ptr<GameGroundManager> gameGroundManager;
-	//背景用(山管理)
-	std::unique_ptr<GameMountainManager> gameMountainManager;
+	//背景用(ビル管理)
+	std::unique_ptr<GameBuildingManager> gameBuildingManager;
 	//遊び方UI
 	std::unique_ptr<HowToPlayUI> howToPlayUI;
 	//一撃で複数体処理用のUI

@@ -8,20 +8,20 @@ bool GameGroundManager::isScrollMode = false;
 
 GameGroundManager* GameGroundManager::Create(ObjModel* model)
 {
-	//山のインスタンスを生成
-	GameGroundManager* gameMountainManager = new GameGroundManager();
-	if (gameMountainManager == nullptr) {
+	//ゲームで使う地面管理のインスタンスを生成
+	GameGroundManager* gameGroundManager = new GameGroundManager();
+	if (gameGroundManager == nullptr) {
 		return nullptr;
 	}
 
 	// 初期化
-	if (!gameMountainManager->Initialize(model)) {
-		delete gameMountainManager;
+	if (!gameGroundManager->Initialize(model)) {
+		delete gameGroundManager;
 		assert(0);
 		return nullptr;
 	}
 
-	return gameMountainManager;
+	return gameGroundManager;
 }
 
 bool GameGroundManager::Initialize(ObjModel* model)
@@ -83,7 +83,7 @@ void GameGroundManager::ScrollMode()
 	//自機とカメラのインスタンスがなければ抜ける
 	if (!player || !gameCamera) { return; }
 
-	//自機の移動速度状態によって山をカメラで移動していた速度で動かす
+	//自機の移動速度状態によってビルをカメラで移動していた速度で動かす
 	float moveSpeed = GameCamera::GetAdvanceSpeed();
 	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeed *= GameCamera::GetHighSpeedMagnification(); }
 	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeed *= GameCamera::GetSlowSpeedMagnification(); }

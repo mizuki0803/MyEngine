@@ -17,7 +17,7 @@ public:  //静的メンバ変数
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
-	/// <returns>ゲームで使う山管理</returns>
+	/// <returns>ゲームで使う地面管理</returns>
 	static GameGroundManager* Create(ObjModel* model);
 
 	//setter
@@ -57,7 +57,7 @@ private: //静的メンバ変数
 	static Player* player;
 	//ゲームカメラ
 	static GameCamera* gameCamera;
-	//山がスクロール状態か
+	//地面がスクロール状態か
 	static bool isScrollMode;
 
 private: //メンバ変数

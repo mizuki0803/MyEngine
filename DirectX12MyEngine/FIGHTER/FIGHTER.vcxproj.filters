@@ -114,9 +114,6 @@
     <Filter Include="ソース ファイル\game\gameObject\background">
       <UniqueIdentifier>{af84be94-5c76-4f0f-8f28-9941d9a96528}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\gameObject\background\mountain">
-      <UniqueIdentifier>{2044d83a-bd7c-41b3-b323-a67519093254}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\game\gameObject\background\skydome">
       <UniqueIdentifier>{15e7c728-e790-4197-9590-3285af2ac863}</UniqueIdentifier>
     </Filter>
@@ -191,6 +188,9 @@
     </Filter>
     <Filter Include="リソース ファイル\ObjLightView">
       <UniqueIdentifier>{c4afe928-973d-41e8-b263-97af5c453ead}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\background\building">
+      <UniqueIdentifier>{2044d83a-bd7c-41b3-b323-a67519093254}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -290,8 +290,8 @@
     <ClCompile Include="SourceCode\game\gameObject\background\Ground.cpp">
       <Filter>ソース ファイル\game\gameObject\background\ground</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\background\GameMountainManager.cpp">
-      <Filter>ソース ファイル\game\gameObject\background\mountain</Filter>
+    <ClCompile Include="SourceCode\game\gameObject\background\GameBuildingManager.cpp">
+      <Filter>ソース ファイル\game\gameObject\background\building</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\background\Skydome.cpp">
       <Filter>ソース ファイル\game\gameObject\background\skydome</Filter>
@@ -446,8 +446,8 @@
     <ClCompile Include="SourceCode\game\gameSprite\HowToPlaySprite.cpp">
       <Filter>ソース ファイル\game\gameSprite</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\background\Mountain.cpp">
-      <Filter>ソース ファイル\game\gameObject\background\mountain</Filter>
+    <ClCompile Include="SourceCode\game\gameObject\background\Building.cpp">
+      <Filter>ソース ファイル\game\gameObject\background\building</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameScene\StageSelectScene.cpp">
       <Filter>ソース ファイル\game\gameScene</Filter>
@@ -719,8 +719,8 @@
     <ClInclude Include="SourceCode\game\gameObject\background\Ground.h">
       <Filter>ソース ファイル\game\gameObject\background\ground</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\background\GameMountainManager.h">
-      <Filter>ソース ファイル\game\gameObject\background\mountain</Filter>
+    <ClInclude Include="SourceCode\game\gameObject\background\GameBuildingManager.h">
+      <Filter>ソース ファイル\game\gameObject\background\building</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\background\Skydome.h">
       <Filter>ソース ファイル\game\gameObject\background\skydome</Filter>
@@ -875,8 +875,8 @@
     <ClInclude Include="SourceCode\game\gameSprite\HowToPlaySprite.h">
       <Filter>ソース ファイル\game\gameSprite</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\background\Mountain.h">
-      <Filter>ソース ファイル\game\gameObject\background\mountain</Filter>
+    <ClInclude Include="SourceCode\game\gameObject\background\Building.h">
+      <Filter>ソース ファイル\game\gameObject\background\building</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameScene\StageSelectScene.h">
       <Filter>ソース ファイル\game\gameScene</Filter>

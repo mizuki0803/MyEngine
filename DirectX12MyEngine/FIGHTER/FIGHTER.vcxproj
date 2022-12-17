@@ -142,8 +142,8 @@
     <ClCompile Include="SourceCode\game\gameEffect\SceneChangeEffect.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\GameGroundManager.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Ground.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\background\GameMountainManager.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\background\Mountain.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\background\GameBuildingManager.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\background\Building.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Skydome.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\boss\Boss.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatar.cpp" />
@@ -357,8 +357,8 @@
     <ClInclude Include="SourceCode\game\gameEffect\SceneChangeEffect.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\GameGroundManager.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Ground.h" />
-    <ClInclude Include="SourceCode\game\gameObject\background\GameMountainManager.h" />
-    <ClInclude Include="SourceCode\game\gameObject\background\Mountain.h" />
+    <ClInclude Include="SourceCode\game\gameObject\background\GameBuildingManager.h" />
+    <ClInclude Include="SourceCode\game\gameObject\background\Building.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Skydome.h" />
     <ClInclude Include="SourceCode\game\gameObject\boss\Boss.h" />
     <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatar.h" />

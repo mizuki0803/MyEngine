@@ -141,13 +141,10 @@ private: //メンバ変数
 
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;
-	std::unique_ptr<ObjModel> modelGround;
-	std::unique_ptr<ObjModel> modelMountain;
-	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelFighter;
 	std::unique_ptr<ObjModel> modelStageSelect;
 	std::unique_ptr<ObjModel> modelPlanetBasis;
-	std::unique_ptr<ObjModel> modelPlanetMautan;
+	std::unique_ptr<ObjModel> modelPlanetTrial;
 	std::unique_ptr<ObjModel> modelPlanetSoon;
 
 	//ステージ選択用惑星

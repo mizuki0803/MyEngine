@@ -1,5 +1,6 @@
 #include "SortiePlayer.h"
 #include "ParticleEmitter.h"
+#include "GamePostEffect.h"
 
 void (SortiePlayer::* SortiePlayer::sortieActionFuncTable[])() = {
 	&SortiePlayer::SortieAdvance,
@@ -56,6 +57,11 @@ void SortiePlayer::BoostStart()
 	//パーティクルジェットを大きくする(加速用にする)
 	const int32_t particleSizePhase = 1;
 	particleJetSizePhaseNum = particleSizePhase;
+
+	//ポストエフェクトのブラーをかける
+	GamePostEffect::GetPostEffect()->SetRadialBlur(true);
+	const float blurStrength = 0.2f;
+	GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 }
 
 void SortiePlayer::SortieAdvance()
