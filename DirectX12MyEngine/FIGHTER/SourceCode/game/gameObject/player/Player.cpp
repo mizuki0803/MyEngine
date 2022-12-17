@@ -1080,7 +1080,7 @@ void Player::ShotStraightBullet()
 	newBullet.reset(StraightBullet::Create(bulletModel, bulletShotPos, velocity));
 	gameScene->AddPlayerBullet(std::move(newBullet));
 
-	//チャージショット演出用パーティクル生成
+	//ショット演出用パーティクル生成
 	ParticleEmitter::GetInstance()->Shot(bulletShotPos);
 }
 
@@ -1252,7 +1252,7 @@ void Player::StageClearBoost()
 {
 	//ブースト移動
 	//自機が傾いている角度に移動させる
-	Vector3 velocity = { 0, 0, 1.0f };
+	Vector3 velocity = { 0, 0, 1.25f };
 	velocity = MatrixTransformDirection(velocity, matWorld);
 	position += velocity;
 

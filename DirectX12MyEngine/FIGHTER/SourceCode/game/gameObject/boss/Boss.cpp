@@ -69,14 +69,14 @@ void Boss::Update()
 		return avatar->GetIsDelete();
 		});
 
-	//ビヘイビアツリーによる行動遷移
-	behaviorTree->Root();
-
 	//更新
 	mainBody->Update();//本体
 	for (const std::unique_ptr<BossAvatar>& avatar : avatars) {
 		avatar->Update();//分身
 	}
+
+	//ビヘイビアツリーによる行動遷移
+	behaviorTree->Root();
 
 	//HPUI更新
 	if (hpUI) {

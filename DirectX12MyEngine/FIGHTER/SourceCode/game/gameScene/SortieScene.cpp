@@ -40,6 +40,8 @@ void SortieScene::Initialize()
 
 	//“V‹…¶¬
 	skydome.reset(Skydome::Create(modelSkydome.get()));
+	//Œ©‰h‚¦‚ª‚¢‚¢Šp“x‚É•ÏX‚µ‚Ä‚¨‚­
+	skydome->SetRotation({ 0, 180, 0 });
 
 	//’n–Ê¶¬
 	ground.reset(Ground::Create(modelGround.get()));
@@ -167,9 +169,9 @@ void SortieScene::Draw3DLightView()
 	//’n–Ê
 	ground->DrawLightCameraView();
 	//”wŒi—p(ŽR)
-	for (const std::unique_ptr<Mountain>& mountain : mountains) {
+	/*for (const std::unique_ptr<Mountain>& mountain : mountains) {
 		mountain->DrawLightCameraView();
-	}
+	}*/
 
 	///-------Object3d•`‰æ‚±‚±‚Ü‚Å-------///
 }

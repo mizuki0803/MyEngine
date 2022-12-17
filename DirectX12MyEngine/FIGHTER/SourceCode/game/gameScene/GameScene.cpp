@@ -111,6 +111,8 @@ void GameScene::Initialize()
 
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
+	//見栄えがいい角度に変更しておく
+	skydome->SetRotation({ 0, 190, 0 });
 
 	//地面生成
 	gameGroundManager.reset(GameGroundManager::Create(modelGround.get()));
@@ -153,7 +155,6 @@ void GameScene::Update()
 	Input* input = Input::GetInstance();
 	//デバッグテキストのインスタンスを取得
 	DebugText* debugText = DebugText::GetInstance();
-
 
 	//オブジェクト解放
 	ObjectRelease();
@@ -357,10 +358,6 @@ void GameScene::Draw3DLightView()
 	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
 		healingItem->DrawLightCameraView();
 	}
-	//天球
-	skydome->DrawLightCameraView();
-	//背景用(山)
-	gameMountainManager->DrawLightCameraView();
 
 	///-------Object3d描画ここまで-------///
 }
