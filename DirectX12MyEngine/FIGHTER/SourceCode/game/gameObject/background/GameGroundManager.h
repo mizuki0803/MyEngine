@@ -23,7 +23,6 @@ public:  //静的メンバ変数
 	//setter
 	static void SetPlayer(Player* player) { GameGroundManager::player = player; }
 	static void SetGameCamera(GameCamera* gameCamera) { GameGroundManager::gameCamera = gameCamera; }
-	static void SetIsScroll(bool isScroll) { GameGroundManager::isScrollMode = isScroll; }
 
 public: //メンバ変数
 	/// <summary>
@@ -41,6 +40,9 @@ public: //メンバ変数
 	/// </summary>
 	void Draw();
 
+	//setter
+	void SetIsScroll(bool isScroll) { this->isScrollMode = isScroll; }
+
 private: //メンバ関数
 	/// <summary>
 	/// 後ろに行った地面を前に持ってくる
@@ -57,12 +59,12 @@ private: //静的メンバ変数
 	static Player* player;
 	//ゲームカメラ
 	static GameCamera* gameCamera;
-	//地面がスクロール状態か
-	static bool isScrollMode;
 
 private: //メンバ変数
 	//地面オブジェクト
 	std::array<std::unique_ptr<Ground>, 2> grounds;
 	//地面モデル
 	ObjModel* model = nullptr;
+	//地面がスクロール状態か
+	bool isScrollMode = false;
 };

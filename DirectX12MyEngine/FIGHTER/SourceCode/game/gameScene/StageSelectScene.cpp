@@ -137,12 +137,6 @@ void StageSelectScene::Update()
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
-	//デバッグ用シーン切り替え
-	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
-		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("GAME");
-	}
-
 	//シーン変更状態
 	SceneChangeMode();
 

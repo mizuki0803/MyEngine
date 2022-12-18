@@ -31,7 +31,7 @@ void GameScene::Initialize()
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
 	lightCamera->Initialize({ -300, 100, -300 });
-	lightCamera->SetProjectionNum({ 400, 400 }, { -400, -400 });
+	lightCamera->SetProjectionNum({ 100, 200 }, { -600, -200 });
 	//頭上からの影用光源カメラ初期化
 	topLightCamera.reset(new LightCamera());
 	topLightCamera->Initialize({ -300, 100, -300 });
@@ -124,7 +124,6 @@ void GameScene::Initialize()
 	//地面に必要な情報をセット
 	GameGroundManager::SetPlayer(player.get());
 	GameGroundManager::SetGameCamera(gameCamera.get());
-	GameGroundManager::SetIsScroll(false);
 
 	//ビルに必要な情報をセット
 	//モデルをセット
@@ -135,9 +134,8 @@ void GameScene::Initialize()
 	}
 	GameBuildingManager::SetPlayer(player.get());
 	GameBuildingManager::SetGameCamera(gameCamera.get());
-	GameBuildingManager::SetIsScroll(false);
 	//背景用(ゲーム用ビル管理)生成
-	gameBuildingManager.reset(GameBuildingManager::Create(85, 25, 25, {0, 0, -20}));
+	gameBuildingManager.reset(GameBuildingManager::Create(85, 25, 25, { 0, 0, -20 }));
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
@@ -272,12 +270,6 @@ void GameScene::Update()
 	}
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
-
-	if (input->TriggerKey(DIK_RETURN))
-	{
-		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("GAME");
-	}
 
 	//シーン変更状態
 	SceneChangeMode();
@@ -435,10 +427,8 @@ void GameScene::LightCameraUpdate()
 {
 	//ターゲットになる座標
 	const Vector3 targetPos = gameCamera->GetPosition();
-	//ターゲットと視点の距離
-	const Vector3 targetDistance = { -300, 200, -150 };
 	//ライトカメラ用の視点
-	const Vector3 lightEye = targetPos + targetDistance;
+	const Vector3 lightEye = targetPos + lightCameraTargetDistance;
 	lightCamera->SetEyeTarget(lightEye, targetPos);
 	lightCamera->Update();
 
@@ -541,9 +531,11 @@ void GameScene::ObjectRelease()
 			//カメラのボス本体情報を解除させる
 			gameCamera->BossDelete();
 			//地面のスクロール状態を解除
-			GameGroundManager::SetIsScroll(false);
+			gameGroundManager->SetIsScroll(false);
 			//ビルのスクロール状態を解除
-			GameBuildingManager::SetIsScroll(false);
+			gameBuildingManager->SetIsScroll(false);
+			//後ろ側にビルを大量設置
+			gameBuildingManager->CreateBehindObjects();
 			//死亡後演出を生成
 			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetMainBody()->GetWorldPos()));
 			//カメラをシェイクさせる
@@ -1206,9 +1198,9 @@ void GameScene::BossBattleStart()
 		gameCamera->SetIsAdvance(false);
 
 		//地面をスクロール状態にする
-		GameGroundManager::SetIsScroll(true);
+		gameGroundManager->SetIsScroll(true);
 		//ビルをスクロール状態にする
-		GameBuildingManager::SetIsScroll(true);
+		gameBuildingManager->SetIsScroll(true);
 
 		//ボス登場警告演出生成
 		const int warningTime = 300;
@@ -1262,6 +1254,9 @@ void GameScene::StageClear()
 
 void GameScene::StageResult()
 {
+	//ステージクリア時の影の向きに変更
+	StageClearSetLightCameraPos();
+
 	//ステージクリアテキスト生成と解放
 	StageClearTextCreateAndRelease();
 
@@ -1271,6 +1266,20 @@ void GameScene::StageResult()
 	//タイトルシーンに戻る
 	ReturnTitleScene();
 
+}
+
+void GameScene::StageClearSetLightCameraPos()
+{
+	//既にステージクリア用影状態なら抜ける
+	if (isStageClearShadow) { return; }
+	//自機のステージクリア後行動が上昇でなければ抜ける
+	if (!(player->GetStageClearModePhase() == Player::StageClearModePhase::Up)) { return; }
+
+	//ステージクリア用影状態にする
+	isStageClearShadow = true;
+	//影用光源カメラを遠ざける
+	lightCameraTargetDistance = { -400, 450, -400 };
+	lightCamera->SetProjectionNum({ 1300, 1300 }, { 0, -1300 });
 }
 
 void GameScene::StageClearTextCreateAndRelease()
@@ -1349,9 +1358,9 @@ void GameScene::GameOver()
 		//カメラを墜落状態にする
 		gameCamera->CrashStart();
 		//地面のスクロール状態を解除
-		GameGroundManager::SetIsScroll(false);
+		gameGroundManager->SetIsScroll(false);
 		//ビルのスクロール状態を解除
-		GameBuildingManager::SetIsScroll(false);
+		gameBuildingManager->SetIsScroll(false);
 	}
 	//ゲームオーバーのとき
 	else {

@@ -247,8 +247,8 @@ void StageSelectPlayer::EnterPlanetStay()
 		if (!GamePostEffect::GetPostEffect()->GetIsRadialBlur()) {
 			GamePostEffect::GetPostEffect()->SetRadialBlur(true);
 
-			//開始時のブラーの強さをセット
-			const float blurStrength = 0.2f;
+			//ブラーの強さをセット
+			const float blurStrength = 0.4f;
 			GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 		}
 	}

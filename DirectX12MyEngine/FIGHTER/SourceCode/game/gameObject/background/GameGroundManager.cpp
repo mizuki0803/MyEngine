@@ -4,7 +4,6 @@
 
 Player* GameGroundManager::player = nullptr;
 GameCamera* GameGroundManager::gameCamera = nullptr;
-bool GameGroundManager::isScrollMode = false;
 
 GameGroundManager* GameGroundManager::Create(ObjModel* model)
 {

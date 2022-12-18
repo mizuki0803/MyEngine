@@ -150,6 +150,11 @@ public: //メンバ関数
 	void StageResult();
 
 	/// <summary>
+	/// ステージクリア時の影の向きに変更
+	/// </summary>
+	void StageClearSetLightCameraPos();
+
+	/// <summary>
 	/// ステージクリアテキスト生成と解放
 	/// </summary>
 	void StageClearTextCreateAndRelease();
@@ -252,6 +257,10 @@ private: //メンバ変数
 	std::unique_ptr<StageResultUI> stageResultUI;
 	//ステージクリアか
 	bool isStageClear = false;
+	//ステージクリア用の影状態か
+	bool isStageClearShadow = false;
+	//ターゲットと光源カメラの距離
+	Vector3 lightCameraTargetDistance = { -300, 200, -150 };
 	//ゲームオーバーか
 	bool isGameOver = false;
 	//ゲームオーバータイマー

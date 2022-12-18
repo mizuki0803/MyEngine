@@ -60,7 +60,7 @@ void SortiePlayer::BoostStart()
 
 	//ポストエフェクトのブラーをかける
 	GamePostEffect::GetPostEffect()->SetRadialBlur(true);
-	const float blurStrength = 0.2f;
+	const float blurStrength = 0.8f;
 	GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 }
 

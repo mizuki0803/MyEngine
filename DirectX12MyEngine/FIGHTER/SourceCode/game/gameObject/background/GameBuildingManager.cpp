@@ -5,7 +5,6 @@
 std::array<ObjModel*, 2> GameBuildingManager::buildingModels;
 Player* GameBuildingManager::player = nullptr;
 GameCamera* GameBuildingManager::gameCamera = nullptr;
-bool GameBuildingManager::isScrollMode = false;
 
 GameBuildingManager* GameBuildingManager::Create(float centerDistance, float objectDistance, int startNum, const Vector3& basePos)
 {
@@ -89,6 +88,9 @@ void GameBuildingManager::Update()
 		//オブジェクト更新
 		building->Update();
 
+		//自機の後ろまで行ったら削除する状態でなければ飛ばす
+		if (!isPlayerBehindDelete) { continue; }
+
 		//ビルと対象の距離を比較し手前まで行ったら削除
 		building->FrontOfScreenDelete(gameCamera->GetPosition());
 	}
@@ -110,9 +112,50 @@ void GameBuildingManager::DrawLightCameraView()
 	}
 }
 
+void GameBuildingManager::CreateBehindObjects()
+{
+	//自機の後ろまで行ったら削除するモードを解除
+	isPlayerBehindDelete = false;
+
+	//一番手前のビルの座標を取得
+	std::list<std::unique_ptr<Building>>::iterator itr = buildings.begin();
+	Building* frontBuilding = itr->get();
+	//外側を見せないためにビルの高さを伸ばす
+	Vector3 scale = frontBuilding->GetScale();
+	const float heightRatio = 1.7f; //倍率
+	scale.y *= heightRatio;
+	frontBuilding->SetScale(scale);
+
+	//反対側も伸ばす必要があるのでイテレータを次へ
+	itr++;
+	Building* frontOppositeBuilding = itr->get();
+	frontOppositeBuilding->SetScale(scale);
+
+	//新たなビル生成
+	const int createNum = 40;
+	for (int i = 0; i < createNum; i++) {
+		std::unique_ptr<Building> newBuilding;
+		const int leftModelNum = NextCreateModelNum(lastLeftSetModelNum); //左側に設置するモデル番号を取得
+		newBuilding.reset(Building::Create(buildingModels[leftModelNum], { basePos.x - centerDistance, basePos.y, frontBuilding->GetPosition().z - (float)(i + 1) * objectDistance}));
+		//左側はオブジェクトを反転させる
+		newBuilding->SetRotation({ 0, 180, 0 });
+		//縦に伸ばしておく
+		newBuilding->SetScale(scale);
+		buildings.push_back(std::move(newBuilding));
+	}
+	for (int i = 0; i < createNum; i++) {
+		std::unique_ptr<Building> newBuilding;
+		const int rightModelNum = NextCreateModelNum(lastRightSetModelNum); //右側に設置するモデル番号を取得
+		newBuilding.reset(Building::Create(buildingModels[rightModelNum], { basePos.x + centerDistance, basePos.y, frontBuilding->GetPosition().z - (float)(i + 1) * objectDistance }));
+		//縦に伸ばしておく
+		newBuilding->SetScale(scale);
+		buildings.push_back(std::move(newBuilding));
+	}
+}
+
 void GameBuildingManager::CreateNewBuilding()
 {
-	//一番後ろのビルの座標を取得
+	//一番奥のビルの座標を取得
 	std::list<std::unique_ptr<Building>>::iterator itr = buildings.end();
 	--itr;
 	Building* lastBuilding = itr->get();

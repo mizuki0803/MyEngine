@@ -23,7 +23,6 @@ public:  //静的メンバ変数
 	static void SetBuidingModel(int modelNum, ObjModel* model);
 	static void SetPlayer(Player* player) { GameBuildingManager::player = player; }
 	static void SetGameCamera(GameCamera* gameCamera) { GameBuildingManager::gameCamera = gameCamera; }
-	static void SetIsScroll(bool isScroll) { GameBuildingManager::isScrollMode = isScroll; }
 
 public: //メンバ変数
 	/// <summary>
@@ -45,6 +44,14 @@ public: //メンバ変数
 	/// 影用光源ライトから見た視点での描画
 	/// </summary>
 	void DrawLightCameraView();
+
+	/// <summary>
+	/// ゲームクリア後に後ろを向くのでオブジェクトを大量に追加
+	/// </summary>
+	void CreateBehindObjects();
+
+	//setter
+	void SetIsScroll(bool isScroll) { this->isScrollMode = isScroll; }
 
 private: //メンバ関数
 	/// <summary>
@@ -70,8 +77,6 @@ private: //静的メンバ変数
 	static Player* player;
 	//ゲームカメラ
 	static GameCamera* gameCamera;
-	//ビルがスクロール状態か
-	static bool isScrollMode;
 
 private: //メンバ変数
 	//ビルオブジェクト
@@ -92,4 +97,8 @@ private: //メンバ変数
 	bool isCanCreate = true;
 	//最後に生成したビルの座標
 	Vector3 lastCreateBuildingPos;
+	//ビルがスクロール状態か
+	bool isScrollMode = false;
+	//自機の後ろまで行ったら削除するか
+	bool isPlayerBehindDelete = true;
 };

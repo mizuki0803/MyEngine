@@ -59,7 +59,7 @@ void SortieScene::Initialize()
 	for (int i = 0; i < 40; i++) {
 		//新しいビル生成
 		std::unique_ptr<Building> newBuilding;
-		newBuilding.reset(Building::Create(modelBuilding[createLeftModelNum].get(), { -85, 0, -1000 + (float)i * 25 }));
+		newBuilding.reset(Building::Create(modelBuilding[createLeftModelNum].get(), { -85, 0, -1100 + (float)i * 25 }));
 		//左側はオブジェクトを反転させる
 		newBuilding->SetRotation({ 0, 180, 0 });
 		buildings.push_back(std::move(newBuilding));
@@ -72,7 +72,7 @@ void SortieScene::Initialize()
 	for (int i = 0; i < 40; i++) {
 		//新しいビル生成
 		std::unique_ptr<Building> newBuilding;
-		newBuilding.reset(Building::Create(modelBuilding[createRightModelNum].get(), { 85, 0, -1000 + (float)i * 25 }));
+		newBuilding.reset(Building::Create(modelBuilding[createRightModelNum].get(), { 85, 0, -1100 + (float)i * 25 }));
 		buildings.push_back(std::move(newBuilding));
 
 		//次の設置のためにモデル番号を変更する
