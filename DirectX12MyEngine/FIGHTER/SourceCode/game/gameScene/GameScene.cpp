@@ -1279,7 +1279,7 @@ void GameScene::StageClearSetLightCameraPos()
 	isStageClearShadow = true;
 	//影用光源カメラを遠ざける
 	lightCameraTargetDistance = { -400, 450, -400 };
-	lightCamera->SetProjectionNum({ 1300, 1300 }, { 0, -1300 });
+	lightCamera->SetProjectionNum({ 1300, 1300 }, { -200, -1300 });
 }
 
 void GameScene::StageClearTextCreateAndRelease()

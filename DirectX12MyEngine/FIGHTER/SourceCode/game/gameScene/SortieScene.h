@@ -92,7 +92,7 @@ private: //ƒƒ“ƒo•Ï”
 	float ambientColor0[3] = { 1,1,1 };
 	// Œõü•ûŒü‰Šú’l
 	float lightDir0[3] = { 2,-1,1 };
-	float lightColor0[3] = { 1,1,1 };
+	float lightColor0[3] = { 0.9f,0.9f,0.9f };
 	float lightDir1[3] = { -2,-1,-6 };
 	float lightColor1[3] = { 0.3f,0.3f,0.3f };
 
