@@ -18,7 +18,7 @@ void SortieScene::Initialize()
 	lightGroup.reset(LightGroup::Create());
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightActive(1, true);
-	lightGroup->SetDirLightActive(2, true);
+	lightGroup->SetDirLightActive(2, false);
 
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
@@ -220,7 +220,7 @@ void SortieScene::LightCameraUpdate()
 	//ターゲットになる座標
 	const Vector3 targetPos = sortieCamera->GetEye();
 	//ターゲットと視点の距離
-	const Vector3 targetDistance = { -300, 200, -300 };
+	const Vector3 targetDistance = { -300, 200, -150 };
 	//ライトカメラ用の視点
 	const Vector3 lightEye = targetPos + targetDistance;
 	lightCamera->SetEyeTarget(lightEye, targetPos);

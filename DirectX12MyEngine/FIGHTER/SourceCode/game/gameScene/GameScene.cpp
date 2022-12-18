@@ -1186,12 +1186,12 @@ void GameScene::BossBattleStart()
 	if (isBossBattle) { return; }
 
 	//ボスバトル開始座標
-	const float isBossBattleStartPos = 3200;
+	const float bossBattleStartPos = 3200;
 
 	//警告開始判定
 	if (!bossWarning) {
 		//カメラがボスバトル開始とする座標まで進んだら開始
-		const bool isBossBattleStart = gameCamera->GetPosition().z >= isBossBattleStartPos;
+		const bool isBossBattleStart = gameCamera->GetPosition().z >= bossBattleStartPos;
 		if (!isBossBattleStart) { return; }
 
 		//カメラの前進を止める
@@ -1216,7 +1216,7 @@ void GameScene::BossBattleStart()
 
 		//ボス生成
 		const float distance = 75;
-		const Vector3 bossBasePos = { 0, 23, isBossBattleStartPos + distance };
+		const Vector3 bossBasePos = { 0, 23, bossBattleStartPos + distance };
 		boss.reset(Boss::Create(bossBasePos));
 
 		//ボスバトル状態にする

@@ -25,6 +25,9 @@ Building* Building::Create(ObjModel* model, const Vector3& position)
 	//大きさをセット
 	building->scale = { 5, 5, 5 };
 
+	//シャドウマップで影を付ける
+	building->isShadowMap = true;
+
 	return building;
 }
 
