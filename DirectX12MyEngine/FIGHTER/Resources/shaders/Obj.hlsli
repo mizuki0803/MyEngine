@@ -49,7 +49,7 @@ struct SpotLight
 };
 
 //丸影数
-static const int CIRCLESHADOW_NUM = 1;
+static const int CIRCLESHADOW_NUM = 3;
 struct CircleShadow
 {
 	float3 dir;					//投影方向の逆ベクトル(単位ベクトル)
