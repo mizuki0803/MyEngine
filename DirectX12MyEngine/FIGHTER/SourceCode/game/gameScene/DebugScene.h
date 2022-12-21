@@ -15,16 +15,6 @@
 /// </summary>
 class DebugScene :public BaseGameScene
 {
-private: // エイリアス
-// Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	// DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMVECTOR = DirectX::XMVECTOR;
-	using XMMATRIX = DirectX::XMMATRIX;
-
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
@@ -66,6 +56,8 @@ private: //メンバ変数
 	std::unique_ptr<Camera> camera;
 	//影用光源カメラ
 	std::unique_ptr<LightCamera> lightCamera;
+	//頭上からの影用光源カメラ
+	std::unique_ptr<LightCamera> topLightCamera;
 
 	//ライト
 	std::unique_ptr<LightGroup> lightGroup;

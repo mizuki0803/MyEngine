@@ -35,7 +35,11 @@ void DebugScene::Initialize()
 
 	//影用光源カメラ初期化
 	lightCamera.reset(new LightCamera());
-	lightCamera->Initialize({ 0, 500, 0 });
+	lightCamera->Initialize({ 0, 50, 10 });
+	//頭上からの影用光源カメラ初期化
+	topLightCamera.reset(new LightCamera());
+	topLightCamera->Initialize({ 0, 50, 10 });
+	topLightCamera->SetProjectionNum({ 100, 100 }, { -100, -100 });
 
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
@@ -77,12 +81,15 @@ void DebugScene::Initialize()
 	objGround->SetPosition({ 0, -1, 0 });
 	objSphere->SetPosition({ -1, 0, 0 });
 
+	objGround->SetIsShadowMap(true);
+
 	//角度初期値
 	objMan->SetRotation({ 0, 90, 0 });
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(camera.get());
 	ObjObject3d::SetLightCamera(lightCamera.get());
+	ObjObject3d::SetTopLightCamera(topLightCamera.get());
 	//objオブジェクトにライトをセット
 	ObjObject3d::SetLightGroup(lightGroup.get());
 
@@ -130,9 +137,6 @@ void DebugScene::Initialize()
 
 void DebugScene::Update()
 {
-	//デモマップレベルデータ更新
-	demoMapData->Update();
-
 	//入力のインスタンスを取得
 	Input* input = Input::GetInstance();
 	//デバッグテキストのインスタンスを取得
@@ -458,14 +462,17 @@ void DebugScene::Update()
 	//カメラ更新
 	camera->Update();
 	lightCamera->Update();
+	topLightCamera->Update();
 
 	//Object3d更新
+	//デモマップレベルデータ更新
+	demoMapData->Update();
 	objMan->Update();
 	objGround->Update();
 	objSkydome->Update();
 	objSphere->Update();
 
-	fbxObject1->Update();
+	//fbxObject1->Update();
 
 
 	//パーティクル更新
@@ -515,7 +522,7 @@ void DebugScene::Draw3D()
 	objSkydome->Draw();
 	objSphere->Draw();
 
-	fbxObject1->Draw();
+	//fbxObject1->Draw();
 
 
 	///-------Object3d描画ここまで-------///
@@ -536,7 +543,7 @@ void DebugScene::Draw3DLightView()
 	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
-
+	demoMapData->DrawLightCameraView();
 	objMan->DrawLightCameraView();
 	objGround->DrawLightCameraView();
 	objSkydome->DrawLightCameraView();
@@ -551,7 +558,7 @@ void DebugScene::Draw3DTopLightView()
 	//Object3d共通コマンド
 	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
-
+	demoMapData->DrawLightCameraView();
 
 	objMan->DrawTopLightCameraView();
 	objGround->DrawTopLightCameraView();
