@@ -1,6 +1,6 @@
 #include "BossMainBody.h"
 #include "Easing.h"
-#include "GameScene.h"
+#include "BaseStageScene.h"
 #include "BossChargeBullet.h"
 #include "ParticleEmitter.h"
 
@@ -23,7 +23,7 @@ void (BossMainBody::* BossMainBody::attackTypeRotatePhaseFuncTable[])() = {
 	&BossMainBody::Stay,
 };
 
-GameScene* BossMainBody::gameScene = nullptr;
+BaseStageScene* BossMainBody::stageScene = nullptr;
 ObjModel* BossMainBody::mainBodyModel = nullptr;
 ObjModel* BossMainBody::mainBodyDamageModel = nullptr;
 ObjModel* BossMainBody::mainBodySleepModel = nullptr;
@@ -337,7 +337,7 @@ void BossMainBody::Fire(const float scale, const float bulletSpeed)
 	//íeÇê∂ê¨
 	std::unique_ptr<EnemyBullet> newBullet;
 	newBullet.reset(EnemyBullet::Create(bulletModel, bulletShotPos, velocity, scale));
-	gameScene->AddEnemyBullet(std::move(newBullet));
+	stageScene->AddEnemyBullet(std::move(newBullet));
 }
 
 void BossMainBody::ChargeBulletFire(const float scale, const float bulletSpeed)
@@ -349,7 +349,7 @@ void BossMainBody::ChargeBulletFire(const float scale, const float bulletSpeed)
 	//É`ÉÉÅ[ÉWíeÇê∂ê¨
 	std::unique_ptr<EnemyBullet> newBullet;
 	newBullet.reset(BossChargeBullet::Create(bulletShotPos, velocity, scale));
-	gameScene->AddEnemyBullet(std::move(newBullet));
+	stageScene->AddEnemyBullet(std::move(newBullet));
 }
 
 void BossMainBody::DamageMode()

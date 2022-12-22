@@ -431,7 +431,7 @@
     <ClCompile Include="SourceCode\game\gameScene\DebugScene.cpp">
       <Filter>ソース ファイル\game\gameScene</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameScene\GameScene.cpp">
+    <ClCompile Include="SourceCode\game\gameScene\Stage01Scene.cpp">
       <Filter>ソース ファイル\game\gameScene</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameScene\SortieScene.cpp">
@@ -547,6 +547,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameEffect\BossDeadEffect.cpp">
       <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameScene\Stage02Scene.cpp">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameScene\BaseStageScene.cpp">
+      <Filter>ソース ファイル\game\gameScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -860,7 +866,7 @@
     <ClInclude Include="SourceCode\game\gameScene\DebugScene.h">
       <Filter>ソース ファイル\game\gameScene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameScene\GameScene.h">
+    <ClInclude Include="SourceCode\game\gameScene\Stage01Scene.h">
       <Filter>ソース ファイル\game\gameScene</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameScene\SortieScene.h">
@@ -982,6 +988,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameEffect\BossDeadEffect.h">
       <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\Stage02Scene.h">
+      <Filter>ソース ファイル\game\gameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\BaseStageScene.h">
+      <Filter>ソース ファイル\game\gameScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,12 +1,12 @@
 #include "Enemy.h"
 #include "Player.h"
-#include "GameScene.h"
+#include "BaseStageScene.h"
 #include "EnemyDefeatCounter.h"
 #include "ParticleEmitter.h"
 #include "Easing.h"
 
 Player* Enemy::player = nullptr;
-GameScene* Enemy::gameScene = nullptr;
+BaseStageScene* Enemy::stageScene = nullptr;
 ObjModel* Enemy::bulletModel = nullptr;
 
 bool Enemy::Initialize()
@@ -138,7 +138,7 @@ void Enemy::Fire()
 	//弾を生成
 	std::unique_ptr<EnemyBullet> newBullet;
 	newBullet.reset(EnemyBullet::Create(bulletModel, position, velocity));
-	gameScene->AddEnemyBullet(std::move(newBullet));
+	stageScene->AddEnemyBullet(std::move(newBullet));
 }
 
 void Enemy::DamageMode()
@@ -211,7 +211,7 @@ void Enemy::BreakEffect(ObjModel* model, const Vector3& velocity, const Vector3&
 	//破壊用エフェクトを生成
 	std::unique_ptr<EnemyBreakEffect> newBreakEffect;
 	newBreakEffect.reset(EnemyBreakEffect::Create(model, position, velocity, rotSpeed, scale));
-	gameScene->AddEnemyBreakEffect(std::move(newBreakEffect));
+	stageScene->AddEnemyBreakEffect(std::move(newBreakEffect));
 }
 
 void Enemy::FrontOfScreenDelete()

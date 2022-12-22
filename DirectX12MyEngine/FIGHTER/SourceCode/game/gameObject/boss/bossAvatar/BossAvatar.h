@@ -1,8 +1,8 @@
 #pragma once
 #include "ObjObject3d.h"
 
-//GameSceneの前方宣言
-class GameScene;
+//ステージシーンの前方宣言
+class BaseStageScene;
 
 /// <summary>
 /// ボス(分身)
@@ -38,7 +38,7 @@ public: //静的メンバ関数
 	static const int GetMaxHP() { return BossAvatar::maxHP; }
 
 	//setter
-	static void SetGameScene(GameScene* gameScene) { BossAvatar::gameScene = gameScene; }
+	static void SetStageScene(BaseStageScene* stageScene) { BossAvatar::stageScene = stageScene; }
 	static void SetAvatarModel(ObjModel* model) { BossAvatar::avatarModel = model; }
 	static void SetAvatarDamageModel(ObjModel* model) { BossAvatar::avatarDamageModel = model; }
 	static void SetAvatarSleepModel(ObjModel* model) { BossAvatar::avatarSleepModel = model; }
@@ -246,8 +246,8 @@ protected: //メンバ関数
 	void DeadBlackSmoke();
 
 protected: //静的メンバ変数
-	//ゲームシーン
-	static GameScene* gameScene;
+	//ステージシーン
+	static BaseStageScene* stageScene;
 	//分身のモデル
 	static ObjModel* avatarModel;
 	//HPが少ない状態のモデル

@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 
 /// <summary>
 /// 敵を倒した数カウンター
@@ -20,15 +21,15 @@ public: //静的メンバ関数
 	/// <summary>
 	/// ハイスコア更新か確認
 	/// </summary>
-	static void CheckHighScore();
+	static void CheckHighScore(int stageNum);
 
 	//getter
 	static int GetDefeatCount() { return defeatCounter; }
-	static int GetHighScore() { return highScore; }
+	static int GetHighScore(int stageNum) { return highScore[stageNum]; }
 
 private: //静的メンバ変数
 	//カウンター
 	static int defeatCounter;
 	//ハイスコア
-	static int highScore;
+	static std::array<int, 2> highScore;
 };

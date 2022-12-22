@@ -181,9 +181,11 @@
     <ClCompile Include="SourceCode\game\gameObject\StageSelectPlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\TitlePlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\BaseGameScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\BaseStageScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\DebugScene.cpp" />
-    <ClCompile Include="SourceCode\game\gameScene\GameScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\Stage01Scene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\SortieScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\Stage02Scene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\StageSelectScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\TitleScene.cpp" />
     <ClCompile Include="SourceCode\game\gameSprite\HowToPlaySprite.cpp" />
@@ -396,9 +398,11 @@
     <ClInclude Include="SourceCode\game\gameObject\StageSelectPlayer.h" />
     <ClInclude Include="SourceCode\game\gameObject\TitlePlayer.h" />
     <ClInclude Include="SourceCode\game\gameScene\BaseGameScene.h" />
+    <ClInclude Include="SourceCode\game\gameScene\BaseStageScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\DebugScene.h" />
-    <ClInclude Include="SourceCode\game\gameScene\GameScene.h" />
+    <ClInclude Include="SourceCode\game\gameScene\Stage01Scene.h" />
     <ClInclude Include="SourceCode\game\gameScene\SortieScene.h" />
+    <ClInclude Include="SourceCode\game\gameScene\Stage02Scene.h" />
     <ClInclude Include="SourceCode\game\gameScene\StageSelectScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\TitleScene.h" />
     <ClInclude Include="SourceCode\game\gameSprite\HowToPlaySprite.h" />

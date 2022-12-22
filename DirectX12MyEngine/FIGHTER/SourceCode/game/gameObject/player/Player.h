@@ -8,8 +8,8 @@
 #include <memory>
 #include <list>
 
-//ゲームシーンの前方宣言
-class GameScene;
+//ステージシーンの前方宣言
+class BaseStageScene;
 
 /// <summary>
 /// 自機
@@ -52,7 +52,7 @@ public: //静的メンバ関数
 	static const float GetKnockbackBaseSpeed() { return knockbackBaseSpeed; }
 
 	//setter
-	static void SetGameScene(GameScene* gameScene) { Player::gameScene = gameScene; }
+	static void SetStageScene(BaseStageScene* stageScene) { Player::stageScene = stageScene; }
 	static void SetBulletModel(ObjModel* model) { Player::bulletModel = model; }
 
 public: //メンバ関数
@@ -314,8 +314,8 @@ private: //メンバ関数
 	void StageClearBoost();
 
 private: //静的メンバ変数
-	//ゲームシーン
-	static GameScene* gameScene;
+	//ステージシーン
+	static BaseStageScene* stageScene;
 	//自機弾のモデル
 	static ObjModel* bulletModel;
 	//ホーミング弾の大きさ

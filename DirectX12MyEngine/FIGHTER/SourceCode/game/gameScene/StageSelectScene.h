@@ -19,12 +19,12 @@
 class StageSelectScene :public BaseGameScene
 {
 public:
-	//選択するステージ
-	enum class SelectStage
+	//ステージ名
+	enum class StageName
 	{
 		Title,		//タイトルシーン
 		Stage01,	//ステージ01シーン
-		ComingSoon,	//まだないステージ
+		Stage02,	//ステージ02シーン
 	};
 
 public: //メンバ関数
@@ -118,7 +118,7 @@ private: //メンバ関数
 
 private: //静的メンバ変数
 	//選択しているステージ
-	static SelectStage selectStage;
+	static StageName selectStage;
 
 private: //メンバ変数
 	//カメラ

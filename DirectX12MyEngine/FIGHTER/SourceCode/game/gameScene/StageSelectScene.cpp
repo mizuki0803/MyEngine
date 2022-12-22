@@ -12,7 +12,7 @@
 #include <fstream>
 #include <iomanip>
 
-StageSelectScene::SelectStage StageSelectScene::selectStage = StageSelectScene::SelectStage::Title;
+StageSelectScene::StageName StageSelectScene::selectStage = StageSelectScene::StageName::Title;
 
 void StageSelectScene::Initialize()
 {
@@ -313,8 +313,8 @@ void StageSelectScene::StageSelectChangeRight()
 	bool isMove = false;
 
 	//選択するステージ番号を1つ進める
-	if (selectStage == SelectStage::Title) { selectStage = SelectStage::Stage01; isMove = true; }
-	else if (selectStage == SelectStage::Stage01) { selectStage = SelectStage::ComingSoon; isMove = true; }
+	if (selectStage == StageName::Title) { selectStage = StageName::Stage01; isMove = true; }
+	else if (selectStage == StageName::Stage01) { selectStage = StageName::Stage02; isMove = true; }
 
 	//移動できなければ抜ける
 	if (!isMove) { return; }
@@ -332,8 +332,8 @@ void StageSelectScene::StageSelectChangeLeft()
 	bool isMove = false;
 
 	//選択するステージ番号を1つ戻す
-	if (selectStage == SelectStage::ComingSoon) { selectStage = SelectStage::Stage01; isMove = true; }
-	else if (selectStage == SelectStage::Stage01) { selectStage = SelectStage::Title; isMove = true; }
+	if (selectStage == StageName::Stage02) { selectStage = StageName::Stage01; isMove = true; }
+	else if (selectStage == StageName::Stage01) { selectStage = StageName::Title; isMove = true; }
 
 	//移動できなければ抜ける
 	if (!isMove) { return; }
@@ -352,9 +352,6 @@ void StageSelectScene::StageDicision()
 
 	//ステージ決定確認中でなければ
 	if (!isStageDecisionCheck) {
-		//選しているステージが制作中なら抜ける
-		if (selectStage == SelectStage::ComingSoon) { return; }
-
 		//自機がステージ選択状態でなければ抜ける
 		if (!(player->GetActionPhase() == StageSelectPlayer::ActionPhase::StageSelect)) { return; }
 		//カメラがステージ選択状態でなければ抜ける
@@ -449,6 +446,7 @@ void StageSelectScene::EnterPlanet()
 void StageSelectScene::ChangeSelectScene()
 {
 	//選択しているステージに応じてシーン変更
-	if (selectStage == SelectStage::Title) { SceneChangeStart({ 0,0,0,0 }, 40, 60, 60, "TITLE"); }
-	else if (selectStage == SelectStage::Stage01) { SceneChangeStart({ 0,0,0,0 }, 40, 60, 120, "SORTIE"); }
+	if (selectStage == StageName::Title) { SceneChangeStart({ 0,0,0,0 }, 40, 60, 60, "TITLE"); }
+	else if (selectStage == StageName::Stage01) { SceneChangeStart({ 0,0,0,0 }, 40, 60, 120, "SORTIE"); }
+	else if (selectStage == StageName::Stage02) { SceneChangeStart({ 0,0,0,0 }, 40, 60, 120, "STAGE02"); }
 }

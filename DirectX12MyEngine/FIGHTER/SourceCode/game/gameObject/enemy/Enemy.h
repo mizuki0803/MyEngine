@@ -6,8 +6,8 @@
 
 //自機クラスを前方宣言
 class Player;
-//GameSceneの前方宣言
-class GameScene;
+//ステージシーンの前方宣言
+class BaseStageScene;
 
 /// <summary>
 /// 敵
@@ -27,14 +27,14 @@ public: //enum
 public: //静的メンバ関数
 	//setter
 	static void SetPlayer(Player* player) { Enemy::player = player; }
-	static void SetGameScene(GameScene* gameScene) { Enemy::gameScene = gameScene; }
+	static void SetStageScene(BaseStageScene* stageScene) { Enemy::stageScene = stageScene; }
 	static void SetBulletModel(ObjModel* model) { Enemy::bulletModel = model; }
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>成否</returns>
 	bool Initialize() override;
 
 	/// <summary>
@@ -100,8 +100,8 @@ protected: //メンバ関数
 protected: //静的メンバ変数
 	//プレイヤー自機
 	static Player* player;
-	//ゲームシーン
-	static GameScene* gameScene;
+	//ステージシーン
+	static BaseStageScene* stageScene;
 	//敵弾のモデル
 	static ObjModel* bulletModel;
 

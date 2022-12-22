@@ -489,7 +489,7 @@ void DebugScene::Update()
 	if (input->TriggerKey(DIK_RETURN))
 	{
 		//ƒV[ƒ“Ø‚è‘Ö‚¦
-		SceneManager::GetInstance()->ChangeScene("GAME");
+		SceneManager::GetInstance()->ChangeScene("STAGE01");
 		Audio::GetInstance()->StopWave("BGM.wav");
 		ParticleEmitter::GetInstance()->AllDelete();
 	}

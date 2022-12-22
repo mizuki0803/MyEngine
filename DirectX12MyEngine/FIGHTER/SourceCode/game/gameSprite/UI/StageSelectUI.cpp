@@ -106,13 +106,15 @@ void StageSelectUI::TextInScreenStart(const int stageNum)
 	planetNameSprite->SetTexLeftTop({ planetNameSprite->GetTexSize().x * stageNum, 0 });
 
 	//ハイスコアを表示するか決定
-	if (stageNum == 1) { isHighScoreShow = true; }
-	else { isHighScoreShow = false; }
+	if (stageNum == 0) { isHighScoreShow = false; }
+	else { isHighScoreShow = true; }
 
 	//ハイスコアを表示する場合
 	if (isHighScoreShow) {
+		//ハイスコア取得用のステージ番号を取得(タイトルシーン分詰める)
+		const int highScoreStageNum = stageNum - 1;
 		//数字スプライトをハイスコアに更新
-		const int highScore = EnemyDefeatCounter::GetHighScore();
+		const int highScore = EnemyDefeatCounter::GetHighScore(highScoreStageNum);
 
 		//ハイスコアが0(未設定)の場合は棒を表示
 		if (highScore == 0) {

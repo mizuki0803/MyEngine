@@ -1,7 +1,7 @@
 #include "EnemyDefeatCounter.h"
 
 int EnemyDefeatCounter::defeatCounter = 0;
-int EnemyDefeatCounter::highScore = 0;
+std::array<int, 2> EnemyDefeatCounter::highScore = {};
 
 void EnemyDefeatCounter::AddCounter(int count)
 {
@@ -15,11 +15,11 @@ void EnemyDefeatCounter::CounterReset()
 	defeatCounter = 0;
 }
 
-void EnemyDefeatCounter::CheckHighScore()
+void EnemyDefeatCounter::CheckHighScore(int stageNum)
 {
 	//カウンターがハイスコア以下なら抜ける
-	if (defeatCounter <= highScore) { return; }
+	if (defeatCounter <= highScore[stageNum]) { return; }
 
 	//ハイスコア更新
-	highScore = defeatCounter;
+	highScore[stageNum] = defeatCounter;
 }

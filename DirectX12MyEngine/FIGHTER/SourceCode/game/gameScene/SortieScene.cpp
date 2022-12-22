@@ -132,8 +132,8 @@ void SortieScene::Update()
 
 	//自機の出撃行動が完了したら
 	if (player->GetIsSortieEnd()) {
-		//ゲームシーンへシーン変更を開始する
-		SceneChangeStart({ 1,1,1,0 }, 10, 0, 20, "GAME");
+		//ステージ01へシーン変更を開始する
+		SceneChangeStart({ 1,1,1,0 }, 10, 0, 20, "STAGE01");
 	}
 	//ムービースキップ機能
 	MovieSkip();
@@ -251,6 +251,6 @@ void SortieScene::MovieSkip()
 	//スキップ入力がなければ抜ける
 	if (!(Input::GetInstance()->TriggerKey(DIK_RETURN) || Input::GetInstance()->TriggerGamePadButton(Input::PAD_START))) { return; }
 
-	//ゲームシーンへシーン変更を開始する
-	SceneChangeStart({ 0,0,0,0 }, 15, 0, 15, "GAME");
+	//ステージ01へシーン変更を開始する
+	SceneChangeStart({ 0,0,0,0 }, 15, 0, 15, "STAGE01");
 }

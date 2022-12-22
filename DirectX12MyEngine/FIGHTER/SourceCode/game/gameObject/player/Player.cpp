@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Input.h"
 #include "Easing.h"
-#include "GameScene.h"
+#include "BaseStageScene.h"
 #include "SpriteTextureLoader.h"
 #include "StraightBullet.h"
 #include "HomingBullet.h"
@@ -16,7 +16,7 @@ void (Player::* Player::stageClearActionFuncTable[])() = {
 	&Player::StageClearBoost,
 };
 
-GameScene* Player::gameScene = nullptr;
+BaseStageScene* Player::stageScene = nullptr;
 ObjModel* Player::bulletModel = nullptr;
 const float Player::homingBulletSize = 2.5f;
 const Vector3 Player::basePos = { 0, 3, 16 };
@@ -1078,7 +1078,7 @@ void Player::ShotStraightBullet()
 	//直進弾を生成
 	std::unique_ptr<PlayerBullet> newBullet;
 	newBullet.reset(StraightBullet::Create(bulletModel, bulletShotPos, velocity));
-	gameScene->AddPlayerBullet(std::move(newBullet));
+	stageScene->AddPlayerBullet(std::move(newBullet));
 
 	//ショット演出用パーティクル生成
 	ParticleEmitter::GetInstance()->Shot(bulletShotPos);
@@ -1098,7 +1098,7 @@ void Player::ShotHomingBullet()
 	//ホーミング弾を生成
 	std::unique_ptr<PlayerBullet> newBullet;
 	newBullet.reset(HomingBullet::Create(bulletShotPos, velocity, homingBulletSize, reticles->GetLockonEnemy()));
-	gameScene->AddPlayerBullet(std::move(newBullet));
+	stageScene->AddPlayerBullet(std::move(newBullet));
 }
 
 void Player::StageClearSideMove()

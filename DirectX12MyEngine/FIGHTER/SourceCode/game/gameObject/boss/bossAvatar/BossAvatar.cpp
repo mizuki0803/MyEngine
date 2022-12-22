@@ -1,6 +1,6 @@
 #include "BossAvatar.h"
 #include "Easing.h"
-#include "GameScene.h"
+#include "BaseStageScene.h"
 #include "BossChargeBullet.h"
 #include "ParticleEmitter.h"
 
@@ -28,7 +28,7 @@ void (BossAvatar::* BossAvatar::attackTypeAvatarGiantBulletPhaseFuncTable[])() =
 };
 
 
-GameScene* BossAvatar::gameScene = nullptr;
+BaseStageScene* BossAvatar::stageScene = nullptr;
 ObjModel* BossAvatar::avatarModel = nullptr;
 ObjModel* BossAvatar::avatarDamageModel = nullptr;
 ObjModel* BossAvatar::avatarSleepModel = nullptr;
@@ -249,7 +249,7 @@ void BossAvatar::Fire(const float scale, const float bulletSpeed)
 	//íeÇê∂ê¨
 	std::unique_ptr<EnemyBullet> newBullet;
 	newBullet.reset(EnemyBullet::Create(bulletModel, bulletShotPos, velocity, scale));
-	gameScene->AddEnemyBullet(std::move(newBullet));
+	stageScene->AddEnemyBullet(std::move(newBullet));
 }
 
 void BossAvatar::ChargeBulletFire(const float scale, const float bulletSpeed)
@@ -261,7 +261,7 @@ void BossAvatar::ChargeBulletFire(const float scale, const float bulletSpeed)
 	//É`ÉÉÅ[ÉWíeÇê∂ê¨
 	std::unique_ptr<EnemyBullet> newBullet;
 	newBullet.reset(BossChargeBullet::Create(bulletShotPos, velocity, scale));
-	gameScene->AddEnemyBullet(std::move(newBullet));
+	stageScene->AddEnemyBullet(std::move(newBullet));
 }
 
 void BossAvatar::DamageMode()

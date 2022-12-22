@@ -1,4 +1,4 @@
-﻿#include "GameScene.h"
+﻿#include "Stage02Scene.h"
 #include "SceneManager.h"
 #include "Input.h"
 #include "Audio.h"
@@ -23,7 +23,7 @@
 using namespace DirectX;
 
 
-void GameScene::Initialize()
+void Stage02Scene::Initialize()
 {
 	//ゲームカメラ初期化
 	gameCamera.reset(new GameCamera());
@@ -45,7 +45,7 @@ void GameScene::Initialize()
 
 
 	//objからモデルデータを読み込む
-	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
+	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeSpace"));
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelBuilding[0].reset(ObjModel::LoadFromOBJ("building01"));
 	modelBuilding[1].reset(ObjModel::LoadFromOBJ("building02"));
@@ -79,7 +79,7 @@ void GameScene::Initialize()
 	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
 
 	//自機に必要な情報をセット
-	Player::SetGameScene(this);
+	Player::SetStageScene(this);
 	Player::SetBulletModel(modelPlayerBullet.get());
 	//自機生成
 	const int maxHP = 101; //最大HP
@@ -98,13 +98,13 @@ void GameScene::Initialize()
 
 	//ボスに必要な情報をセット
 	Boss::SetPlayer(player.get());
-	BossMainBody::SetGameScene(this);
+	BossMainBody::SetStageScene(this);
 	BossMainBody::SetBossMainBodyModel(modelBossMainBody.get());
 	BossMainBody::SetBossMainBodyDamageModel(modelBossMainBodyDamage.get());
 	BossMainBody::SetBossMainBodySleepModel(modelBossMainBodySleep.get());
 	BossMainBody::SetBossMainBodyDeadModel(modelBossMainBodyDead.get());
 	BossMainBody::SetBulletModel(modelEnemyBullet.get());
-	BossAvatar::SetGameScene(this);
+	BossAvatar::SetStageScene(this);
 	BossAvatar::SetAvatarModel(modelBossAvatar.get());
 	BossAvatar::SetAvatarDamageModel(modelBossAvatarDamage.get());
 	BossAvatar::SetAvatarSleepModel(modelBossAvatarSleep.get());
@@ -150,8 +150,6 @@ void GameScene::Initialize()
 	//画面にパーティクルが残ることがあるので全て削除しておく
 	ParticleEmitter::GetInstance()->AllDelete();
 
-	//遊び方UI生成
-	howToPlayUI.reset(HowToPlayUI::Create());
 	//ステージ開始UI生成
 	stageStartUI.reset(StageStartUI::Create(1));
 
@@ -159,7 +157,7 @@ void GameScene::Initialize()
 	EnemyDefeatCounter::CounterReset();
 }
 
-void GameScene::Update()
+void Stage02Scene::Update()
 {
 	//入力のインスタンスを取得
 	Input* input = Input::GetInstance();
@@ -170,8 +168,6 @@ void GameScene::Update()
 	ObjectRelease();
 	//敵発生コマンド更新
 	UpdateEnemySetCommands();
-	//遊び方UI表示
-	HowToPlay();
 	//ボスバトル開始判定処理
 	BossBattleStart();
 	//ステージクリア
@@ -244,10 +240,6 @@ void GameScene::Update()
 			stageStartUI.reset();
 		}
 	}
-	//遊び方UI 
-	if (howToPlayUI) {
-		howToPlayUI->Update();
-	}
 	//ボス登場警告演
 	if (bossWarning) {
 		bossWarning->Update();
@@ -278,11 +270,11 @@ void GameScene::Update()
 	SceneChangeEffect::Update();
 }
 
-void GameScene::DrawBackSprite()
+void Stage02Scene::DrawBackSprite()
 {
 }
 
-void GameScene::Draw3D()
+void Stage02Scene::Draw3D()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawPrev();
@@ -332,7 +324,7 @@ void GameScene::Draw3D()
 	///-------パーティクル描画ここまで-------///
 }
 
-void GameScene::Draw3DLightView()
+void Stage02Scene::Draw3DLightView()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawLightViewPrev();
@@ -344,7 +336,7 @@ void GameScene::Draw3DLightView()
 	///-------Object3d描画ここまで-------///
 }
 
-void GameScene::Draw3DTopLightView()
+void Stage02Scene::Draw3DTopLightView()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawLightViewPrev();
@@ -380,7 +372,7 @@ void GameScene::Draw3DTopLightView()
 	///-------Object3d描画ここまで-------///
 }
 
-void GameScene::DrawFrontSprite()
+void Stage02Scene::DrawFrontSprite()
 {
 	//スプライト共通コマンド
 	SpriteCommon::GetInstance()->DrawPrev();
@@ -400,10 +392,6 @@ void GameScene::DrawFrontSprite()
 	/*if (stageStartUI) {
 		stageStartUI->Draw();
 	}*/
-	//遊び方UI 
-	if (howToPlayUI) {
-		howToPlayUI->Draw();
-	}
 	//ステージクリアテキスト
 	if (stageClearText) {
 		stageClearText->Draw();
@@ -423,7 +411,7 @@ void GameScene::DrawFrontSprite()
 	///-------スプライト描画ここまで-------///
 }
 
-void GameScene::LightCameraUpdate()
+void Stage02Scene::LightCameraUpdate()
 {
 	//ターゲットになる座標
 	const Vector3 targetPos = gameCamera->GetPosition();
@@ -441,7 +429,7 @@ void GameScene::LightCameraUpdate()
 	topLightCamera->Update();
 }
 
-void GameScene::ObjectRelease()
+void Stage02Scene::ObjectRelease()
 {
 	//死亡した自機弾の削除前処理
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
@@ -554,7 +542,7 @@ void GameScene::ObjectRelease()
 		});
 }
 
-void GameScene::CollisionCheck3d()
+void Stage02Scene::CollisionCheck3d()
 {
 	//判定対象の座標
 	Vector3 posA, posB;
@@ -840,7 +828,7 @@ void GameScene::CollisionCheck3d()
 #pragma endregion
 }
 
-void GameScene::CollisionCheck2d()
+void Stage02Scene::CollisionCheck2d()
 {
 	//判定対象の座標
 	Vector2 posA, posB;
@@ -887,31 +875,13 @@ void GameScene::CollisionCheck2d()
 #pragma endregion
 }
 
-void GameScene::AddPlayerBullet(std::unique_ptr<PlayerBullet> playerBullet)
-{
-	//自機弾リストに登録
-	playerBullets.push_back(std::move(playerBullet));
-}
-
-void GameScene::AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet)
-{
-	//敵弾リストに登録
-	enemyBullets.push_back(std::move(enemyBullet));
-}
-
-void GameScene::AddEnemyBreakEffect(std::unique_ptr<EnemyBreakEffect> enemyBreakEffect)
-{
-	//敵破壊エフェクトリストに登録
-	enemyBreakEffects.push_back(std::move(enemyBreakEffect));
-}
-
-void GameScene::InitializeEnemy()
+void Stage02Scene::InitializeEnemy()
 {
 	//敵配置スクリプトの読み込み
-	LoadEnemySetData("Resources/csv/EnemySet.csv");
+	LoadEnemySetData("Resources/csv/EnemySetStage02.csv");
 
 	//全敵に必要な情報をセット
-	Enemy::SetGameScene(this); //全敵にゲームシーンを教える
+	Enemy::SetStageScene(this); //全敵にステージシーンを教える
 	Enemy::SetPlayer(player.get()); //自機をセット
 	Enemy::SetBulletModel(modelEnemyBullet.get()); //弾のモデルをセット
 
@@ -963,7 +933,7 @@ void GameScene::InitializeEnemy()
 	}
 }
 
-void GameScene::LoadEnemySetData(const std::string& fileName)
+void Stage02Scene::LoadEnemySetData(const std::string& fileName)
 {
 	//ファイルを開く
 	std::ifstream file;
@@ -977,7 +947,7 @@ void GameScene::LoadEnemySetData(const std::string& fileName)
 	file.close();
 }
 
-void GameScene::UpdateEnemySetCommands()
+void Stage02Scene::UpdateEnemySetCommands()
 {
 	//待機処理
 	if (isWait) {
@@ -1127,66 +1097,13 @@ void GameScene::UpdateEnemySetCommands()
 	}
 }
 
-void GameScene::HowToPlay()
-{
-	//次に描画する遊び方UIがない場合は抜ける
-	if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::None) { return; }
-
-	//次に描画する遊び方UIが「ショット」の場合
-	if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Shot) {
-
-		//カメラのZ座標が指定した値以下なら抜ける
-		const float createPos = 15;
-		if (gameCamera->GetPosition().z <= createPos) { return; }
-
-		//遊び方UI(ショット)生成
-		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Shot, HowToPlayUI::DrawUI::Charge);
-	}
-	//次に描画する遊び方UIが「チャージ」の場合
-	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Charge) {
-		//カメラのZ座標が指定した値以下なら抜ける
-		const float createPos = 550;
-		if (gameCamera->GetPosition().z <= createPos) { return; }
-
-		//遊び方UI(チャージ)生成
-		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Charge, HowToPlayUI::DrawUI::Rolling);
-	}
-	//次に描画する遊び方UIが「ローリング」の場合
-	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Rolling) {
-		//カメラのZ座標が指定した値以下なら抜ける
-		const float createPos = 1020;
-		if (gameCamera->GetPosition().z <= createPos) { return; }
-
-		//遊び方UI(ローリング)生成
-		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Rolling, HowToPlayUI::DrawUI::Boost);
-	}
-	//次に描画する遊び方UIが「ブースト」の場合
-	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Boost) {
-		//カメラのZ座標が指定した値以下なら抜ける
-		const float createPos = 1780;
-		if (gameCamera->GetPosition().z <= createPos) { return; }
-
-		//遊び方UI(ブースト)生成
-		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Boost, HowToPlayUI::DrawUI::Brake);
-	}
-	//次に描画する遊び方UIが「ブレーキ」の場合
-	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Brake) {
-		//カメラのZ座標が指定した値以下なら抜ける
-		const float createPos = 2460;
-		if (gameCamera->GetPosition().z <= createPos) { return; }
-
-		//遊び方UI(ブレーキ)生成
-		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Brake, HowToPlayUI::DrawUI::None);
-	}
-}
-
-void GameScene::BossBattleStart()
+void Stage02Scene::BossBattleStart()
 {
 	//既にボスバトルなら抜ける
 	if (isBossBattle) { return; }
 
 	//ボスバトル開始座標
-	const float bossBattleStartPos = 3200;
+	const float bossBattleStartPos = 200;
 
 	//警告開始判定
 	if (!bossWarning) {
@@ -1224,7 +1141,7 @@ void GameScene::BossBattleStart()
 	}
 }
 
-void GameScene::StageClear()
+void Stage02Scene::StageClear()
 {
 	//ステージクリアでないとき
 	if (!isStageClear) {
@@ -1243,7 +1160,7 @@ void GameScene::StageClear()
 		//カメラをステージクリアの動きに変更
 		gameCamera->StageClearModeStart(boss->GetMainBody());
 		//ハイスコア更新
-		EnemyDefeatCounter::CheckHighScore();
+		EnemyDefeatCounter::CheckHighScore(1);
 	}
 	//ステージクリア後
 	else {
@@ -1252,7 +1169,7 @@ void GameScene::StageClear()
 	}
 }
 
-void GameScene::StageResult()
+void Stage02Scene::StageResult()
 {
 	//ステージクリア時の影の向きに変更
 	StageClearSetLightCameraPos();
@@ -1268,7 +1185,7 @@ void GameScene::StageResult()
 
 }
 
-void GameScene::StageClearSetLightCameraPos()
+void Stage02Scene::StageClearSetLightCameraPos()
 {
 	//既にステージクリア用影状態なら抜ける
 	if (isStageClearShadow) { return; }
@@ -1282,7 +1199,7 @@ void GameScene::StageClearSetLightCameraPos()
 	lightCamera->SetProjectionNum({ 1300, 1300 }, { -200, -1300 });
 }
 
-void GameScene::StageClearTextCreateAndRelease()
+void Stage02Scene::StageClearTextCreateAndRelease()
 {
 	//ステージクリアテキストのインスタンスがないとき
 	if (!stageClearText) {
@@ -1302,7 +1219,7 @@ void GameScene::StageClearTextCreateAndRelease()
 	}
 }
 
-void GameScene::StageResultUICreateAndRelease()
+void Stage02Scene::StageResultUICreateAndRelease()
 {
 	//ステージリザルトUIのインスタンスがないとき
 	if (!stageResultUI) {
@@ -1337,7 +1254,7 @@ void GameScene::StageResultUICreateAndRelease()
 	}
 }
 
-void GameScene::ReturnTitleScene()
+void Stage02Scene::ReturnTitleScene()
 {
 	//自機のステージクリア後行動が完了していなければ抜ける
 	if (!player->GetIsStageClearModeCompletion()) { return; }
@@ -1346,7 +1263,7 @@ void GameScene::ReturnTitleScene()
 	SceneChangeStart({ 0,0,0,0 }, 120, 60, 60, "STAGESELECT");
 }
 
-void GameScene::GameOver()
+void Stage02Scene::GameOver()
 {
 	//ゲームオーバーでないとき
 	if (!isGameOver) {
@@ -1371,9 +1288,9 @@ void GameScene::GameOver()
 		const float gameOverTime = 120;
 		gameOverTimer++;
 
-		//タイマーが指定した時間になったらゲームシーンをやり直す
+		//タイマーが指定した時間になったらステージ02をやり直す
 		if (gameOverTimer >= gameOverTime) {
-			SceneChangeStart({ 0,0,0,0 }, 60, 60, 20, "GAME");
+			SceneChangeStart({ 0,0,0,0 }, 60, 60, 20, "STAGE02");
 		}
 	}
 }

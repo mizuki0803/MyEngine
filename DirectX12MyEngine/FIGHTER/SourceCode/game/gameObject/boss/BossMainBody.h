@@ -1,8 +1,8 @@
 #pragma once
 #include "ObjObject3d.h"
 
-//GameSceneの前方宣言
-class GameScene;
+//ステージシーンの前方宣言
+class BaseStageScene;
 
 /// <summary>
 /// ボス(本体)
@@ -41,7 +41,7 @@ public: //静的メンバ関数
 	static const Vector3& GetNormalSize() { return BossMainBody::normalSize; }
 
 	//setter
-	static void SetGameScene(GameScene* gameScene) { BossMainBody::gameScene = gameScene; }
+	static void SetStageScene(BaseStageScene* stageScene) { BossMainBody::stageScene = stageScene; }
 	static void SetBossMainBodyModel(ObjModel* model) { BossMainBody::mainBodyModel = model; }
 	static void SetBossMainBodyDamageModel(ObjModel* model) { BossMainBody::mainBodyDamageModel = model; }
 	static void SetBossMainBodySleepModel(ObjModel* model) { BossMainBody::mainBodySleepModel = model; }
@@ -245,8 +245,8 @@ private: //メンバ関数
 	void Stay();
 
 private: //静的メンバ変数
-	//ゲームシーン
-	static GameScene* gameScene;
+	//ステージシーン
+	static BaseStageScene* stageScene;
 	//本体のモデル
 	static ObjModel* mainBodyModel;
 	//HPが少ない状態のモデル

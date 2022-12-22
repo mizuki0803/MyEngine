@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseGameScene.h"
+#include "BaseStageScene.h"
 #include "Sprite.h"
 #include "ObjObject3d.h"
 #include "LightGroup.h"
@@ -26,9 +26,9 @@
 #include <sstream>
 
 /// <summary>
-/// ゲームシーン
+/// ステージ01シーン
 /// </summary>
-class GameScene :public BaseGameScene
+class Stage01Scene :public BaseStageScene
 {
 public: //メンバ関数
 	/// <summary>
@@ -85,24 +85,6 @@ public: //メンバ関数
 	/// 2Dオブジェクトの衝突判定
 	/// </summary>
 	void CollisionCheck2d();
-
-	/// <summary>
-	/// 自機弾を追加する
-	/// </summary>
-	/// <param name="playerBullet">自機弾</param>
-	void AddPlayerBullet(std::unique_ptr<PlayerBullet> playerBullet);
-
-	/// <summary>
-	/// 敵弾を追加する
-	/// </summary>
-	/// <param name="enemyBullet">敵弾</param>
-	void AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet);
-
-	/// <summary>
-	/// 敵破壊エフェクトを追加する
-	/// </summary>
-	/// <param name="enemyBreakEffect">敵破壊エフェクト</param>
-	void AddEnemyBreakEffect(std::unique_ptr<EnemyBreakEffect> enemyBreakEffect);
 
 	/// <summary>
 	/// 敵初期化処理
@@ -205,14 +187,6 @@ private: //メンバ変数
 
 	//自機
 	std::unique_ptr<Player> player;
-	//自機弾
-	std::list<std::unique_ptr<PlayerBullet>> playerBullets;
-	//敵
-	std::list<std::unique_ptr<Enemy>> enemys;
-	//敵弾
-	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
-	//敵破壊エフェクト
-	std::list<std::unique_ptr<EnemyBreakEffect>> enemyBreakEffects;
 	//敵発生コマンド
 	std::stringstream enemySetCommands;
 	//待機中か

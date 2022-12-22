@@ -1,0 +1,4 @@
+//WAITコマンド,waitPlayerPositionZ
+//コマンド,type,posX,posY,posZ(,敵ごとに必要なコマンド)
+WAIT,70,,
+POP,3,0,20,220,100
