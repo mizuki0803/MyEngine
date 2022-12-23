@@ -7,7 +7,6 @@
 #include "Easing.h"
 #include "ParticleEmitter.h"
 #include "HomingBullet.h"
-#include "DemoEnemy.h"
 #include "CannonEnemy.h"
 #include "CircularEnemy.h"
 #include "FallEnemy.h"
@@ -17,7 +16,7 @@
 #include "SceneChangeEffect.h"
 #include "GamePostEffect.h"
 #include <cassert>
-#include <fstream>
+
 #include <iomanip>
 
 using namespace DirectX;
@@ -119,23 +118,6 @@ void Stage02Scene::Initialize()
 	//見栄えがいい角度に変更しておく
 	skydome->SetRotation({ 0, 190, 0 });
 
-	//地面生成
-	gameGroundManager.reset(GameGroundManager::Create(modelGround.get()));
-	//地面に必要な情報をセット
-	GameGroundManager::SetPlayer(player.get());
-	GameGroundManager::SetGameCamera(gameCamera.get());
-
-	//ビルに必要な情報をセット
-	//モデルをセット
-	for (int i = 0; i < modelBuilding.size(); i++) {
-		//モデルが未設定なら飛ばす
-		if (!modelBuilding[i]) { continue; }
-		GameBuildingManager::SetBuidingModel(i, modelBuilding[i].get());
-	}
-	GameBuildingManager::SetPlayer(player.get());
-	GameBuildingManager::SetGameCamera(gameCamera.get());
-	//背景用(ゲーム用ビル管理)生成
-	gameBuildingManager.reset(GameBuildingManager::Create(85, 25, 25, { 0, 0, -20 }));
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
@@ -167,7 +149,7 @@ void Stage02Scene::Update()
 	//オブジェクト解放
 	ObjectRelease();
 	//敵発生コマンド更新
-	UpdateEnemySetCommands();
+	UpdateEnemySetCommands(gameCamera->GetPosition());
 	//ボスバトル開始判定処理
 	BossBattleStart();
 	//ステージクリア
@@ -217,10 +199,6 @@ void Stage02Scene::Update()
 	}
 	//天球
 	skydome->Update();
-	//地面
-	gameGroundManager->Update();
-	//背景用(ビル)
-	gameBuildingManager->Update();
 
 	//3D衝突判定管理
 	CollisionCheck3d();
@@ -309,10 +287,6 @@ void Stage02Scene::Draw3D()
 	}
 	//天球
 	skydome->Draw();
-	//地面
-	gameGroundManager->Draw();
-	//背景用(ビル)
-	gameBuildingManager->Draw();
 
 	///-------Object3d描画ここまで-------///
 
@@ -330,8 +304,7 @@ void Stage02Scene::Draw3DLightView()
 	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
-	//背景用(ビル)
-	gameBuildingManager->DrawLightCameraView();
+
 
 	///-------Object3d描画ここまで-------///
 }
@@ -518,12 +491,6 @@ void Stage02Scene::ObjectRelease()
 			player->StageClearReturnStart(gameCamera->GetPosition());
 			//カメラのボス本体情報を解除させる
 			gameCamera->BossDelete();
-			//地面のスクロール状態を解除
-			gameGroundManager->SetIsScroll(false);
-			//ビルのスクロール状態を解除
-			gameBuildingManager->SetIsScroll(false);
-			//後ろ側にビルを大量設置
-			gameBuildingManager->CreateBehindObjects();
 			//死亡後演出を生成
 			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetMainBody()->GetWorldPos()));
 			//カメラをシェイクさせる
@@ -933,177 +900,13 @@ void Stage02Scene::InitializeEnemy()
 	}
 }
 
-void Stage02Scene::LoadEnemySetData(const std::string& fileName)
-{
-	//ファイルを開く
-	std::ifstream file;
-	file.open(fileName);
-	assert(file.is_open());
-
-	//ファイルの内容を文字列ストリームにコピー
-	enemySetCommands << file.rdbuf();
-
-	//ファイルを閉じる
-	file.close();
-}
-
-void Stage02Scene::UpdateEnemySetCommands()
-{
-	//待機処理
-	if (isWait) {
-		//カメラのZ座標が生成自機座標以上なら
-		if (waitEnemySetPlayerPosition <= gameCamera->GetPosition().z) {
-			//待機終了
-			isWait = false;
-		}
-		return;
-	}
-
-	//1行分の文字列を入れる変数
-	std::string line;
-
-	//コマンドを実行するループ
-	while (getline(enemySetCommands, line)) {
-		//1行分の文字列をストリーム変換して解析しやすく
-		std::istringstream line_stream(line);
-
-		std::string word;
-		//「,」区切りで行の先頭文字を取得
-		getline(line_stream, word, ',');
-
-		//"//"から始める行はコメント
-		if (word.find("//") == 0) {
-			//コメント行を飛ばす
-			continue;
-		}
-
-		//POPコマンド
-		if (word.find("POP") == 0) {
-			//敵の種類
-			getline(line_stream, word, ',');
-			int type = (int)std::atof(word.c_str());
-
-			//x座標
-			getline(line_stream, word, ',');
-			float x = (float)std::atof(word.c_str());
-
-			//y座標
-			getline(line_stream, word, ',');
-			float y = (float)std::atof(word.c_str());
-
-			//z座標
-			getline(line_stream, word, ',');
-			float z = (float)std::atof(word.c_str());
-
-			//敵を発生
-			if (type == Enemy::EnemyType::Demo) {
-				//x方向速度
-				getline(line_stream, word, ',');
-				float velX = (float)std::atof(word.c_str());
-
-				//y方向速度
-				getline(line_stream, word, ',');
-				float velY = (float)std::atof(word.c_str());
-
-				//z方向速度
-				getline(line_stream, word, ',');
-				float velZ = (float)std::atof(word.c_str());
-
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(DemoEnemy::Create(modelEnemyFighter.get(), { x, y, z }, { velX, velY, velZ }));
-				enemys.push_back(std::move(newEnemy));
-			}
-			else if (type == Enemy::EnemyType::Cannon) {
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CannonEnemy::Create({ x, y, z }));
-				enemys.push_back(std::move(newEnemy));
-			}
-			else if (type == Enemy::EnemyType::Circular) {
-				//角度
-				getline(line_stream, word, ',');
-				float angle = (float)std::atof(word.c_str());
-
-				//半径の長さ
-				getline(line_stream, word, ',');
-				float length = (float)std::atof(word.c_str());
-
-				//回転速度
-				getline(line_stream, word, ',');
-				float rotSpeed = (float)std::atof(word.c_str());
-
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CircularEnemy::Create({ x, y, z }, angle, length, rotSpeed));
-				enemys.push_back(std::move(newEnemy));
-			}
-			else if (type == Enemy::EnemyType::Fall) {
-				//降下する値
-				getline(line_stream, word, ',');
-				float fallNum = (float)std::atof(word.c_str());
-
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(FallEnemy::Create({ x, y, z }, fallNum));
-				enemys.push_back(std::move(newEnemy));
-			}
-			else if (type == Enemy::EnemyType::UpDown) {
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(UpDownEnemy::Create({ x, y, z }));
-				enemys.push_back(std::move(newEnemy));
-			}
-			else if (type == Enemy::EnemyType::ComeGo) {
-				//x到着座標
-				getline(line_stream, word, ',');
-				float comeX = (float)std::atof(word.c_str());
-				//y到着座標
-				getline(line_stream, word, ',');
-				float comeY = (float)std::atof(word.c_str());
-				//z到着座標
-				getline(line_stream, word, ',');
-				float comeZ = (float)std::atof(word.c_str());
-
-				//x出発座標
-				getline(line_stream, word, ',');
-				float goX = (float)std::atof(word.c_str());
-				//y出発座標
-				getline(line_stream, word, ',');
-				float goY = (float)std::atof(word.c_str());
-				//z出発座標
-				getline(line_stream, word, ',');
-				float goZ = (float)std::atof(word.c_str());
-
-				//攻撃時間
-				getline(line_stream, word, ',');
-				int time = (int)std::atof(word.c_str());
-
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(ComeGoEnemy::Create({ x, y, z }, { comeX, comeY, comeZ }, { goX, goY, goZ }, time));
-				enemys.push_back(std::move(newEnemy));
-			}
-		}
-
-		//WAITコマンド
-		else if (word.find("WAIT") == 0) {
-			getline(line_stream, word, ',');
-
-			//生成自機座標
-			float waitPosition = (float)atoi(word.c_str());
-
-			//待機開始
-			isWait = true;
-			waitEnemySetPlayerPosition = waitPosition;
-
-			//コマンドループを抜ける
-			break;
-		}
-	}
-}
-
 void Stage02Scene::BossBattleStart()
 {
 	//既にボスバトルなら抜ける
 	if (isBossBattle) { return; }
 
 	//ボスバトル開始座標
-	const float bossBattleStartPos = 200;
+	const float bossBattleStartPos = 1000;
 
 	//警告開始判定
 	if (!bossWarning) {
@@ -1113,11 +916,6 @@ void Stage02Scene::BossBattleStart()
 
 		//カメラの前進を止める
 		gameCamera->SetIsAdvance(false);
-
-		//地面をスクロール状態にする
-		gameGroundManager->SetIsScroll(true);
-		//ビルをスクロール状態にする
-		gameBuildingManager->SetIsScroll(true);
 
 		//ボス登場警告演出生成
 		const int warningTime = 300;
@@ -1274,10 +1072,6 @@ void Stage02Scene::GameOver()
 		isGameOver = true;
 		//カメラを墜落状態にする
 		gameCamera->CrashStart();
-		//地面のスクロール状態を解除
-		gameGroundManager->SetIsScroll(false);
-		//ビルのスクロール状態を解除
-		gameBuildingManager->SetIsScroll(false);
 	}
 	//ゲームオーバーのとき
 	else {

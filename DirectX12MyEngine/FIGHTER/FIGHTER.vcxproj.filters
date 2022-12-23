@@ -329,9 +329,6 @@
     <ClCompile Include="SourceCode\game\gameObject\enemy\ComeGoEnemy.cpp">
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\enemy\DemoEnemy.cpp">
-      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\enemy\Enemy.cpp">
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
@@ -762,9 +759,6 @@
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\enemy\ComeGoEnemy.h">
-      <Filter>ソース ファイル\game\gameObject\enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\enemy\DemoEnemy.h">
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\enemy\Enemy.h">

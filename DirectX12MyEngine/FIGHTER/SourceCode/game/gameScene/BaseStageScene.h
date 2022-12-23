@@ -81,7 +81,31 @@ public: //メンバ関数
 	/// <param name="enemyBreakEffect">敵破壊エフェクト</param>
 	void AddEnemyBreakEffect(std::unique_ptr<EnemyBreakEffect> enemyBreakEffect);
 
+	/// <summary>
+	/// 敵発生データ読み込み
+	/// </summary>
+	void LoadEnemySetData(const std::string& fileName);
+
+	/// <summary>
+	/// 敵発生コマンドの更新
+	/// </summary>
+	void UpdateEnemySetCommands(const Vector3& targetPosition);
+
 protected: //メンバ変数
+	//影用光源カメラ
+	std::unique_ptr<LightCamera> lightCamera;
+	//頭上からの影用光源カメラ
+	std::unique_ptr<LightCamera> topLightCamera;
+
+	//ライト
+	std::unique_ptr<LightGroup> lightGroup;
+	float ambientColor0[3] = { 1,1,1 };
+	// 光線方向初期値
+	float lightDir0[3] = { 2,-1,1 };
+	float lightColor0[3] = { 0.9f,0.9f,0.9f };
+	float lightDir1[3] = { -2,-1,-6 };
+	float lightColor1[3] = { 0.3f,0.3f,0.3f };
+
 	//自機弾
 	std::list<std::unique_ptr<PlayerBullet>> playerBullets;
 	//敵
@@ -90,4 +114,32 @@ protected: //メンバ変数
 	std::list<std::unique_ptr<EnemyBullet>> enemyBullets;
 	//敵破壊エフェクト
 	std::list<std::unique_ptr<EnemyBreakEffect>> enemyBreakEffects;
+	//敵発生コマンド
+	std::stringstream enemySetCommands;
+	//待機中か
+	bool isWait = false;
+	//待機用 生成を行う自機座標(自機が生成を行う座標以上になったら敵生成を行う)
+	float waitEnemySetPlayerPosition = 0;
+	//ボス戦中か
+	bool isBossBattle = false;
+	//ボス登場警告
+	std::unique_ptr<BossWarning> bossWarning;
+	//回復アイテム
+	std::list<std::unique_ptr<HealingItem>> healingItems;
+	//天球
+	std::unique_ptr<Skydome> skydome;
+	//一撃で複数体処理用のUI
+	std::list<std::unique_ptr<MultiHitUI>> multiHitUIs;
+	//ステージ開始UI
+	std::unique_ptr<StageStartUI> stageStartUI;
+	//ステージクリアテキスト
+	std::unique_ptr<StageClearText> stageClearText;
+	//ステージリザルトUI
+	std::unique_ptr<StageResultUI> stageResultUI;
+	//ステージクリアか
+	bool isStageClear = false;
+	//ゲームオーバーか
+	bool isGameOver = false;
+	//ゲームオーバータイマー
+	int32_t gameOverTimer = 0;
 };

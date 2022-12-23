@@ -16,7 +16,7 @@ class Enemy : public ObjObject3d
 {
 public: //enum
 	enum EnemyType {
-		Demo,		//ƒfƒ‚—p“G
+		None,		//–¢İ’è
 		Cannon,		//‘å–C
 		Circular,	//‰~‰^“®
 		Fall,		//~‰º

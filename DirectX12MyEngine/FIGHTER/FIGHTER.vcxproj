@@ -156,7 +156,6 @@
     <ClCompile Include="SourceCode\game\gameObject\enemy\CannonEnemy.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\CircularEnemy.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\ComeGoEnemy.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\enemy\DemoEnemy.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\Enemy.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\enemyBullet\BossChargeBullet.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\enemyBullet\EnemyBullet.cpp" />
@@ -373,7 +372,6 @@
     <ClInclude Include="SourceCode\game\gameObject\enemy\CannonEnemy.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\CircularEnemy.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\ComeGoEnemy.h" />
-    <ClInclude Include="SourceCode\game\gameObject\enemy\DemoEnemy.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\Enemy.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\enemyBullet\BossChargeBullet.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\enemyBullet\EnemyBullet.h" />

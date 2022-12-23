@@ -7,7 +7,6 @@
 #include "Easing.h"
 #include "ParticleEmitter.h"
 #include "HomingBullet.h"
-#include "DemoEnemy.h"
 #include "CannonEnemy.h"
 #include "CircularEnemy.h"
 #include "FallEnemy.h"
@@ -169,7 +168,7 @@ void Stage01Scene::Update()
 	//オブジェクト解放
 	ObjectRelease();
 	//敵発生コマンド更新
-	UpdateEnemySetCommands();
+	UpdateEnemySetCommands(gameCamera->GetPosition());
 	//遊び方UI表示
 	HowToPlay();
 	//ボスバトル開始判定処理
@@ -890,7 +889,7 @@ void Stage01Scene::CollisionCheck2d()
 void Stage01Scene::InitializeEnemy()
 {
 	//敵配置スクリプトの読み込み
-	LoadEnemySetData("Resources/csv/EnemySet.csv");
+	LoadEnemySetData("Resources/csv/EnemySetStage01.csv");
 
 	//全敵に必要な情報をセット
 	Enemy::SetStageScene(this); //全敵にステージシーンを教える
@@ -942,170 +941,6 @@ void Stage01Scene::InitializeEnemy()
 		//モデルが未設定なら飛ばす
 		if (!modelEnemyFighterBreak[i]) { continue; }
 		ComeGoEnemy::SetBreakModel(i, modelEnemyFighterBreak[i].get());
-	}
-}
-
-void Stage01Scene::LoadEnemySetData(const std::string& fileName)
-{
-	//ファイルを開く
-	std::ifstream file;
-	file.open(fileName);
-	assert(file.is_open());
-
-	//ファイルの内容を文字列ストリームにコピー
-	enemySetCommands << file.rdbuf();
-
-	//ファイルを閉じる
-	file.close();
-}
-
-void Stage01Scene::UpdateEnemySetCommands()
-{
-	//待機処理
-	if (isWait) {
-		//カメラのZ座標が生成自機座標以上なら
-		if (waitEnemySetPlayerPosition <= gameCamera->GetPosition().z) {
-			//待機終了
-			isWait = false;
-		}
-		return;
-	}
-
-	//1行分の文字列を入れる変数
-	std::string line;
-
-	//コマンドを実行するループ
-	while (getline(enemySetCommands, line)) {
-		//1行分の文字列をストリーム変換して解析しやすく
-		std::istringstream line_stream(line);
-
-		std::string word;
-		//「,」区切りで行の先頭文字を取得
-		getline(line_stream, word, ',');
-
-		//"//"から始める行はコメント
-		if (word.find("//") == 0) {
-			//コメント行を飛ばす
-			continue;
-		}
-
-		//POPコマンド
-		if (word.find("POP") == 0) {
-			//敵の種類
-			getline(line_stream, word, ',');
-			int type = (int)std::atof(word.c_str());
-
-			//x座標
-			getline(line_stream, word, ',');
-			float x = (float)std::atof(word.c_str());
-
-			//y座標
-			getline(line_stream, word, ',');
-			float y = (float)std::atof(word.c_str());
-
-			//z座標
-			getline(line_stream, word, ',');
-			float z = (float)std::atof(word.c_str());
-
-			//敵を発生
-			if (type == Enemy::EnemyType::Demo) {
-				//x方向速度
-				getline(line_stream, word, ',');
-				float velX = (float)std::atof(word.c_str());
-
-				//y方向速度
-				getline(line_stream, word, ',');
-				float velY = (float)std::atof(word.c_str());
-
-				//z方向速度
-				getline(line_stream, word, ',');
-				float velZ = (float)std::atof(word.c_str());
-
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(DemoEnemy::Create(modelEnemyFighter.get(), { x, y, z }, { velX, velY, velZ }));
-				enemys.push_back(std::move(newEnemy));
-			}
-			else if (type == Enemy::EnemyType::Cannon) {
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CannonEnemy::Create({ x, y, z }));
-				enemys.push_back(std::move(newEnemy));
-			}
-			else if (type == Enemy::EnemyType::Circular) {
-				//角度
-				getline(line_stream, word, ',');
-				float angle = (float)std::atof(word.c_str());
-
-				//半径の長さ
-				getline(line_stream, word, ',');
-				float length = (float)std::atof(word.c_str());
-
-				//回転速度
-				getline(line_stream, word, ',');
-				float rotSpeed = (float)std::atof(word.c_str());
-
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(CircularEnemy::Create({ x, y, z }, angle, length, rotSpeed));
-				enemys.push_back(std::move(newEnemy));
-			}
-			else if (type == Enemy::EnemyType::Fall) {
-				//降下する値
-				getline(line_stream, word, ',');
-				float fallNum = (float)std::atof(word.c_str());
-
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(FallEnemy::Create({ x, y, z }, fallNum));
-				enemys.push_back(std::move(newEnemy));
-			}
-			else if (type == Enemy::EnemyType::UpDown) {
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(UpDownEnemy::Create({ x, y, z }));
-				enemys.push_back(std::move(newEnemy));
-			}
-			else if (type == Enemy::EnemyType::ComeGo) {
-				//x到着座標
-				getline(line_stream, word, ',');
-				float comeX = (float)std::atof(word.c_str());
-				//y到着座標
-				getline(line_stream, word, ',');
-				float comeY = (float)std::atof(word.c_str());
-				//z到着座標
-				getline(line_stream, word, ',');
-				float comeZ = (float)std::atof(word.c_str());
-
-				//x出発座標
-				getline(line_stream, word, ',');
-				float goX = (float)std::atof(word.c_str());
-				//y出発座標
-				getline(line_stream, word, ',');
-				float goY = (float)std::atof(word.c_str());
-				//z出発座標
-				getline(line_stream, word, ',');
-				float goZ = (float)std::atof(word.c_str());
-
-				//攻撃時間
-				getline(line_stream, word, ',');
-				int time = (int)std::atof(word.c_str());
-
-				std::unique_ptr<Enemy> newEnemy;
-				newEnemy.reset(ComeGoEnemy::Create({ x, y, z }, { comeX, comeY, comeZ }, { goX, goY, goZ }, time));
-				enemys.push_back(std::move(newEnemy));
-			}
-		}
-
-		//WAITコマンド
-		else if (word.find("WAIT") == 0) {
-			getline(line_stream, word, ',');
-
-			//生成自機座標
-			float waitPosition = (float)atoi(word.c_str());
-
-			//待機開始
-			isWait = true;
-			waitEnemySetPlayerPosition = waitPosition;
-
-			//コマンドループを抜ける
-			break;
-		}
 	}
 }
 
