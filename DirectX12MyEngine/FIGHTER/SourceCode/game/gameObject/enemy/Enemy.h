@@ -29,6 +29,7 @@ public: //静的メンバ関数
 	static void SetPlayer(Player* player) { Enemy::player = player; }
 	static void SetStageScene(BaseStageScene* stageScene) { Enemy::stageScene = stageScene; }
 	static void SetBulletModel(ObjModel* model) { Enemy::bulletModel = model; }
+	static void SetIsGroundMode(bool isGroundMode) { Enemy::isGroundMode = isGroundMode; }
 
 public: //メンバ関数
 	/// <summary>
@@ -104,6 +105,8 @@ protected: //静的メンバ変数
 	static BaseStageScene* stageScene;
 	//敵弾のモデル
 	static ObjModel* bulletModel;
+	//地面ありの行動を行うか
+	static bool isGroundMode;
 
 protected: //メンバ変数
 	//通常サイズ

@@ -8,6 +8,7 @@
 Player* Enemy::player = nullptr;
 BaseStageScene* Enemy::stageScene = nullptr;
 ObjModel* Enemy::bulletModel = nullptr;
+bool Enemy::isGroundMode = true;
 
 bool Enemy::Initialize()
 {

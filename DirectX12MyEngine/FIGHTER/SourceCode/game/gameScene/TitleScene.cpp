@@ -140,6 +140,9 @@ void TitleScene::Update()
 	if (input->TriggerKey(DIK_Q)) {
 		SceneManager::GetInstance()->ChangeScene("STAGE01");
 	}
+	if (input->TriggerKey(DIK_W)) {
+		SceneManager::GetInstance()->ChangeScene("STAGE02");
+	}
 }
 
 void TitleScene::DrawBackSprite()

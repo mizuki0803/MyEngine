@@ -120,12 +120,23 @@ void FallEnemy::Dead()
 	const float smokeSize = scale.x * 2.0f;
 	DeadSmokeEffect(smokeSize);
 
-	//Y座標が0以下になったら削除
-	if (position.y <= 0) {
-		isDelete = true;
+	//地面ありのとき
+	if (isGroundMode) {
+		//Y座標が0以下になったら削除
+		if (position.y <= 0) {
+			isDelete = true;
 
-		//爆発演出用パーティクル生成
-		ParticleEmitter::GetInstance()->Explosion(position);
+			//爆発演出用パーティクル生成
+			ParticleEmitter::GetInstance()->Explosion(position);
+		}
+	}
+	//地面なしのとき
+	else {
+		//Y座標が指定した値以下になったら削除
+		const float deletePos = -50;
+		if (position.y <= deletePos) {
+			isDelete = true;
+		}
 	}
 }
 

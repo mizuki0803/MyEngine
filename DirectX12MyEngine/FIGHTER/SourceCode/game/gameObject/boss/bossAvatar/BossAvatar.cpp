@@ -1,4 +1,5 @@
 #include "BossAvatar.h"
+#include "BossMainBody.h"
 #include "Easing.h"
 #include "BaseStageScene.h"
 #include "BossChargeBullet.h"

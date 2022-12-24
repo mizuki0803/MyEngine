@@ -1,6 +1,5 @@
 #pragma once
 #include "BaseGameScene.h"
-#include "ObjObject3d.h"
 #include "LightGroup.h"
 #include "StageSelectCamera.h"
 #include "LightCamera.h"

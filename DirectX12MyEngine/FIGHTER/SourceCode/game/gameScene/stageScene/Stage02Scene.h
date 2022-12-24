@@ -1,34 +1,16 @@
 #pragma once
 #include "BaseStageScene.h"
-#include "Sprite.h"
-#include "ObjObject3d.h"
-#include "LightGroup.h"
-#include "GameCamera.h"
-#include "LightCamera.h"
+#include "Stage02GameCamera.h"
 #include "CollisionShape.h"
 #include "Collision.h"
-#include "Player.h"
-#include "Enemy.h"
+#include "Stage02Player.h"
 #include "Boss.h"
-#include "BossWarning.h"
 #include "BossDeadEffect.h"
-#include "HealingItem.h"
-#include "Skydome.h"
-#include "GameGroundManager.h"
-#include "GameBuildingManager.h"
-#include "HowToPlayUI.h"
-#include "MultiHitUI.h"
-#include "StageStartUI.h"
-#include "StageClearText.h"
-#include "StageResultUI.h"
-
-#include <array>
-#include <sstream>
 
 /// <summary>
-/// ステージ01シーン
+/// ステージ02シーン
 /// </summary>
-class Stage01Scene :public BaseStageScene
+class Stage02Scene :public BaseStageScene
 {
 public: //メンバ関数
 	/// <summary>
@@ -92,11 +74,6 @@ public: //メンバ関数
 	void InitializeEnemy();
 
 	/// <summary>
-	/// 遊び方
-	/// </summary>
-	void HowToPlay();
-
-	/// <summary>
 	/// ボスバトル開始判定処理
 	/// </summary>
 	void BossBattleStart();
@@ -138,7 +115,7 @@ public: //メンバ関数
 
 private: //メンバ変数
 	//ゲームカメラ
-	std::unique_ptr<GameCamera> gameCamera;
+	std::unique_ptr<Stage02GameCamera> gameCamera;
 
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;
@@ -163,19 +140,12 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelHealingItem;
 
 	//自機
-	std::unique_ptr<Player> player;
-
+	std::unique_ptr<Stage02Player> player;
 	//ボス
 	std::unique_ptr<Boss> boss;
 	//ボス死亡後の演出管理
 	std::unique_ptr<BossDeadEffect> bossDeadEffect;
 
-	//地面
-	std::unique_ptr<GameGroundManager> gameGroundManager;
-	//背景用(ビル管理)
-	std::unique_ptr<GameBuildingManager> gameBuildingManager;
-	//遊び方UI
-	std::unique_ptr<HowToPlayUI> howToPlayUI;
 	//ステージクリア用の影状態か
 	bool isStageClearShadow = false;
 	//ターゲットと光源カメラの距離

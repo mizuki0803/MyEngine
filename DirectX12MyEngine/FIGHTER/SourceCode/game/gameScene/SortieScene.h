@@ -10,7 +10,6 @@
 #include "Building.h"
 
 #include <array>
-#include <sstream>
 
 /// <summary>
 /// 出撃演出シーン

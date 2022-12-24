@@ -1,12 +1,8 @@
 #pragma once
 #include "BaseGameScene.h"
-#include "Sprite.h"
-#include "ObjObject3d.h"
 #include "LightGroup.h"
 #include "TitleCamera.h"
 #include "LightCamera.h"
-#include "CollisionShape.h"
-#include "Collision.h"
 #include "TitlePlayer.h"
 #include "Skydome.h"
 #include "TitleUI.h"

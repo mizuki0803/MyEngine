@@ -1,4 +1,4 @@
-﻿#include "Stage02Scene.h"
+﻿#include "Stage01Scene.h"
 #include "SceneManager.h"
 #include "Input.h"
 #include "Audio.h"
@@ -16,35 +16,22 @@
 #include "SceneChangeEffect.h"
 #include "GamePostEffect.h"
 #include <cassert>
-
+#include <fstream>
 #include <iomanip>
 
 using namespace DirectX;
 
 
-void Stage02Scene::Initialize()
+void Stage01Scene::Initialize()
 {
-	//ゲームカメラ初期化
-	gameCamera.reset(new GameCamera());
-	gameCamera->Initialize();
-	//影用光源カメラ初期化
-	lightCamera.reset(new LightCamera());
-	lightCamera->Initialize({ -300, 100, -300 });
-	lightCamera->SetProjectionNum({ 100, 200 }, { -600, -200 });
-	//頭上からの影用光源カメラ初期化
-	topLightCamera.reset(new LightCamera());
-	topLightCamera->Initialize({ -300, 100, -300 });
-	topLightCamera->SetProjectionNum({ 150, 150 }, { -150, -150 });
-
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightActive(1, true);
 	lightGroup->SetDirLightActive(2, false);
 
-
 	//objからモデルデータを読み込む
-	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeSpace"));
+	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelBuilding[0].reset(ObjModel::LoadFromOBJ("building01"));
 	modelBuilding[1].reset(ObjModel::LoadFromOBJ("building02"));
@@ -79,18 +66,28 @@ void Stage02Scene::Initialize()
 
 	//自機に必要な情報をセット
 	Player::SetStageScene(this);
-	Player::SetBulletModel(modelPlayerBullet.get());
+	Player::SetBulletModel(modelPlayerBullet.get()); //通常弾用モデルをセット
+	PlayerBullet::SetIsGroundMode(true); //自機弾の地面あり行動をONにする
+	HomingBullet::SetBulletModel(modelSphere.get()); //ホーミング弾用モデルをセット
 	//自機生成
 	const int maxHP = 101; //最大HP
 	const int startHP = maxHP / 2 + 1; //開始時HP
-	player.reset(Player::Create(modelFighter.get(), startHP, maxHP));
+	player.reset(Stage01Player::Create(modelFighter.get(), startHP, maxHP));
 	player->SetIsCameraFollow(true);
+	
 
-	//ホーミング弾用モデルをセット
-	HomingBullet::SetBulletModel(modelSphere.get());
+	//ゲームカメラ初期化
+	gameCamera.reset(new Stage01GameCamera());
+	gameCamera->Initialize(player.get());
+	//影用光源カメラ初期化
+	lightCamera.reset(new LightCamera());
+	lightCamera->Initialize({ -300, 100, -300 });
+	lightCamera->SetProjectionNum({ 100, 200 }, { -600, -200 });
+	//頭上からの影用光源カメラ初期化
+	topLightCamera.reset(new LightCamera());
+	topLightCamera->Initialize({ -300, 100, -300 });
+	topLightCamera->SetProjectionNum({ 150, 150 }, { -150, -150 });
 
-	//ゲームカメラに自機のポインタをセット
-	gameCamera->SetPlayer(player.get());
 
 	//全敵初期化処理
 	InitializeEnemy();
@@ -118,6 +115,23 @@ void Stage02Scene::Initialize()
 	//見栄えがいい角度に変更しておく
 	skydome->SetRotation({ 0, 190, 0 });
 
+	//地面生成
+	gameGroundManager.reset(GameGroundManager::Create(modelGround.get()));
+	//地面に必要な情報をセット
+	GameGroundManager::SetPlayer(player.get());
+	GameGroundManager::SetGameCamera(gameCamera.get());
+
+	//ビルに必要な情報をセット
+	//モデルをセット
+	for (int i = 0; i < modelBuilding.size(); i++) {
+		//モデルが未設定なら飛ばす
+		if (!modelBuilding[i]) { continue; }
+		GameBuildingManager::SetBuidingModel(i, modelBuilding[i].get());
+	}
+	GameBuildingManager::SetPlayer(player.get());
+	GameBuildingManager::SetGameCamera(gameCamera.get());
+	//背景用(ゲーム用ビル管理)生成
+	gameBuildingManager.reset(GameBuildingManager::Create(85, 25, 25, { 0, 0, -20 }));
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
@@ -132,6 +146,8 @@ void Stage02Scene::Initialize()
 	//画面にパーティクルが残ることがあるので全て削除しておく
 	ParticleEmitter::GetInstance()->AllDelete();
 
+	//遊び方UI生成
+	howToPlayUI.reset(HowToPlayUI::Create());
 	//ステージ開始UI生成
 	stageStartUI.reset(StageStartUI::Create(1));
 
@@ -139,7 +155,7 @@ void Stage02Scene::Initialize()
 	EnemyDefeatCounter::CounterReset();
 }
 
-void Stage02Scene::Update()
+void Stage01Scene::Update()
 {
 	//入力のインスタンスを取得
 	Input* input = Input::GetInstance();
@@ -150,6 +166,8 @@ void Stage02Scene::Update()
 	ObjectRelease();
 	//敵発生コマンド更新
 	UpdateEnemySetCommands(gameCamera->GetPosition());
+	//遊び方UI表示
+	HowToPlay();
 	//ボスバトル開始判定処理
 	BossBattleStart();
 	//ステージクリア
@@ -199,6 +217,10 @@ void Stage02Scene::Update()
 	}
 	//天球
 	skydome->Update();
+	//地面
+	gameGroundManager->Update();
+	//背景用(ビル)
+	gameBuildingManager->Update();
 
 	//3D衝突判定管理
 	CollisionCheck3d();
@@ -217,6 +239,10 @@ void Stage02Scene::Update()
 		if (stageStartUI->GetIsDead()) {
 			stageStartUI.reset();
 		}
+	}
+	//遊び方UI 
+	if (howToPlayUI) {
+		howToPlayUI->Update();
 	}
 	//ボス登場警告演
 	if (bossWarning) {
@@ -248,11 +274,11 @@ void Stage02Scene::Update()
 	SceneChangeEffect::Update();
 }
 
-void Stage02Scene::DrawBackSprite()
+void Stage01Scene::DrawBackSprite()
 {
 }
 
-void Stage02Scene::Draw3D()
+void Stage01Scene::Draw3D()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawPrev();
@@ -287,6 +313,10 @@ void Stage02Scene::Draw3D()
 	}
 	//天球
 	skydome->Draw();
+	//地面
+	gameGroundManager->Draw();
+	//背景用(ビル)
+	gameBuildingManager->Draw();
 
 	///-------Object3d描画ここまで-------///
 
@@ -298,18 +328,19 @@ void Stage02Scene::Draw3D()
 	///-------パーティクル描画ここまで-------///
 }
 
-void Stage02Scene::Draw3DLightView()
+void Stage01Scene::Draw3DLightView()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawLightViewPrev();
 	///-------Object3d描画ここから-------///
 
-
+	//背景用(ビル)
+	gameBuildingManager->DrawLightCameraView();
 
 	///-------Object3d描画ここまで-------///
 }
 
-void Stage02Scene::Draw3DTopLightView()
+void Stage01Scene::Draw3DTopLightView()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawLightViewPrev();
@@ -345,7 +376,7 @@ void Stage02Scene::Draw3DTopLightView()
 	///-------Object3d描画ここまで-------///
 }
 
-void Stage02Scene::DrawFrontSprite()
+void Stage01Scene::DrawFrontSprite()
 {
 	//スプライト共通コマンド
 	SpriteCommon::GetInstance()->DrawPrev();
@@ -365,6 +396,10 @@ void Stage02Scene::DrawFrontSprite()
 	/*if (stageStartUI) {
 		stageStartUI->Draw();
 	}*/
+	//遊び方UI 
+	if (howToPlayUI) {
+		howToPlayUI->Draw();
+	}
 	//ステージクリアテキスト
 	if (stageClearText) {
 		stageClearText->Draw();
@@ -384,7 +419,7 @@ void Stage02Scene::DrawFrontSprite()
 	///-------スプライト描画ここまで-------///
 }
 
-void Stage02Scene::LightCameraUpdate()
+void Stage01Scene::LightCameraUpdate()
 {
 	//ターゲットになる座標
 	const Vector3 targetPos = gameCamera->GetPosition();
@@ -402,7 +437,7 @@ void Stage02Scene::LightCameraUpdate()
 	topLightCamera->Update();
 }
 
-void Stage02Scene::ObjectRelease()
+void Stage01Scene::ObjectRelease()
 {
 	//死亡した自機弾の削除前処理
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
@@ -491,6 +526,12 @@ void Stage02Scene::ObjectRelease()
 			player->StageClearReturnStart(gameCamera->GetPosition());
 			//カメラのボス本体情報を解除させる
 			gameCamera->BossDelete();
+			//地面のスクロール状態を解除
+			gameGroundManager->SetIsScroll(false);
+			//ビルのスクロール状態を解除
+			gameBuildingManager->SetIsScroll(false);
+			//後ろ側にビルを大量設置
+			gameBuildingManager->CreateBehindObjects();
 			//死亡後演出を生成
 			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetMainBody()->GetWorldPos()));
 			//カメラをシェイクさせる
@@ -509,7 +550,7 @@ void Stage02Scene::ObjectRelease()
 		});
 }
 
-void Stage02Scene::CollisionCheck3d()
+void Stage01Scene::CollisionCheck3d()
 {
 	//判定対象の座標
 	Vector3 posA, posB;
@@ -795,7 +836,7 @@ void Stage02Scene::CollisionCheck3d()
 #pragma endregion
 }
 
-void Stage02Scene::CollisionCheck2d()
+void Stage01Scene::CollisionCheck2d()
 {
 	//判定対象の座標
 	Vector2 posA, posB;
@@ -842,15 +883,16 @@ void Stage02Scene::CollisionCheck2d()
 #pragma endregion
 }
 
-void Stage02Scene::InitializeEnemy()
+void Stage01Scene::InitializeEnemy()
 {
 	//敵配置スクリプトの読み込み
-	LoadEnemySetData("Resources/csv/EnemySetStage02.csv");
+	LoadEnemySetData("Resources/csv/EnemySetStage01.csv");
 
 	//全敵に必要な情報をセット
 	Enemy::SetStageScene(this); //全敵にステージシーンを教える
 	Enemy::SetPlayer(player.get()); //自機をセット
 	Enemy::SetBulletModel(modelEnemyBullet.get()); //弾のモデルをセット
+	Enemy::SetIsGroundMode(true); //地面あり行動をONにする
 
 	//各種類の敵に必要な情報をセット
 	//大砲敵
@@ -900,13 +942,66 @@ void Stage02Scene::InitializeEnemy()
 	}
 }
 
-void Stage02Scene::BossBattleStart()
+void Stage01Scene::HowToPlay()
+{
+	//次に描画する遊び方UIがない場合は抜ける
+	if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::None) { return; }
+
+	//次に描画する遊び方UIが「ショット」の場合
+	if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Shot) {
+
+		//カメラのZ座標が指定した値以下なら抜ける
+		const float createPos = 15;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
+
+		//遊び方UI(ショット)生成
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Shot, HowToPlayUI::DrawUI::Charge);
+	}
+	//次に描画する遊び方UIが「チャージ」の場合
+	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Charge) {
+		//カメラのZ座標が指定した値以下なら抜ける
+		const float createPos = 550;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
+
+		//遊び方UI(チャージ)生成
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Charge, HowToPlayUI::DrawUI::Rolling);
+	}
+	//次に描画する遊び方UIが「ローリング」の場合
+	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Rolling) {
+		//カメラのZ座標が指定した値以下なら抜ける
+		const float createPos = 1020;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
+
+		//遊び方UI(ローリング)生成
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Rolling, HowToPlayUI::DrawUI::Boost);
+	}
+	//次に描画する遊び方UIが「ブースト」の場合
+	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Boost) {
+		//カメラのZ座標が指定した値以下なら抜ける
+		const float createPos = 1780;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
+
+		//遊び方UI(ブースト)生成
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Boost, HowToPlayUI::DrawUI::Brake);
+	}
+	//次に描画する遊び方UIが「ブレーキ」の場合
+	else if (howToPlayUI->GetNextDrawUI() == HowToPlayUI::DrawUI::Brake) {
+		//カメラのZ座標が指定した値以下なら抜ける
+		const float createPos = 2460;
+		if (gameCamera->GetPosition().z <= createPos) { return; }
+
+		//遊び方UI(ブレーキ)生成
+		howToPlayUI->CreateUI(HowToPlayUI::DrawUI::Brake, HowToPlayUI::DrawUI::None);
+	}
+}
+
+void Stage01Scene::BossBattleStart()
 {
 	//既にボスバトルなら抜ける
 	if (isBossBattle) { return; }
 
 	//ボスバトル開始座標
-	const float bossBattleStartPos = 1000;
+	const float bossBattleStartPos = 3200;
 
 	//警告開始判定
 	if (!bossWarning) {
@@ -916,6 +1011,11 @@ void Stage02Scene::BossBattleStart()
 
 		//カメラの前進を止める
 		gameCamera->SetIsAdvance(false);
+
+		//地面をスクロール状態にする
+		gameGroundManager->SetIsScroll(true);
+		//ビルをスクロール状態にする
+		gameBuildingManager->SetIsScroll(true);
 
 		//ボス登場警告演出生成
 		const int warningTime = 300;
@@ -939,7 +1039,7 @@ void Stage02Scene::BossBattleStart()
 	}
 }
 
-void Stage02Scene::StageClear()
+void Stage01Scene::StageClear()
 {
 	//ステージクリアでないとき
 	if (!isStageClear) {
@@ -958,7 +1058,7 @@ void Stage02Scene::StageClear()
 		//カメラをステージクリアの動きに変更
 		gameCamera->StageClearModeStart(boss->GetMainBody());
 		//ハイスコア更新
-		EnemyDefeatCounter::CheckHighScore(1);
+		EnemyDefeatCounter::CheckHighScore(0);
 	}
 	//ステージクリア後
 	else {
@@ -967,7 +1067,7 @@ void Stage02Scene::StageClear()
 	}
 }
 
-void Stage02Scene::StageResult()
+void Stage01Scene::StageResult()
 {
 	//ステージクリア時の影の向きに変更
 	StageClearSetLightCameraPos();
@@ -983,12 +1083,12 @@ void Stage02Scene::StageResult()
 
 }
 
-void Stage02Scene::StageClearSetLightCameraPos()
+void Stage01Scene::StageClearSetLightCameraPos()
 {
 	//既にステージクリア用影状態なら抜ける
 	if (isStageClearShadow) { return; }
 	//自機のステージクリア後行動が上昇でなければ抜ける
-	if (!(player->GetStageClearModePhase() == Player::StageClearModePhase::Up)) { return; }
+	if (!(player->GetStageClearModePhase() == Stage01Player::StageClearModePhase::Up)) { return; }
 
 	//ステージクリア用影状態にする
 	isStageClearShadow = true;
@@ -997,12 +1097,12 @@ void Stage02Scene::StageClearSetLightCameraPos()
 	lightCamera->SetProjectionNum({ 1300, 1300 }, { -200, -1300 });
 }
 
-void Stage02Scene::StageClearTextCreateAndRelease()
+void Stage01Scene::StageClearTextCreateAndRelease()
 {
 	//ステージクリアテキストのインスタンスがないとき
 	if (!stageClearText) {
 		//カメラのステージクリア後行動が自機をズームでなければ抜ける
-		if (!(gameCamera->GetStageClearModePhase() == GameCamera::StageClearModePhase::PlayerZoom)) { return; }
+		if (!(gameCamera->GetStageClearModePhase() == Stage01GameCamera::StageClearModePhase::PlayerZoom)) { return; }
 
 		//ステージクリアテキスト生成
 		stageClearText.reset(StageClearText::Create());
@@ -1010,21 +1110,21 @@ void Stage02Scene::StageClearTextCreateAndRelease()
 	//ステージクリアテキストのインスタンスがあるとき
 	else {
 		//カメラのステージクリア後行動が自機の方向をずっと向くでなければ抜ける
-		if (!(gameCamera->GetStageClearModePhase() == GameCamera::StageClearModePhase::PlayerFollow)) { return; }
+		if (!(gameCamera->GetStageClearModePhase() == Stage01GameCamera::StageClearModePhase::PlayerFollow)) { return; }
 
 		//ステージクリアテキストの解放
 		stageClearText.reset();
 	}
 }
 
-void Stage02Scene::StageResultUICreateAndRelease()
+void Stage01Scene::StageResultUICreateAndRelease()
 {
 	//ステージリザルトUIのインスタンスがないとき
 	if (!stageResultUI) {
 		//カメラのステージクリア後行動が自機横に移動でなければ抜ける
-		if (!(gameCamera->GetStageClearModePhase() == GameCamera::StageClearModePhase::PlayerSideMove)) { return; }
+		if (!(gameCamera->GetStageClearModePhase() == Stage01GameCamera::StageClearModePhase::PlayerSideMove)) { return; }
 		//自機のステージクリア後行動が停止でなければ抜ける
-		if (!(player->GetStageClearModePhase() == Player::StageClearModePhase::Stay)) { return; }
+		if (!(player->GetStageClearModePhase() == Stage01Player::StageClearModePhase::Stay)) { return; }
 
 		//ステージリザルトUI生成
 		stageResultUI.reset(StageResultUI::Create(EnemyDefeatCounter::GetDefeatCount(), false));
@@ -1034,7 +1134,7 @@ void Stage02Scene::StageResultUICreateAndRelease()
 		//リザルト表示が完了していなければ抜ける
 		if (!stageResultUI->GetIsResultEnd()) { return; }
 		//カメラのステージクリア後行動が自機の方向をずっと向くでなければ抜ける
-		if (!(gameCamera->GetStageClearModePhase() == GameCamera::StageClearModePhase::PlayerKeepLook)) { return; }
+		if (!(gameCamera->GetStageClearModePhase() == Stage01GameCamera::StageClearModePhase::PlayerKeepLook)) { return; }
 
 		//リザルト終了のためボタンスプライトを表示する
 		if (!stageResultUI->GetIsDrawButtonSprite()) {
@@ -1052,7 +1152,7 @@ void Stage02Scene::StageResultUICreateAndRelease()
 	}
 }
 
-void Stage02Scene::ReturnTitleScene()
+void Stage01Scene::ReturnTitleScene()
 {
 	//自機のステージクリア後行動が完了していなければ抜ける
 	if (!player->GetIsStageClearModeCompletion()) { return; }
@@ -1061,7 +1161,7 @@ void Stage02Scene::ReturnTitleScene()
 	SceneChangeStart({ 0,0,0,0 }, 120, 60, 60, "STAGESELECT");
 }
 
-void Stage02Scene::GameOver()
+void Stage01Scene::GameOver()
 {
 	//ゲームオーバーでないとき
 	if (!isGameOver) {
@@ -1072,6 +1172,10 @@ void Stage02Scene::GameOver()
 		isGameOver = true;
 		//カメラを墜落状態にする
 		gameCamera->CrashStart();
+		//地面のスクロール状態を解除
+		gameGroundManager->SetIsScroll(false);
+		//ビルのスクロール状態を解除
+		gameBuildingManager->SetIsScroll(false);
 	}
 	//ゲームオーバーのとき
 	else {
@@ -1082,9 +1186,9 @@ void Stage02Scene::GameOver()
 		const float gameOverTime = 120;
 		gameOverTimer++;
 
-		//タイマーが指定した時間になったらステージ02をやり直す
+		//タイマーが指定した時間になったらステージ01をやり直す
 		if (gameOverTimer >= gameOverTime) {
-			SceneChangeStart({ 0,0,0,0 }, 60, 60, 20, "STAGE02");
+			SceneChangeStart({ 0,0,0,0 }, 60, 60, 20, "STAGE01");
 		}
 	}
 }

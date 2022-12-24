@@ -15,6 +15,10 @@ public: //enum
 		Homing,		//ホーミング弾
 	};
 
+public: //静的メンバ関数
+	//setter
+	static void SetIsGroundMode(bool isGroundMode) { PlayerBullet::isGroundMode = isGroundMode; }
+
 public: //メンバ関数
 	/// <summary>
 	/// 更新
@@ -40,6 +44,10 @@ protected: //メンバ関数
 	/// 地面に衝突したとき
 	/// </summary>
 	virtual void CollisionGround() = 0;
+
+protected: //静的メンバ変数
+	//地面ありの行動を行うか
+	static bool isGroundMode;
 
 protected: //メンバ変数
 	//弾の種類

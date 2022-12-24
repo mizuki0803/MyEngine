@@ -192,6 +192,9 @@
     <Filter Include="ソース ファイル\game\gameObject\background\building">
       <UniqueIdentifier>{2044d83a-bd7c-41b3-b323-a67519093254}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameScene\stageScene">
+      <UniqueIdentifier>{ddf1531d-6efa-4265-a1a2-16fcad9b5c0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\main.cpp">
@@ -428,9 +431,6 @@
     <ClCompile Include="SourceCode\game\gameScene\DebugScene.cpp">
       <Filter>ソース ファイル\game\gameScene</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameScene\Stage01Scene.cpp">
-      <Filter>ソース ファイル\game\gameScene</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\game\gameScene\SortieScene.cpp">
       <Filter>ソース ファイル\game\gameScene</Filter>
     </ClCompile>
@@ -545,11 +545,26 @@
     <ClCompile Include="SourceCode\game\gameEffect\BossDeadEffect.cpp">
       <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameScene\Stage02Scene.cpp">
-      <Filter>ソース ファイル\game\gameScene</Filter>
+    <ClCompile Include="SourceCode\game\gameScene\stageScene\BaseStageScene.cpp">
+      <Filter>ソース ファイル\game\gameScene\stageScene</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameScene\BaseStageScene.cpp">
-      <Filter>ソース ファイル\game\gameScene</Filter>
+    <ClCompile Include="SourceCode\game\gameScene\stageScene\Stage01Scene.cpp">
+      <Filter>ソース ファイル\game\gameScene\stageScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameScene\stageScene\Stage02Scene.cpp">
+      <Filter>ソース ファイル\game\gameScene\stageScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\player\Stage01Player.cpp">
+      <Filter>ソース ファイル\game\gameObject\player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameCamera\Stage01GameCamera.cpp">
+      <Filter>ソース ファイル\game\gameCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameCamera\Stage02GameCamera.cpp">
+      <Filter>ソース ファイル\game\gameCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\player\Stage02Player.cpp">
+      <Filter>ソース ファイル\game\gameObject\player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -860,9 +875,6 @@
     <ClInclude Include="SourceCode\game\gameScene\DebugScene.h">
       <Filter>ソース ファイル\game\gameScene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameScene\Stage01Scene.h">
-      <Filter>ソース ファイル\game\gameScene</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameScene\SortieScene.h">
       <Filter>ソース ファイル\game\gameScene</Filter>
     </ClInclude>
@@ -983,11 +995,26 @@
     <ClInclude Include="SourceCode\game\gameEffect\BossDeadEffect.h">
       <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameScene\Stage02Scene.h">
-      <Filter>ソース ファイル\game\gameScene</Filter>
+    <ClInclude Include="SourceCode\game\gameObject\player\Stage01Player.h">
+      <Filter>ソース ファイル\game\gameObject\player</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameScene\BaseStageScene.h">
-      <Filter>ソース ファイル\game\gameScene</Filter>
+    <ClInclude Include="SourceCode\game\gameScene\stageScene\BaseStageScene.h">
+      <Filter>ソース ファイル\game\gameScene\stageScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\stageScene\Stage01Scene.h">
+      <Filter>ソース ファイル\game\gameScene\stageScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\stageScene\Stage02Scene.h">
+      <Filter>ソース ファイル\game\gameScene\stageScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameCamera\Stage01GameCamera.h">
+      <Filter>ソース ファイル\game\gameCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameCamera\Stage02GameCamera.h">
+      <Filter>ソース ファイル\game\gameCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\player\Stage02Player.h">
+      <Filter>ソース ファイル\game\gameObject\player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

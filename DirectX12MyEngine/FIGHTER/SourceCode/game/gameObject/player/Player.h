@@ -25,29 +25,10 @@ public:
 		ReturnNormalSpeed, //通常移動に戻す状態
 	};
 
-	//ステージクリア後行動フェーズ
-	enum class StageClearModePhase {
-		SideMove,	//横旋回移動
-		Return,		//旋回帰還
-		Up,			//上昇
-		Stay,		//停止
-		Boost,		//ブースト
-	};
-
 public: //静的メンバ関数
-	/// <summary>
-	/// 生成処理
-	/// </summary>
-	/// <param name="model">モデル</param>
-	/// <param name="startHP">開始時HP</param>
-	/// <param name="maxHP">最大HP</param>
-	/// <returns>自機</returns>
-	static Player* Create(ObjModel* model, const int startHP, const int maxHP);
 
 	//getter
 	static const Vector2& GetRotLimit() { return rotLimit; }
-	static const Vector2& GetMoveLimitMax() { return moveLimitMax; }
-	static const Vector2& GetMoveLimitMin() { return moveLimitMin; }
 	static const float GetMoveBaseSpeed() { return moveBaseSpeed; }
 	static const float GetKnockbackBaseSpeed() { return knockbackBaseSpeed; }
 
@@ -63,53 +44,37 @@ public: //メンバ関数
 	/// <param name="startHP">開始時HP</param>
 	/// <param name="maxHP">最大HP</param>
 	/// <returns>成否</returns>
-	bool Initialize(ObjModel* model, const int startHP, const int maxHP);
+	virtual bool Initialize(ObjModel* model, const int startHP, const int maxHP);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update() override;
+	virtual void Update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw() override;
+	virtual void Draw() override;
 
 	/// <summary>
 	/// UI更新
 	/// </summary>
-	void UpdateUI();
+	virtual void UpdateUI();
 
 	/// <summary>
 	/// UI描画
 	/// </summary>
-	void DrawUI();
+	virtual void DrawUI();
 
 	/// <summary>
 	/// 衝突時コールバック関数(敵などダメージを喰らう)
 	/// </summary>
-	void OnCollisionDamage(const Vector3& subjectPos);
+	virtual void OnCollisionDamage(const Vector3& subjectPos);
 
 	/// <summary>
 	/// 衝突時コールバック関数(アイテムなど回復する)
 	/// </summary>
-	void OnCollisionHeal();
-
-	/// <summary>
-	/// ステージクリア後の動きを開始する
-	/// </summary>
-	void StageClearModeStart();
-
-	/// <summary>
-	/// ステージクリア後の帰還を開始する
-	/// </summary>
-	/// <param name="cameraPos">カメラ座標</param>
-	void StageClearReturnStart(const Vector3& cameraPos);
-
-	/// <summary>
-	/// ステージクリア後のブーストを開始する
-	/// </summary>
-	void StageClearBoostStart();
+	virtual void OnCollisionHeal();
 
 	//getter
 	Vector3 GetWorldPos();
@@ -117,17 +82,17 @@ public: //メンバ関数
 	const int GetHP() { return HP; }
 	const bool GetIsDamageKnockback() { return isDamageKnockBack; }
 	const bool GetIsCrash() { return isCrash; }
-	const int GetCrashBoundCount() { return crashBoundCount; }
 	const bool GetIsDead() { return isDead; }
 	const bool GetIsRoll() { return isRoll; }
 	MoveSpeedPhase GetMoveSpeedPhase() { return moveSpeedPhase; }
+	const Vector2& GetMoveLimitMax() { return moveLimitMax; }
+	const Vector2& GetMoveLimitMin() { return moveLimitMin; }
 	const Vector3& GetKnockbackVel() { return knockbackVel; }
 	PlayerReticles* GetReticles() { return reticles.get(); }
 	const bool GetIsChargeShotMode() { return isChargeShotMode; }
-	StageClearModePhase GetStageClearModePhase() { return stageClearModePhase; }
 	const bool GetIsStageClearModeCompletion() { return isStageClearModeCompletion; }
 
-private: //メンバ関数
+protected: //メンバ関数
 	/// <summary>
 	/// 行動
 	/// </summary>
@@ -177,7 +142,7 @@ private: //メンバ関数
 	/// <summary>
 	/// 墜落
 	/// </summary>
-	void Crash();
+	virtual void Crash() = 0;
 
 	/// <summary>
 	/// 回復
@@ -187,7 +152,7 @@ private: //メンバ関数
 	/// <summary>
 	/// 回転
 	/// </summary>
-	void Rotate();
+	virtual void Rotate();
 
 	/// <summary>
 	/// 移動
@@ -289,31 +254,11 @@ private: //メンバ関数
 	void ShotHomingBullet();
 
 	/// <summary>
-	/// ステージクリア後の横移動
+	/// ステージクリア行動
 	/// </summary>
-	void StageClearSideMove();
+	virtual void StageClear() = 0;
 
-	/// <summary>
-	/// ステージクリア後の帰還
-	/// </summary>
-	void StageClearReturn();
-	
-	/// <summary>
-	/// ステージクリア後の上昇
-	/// </summary>
-	void StageClearUp();
-
-	/// <summary>
-	/// ステージクリア後の停止
-	/// </summary>
-	void StageClearStay();
-
-	/// <summary>
-	/// ステージクリア後のブースト
-	/// </summary>
-	void StageClearBoost();
-
-private: //静的メンバ変数
+protected: //静的メンバ変数
 	//ステージシーン
 	static BaseStageScene* stageScene;
 	//自機弾のモデル
@@ -324,9 +269,6 @@ private: //静的メンバ変数
 	static const Vector3 basePos;
 	//自機の回転限界
 	static const Vector2 rotLimit;
-	//自機の移動限界
-	static const Vector2 moveLimitMax;
-	static const Vector2 moveLimitMin;
 	//ダメージ状態の色
 	static const XMFLOAT4 damageColor;
 	//自機の移動の基準の速さ
@@ -337,10 +279,8 @@ private: //静的メンバ変数
 	static const float maxSpeedChangeGauge;
 	//通常移動時のブラーの強さ
 	static const float normalSpeedBlurStrength;
-	//ステージクリア後行動遷移
-	static void (Player::* stageClearActionFuncTable[])();
 
-private: //メンバ変数
+protected: //メンバ変数
 	//最大体力
 	int maxHP = 0;
 	//体力
@@ -391,6 +331,9 @@ private: //メンバ変数
 	MoveSpeedPhase moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
 	//速度変更用タイマー
 	int32_t speedChangeTimer = 0;
+	//自機の移動限界
+	Vector2 moveLimitMax = {};
+	Vector2 moveLimitMin = {};
 	//レティクル
 	std::unique_ptr<PlayerReticles> reticles;
 	//弾発射座標
@@ -409,20 +352,6 @@ private: //メンバ変数
 	float swayZ = 0.0f;
 	//ステージクリア後の動きをするか
 	bool isStageClearMode = false;
-	//ステージクリア後行動
-	StageClearModePhase stageClearModePhase = StageClearModePhase::SideMove;
-	//ステージクリア後に使用するタイマー
-	int32_t stageClearModeTimer = 0;
-	//ステージクリア移動方向が右か
-	bool isStageClearMoveRight = true;
-	//ステージクリア移動速度
-	Vector3 stageClearMoveVelocity;
-	//ステージクリア時角度
-	Vector3 stageClearRota;
-	//ステージクリア後に使用するカメラホーミング用座標
-	Vector3 stageClearCameraPos;
-	//カメラホーミング用座標
-	Vector3 cameraHomingPos;
 	//ステージクリア後の行動が完了したか
 	bool isStageClearModeCompletion = false;
 };
