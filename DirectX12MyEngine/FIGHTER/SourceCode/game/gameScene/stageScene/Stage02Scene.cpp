@@ -125,7 +125,7 @@ void Stage02Scene::Initialize()
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
 	//見栄えがいい角度に変更しておく
-	skydome->SetRotation({ 0, 0, 0 });
+	skydome->SetRotation({ 0, 50, 0 });
 
 
 	//objオブジェクトにカメラをセット
