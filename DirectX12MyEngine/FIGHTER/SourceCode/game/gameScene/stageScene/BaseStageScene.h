@@ -94,10 +94,12 @@ protected: //ƒƒ“ƒo•Ï”
 	std::unique_ptr<LightGroup> lightGroup;
 	float ambientColor0[3] = { 1,1,1 };
 	// Œõü•ûŒü‰Šú’l
-	float lightDir0[3] = { 2,-1,1 };
-	float lightColor0[3] = { 0.9f,0.9f,0.9f };
-	float lightDir1[3] = { -2,-1,-6 };
-	float lightColor1[3] = { 0.3f,0.3f,0.3f };
+	float lightDir0[3] = {};
+	float lightColor0[3] = {};
+	float lightDir1[3] = {};
+	float lightColor1[3] = {};
+	float lightDir2[3] = {};
+	float lightColor2[3] = {};
 
 	//©‹@’e
 	std::list<std::unique_ptr<PlayerBullet>> playerBullets;

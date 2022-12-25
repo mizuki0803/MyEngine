@@ -29,9 +29,22 @@ void Stage02Scene::Initialize()
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightActive(1, true);
 	lightGroup->SetDirLightActive(2, false);
+	//光線方向初期値
+	float lightDir0[3] = { 2,-1,1 };
+	float lightDir1[3] = { 0,0,1 };
+	float lightDir2[3] = { -2,1,1 };
+	float lightColor[3] = { 1,1,1 };
+	for (int i = 0; i < 3; i++) {
+		this->lightDir0[i] = lightDir0[i];
+		this->lightDir1[i] = lightDir1[i];
+		this->lightDir2[i] = lightDir2[i];
+		lightColor0[i] = lightColor[i];
+		lightColor1[i] = lightColor[i];
+		lightColor2[i] = lightColor[i];
+	}
 
 	//objからモデルデータを読み込む
-	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeSpace"));
+	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeStage02"));
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelBuilding[0].reset(ObjModel::LoadFromOBJ("building01"));
 	modelBuilding[1].reset(ObjModel::LoadFromOBJ("building02"));
@@ -112,7 +125,7 @@ void Stage02Scene::Initialize()
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
 	//見栄えがいい角度に変更しておく
-	skydome->SetRotation({ 0, 190, 0 });
+	skydome->SetRotation({ 0, 0, 0 });
 
 
 	//objオブジェクトにカメラをセット

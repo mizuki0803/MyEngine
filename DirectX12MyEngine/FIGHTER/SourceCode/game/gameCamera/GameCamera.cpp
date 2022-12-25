@@ -7,29 +7,15 @@ const float GameCamera::slowSpeedMagnification = 0.2f;
 
 void GameCamera::Update()
 {
-	//回転　平行移動行列の計算
-	DirectX::XMMATRIX matRot, matTrans;
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
-	//ワールド行列の合成
-	matWorld = XMMatrixIdentity();	//変形をリセット
-	matWorld *= matRot;		//ワールド行列に回転を反映
-	matWorld *= matTrans;	//ワールド行列に平行移動を反映
+	//平行移動行列の計算
+	XMMATRIX matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+	//ワールド行列を更新
+	UpdateMatWorld(matTrans);
+	//ゆらゆらを加算したワールド行列を更新
+	UpdateSwayMatWorld(matTrans);
 
-	//視点をワールド座標に設定
-	eye = { matWorld.r[3].m128_f32[0], matWorld.r[3].m128_f32[1], matWorld.r[3].m128_f32[2] };
-	//ワールド前方ベクトル
-	Vector3 forward(0, 0, 1);
-	//カメラの回転を反映させる
-	forward = MatrixTransformDirection(forward, matWorld);
-	//視点から前方に進んだ位置を注視点に設定
-	target = eye + forward;
-	//天地が反転してもいいように上方向ベクトルも回転させる
-	Vector3 baseUp(0, 1, 0);
-	up = MatrixTransformDirection(baseUp, matWorld);
+	//視点、注視点を更新
+	UpdateEyeTarget();
 
 	//シェイク状態ならカメラをシェイクさせる
 	if (isShake) {
@@ -53,6 +39,52 @@ void GameCamera::ShakeStart(const float shakePower, const float shakeTime)
 	isShake = true;
 }
 
+void GameCamera::UpdateMatWorld(const XMMATRIX& matTrans)
+{
+	//回転　
+	XMMATRIX matRot;
+	matRot = XMMatrixIdentity();
+	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
+	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
+	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
+	//子である自機用のワールド行列の合成
+	matWorld = XMMatrixIdentity();	//変形をリセット
+	matWorld *= matRot;		//ワールド行列に回転を反映
+	matWorld *= matTrans;	//ワールド行列に平行移動を反映
+}
+
+void GameCamera::UpdateSwayMatWorld(const XMMATRIX& matTrans)
+{
+	//ゆらゆらを加算した回転角X
+	const float cameraRotX = rotation.x + swayX;
+
+	//回転　平行移動行列の計算
+	XMMATRIX matRot;
+	matRot = XMMatrixIdentity();
+	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
+	matRot *= XMMatrixRotationX(XMConvertToRadians(cameraRotX));
+	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
+	//ワールド行列の合成
+	cameraMatWorld = XMMatrixIdentity();	//変形をリセット
+	cameraMatWorld *= matRot;		//ワールド行列に回転を反映
+	cameraMatWorld *= matTrans;	//ワールド行列に平行移動を反映
+}
+
+void GameCamera::UpdateEyeTarget()
+{
+	//視点をワールド座標に設定
+	eye = { cameraMatWorld.r[3].m128_f32[0], cameraMatWorld.r[3].m128_f32[1], cameraMatWorld.r[3].m128_f32[2] };
+	//ワールド前方ベクトル
+	Vector3 forward(0, 0, 1);
+	//カメラの回転を反映させる
+	forward = MatrixTransformDirection(forward, cameraMatWorld);
+	//視点から前方に進んだ位置を注視点に設定
+	target = eye + forward;
+	//天地が反転してもいいように上方向ベクトルも回転させる
+	Vector3 baseUp(0, 1, 0);
+	up = MatrixTransformDirection(baseUp, cameraMatWorld);
+}
+
 void GameCamera::CameraAction(Player* player)
 {
 	//ステージクリア状態
@@ -68,6 +100,8 @@ void GameCamera::CameraAction(Player* player)
 	else {
 		//回転
 		Rotate(player->GetRotation());
+		//動きがないと寂しいのでゆらゆらさせておく
+		Sway();
 
 		//プレイヤーがダメージノックバック状態ならノックバックする
 		if (player->GetIsDamageKnockback()) {
@@ -86,6 +120,71 @@ void GameCamera::Rotate(const Vector3& playerRotation)
 	rotation.x = playerRotation.x / 5;
 	rotation.y = playerRotation.y / 5;
 	rotation.z = -playerRotation.y / 8;
+}
+
+void GameCamera::Sway()
+{
+	//ゆらゆら最大の速さ
+	const float rotXMaxSpeed = 0.008f;
+	//ゆらゆら折り返し
+	const float swayXLimit = 0.2f;
+	//ゆらゆらの加速度
+	const float swayXSpeedAccel = 0.0008f;
+	//上回転
+	if (isSwayXUp) {
+		//速度が最大でないとき
+		if (!isSwaySpeedMax) {
+			//速さに加速度を加算する
+			swayXSpeed += swayXSpeedAccel;
+
+			//速さが最大になったらフラグを立てる
+			if (swayXSpeed >= rotXMaxSpeed) {
+				isSwaySpeedMax = true;
+			}
+		}
+		//ゆらゆらの角度が折り返しまで来たら
+		if (swayX >= swayXLimit) {
+			//速さに加速度を減算していく
+			swayXSpeed -= swayXSpeedAccel;
+
+			//速さが0になったら
+			if (swayXSpeed <= 0) {
+				//下回転に変更
+				isSwayXUp = false;
+				//速さ最大フラグを下ろしておく
+				isSwaySpeedMax = false;
+			}
+		}
+	}
+	//下回転
+	else {
+		//速度が最大でないとき
+		if (!isSwaySpeedMax) {
+			//速さに加速度を減算する
+			swayXSpeed -= swayXSpeedAccel;
+
+			//速さが最大になったらフラグを立てる
+			if (swayXSpeed <= -rotXMaxSpeed) {
+				isSwaySpeedMax = true;
+			}
+		}
+		//ゆらゆらの角度が折り返しまで来たら
+		if (swayX <= -swayXLimit) {
+			//速さに加速度を加算していく
+			swayXSpeed += swayXSpeedAccel;
+
+			//速さが0になったら
+			if (swayXSpeed >= 0) {
+				//上回転に変更
+				isSwayXUp = true;
+				//速さ最大フラグを下ろしておく
+				isSwaySpeedMax = false;
+			}
+		}
+	}
+
+	//角度に加算してゆらゆらさせる
+	swayX += swayXSpeed;
 }
 
 void GameCamera::Move(Player* player)

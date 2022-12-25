@@ -29,9 +29,20 @@ void Stage01Scene::Initialize()
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightActive(1, true);
 	lightGroup->SetDirLightActive(2, false);
+	//光線方向初期値
+	float lightDir0[3] = { 2,-1,1 };
+	float lightColor0[3] = { 0.9f,0.9f,0.9f };
+	float lightDir1[3] = { -2,-1,-6 };
+	float lightColor1[3] = { 0.3f,0.3f,0.3f };
+	for (int i = 0; i < 3; i++) {
+		this->lightDir0[i] = lightDir0[i];
+		this->lightColor0[i] = lightColor0[i];
+		this->lightDir1[i] = lightDir1[i];
+		this->lightColor1[i] = lightColor1[i];
+	}
 
 	//objからモデルデータを読み込む
-	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
+	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeStage01"));
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelBuilding[0].reset(ObjModel::LoadFromOBJ("building01"));
 	modelBuilding[1].reset(ObjModel::LoadFromOBJ("building02"));

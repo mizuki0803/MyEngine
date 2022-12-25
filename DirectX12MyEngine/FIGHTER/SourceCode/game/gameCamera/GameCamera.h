@@ -36,6 +36,22 @@ public: //メンバ関数
 
 protected: //メンバ関数
 	/// <summary>
+	/// ワールド行列を更新
+	/// </summary>
+	/// <param name="matTrans"></param>
+	void UpdateMatWorld(const XMMATRIX& matTrans);
+
+	/// <summary>
+	/// ゆらゆらを加算したワールド行列を更新
+	/// </summary>
+	void UpdateSwayMatWorld(const XMMATRIX& matTrans);
+
+	/// <summary>
+	/// 視点と注視点を更新
+	/// </summary>
+	void UpdateEyeTarget();
+
+	/// <summary>
 	/// カメラ動き
 	/// </summary>
 	void CameraAction(Player* player);
@@ -49,6 +65,11 @@ protected: //メンバ関数
 	/// 回転
 	/// </summary>
 	void Rotate(const Vector3& playerRotation);
+
+	/// <summary>
+	/// カメラゆらゆら回転
+	/// </summary>
+	void Sway();
 
 	/// <summary>
 	/// 移動
@@ -84,6 +105,8 @@ protected: //メンバ変数
 	Vector3 rotation = { 0, 0, 0 };
 	//座標
 	Vector3 position = { 0, 0, 0 };
+	//実際にカメラの視点,注視点,上ベクトルに使用するワールド変換行列
+	XMMATRIX cameraMatWorld = {};
 	//カメラの移動限界
 	Vector2 moveLimitMax = {};
 	Vector2 moveLimitMin = {};
@@ -91,6 +114,14 @@ protected: //メンバ変数
 	bool isAdvance = true;
 	//墜落状態か
 	bool isCrash = false;
+	//x軸ゆらゆら回転が上回転か
+	bool isSwayXUp = true;
+	//x軸ゆらゆら回転用
+	float swayX = 0.0f;
+	//x軸ゆらゆらの速度
+	float swayXSpeed = 0;
+	//x軸ゆらゆらの速度が最大か
+	bool isSwaySpeedMax = false;
 	//シェイクするか
 	bool isShake = false;
 	//カメラシェイク用タイマー

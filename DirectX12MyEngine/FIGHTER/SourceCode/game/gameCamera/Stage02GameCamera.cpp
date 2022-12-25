@@ -50,6 +50,8 @@ void Stage02GameCamera::CrashStart()
 
 	//墜落状態のカメラ位置に移動前の座標をセット
 	moveCrashBeforePos = position;
+	//ゆらゆら角度を0にしておく
+	swayX = 0;
 }
 
 void Stage02GameCamera::StageClearModeStart(BossMainBody* bossMainBody)
@@ -63,6 +65,8 @@ void Stage02GameCamera::StageClearModeStart(BossMainBody* bossMainBody)
 	stageClearMoveBeforePos = position;
 	//移動前カメラ角度をセット
 	stageClearMoveBeforeRota = rotation;
+	//ゆらゆら角度を0にしておく
+	swayX = 0;
 
 	//ステージクリア後の動きをする
 	isStageClearMode = true;

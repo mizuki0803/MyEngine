@@ -21,7 +21,7 @@ void SortieScene::Initialize()
 	lightGroup->SetDirLightActive(2, false);
 
 	//objからモデルデータを読み込む
-	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
+	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeStage01"));
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelBuilding[0].reset(ObjModel::LoadFromOBJ("building01"));
 	modelBuilding[1].reset(ObjModel::LoadFromOBJ("building02"));
