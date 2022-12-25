@@ -12,6 +12,7 @@
 #include "FallEnemy.h"
 #include "UpDownEnemy.h"
 #include "ComeGoEnemy.h"
+#include "MeteoriteEnemy.h"
 #include "EnemyDefeatCounter.h"
 #include "SceneChangeEffect.h"
 #include "GamePostEffect.h"
@@ -28,11 +29,11 @@ void Stage02Scene::Initialize()
 	lightGroup.reset(LightGroup::Create());
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightActive(1, true);
-	lightGroup->SetDirLightActive(2, false);
+	lightGroup->SetDirLightActive(2, true);
 	//光線方向初期値
-	float lightDir0[3] = { 2,-1,1 };
+	float lightDir0[3] = { 2,1,1 };
 	float lightDir1[3] = { 0,0,1 };
-	float lightDir2[3] = { -2,1,1 };
+	float lightDir2[3] = { -2,-1,1 };
 	float lightColor[3] = { 1,1,1 };
 	for (int i = 0; i < 3; i++) {
 		this->lightDir0[i] = lightDir0[i];
@@ -127,6 +128,11 @@ void Stage02Scene::Initialize()
 	//見栄えがいい角度に変更しておく
 	skydome->SetRotation({ 0, 50, 0 });
 
+	//背景用隕石配置スクリプトの読み込み
+	LoadEnemySetData(meteoriteSetCommands, "Resources/csv/MeteoriteSetStage02.csv");
+	//背景用隕石に必要な情報をセット
+	Meteorite::SetMeteoriteModel(modelSphere.get());
+	Meteorite::SetGameCamera(gameCamera.get());
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
@@ -159,6 +165,8 @@ void Stage02Scene::Update()
 	ObjectRelease();
 	//敵発生コマンド更新
 	UpdateEnemySetCommands(gameCamera->GetPosition());
+	//背景用隕石発生コマンド更新
+	UpdateMeteoriteSetCommands(gameCamera->GetPosition());
 	//ボスバトル開始判定処理
 	BossBattleStart();
 	//ステージクリア
@@ -177,6 +185,8 @@ void Stage02Scene::Update()
 	lightGroup->SetDirLightColor(0, XMFLOAT3(lightColor0));
 	lightGroup->SetDirLightDir(1, XMVECTOR({ lightDir1[0], lightDir1[1], lightDir1[2], 0 }));
 	lightGroup->SetDirLightColor(1, XMFLOAT3(lightColor1));
+	lightGroup->SetDirLightDir(2, XMVECTOR({ lightDir2[0], lightDir2[1], lightDir2[2], 0 }));
+	lightGroup->SetDirLightColor(2, XMFLOAT3(lightColor2));
 	lightGroup->Update();
 
 	//オブジェクト更新
@@ -208,6 +218,11 @@ void Stage02Scene::Update()
 	}
 	//天球
 	skydome->Update();
+	//背景用隕石
+	for (const std::unique_ptr<Meteorite>& meteorite : meteorites) {
+		meteorite->Update();
+	}
+
 
 	//3D衝突判定管理
 	CollisionCheck3d();
@@ -296,6 +311,10 @@ void Stage02Scene::Draw3D()
 	}
 	//天球
 	skydome->Draw();
+	//背景用隕石
+	for (const std::unique_ptr<Meteorite>& meteorite : meteorites) {
+		meteorite->Draw();
+	}
 
 	///-------Object3d描画ここまで-------///
 
@@ -349,6 +368,10 @@ void Stage02Scene::Draw3DTopLightView()
 	//回復アイテム
 	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
 		healingItem->DrawTopLightCameraView();
+	}
+	//背景用隕石
+	for (const std::unique_ptr<Meteorite>& meteorite : meteorites) {
+		meteorite->DrawTopLightCameraView();
 	}
 
 	///-------Object3d描画ここまで-------///
@@ -491,6 +514,11 @@ void Stage02Scene::ObjectRelease()
 		return healingItem->GetIsDelete();
 		});
 
+	//削除状態の背景用隕石の削除
+	meteorites.remove_if([](std::unique_ptr<Meteorite>& meteorite) {
+		return meteorite->GetIsDelete();
+		});
+
 	//削除状態のボスの削除
 	if (boss) {
 		if (boss->GetIsDelete()) {
@@ -542,7 +570,7 @@ void Stage02Scene::CollisionCheck3d()
 			if (!isCollision) { continue; }
 
 			//敵のコールバック関数を呼び出す
-			enemy->OnCollision();
+			enemy->OnCollision(bullet->GetDamageNum());
 			//自機弾のコールバック関数を呼び出す
 			bullet->OnCollision(posB, radiusB);
 
@@ -586,7 +614,8 @@ void Stage02Scene::CollisionCheck3d()
 			if (!enemy->GetIsDead()) { hitNum++; }
 
 			//敵のコールバック関数を呼び出す
-			enemy->OnCollision();
+			const int damageNum = 1; //破裂のダメージ量は1に固定
+			enemy->OnCollision(damageNum);
 		}
 
 		//一撃で倒した敵の数が0なら飛ばす
@@ -596,6 +625,31 @@ void Stage02Scene::CollisionCheck3d()
 		std::unique_ptr<MultiHitUI> newMultiHitUI;
 		newMultiHitUI.reset(MultiHitUI::Create(posA, gameCamera.get(), hitNum));
 		multiHitUIs.push_back(std::move(newMultiHitUI));
+	}
+#pragma endregion
+
+#pragma region 背景用隕石と自機弾の衝突判定
+	//全ての背景用隕石と全ての自機弾の衝突判定
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//自機弾座標
+		posA = bullet->GetWorldPos();
+		//自機弾半径
+		radiusA = bullet->GetScale().x;
+
+		for (const std::unique_ptr<Meteorite>& meteorite : meteorites) {
+			//隕石座標
+			posB = meteorite->GetPosition();
+			//隕石半径
+			radiusB = meteorite->GetScale().x;
+
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
+
+			//自機弾のコールバック関数を呼び出す
+			bullet->OnCollision(posB, radiusB, false);
+		}
 	}
 #pragma endregion
 
@@ -698,6 +752,34 @@ void Stage02Scene::CollisionCheck3d()
 	}
 #pragma endregion
 
+#pragma region 自機と背景用隕石の衝突判定
+	//自機が緊急回避をしていない && ダメージノックバック状態でなければ判定する
+	if (!player->GetIsRoll() && !player->GetIsDamageKnockback()) {
+		//自機座標
+		posA = player->GetWorldPos();
+		//自機半径
+		radiusA = player->GetScale().x;
+
+		//自機と全ての背景用隕石の衝突判定
+		for (const std::unique_ptr<Meteorite>& meteorite : meteorites) {
+			//隕石座標
+			posB = meteorite->GetPosition();
+			//隕石半径
+			radiusB = meteorite->GetScale().x;
+
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
+
+			//自機のダメージ用コールバック関数を呼び出す
+			player->OnCollisionDamage(posB);
+			//カメラをシェイクさせる
+			gameCamera->ShakeStart();
+		}
+	}
+#pragma endregion
+
 	//ボスの存在がなければこの先の処理は行わない
 	if (!boss) { return; }
 
@@ -752,8 +834,7 @@ void Stage02Scene::CollisionCheck3d()
 		if (!isCollision) { continue; }
 
 		//ボスのコールバック関数を呼び出す
-		const int attackPower = 2;
-		boss->OnCollisionMainBody(attackPower, posB, bullet->GetVelocity());
+		boss->OnCollisionMainBody(bullet->GetDamageNum(), posB, bullet->GetVelocity());
 		//自機弾のコールバック関数を呼び出す
 		//ダメージが通ったとき
 		if (boss->GetMainBody()->GetIsDamageTrigger()) { bullet->OnCollision(posA, radiusA); }
@@ -788,8 +869,7 @@ void Stage02Scene::CollisionCheck3d()
 			if (!isCollision) { continue; }
 
 			//ボスのコールバック関数を呼び出す
-			const int attackPower = 2;
-			boss->OnCollisionAvatar(bossAvatar.get(), attackPower, posA, bullet->GetVelocity());
+			boss->OnCollisionAvatar(bossAvatar.get(), bullet->GetDamageNum(), posA, bullet->GetVelocity());
 			//自機弾のコールバック関数を呼び出す
 			//ダメージが通ったとき
 			if (bossAvatar->GetIsDamageTrigger()) { bullet->OnCollision(posB, radiusB); }
@@ -852,13 +932,16 @@ void Stage02Scene::CollisionCheck2d()
 void Stage02Scene::InitializeEnemy()
 {
 	//敵配置スクリプトの読み込み
-	LoadEnemySetData("Resources/csv/EnemySetStage02.csv");
+	LoadEnemySetData(enemySetCommands, "Resources/csv/EnemySetStage02.csv");
 
 	//全敵に必要な情報をセット
 	Enemy::SetStageScene(this); //全敵にステージシーンを教える
 	Enemy::SetPlayer(player.get()); //自機をセット
 	Enemy::SetBulletModel(modelEnemyBullet.get()); //弾のモデルをセット
 	Enemy::SetIsGroundMode(false); //地面あり行動をOFFにする
+	EnemyBreakEffect::SetIsGroundMode(false); //破壊エフェクトの地面あり行動をOFFにする
+	EnemyBreakEffect::SetIsGravityMode(false); //破壊エフェクトの重力あり行動をOFFにする
+	EnemyBreakEffect::SetGameCamera(gameCamera.get()); //破壊エフェクトにゲームカメラをセット
 
 	//各種類の敵に必要な情報をセット
 	//大砲敵
@@ -905,6 +988,108 @@ void Stage02Scene::InitializeEnemy()
 		//モデルが未設定なら飛ばす
 		if (!modelEnemyFighterBreak[i]) { continue; }
 		ComeGoEnemy::SetBreakModel(i, modelEnemyFighterBreak[i].get());
+	}
+
+	//破壊可能隕石
+	MeteoriteEnemy::SetModel(modelSphere.get()); //モデルをセット
+}
+
+void Stage02Scene::UpdateMeteoriteSetCommands(const Vector3& targetPosition)
+{
+	//待機処理
+	if (isWaitMeteorite) {
+		//カメラのZ座標が生成座標以上なら
+		if (waitMeteoriteSetPlayerPosition <= targetPosition.z) {
+			//待機終了
+			isWaitMeteorite = false;
+		}
+		return;
+	}
+
+	//1行分の文字列を入れる変数
+	std::string line;
+
+	//コマンドを実行するループ
+	while (getline(meteoriteSetCommands, line)) {
+		//1行分の文字列をストリーム変換して解析しやすく
+		std::istringstream line_stream(line);
+
+		std::string word;
+		//「,」区切りで行の先頭文字を取得
+		getline(line_stream, word, ',');
+
+		//"//"から始める行はコメント
+		if (word.find("//") == 0) {
+			//コメント行を飛ばす
+			continue;
+		}
+
+		//POPコマンド
+		if (word.find("POP") == 0) {
+			//x座標
+			getline(line_stream, word, ',');
+			float posX = (float)std::atof(word.c_str());
+			//y座標
+			getline(line_stream, word, ',');
+			float posY = (float)std::atof(word.c_str());
+			//z座標
+			getline(line_stream, word, ',');
+			float posZ = (float)std::atof(word.c_str());
+
+			//回転角x
+			getline(line_stream, word, ',');
+			float rotX = (float)std::atof(word.c_str());
+			//回転角y
+			getline(line_stream, word, ',');
+			float rotY = (float)std::atof(word.c_str());
+			//回転角z
+			getline(line_stream, word, ',');
+			float rotZ = (float)std::atof(word.c_str());
+
+			//サイズ
+			getline(line_stream, word, ',');
+			float size = (float)std::atof(word.c_str());
+
+			//速度x
+			getline(line_stream, word, ',');
+			float velX = (float)std::atof(word.c_str());
+			//速度y
+			getline(line_stream, word, ',');
+			float velY = (float)std::atof(word.c_str());
+			//速度z
+			getline(line_stream, word, ',');
+			float velZ = (float)std::atof(word.c_str());
+
+			//回転速度x
+			getline(line_stream, word, ',');
+			float rotSpeedX = (float)std::atof(word.c_str());
+			//回転速度y
+			getline(line_stream, word, ',');
+			float rotSpeedY = (float)std::atof(word.c_str());
+			//回転速度z
+			getline(line_stream, word, ',');
+			float rotSpeedZ = (float)std::atof(word.c_str());
+
+			//背景用隕石を発生
+			std::unique_ptr<Meteorite> newMeteorite;
+			newMeteorite.reset(Meteorite::Create({ posX, posY, posZ }, { rotX, rotY, rotZ }, size, { velX, velY, velZ }, { rotSpeedX, rotSpeedY, rotSpeedZ }));
+			meteorites.push_back(std::move(newMeteorite));
+		}
+
+		//WAITコマンド
+		else if (word.find("WAIT") == 0) {
+			getline(line_stream, word, ',');
+
+			//生成対象座標更新
+			float waitPosition = (float)atoi(word.c_str());
+
+			//待機開始
+			isWaitMeteorite = true;
+			waitMeteoriteSetPlayerPosition = waitPosition;
+
+			//コマンドループを抜ける
+			break;
+		}
 	}
 }
 

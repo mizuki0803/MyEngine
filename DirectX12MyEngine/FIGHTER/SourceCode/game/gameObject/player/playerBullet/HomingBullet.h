@@ -37,6 +37,8 @@ private: //メンバ関数
 	void CollisionGround() override;
 
 private: //静的メンバ変数
+	//ダメージ量
+	static const int bulletDamageNum = 3;
 	//寿命時間
 	static const int32_t lifeTime = 240;
 	//死亡時の判定の大きさ

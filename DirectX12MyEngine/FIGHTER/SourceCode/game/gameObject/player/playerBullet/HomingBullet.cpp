@@ -23,21 +23,18 @@ HomingBullet* HomingBullet::Create(const Vector3& position, const Vector3& veloc
 
 	//弾の種類をセット
 	homingBullet->bulletType = BulletType::Homing;
-
 	//座標をセット
 	homingBullet->position = position;
-
 	//速度をセット
 	homingBullet->velocity = velocity;
-
 	//サイズをセット
 	homingBullet->scale = { size, size, size };
-
 	//追従対象の敵をセット
 	homingBullet->enemy = enemy;
-
 	//影描画用仮モデル
 	homingBullet->model = bulletModel;
+	//ダメージ量をセット
+	homingBullet->damageNum = bulletDamageNum;
 
 	return homingBullet;
 }

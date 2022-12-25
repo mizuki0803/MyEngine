@@ -1,11 +1,11 @@
 #pragma once
 #include "BaseStageScene.h"
 #include "Stage02GameCamera.h"
-#include "CollisionShape.h"
 #include "Collision.h"
 #include "Stage02Player.h"
 #include "Boss.h"
 #include "BossDeadEffect.h"
+#include "Meteorite.h"
 
 /// <summary>
 /// ステージ02シーン
@@ -72,6 +72,11 @@ public: //メンバ関数
 	/// 敵初期化処理
 	/// </summary>
 	void InitializeEnemy();
+
+	/// <summary>
+	/// 背景用隕石発生コマンドの更新
+	/// </summary>
+	void UpdateMeteoriteSetCommands(const Vector3& targetPosition);
 
 	/// <summary>
 	/// ボスバトル開始判定処理
@@ -145,6 +150,15 @@ private: //メンバ変数
 	std::unique_ptr<Boss> boss;
 	//ボス死亡後の演出管理
 	std::unique_ptr<BossDeadEffect> bossDeadEffect;
+
+	//背景用隕石(破壊不可)
+	std::list<std::unique_ptr<Meteorite>> meteorites;
+	//背景用隕石発生コマンド
+	std::stringstream meteoriteSetCommands;
+	//背景用隕石発生コマンド待機中か
+	bool isWaitMeteorite = false;
+	//待機用 生成を行う自機座標(自機が生成を行う座標以上になったら背景用隕石生成を行う)
+	float waitMeteoriteSetPlayerPosition = 0;
 
 	//ステージクリア用の影状態か
 	bool isStageClearShadow = false;

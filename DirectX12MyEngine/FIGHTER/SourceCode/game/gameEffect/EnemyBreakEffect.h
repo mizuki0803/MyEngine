@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjObject3d.h"
+#include "GameCamera.h"
 
 /// <summary>
 /// 敵破壊用エフェクト
@@ -13,6 +14,11 @@ public: // 静的メンバ関数
 	/// <param name="model">モデル</param>
 	/// <returns>敵破壊用エフェクト</returns>
 	static EnemyBreakEffect* Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const Vector3& rotSpeed, const Vector3& scale);
+
+	//setter
+	static void SetIsGroundMode(bool isGroundMode) { EnemyBreakEffect::isGroundMode = isGroundMode; }
+	static void SetIsGravityMode(bool isGravityMode) { EnemyBreakEffect::isGravityMode = isGravityMode; }
+	static void SetGameCamera(GameCamera* gameCamera) { EnemyBreakEffect::gameCamera = gameCamera; }
 
 public: //メンバ関数
 	/// <summary>
@@ -28,6 +34,19 @@ private: //メンバ関数
 	/// 移動させる
 	/// </summary>
 	void Move();
+
+	/// <summary>
+	/// 画面手前まで行ったら削除する処理
+	/// </summary>
+	void FrontOfScreenDelete();
+
+protected: //静的メンバ変数
+	//地面ありの行動を行うか
+	static bool isGroundMode;
+	//重力ありの行動を行うか
+	static bool isGravityMode;
+	//ゲームカメラ
+	static GameCamera* gameCamera;
 
 protected: //メンバ変数
 	//速度

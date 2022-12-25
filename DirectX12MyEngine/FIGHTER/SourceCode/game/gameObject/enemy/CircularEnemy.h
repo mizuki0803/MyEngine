@@ -27,7 +27,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	void OnCollision() override;
+	void OnCollision(const int damageNum) override;
 
 private: //メンバ関数
 	/// <summary>
@@ -41,6 +41,8 @@ private: //メンバ関数
 	void Break() override;
 
 private: //静的メンバ変数
+	//最大HP
+	static const int maxHP = 1;
 	//発射間隔
 	static const int fireInterval = 180;
 	//モデル

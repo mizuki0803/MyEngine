@@ -263,7 +263,7 @@ protected: //静的メンバ変数
 	//ダメージ状態のサイズ
 	static const Vector3 damageSize;
 	//体力
-	static const int maxHP = 15;
+	static const int maxHP = 8;
 	//攻撃状態のY軸回転
 	static const float attackModeRotY;
 	//待機状態のY軸回転

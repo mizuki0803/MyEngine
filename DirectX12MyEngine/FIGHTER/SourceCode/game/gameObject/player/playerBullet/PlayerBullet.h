@@ -32,6 +32,7 @@ public: //メンバ関数
 
 	//getter
 	Vector3 GetWorldPos();
+	const int GetDamageNum() { return damageNum; }
 	BulletType GetBulletType() { return bulletType; }
 	const Vector3& GetVelocity() { return velocity; }
 	bool GetIsDead() const { return isDead; }
@@ -52,6 +53,8 @@ protected: //静的メンバ変数
 protected: //メンバ変数
 	//弾の種類
 	BulletType bulletType = BulletType::None;
+	//ダメージ量
+	int damageNum = 0;
 	//速度
 	Vector3 velocity;
 	//死亡フラグ

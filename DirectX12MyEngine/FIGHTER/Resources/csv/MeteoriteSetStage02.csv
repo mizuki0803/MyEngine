@@ -1,0 +1,4 @@
+//WAITコマンド,waitPositionZ
+//コマンド,posX,posY,posZ,rotX,rotY,rotZ,size,velX,velY,velZ,rptSpeedX,rotSpeedY,rotSpeedZ
+WAIT,20,,
+POP,3,0,165,220,100,0,10,0,0,0,1,1,1

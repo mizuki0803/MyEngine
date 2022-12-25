@@ -38,6 +38,8 @@ CannonEnemy* CannonEnemy::Create(const Vector3& position)
 	cannon->normalSize = cannon->scale;
 	//ダメージ状態のサイズをセット
 	cannon->damageSize = cannon->scale * 1.1f;
+	//HPをセット
+	cannon->HP = maxHP;
 
 	return cannon;
 }
@@ -61,20 +63,23 @@ void CannonEnemy::Update()
 	FrontOfScreenDelete();
 }
 
-void CannonEnemy::OnCollision()
+void CannonEnemy::OnCollision(const int damageNum)
 {
 	//全敵共通の衝突処理
-	Enemy::OnCollision();
+	Enemy::OnCollision(damageNum);
 
-	//行動を死亡用にする
-	phase = Phase::Dead;
+	//死亡したら
+	if (isDead) {
+		//行動を死亡用にする
+		phase = Phase::Dead;
 
-	//死亡時墜落回転速度を乱数でセット
-	const Vector3 randRotVel = { -2.0f, 0.4f, 0.4f };
-	const float randRotBaseVelX = -1.75f;
-	crashRotVel.x = (float)rand() / RAND_MAX * randRotVel.x + randRotBaseVelX;
-	crashRotVel.y = (float)rand() / RAND_MAX * randRotVel.y - randRotVel.y / 2;
-	crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z - randRotVel.z / 2;
+		//死亡時墜落回転速度を乱数でセット
+		const Vector3 randRotVel = { -2.0f, 0.4f, 0.4f };
+		const float randRotBaseVelX = -1.75f;
+		crashRotVel.x = (float)rand() / RAND_MAX * randRotVel.x + randRotBaseVelX;
+		crashRotVel.y = (float)rand() / RAND_MAX * randRotVel.y - randRotVel.y / 2;
+		crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z - randRotVel.z / 2;
+	}
 }
 
 void CannonEnemy::Attack()
@@ -144,7 +149,7 @@ void CannonEnemy::Break()
 		const Vector3 randRotSpeed = { 5, 5, 5 };
 		Vector3 rotSpeed;
 		rotSpeed.x = (float)((rand() % (int)randRotSpeed.x) - randRotSpeed.x / 2);
-		rotSpeed.x = (float)((rand() % (int)randRotSpeed.y) - randRotSpeed.y / 2);
+		rotSpeed.y = (float)((rand() % (int)randRotSpeed.y) - randRotSpeed.y / 2);
 		rotSpeed.z = (float)((rand() % (int)randRotSpeed.z) - randRotSpeed.z / 2);
 
 		//値が大きいので割り算して小さくする

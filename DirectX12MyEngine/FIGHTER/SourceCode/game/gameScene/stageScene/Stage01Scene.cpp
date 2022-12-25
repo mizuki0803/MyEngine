@@ -587,7 +587,7 @@ void Stage01Scene::CollisionCheck3d()
 			if (!isCollision) { continue; }
 
 			//敵のコールバック関数を呼び出す
-			enemy->OnCollision();
+			enemy->OnCollision(bullet->GetDamageNum());
 			//自機弾のコールバック関数を呼び出す
 			bullet->OnCollision(posB, radiusB);
 
@@ -631,7 +631,8 @@ void Stage01Scene::CollisionCheck3d()
 			if (!enemy->GetIsDead()) { hitNum++; }
 
 			//敵のコールバック関数を呼び出す
-			enemy->OnCollision();
+			const int damageNum = 1; //破裂のダメージ量は1に固定
+			enemy->OnCollision(damageNum);
 		}
 
 		//一撃で倒した敵の数が0なら飛ばす
@@ -797,8 +798,7 @@ void Stage01Scene::CollisionCheck3d()
 		if (!isCollision) { continue; }
 
 		//ボスのコールバック関数を呼び出す
-		const int attackPower = 2;
-		boss->OnCollisionMainBody(attackPower, posB, bullet->GetVelocity());
+		boss->OnCollisionMainBody(bullet->GetDamageNum(), posB, bullet->GetVelocity());
 		//自機弾のコールバック関数を呼び出す
 		//ダメージが通ったとき
 		if (boss->GetMainBody()->GetIsDamageTrigger()) { bullet->OnCollision(posA, radiusA); }
@@ -833,8 +833,7 @@ void Stage01Scene::CollisionCheck3d()
 			if (!isCollision) { continue; }
 
 			//ボスのコールバック関数を呼び出す
-			const int attackPower = 2;
-			boss->OnCollisionAvatar(bossAvatar.get(), attackPower, posA, bullet->GetVelocity());
+			boss->OnCollisionAvatar(bossAvatar.get(), bullet->GetDamageNum(), posA, bullet->GetVelocity());
 			//自機弾のコールバック関数を呼び出す
 			//ダメージが通ったとき
 			if (bossAvatar->GetIsDamageTrigger()) { bullet->OnCollision(posB, radiusB); }
@@ -897,13 +896,16 @@ void Stage01Scene::CollisionCheck2d()
 void Stage01Scene::InitializeEnemy()
 {
 	//敵配置スクリプトの読み込み
-	LoadEnemySetData("Resources/csv/EnemySetStage01.csv");
+	LoadEnemySetData(enemySetCommands, "Resources/csv/EnemySetStage01.csv");
 
 	//全敵に必要な情報をセット
 	Enemy::SetStageScene(this); //全敵にステージシーンを教える
 	Enemy::SetPlayer(player.get()); //自機をセット
 	Enemy::SetBulletModel(modelEnemyBullet.get()); //弾のモデルをセット
 	Enemy::SetIsGroundMode(true); //地面あり行動をONにする
+	EnemyBreakEffect::SetIsGroundMode(true); //破壊エフェクトの地面あり行動をONにする
+	EnemyBreakEffect::SetIsGravityMode(true); //破壊エフェクトの重力あり行動をONにする
+	EnemyBreakEffect::SetGameCamera(gameCamera.get()); //破壊エフェクトにゲームカメラをセット
 
 	//各種類の敵に必要な情報をセット
 	//大砲敵

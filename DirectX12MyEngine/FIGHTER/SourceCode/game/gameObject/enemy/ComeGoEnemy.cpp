@@ -34,15 +34,14 @@ ComeGoEnemy* ComeGoEnemy::Create(const Vector3& startPos, const Vector3& comePos
 
 	//生成座標をセット
 	comeGoEnemy->startPos = startPos;
-
 	//到着座標をセット
 	comeGoEnemy->comePos = comePos;
-
 	//出発目標座標をセット
 	comeGoEnemy->goTargetPos = goTargetPos;
-
 	//攻撃時間をセット
 	comeGoEnemy->attackTime = attackTime;
+	//HPをセット
+	comeGoEnemy->HP = maxHP;
 
 	return comeGoEnemy;
 }
@@ -63,20 +62,23 @@ void ComeGoEnemy::Update()
 	Enemy::Update();
 }
 
-void ComeGoEnemy::OnCollision()
+void ComeGoEnemy::OnCollision(const int damageNum)
 {
 	//全敵共通の衝突処理
-	Enemy::OnCollision();
+	Enemy::OnCollision(damageNum);
 
-	//行動を死亡用にする
-	phase = Phase::Dead;
+	//死亡したら
+	if (isDead) {
+		//行動を死亡用にする
+		phase = Phase::Dead;
 
-	//死亡時墜落回転速度を乱数でセット
-	const Vector3 randRotVel = { 0, 0.4f, 5.0f };
-	const float randRotBaseVelZ = -1.25f;
-	crashRotVel.x = (float)rand() / RAND_MAX * randRotVel.x - randRotVel.y / 2;
-	crashRotVel.y = (float)rand() / RAND_MAX * randRotVel.y - randRotVel.y / 2;
-	crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z + randRotBaseVelZ;
+		//死亡時墜落回転速度を乱数でセット
+		const Vector3 randRotVel = { 0, 0.4f, 5.0f };
+		const float randRotBaseVelZ = -1.25f;
+		crashRotVel.x = (float)rand() / RAND_MAX * randRotVel.x - randRotVel.y / 2;
+		crashRotVel.y = (float)rand() / RAND_MAX * randRotVel.y - randRotVel.y / 2;
+		crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z + randRotBaseVelZ;
+	}
 }
 
 void ComeGoEnemy::Come()
@@ -216,7 +218,7 @@ void ComeGoEnemy::Break()
 		const Vector3 randRotSpeed = { 10, 10, 10 };
 		Vector3 rotSpeed;
 		rotSpeed.x = (float)((rand() % (int)randRotSpeed.x) - randRotSpeed.x / 2);
-		rotSpeed.x = (float)((rand() % (int)randRotSpeed.y) - randRotSpeed.y / 2);
+		rotSpeed.y = (float)((rand() % (int)randRotSpeed.y) - randRotSpeed.y / 2);
 		rotSpeed.z = (float)((rand() % (int)randRotSpeed.z) - randRotSpeed.z / 2);
 
 		//値が大きいので割り算して小さくする

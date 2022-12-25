@@ -75,13 +75,16 @@ public: //メンバ関数
 	void AddEnemyBreakEffect(std::unique_ptr<EnemyBreakEffect> enemyBreakEffect);
 
 	/// <summary>
-	/// 敵発生データ読み込み
+	/// データ読み込み
 	/// </summary>
-	void LoadEnemySetData(const std::string& fileName);
+	/// <param name="commands">ファイルから読み取った情報を入れておく場所</param>
+	/// <param name="fileName">ファイル名</param>
+	void LoadEnemySetData(std::stringstream& commands, const std::string& fileName);
 
 	/// <summary>
 	/// 敵発生コマンドの更新
 	/// </summary>
+	/// <param name="targetPosition">生成座標の対象となる座標</param>
 	void UpdateEnemySetCommands(const Vector3& targetPosition);
 
 protected: //メンバ変数

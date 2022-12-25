@@ -1,5 +1,9 @@
 #include "EnemyBreakEffect.h"
 
+bool EnemyBreakEffect::isGroundMode = true;
+bool EnemyBreakEffect::isGravityMode = false;
+GameCamera* EnemyBreakEffect::gameCamera = nullptr;
+
 EnemyBreakEffect* EnemyBreakEffect::Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const Vector3& rotSpeed, const Vector3& scale)
 {
 	//雪玉エフェクトのインスタンスを生成
@@ -41,20 +45,38 @@ void EnemyBreakEffect::Update()
 
     //オブジェクト更新
     ObjObject3d::Update();
+
+	//画面外手前まで行ったら削除
+	FrontOfScreenDelete();
 }
 
 void EnemyBreakEffect::Move()
 {
-    //重力っぽい値をY軸にかけ続ける
-    const float gravity = 0.01f;
-    velocity.y -= gravity;
+	//重力あり状態なら
+	if (isGravityMode) {
+		//重力っぽい値をY軸にかけ続ける
+		const float gravity = 0.01f;
+		velocity.y -= gravity;
+	}
+	//速度を座標に加算して移動させる
     position += velocity;
 
 	//回転させる
 	rotation += rotSpeed;
 
-    //地面に着いたら削除状態にする
-    if (position.y <= 0.0f) {
+    //地面あり状態の場合のみ地面に着いたら削除状態にする
+    if (isGroundMode && position.y <= 0.0f) {
         isDelete = true;
     }
+}
+
+void EnemyBreakEffect::FrontOfScreenDelete()
+{
+	//座標が自機より手前(画面外手前)まで行ったら削除
+	const float flontOfScreenDiffence = 50;
+	const float deletePos = gameCamera->GetPosition().z - flontOfScreenDiffence;
+
+	if (position.z <= deletePos) {
+		isDelete = true;
+	}
 }

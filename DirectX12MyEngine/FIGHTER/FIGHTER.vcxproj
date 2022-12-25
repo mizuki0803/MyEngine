@@ -146,6 +146,7 @@
     <ClCompile Include="SourceCode\game\gameObject\background\Ground.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\GameBuildingManager.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Building.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\background\Meteorite.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Skydome.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\boss\Boss.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatar.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="SourceCode\game\gameObject\enemy\enemyBullet\BossChargeBullet.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\enemyBullet\EnemyBullet.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\FallEnemy.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\enemy\MeteoriteEnemy.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\UpDownEnemy.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\item\HealingItem.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\player\Player.cpp" />
@@ -366,6 +368,7 @@
     <ClInclude Include="SourceCode\game\gameObject\background\Ground.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\GameBuildingManager.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Building.h" />
+    <ClInclude Include="SourceCode\game\gameObject\background\Meteorite.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Skydome.h" />
     <ClInclude Include="SourceCode\game\gameObject\boss\Boss.h" />
     <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatar.h" />
@@ -382,6 +385,7 @@
     <ClInclude Include="SourceCode\game\gameObject\enemy\enemyBullet\BossChargeBullet.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\enemyBullet\EnemyBullet.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\FallEnemy.h" />
+    <ClInclude Include="SourceCode\game\gameObject\enemy\MeteoriteEnemy.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\UpDownEnemy.h" />
     <ClInclude Include="SourceCode\game\gameObject\item\HealingItem.h" />
     <ClInclude Include="SourceCode\game\gameObject\player\Player.h" />

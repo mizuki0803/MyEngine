@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseStageScene.h"
 #include "Stage01GameCamera.h"
-#include "CollisionShape.h"
 #include "Collision.h"
 #include "Stage01Player.h"
 #include "Boss.h"

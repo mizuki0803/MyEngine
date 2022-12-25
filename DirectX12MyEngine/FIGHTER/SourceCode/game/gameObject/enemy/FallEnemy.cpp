@@ -2,12 +2,11 @@
 #include "Easing.h"
 #include "ParticleEmitter.h"
 
-void (FallEnemy::*FallEnemy::actionFuncTable[])() = {
+void (FallEnemy::* FallEnemy::actionFuncTable[])() = {
 	&FallEnemy::Fall,
 	&FallEnemy::Rotate,
 	&FallEnemy::Dead,
 };
-
 
 ObjModel* FallEnemy::enemyModel = nullptr;
 std::array<ObjModel*, 5> FallEnemy::breakModels;
@@ -33,13 +32,13 @@ FallEnemy* FallEnemy::Create(const Vector3& stayPos, const float fallNum)
 
 	//停止座標をセット
 	upDownEnemy->stayPos = stayPos;
-
 	//降下する値をセット
 	upDownEnemy->fallNum = fallNum;
-	
 	//座標をセット
 	upDownEnemy->position = stayPos;
 	upDownEnemy->position.y += fallNum;
+	//HPをセット
+	upDownEnemy->HP = maxHP;
 
 	return upDownEnemy;
 }
@@ -60,23 +59,26 @@ void FallEnemy::Update()
 	Enemy::Update();
 
 	//画面外手前まで行ったら削除
-	FrontOfScreenDelete();	
+	FrontOfScreenDelete();
 }
 
-void FallEnemy::OnCollision()
+void FallEnemy::OnCollision(const int damageNum)
 {
 	//全敵共通の衝突処理
-	Enemy::OnCollision();
+	Enemy::OnCollision(damageNum);
 
-	//行動を死亡用にする
-	phase = Phase::Dead;
+	//死亡したら
+	if (isDead) {
+		//行動を死亡用にする
+		phase = Phase::Dead;
 
-	//死亡時墜落回転速度を乱数でセット
-	const Vector3 randRotVel = { -5.0f, 0.4f, 0.4f };
-	const float randRotBaseVelX = -1.0f;
-	crashRotVel.x = (float)rand() / RAND_MAX * randRotVel.x + randRotBaseVelX;
-	crashRotVel.y = (float)rand() / RAND_MAX * randRotVel.y - randRotVel.y / 2;
-	crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z - randRotVel.z / 2;
+		//死亡時墜落回転速度を乱数でセット
+		const Vector3 randRotVel = { -5.0f, 0.4f, 0.4f };
+		const float randRotBaseVelX = -1.0f;
+		crashRotVel.x = (float)rand() / RAND_MAX * randRotVel.x + randRotBaseVelX;
+		crashRotVel.y = (float)rand() / RAND_MAX * randRotVel.y - randRotVel.y / 2;
+		crashRotVel.z = (float)rand() / RAND_MAX * randRotVel.z - randRotVel.z / 2;
+	}
 }
 
 void FallEnemy::Fall()
@@ -158,7 +160,7 @@ void FallEnemy::Break()
 		const Vector3 randRotSpeed = { 5, 5, 5 };
 		Vector3 rotSpeed;
 		rotSpeed.x = (float)((rand() % (int)randRotSpeed.x) - randRotSpeed.x / 2);
-		rotSpeed.x = (float)((rand() % (int)randRotSpeed.y) - randRotSpeed.y / 2);
+		rotSpeed.y = (float)((rand() % (int)randRotSpeed.y) - randRotSpeed.y / 2);
 		rotSpeed.z = (float)((rand() % (int)randRotSpeed.z) - randRotSpeed.z / 2);
 
 		//値が大きいので割り算して小さくする

@@ -9,6 +9,7 @@ Player* Enemy::player = nullptr;
 BaseStageScene* Enemy::stageScene = nullptr;
 ObjModel* Enemy::bulletModel = nullptr;
 bool Enemy::isGroundMode = true;
+const XMFLOAT4 Enemy::damageColor = { 1, 0.2f, 0.2f, 1 };
 
 bool Enemy::Initialize()
 {
@@ -24,7 +25,7 @@ bool Enemy::Initialize()
 	//通常サイズをセット
 	normalSize = scale;
 	//ダメージ状態のサイズをセット
-	damageSize = scale * 1.1f;
+	damageSize = scale * 1.05f;
 
 	//回転
 	rotation.y = 180;
@@ -48,23 +49,32 @@ void Enemy::Update()
 	ObjObject3d::Update();
 }
 
-void Enemy::OnCollision()
+void Enemy::OnCollision(const int damageNum)
 {
 	//爆発用大きさ
 	float explosionSize = 1.5f;
 
-	//死亡状態でなければ死亡させる
+	//死亡状態でなければダメージを喰らわせる
 	if (!isDead) {
-		isDead = true;
-
-		//ダメージ状態
+		//HPを受けたダメージ量の分減らす
+		HP -= damageNum;
+		//ダメージ状態にする
 		isDamage = true;
+		//ダメージ状態タイマー初期化
+		damageTimer = 0;
+		//色を変更
+		color = damageColor;
 
 		//サイズを少し大きくする
 		scale = damageSize;
 
-		//倒した数カウンターを増やす
-		EnemyDefeatCounter::AddCounter();
+		//HPが0以下になったら死亡させる
+		if (HP <= 0) {
+			isDead = true;
+
+			//倒した数カウンターを増やす
+			EnemyDefeatCounter::AddCounter();
+		}
 	}
 	//既に死亡状態で死亡演出中のときは削除する
 	else {
@@ -151,10 +161,16 @@ void Enemy::DamageMode()
 	//大きくしたサイズを戻す
 	DamageSizeReturn();
 
+	//ダメージ色切り替え
+	DamageColorMode();
+
 	//タイマーが指定した時間になったら
 	if (damageTimer >= damageTime) {
 		//ダメージ状態を終了
 		isDamage = false;
+
+		//色を元に戻しておく
+		color = { 1, 1, 1, 1 };
 	}
 }
 
@@ -168,6 +184,29 @@ void Enemy::DamageSizeReturn()
 
 	//大きさを元に戻す
 	scale = Easing::LerpVec3(damageSize, normalSize, time);
+}
+
+void Enemy::DamageColorMode()
+{
+	//ダメージ色切り替え時間
+	const int damageColorChangeTime = 2;
+
+	//タイマーが指定した時間になったら
+	if (damageTimer % damageColorChangeTime == 0) {
+		//ダメージ色状態を切り替える
+		if (isDamageColor) {
+			isDamageColor = false;
+
+			//色を元に戻す
+			color = { 1, 1, 1, 1 };
+		}
+		else {
+			isDamageColor = true;
+
+			//ダメージ色にする
+			color = damageColor;
+		}
+	}
 }
 
 void Enemy::DeadSmokeEffect(const float size, const int smokeStartTime)

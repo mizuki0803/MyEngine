@@ -24,15 +24,14 @@ CircularEnemy* CircularEnemy::Create(const Vector3& centerPosition, const float 
 
 	//中心座標をセット
 	circularEnemy->centerPosition = centerPosition;
-
 	//初期角度をセット
 	circularEnemy->angle = angle;
-
 	//半径の長さをセット
 	circularEnemy->length = length;
-
 	//回転速度をセット
 	circularEnemy->rotSpeed = rotSpeed;
+	//HPをセット
+	circularEnemy->HP = maxHP;
 
 	return circularEnemy;
 }
@@ -65,16 +64,18 @@ void CircularEnemy::Update()
 	FrontOfScreenDelete();
 }
 
-void CircularEnemy::OnCollision()
+void CircularEnemy::OnCollision(const int damageNum)
 {
 	//全敵共通の衝突処理
-	Enemy::OnCollision();
+	Enemy::OnCollision(damageNum);
 
-	//削除する
-	isDelete = true;
-
-	//破壊
-	Break();
+	//死亡したら
+	if (isDead) {
+		//即削除する
+		isDelete = true;
+		//破壊
+		Break();
+	}
 }
 
 void CircularEnemy::Move()

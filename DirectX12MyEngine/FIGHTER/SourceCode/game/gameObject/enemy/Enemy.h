@@ -22,6 +22,7 @@ public: //enum
 		Fall,		//降下
 		UpDown,		//上下移動
 		ComeGo,		//到着出発
+		Meteorite,	//破壊可能隕石
 	};
 
 public: //静的メンバ関数
@@ -46,7 +47,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	virtual void OnCollision();
+	virtual void OnCollision(const int damageNum);
 
 	//getter
 	Vector3 GetWorldPos();
@@ -71,6 +72,11 @@ protected: //メンバ関数
 	/// ダメージ状態で大きくしたサイズを戻していく処理
 	/// </summary>
 	void DamageSizeReturn();
+
+	/// <summary>
+	/// ダメージを喰らった状態の色にする
+	/// </summary>
+	void DamageColorMode();
 
 	/// <summary>
 	/// 死亡後の黒煙エフェクト
@@ -107,14 +113,20 @@ protected: //静的メンバ変数
 	static ObjModel* bulletModel;
 	//地面ありの行動を行うか
 	static bool isGroundMode;
+	//ダメージ状態の色
+	static const XMFLOAT4 damageColor;
 
 protected: //メンバ変数
+	//HP
+	int HP = 0;
 	//通常サイズ
 	Vector3 normalSize;
 	//ダメージ状態のサイズ
 	Vector3 damageSize;
 	//ダメージ状態か
 	bool isDamage = false;
+	//ダメージ色か
+	bool isDamageColor = false;
 	//ダメージ状態タイマー
 	int32_t damageTimer;
 	//当たり判定が作用したフレームか

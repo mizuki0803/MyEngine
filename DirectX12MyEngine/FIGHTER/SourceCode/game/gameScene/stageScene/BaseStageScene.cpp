@@ -4,6 +4,7 @@
 #include "FallEnemy.h"
 #include "UpDownEnemy.h"
 #include "ComeGoEnemy.h"
+#include "MeteoriteEnemy.h"
 #include <fstream>
 
 void BaseStageScene::AddPlayerBullet(std::unique_ptr<PlayerBullet> playerBullet)
@@ -24,7 +25,7 @@ void BaseStageScene::AddEnemyBreakEffect(std::unique_ptr<EnemyBreakEffect> enemy
 	enemyBreakEffects.push_back(std::move(enemyBreakEffect));
 }
 
-void BaseStageScene::LoadEnemySetData(const std::string& fileName)
+void BaseStageScene::LoadEnemySetData(std::stringstream& commands, const std::string& fileName)
 {
 	//ファイルを開く
 	std::ifstream file;
@@ -32,7 +33,7 @@ void BaseStageScene::LoadEnemySetData(const std::string& fileName)
 	assert(file.is_open());
 
 	//ファイルの内容を文字列ストリームにコピー
-	enemySetCommands << file.rdbuf();
+	commands << file.rdbuf();
 
 	//ファイルを閉じる
 	file.close();
@@ -42,7 +43,7 @@ void BaseStageScene::UpdateEnemySetCommands(const Vector3& targetPosition)
 {
 	//待機処理
 	if (isWait) {
-		//カメラのZ座標が生成自機座標以上なら
+		//カメラのZ座標が生成座標以上なら
 		if (waitEnemySetPlayerPosition <= targetPosition.z) {
 			//待機終了
 			isWait = false;
@@ -77,11 +78,9 @@ void BaseStageScene::UpdateEnemySetCommands(const Vector3& targetPosition)
 			//x座標
 			getline(line_stream, word, ',');
 			float x = (float)std::atof(word.c_str());
-
 			//y座標
 			getline(line_stream, word, ',');
 			float y = (float)std::atof(word.c_str());
-
 			//z座標
 			getline(line_stream, word, ',');
 			float z = (float)std::atof(word.c_str());
@@ -152,13 +151,56 @@ void BaseStageScene::UpdateEnemySetCommands(const Vector3& targetPosition)
 				newEnemy.reset(ComeGoEnemy::Create({ x, y, z }, { comeX, comeY, comeZ }, { goX, goY, goZ }, time));
 				enemys.push_back(std::move(newEnemy));
 			}
+			else if (type == Enemy::EnemyType::Meteorite) {
+				//回転角x
+				getline(line_stream, word, ',');
+				float rotX = (float)std::atof(word.c_str());
+				//回転角y
+				getline(line_stream, word, ',');
+				float rotY = (float)std::atof(word.c_str());
+				//回転角z
+				getline(line_stream, word, ',');
+				float rotZ = (float)std::atof(word.c_str());
+
+				//サイズ
+				getline(line_stream, word, ',');
+				float size = (float)std::atof(word.c_str());
+
+				//速度x
+				getline(line_stream, word, ',');
+				float velX = (float)std::atof(word.c_str());
+				//速度y
+				getline(line_stream, word, ',');
+				float velY = (float)std::atof(word.c_str());
+				//速度z
+				getline(line_stream, word, ',');
+				float velZ = (float)std::atof(word.c_str());
+
+				//回転速度x
+				getline(line_stream, word, ',');
+				float rotSpeedX = (float)std::atof(word.c_str());
+				//回転速度y
+				getline(line_stream, word, ',');
+				float rotSpeedY = (float)std::atof(word.c_str());
+				//回転速度z
+				getline(line_stream, word, ',');
+				float rotSpeedZ = (float)std::atof(word.c_str());
+
+				//HP
+				getline(line_stream, word, ',');
+				int HP = (int)std::atof(word.c_str());
+
+				std::unique_ptr<MeteoriteEnemy> newEnemy;
+				newEnemy.reset(MeteoriteEnemy::Create({ x, y, z }, { rotX, rotY, rotZ }, size, { velX, velY, velZ }, { rotSpeedX, rotSpeedY, rotSpeedZ }, HP));
+				enemys.push_back(std::move(newEnemy));
+			}
 		}
 
 		//WAITコマンド
 		else if (word.find("WAIT") == 0) {
 			getline(line_stream, word, ',');
 
-			//生成自機座標
+			//生成対象座標更新
 			float waitPosition = (float)atoi(word.c_str());
 
 			//待機開始
