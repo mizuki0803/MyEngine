@@ -40,6 +40,11 @@ EnemyBreakEffect* EnemyBreakEffect::Create(ObjModel* model, const Vector3& posit
 
 void EnemyBreakEffect::Update()
 {
+	//ŠÔŒo‰ß‚Åíœ
+	if (--deathTimer <= 0) {
+		isDelete = true;
+	}
+
     //ˆÚ“®
     Move();
 

@@ -50,6 +50,7 @@ void Stage02Scene::Initialize()
 	modelBuilding[0].reset(ObjModel::LoadFromOBJ("building01"));
 	modelBuilding[1].reset(ObjModel::LoadFromOBJ("building02"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
+	modelMeteorite.reset(ObjModel::LoadFromOBJ("meteorite"));
 	modelPlayerBullet.reset(ObjModel::LoadFromOBJ("playerBullet", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
 	modelEnemyBullet.reset(ObjModel::LoadFromOBJ("enemyBullet", true));
@@ -131,8 +132,14 @@ void Stage02Scene::Initialize()
 	//背景用隕石配置スクリプトの読み込み
 	LoadEnemySetData(meteoriteSetCommands, "Resources/csv/MeteoriteSetStage02.csv");
 	//背景用隕石に必要な情報をセット
-	Meteorite::SetMeteoriteModel(modelSphere.get());
+	Meteorite::SetMeteoriteModel(modelMeteorite.get());
 	Meteorite::SetGameCamera(gameCamera.get());
+
+	//宇宙塵エフェクトに必要な情報をセット
+	SpaceDustEffect::SetSpaceDustModel(modelMeteorite.get());
+	SpaceDustEffect::SetPlayer(player.get());
+	SpaceDustEffect::SetGameCamera(gameCamera.get());
+	SpaceDustEffect::SetIsScrollMode(false);
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(gameCamera.get());
@@ -167,6 +174,8 @@ void Stage02Scene::Update()
 	UpdateEnemySetCommands(gameCamera->GetPosition());
 	//背景用隕石発生コマンド更新
 	UpdateMeteoriteSetCommands(gameCamera->GetPosition());
+	//宇宙塵エフェクト生成
+	SpaceDustEffectCreateManager();
 	//ボスバトル開始判定処理
 	BossBattleStart();
 	//ステージクリア
@@ -222,7 +231,10 @@ void Stage02Scene::Update()
 	for (const std::unique_ptr<Meteorite>& meteorite : meteorites) {
 		meteorite->Update();
 	}
-
+	//宇宙塵エフェクト
+	for (const std::unique_ptr<SpaceDustEffect>& spaceDustEffect : spaceDustEffects) {
+		spaceDustEffect->Update();
+	}
 
 	//3D衝突判定管理
 	CollisionCheck3d();
@@ -314,6 +326,10 @@ void Stage02Scene::Draw3D()
 	//背景用隕石
 	for (const std::unique_ptr<Meteorite>& meteorite : meteorites) {
 		meteorite->Draw();
+	}
+	//宇宙塵エフェクト
+	for (const std::unique_ptr<SpaceDustEffect>& spaceDustEffect : spaceDustEffects) {
+		spaceDustEffect->Draw();
 	}
 
 	///-------Object3d描画ここまで-------///
@@ -434,6 +450,30 @@ void Stage02Scene::LightCameraUpdate()
 	topLightCamera->Update();
 }
 
+void Stage02Scene::SpaceDustEffectCreateManager()
+{
+	//ランダムでエフェクトの座標をセット
+	const Vector3 randPos = { 90, 70, 0 };
+	Vector3 position = {};
+	position.x = (float)((rand() % (int)randPos.x) - randPos.x / 2);
+	position.y = (float)((rand() % (int)randPos.y) - randPos.y / 2);
+	//ゲームカメラから一定距離離れた場所に生成
+	const float cameraDistance = 100;
+	position.z = gameCamera->GetPosition().z + cameraDistance;
+
+	//ランダムでエフェクトの回転の速さをセット
+	const Vector3 randRot = { 360, 360, 360 };
+	Vector3 rotation;
+	rotation.x = (float)((rand() % (int)randRot.x));
+	rotation.y = (float)((rand() % (int)randRot.y));
+	rotation.z = (float)((rand() % (int)randRot.z));
+
+	//宇宙塵エフェクト生成
+	std::unique_ptr<SpaceDustEffect> newSpaceDustEffect;
+	newSpaceDustEffect.reset(SpaceDustEffect::Create(position, rotation));
+	spaceDustEffects.push_back(std::move(newSpaceDustEffect));
+}
+
 void Stage02Scene::ObjectRelease()
 {
 	//死亡した自機弾の削除前処理
@@ -519,6 +559,11 @@ void Stage02Scene::ObjectRelease()
 		return meteorite->GetIsDelete();
 		});
 
+	//削除状態の宇宙塵エフェクトの削除
+	spaceDustEffects.remove_if([](std::unique_ptr<SpaceDustEffect>& spaceDustEffect) {
+		return spaceDustEffect->GetIsDelete();
+		});
+
 	//削除状態のボスの削除
 	if (boss) {
 		if (boss->GetIsDelete()) {
@@ -526,6 +571,8 @@ void Stage02Scene::ObjectRelease()
 			player->StageClearReturnStart(gameCamera->GetPosition());
 			//カメラのボス本体情報を解除させる
 			gameCamera->BossDelete();
+			//宇宙塵エフェクトのスクロール状態を解除
+			SpaceDustEffect::SetIsScrollMode(false);
 			//死亡後演出を生成
 			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetMainBody()->GetWorldPos()));
 			//カメラをシェイクさせる
@@ -991,7 +1038,7 @@ void Stage02Scene::InitializeEnemy()
 	}
 
 	//破壊可能隕石
-	MeteoriteEnemy::SetModel(modelSphere.get()); //モデルをセット
+	MeteoriteEnemy::SetModel(modelMeteorite.get()); //モデルをセット
 }
 
 void Stage02Scene::UpdateMeteoriteSetCommands(const Vector3& targetPosition)
@@ -1099,7 +1146,7 @@ void Stage02Scene::BossBattleStart()
 	if (isBossBattle) { return; }
 
 	//ボスバトル開始座標
-	const float bossBattleStartPos = 1000;
+	const float bossBattleStartPos = 3200;
 
 	//警告開始判定
 	if (!bossWarning) {
@@ -1109,6 +1156,9 @@ void Stage02Scene::BossBattleStart()
 
 		//カメラの前進を止める
 		gameCamera->SetIsAdvance(false);
+
+		//宇宙塵エフェクトをスクロール状態にする
+		SpaceDustEffect::SetIsScrollMode(true);
 
 		//ボス登場警告演出生成
 		const int warningTime = 300;
@@ -1265,6 +1315,8 @@ void Stage02Scene::GameOver()
 		isGameOver = true;
 		//カメラを墜落状態にする
 		gameCamera->CrashStart();
+		//宇宙塵エフェクトのスクロール状態を解除
+		SpaceDustEffect::SetIsScrollMode(false);
 	}
 	//ゲームオーバーのとき
 	else {

@@ -1,4 +1,5 @@
 #include "MeteoriteEnemy.h"
+#include "ParticleEmitter.h"
 
 ObjModel* MeteoriteEnemy::meteoriteModel = nullptr;
 
@@ -22,8 +23,8 @@ MeteoriteEnemy* MeteoriteEnemy::Create(const Vector3& position, const Vector3& r
 	meteoriteEnemy->model = meteoriteModel;
 	//座標をセット
 	meteoriteEnemy->position = position;
-	//回転速度をセット
-	meteoriteEnemy->rotSpeed = rotSpeed;
+	//回転角をセット
+	meteoriteEnemy->rotation = rotation;
 	//大きさをセット
 	meteoriteEnemy->scale = { size, size, size };
 	//通常サイズをセット
@@ -32,8 +33,8 @@ MeteoriteEnemy* MeteoriteEnemy::Create(const Vector3& position, const Vector3& r
 	meteoriteEnemy->damageSize = meteoriteEnemy->scale * 1.1f;
 	//移動速度をセット
 	meteoriteEnemy->velocity = velocity;
-	//回転角をセット
-	meteoriteEnemy->rotation = rotation;
+	//回転速度をセット
+	meteoriteEnemy->rotSpeed = rotSpeed;
 	//HPをセット
 	meteoriteEnemy->HP = HP;
 
@@ -59,16 +60,10 @@ void MeteoriteEnemy::Update()
 	FrontOfScreenDelete();
 }
 
-void MeteoriteEnemy::OnCollision(const int damageNum)
-{
-	//全敵共通の衝突処理
-	Enemy::OnCollision(damageNum);
-}
-
 void MeteoriteEnemy::Dead()
 {
 	//削除までにかかる時間
-	const int deadModeTime = 5;
+	const int deadModeTime = 2;
 	//タイマーを更新
 	deadTimer++;
 
@@ -79,6 +74,13 @@ void MeteoriteEnemy::Dead()
 
 		//破壊エフェクトを出す
 		Break();
+
+		//爆発用大きさ
+		float explosionSize = 4;
+		//爆発時間
+		int explosionTime = 30;
+		//爆発演出用パーティクル生成
+		ParticleEmitter::GetInstance()->Explosion(position, explosionSize, explosionTime);
 	}
 }
 
@@ -104,7 +106,7 @@ void MeteoriteEnemy::Break()
 		rotSpeed.z = (float)((rand() % (int)randRotSpeed.z) - randRotSpeed.z / 2);
 
 		//値が大きいので割り算して小さくする
-		const float div = 10;
+		const float div = 4;
 		velocity /= div;
 		//大きさをセット
 		const Vector3 scale = this->scale / 5;

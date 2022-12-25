@@ -28,11 +28,6 @@ public: //メンバ関数
 	/// </summary>
 	void Update() override;
 
-	/// <summary>
-	/// 衝突時コールバック関数
-	/// </summary>
-	void OnCollision(const int damageNum) override;
-
 private: //メンバ関数
 	/// <summary>
 	/// 死亡

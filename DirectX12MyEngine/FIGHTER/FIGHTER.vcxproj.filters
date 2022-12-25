@@ -575,6 +575,9 @@
     <ClCompile Include="SourceCode\game\gameObject\enemy\MeteoriteEnemy.cpp">
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameEffect\SpaceDustEffect.cpp">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -1030,6 +1033,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\enemy\MeteoriteEnemy.h">
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameEffect\SpaceDustEffect.h">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

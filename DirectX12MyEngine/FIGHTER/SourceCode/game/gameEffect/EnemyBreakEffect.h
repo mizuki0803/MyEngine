@@ -47,12 +47,16 @@ protected: //静的メンバ変数
 	static bool isGravityMode;
 	//ゲームカメラ
 	static GameCamera* gameCamera;
+	//寿命時間
+	static const int32_t lifeTime = 600;
 
 protected: //メンバ変数
 	//速度
 	Vector3 velocity;
 	//回転の速さ
 	Vector3 rotSpeed;
+	//寿命タイマー
+	int32_t deathTimer = lifeTime;
 	//削除フラグ
 	bool isDelete = false;
 };

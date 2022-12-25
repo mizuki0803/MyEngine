@@ -6,6 +6,7 @@
 #include "Boss.h"
 #include "BossDeadEffect.h"
 #include "Meteorite.h"
+#include "SpaceDustEffect.h"
 
 /// <summary>
 /// ステージ02シーン
@@ -52,6 +53,11 @@ public: //メンバ関数
 	/// 影生成用ライトカメラ更新
 	/// </summary>
 	void LightCameraUpdate();
+
+	/// <summary>
+	/// 宇宙塵エフェクト生成管理
+	/// </summary>
+	void SpaceDustEffectCreateManager();
 
 	/// <summary>
 	/// オブジェクトの解放
@@ -127,6 +133,7 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelGround;
 	std::array<std::unique_ptr<ObjModel>, 2> modelBuilding;
 	std::unique_ptr<ObjModel> modelSphere;
+	std::unique_ptr<ObjModel> modelMeteorite;
 	std::unique_ptr<ObjModel> modelPlayerBullet;
 	std::unique_ptr<ObjModel> modelFighter;
 	std::unique_ptr<ObjModel> modelEnemyBullet;
@@ -159,6 +166,9 @@ private: //メンバ変数
 	bool isWaitMeteorite = false;
 	//待機用 生成を行う自機座標(自機が生成を行う座標以上になったら背景用隕石生成を行う)
 	float waitMeteoriteSetPlayerPosition = 0;
+
+	//宇宙塵エフェクト
+	std::list<std::unique_ptr<SpaceDustEffect>> spaceDustEffects;
 
 	//ステージクリア用の影状態か
 	bool isStageClearShadow = false;

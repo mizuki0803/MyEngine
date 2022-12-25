@@ -23,14 +23,14 @@ Meteorite* Meteorite::Create(const Vector3& position, const Vector3& rotation, f
 	meteorite->model = meteoriteModel;
 	//座標をセット
 	meteorite->position = position;
-	//回転速度をセット
-	meteorite->rotSpeed = rotSpeed;
+	//回転角をセット
+	meteorite->rotation = rotation;
 	//大きさをセット
 	meteorite->scale = { size, size, size };
 	//移動速度をセット
 	meteorite->velocity = velocity;
-	//回転角をセット
-	meteorite->rotation = rotation;
+	//回転速度をセット
+	meteorite->rotSpeed = rotSpeed;
 
 	return meteorite;
 }
