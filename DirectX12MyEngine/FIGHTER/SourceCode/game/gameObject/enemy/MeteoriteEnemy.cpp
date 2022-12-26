@@ -92,7 +92,7 @@ void MeteoriteEnemy::Break()
 		if (!meteoriteModel) { continue; }
 
 		//ランダムでエフェクトの速度をセット
-		const Vector3 randVel = { 6, 6, 6 };
+		const Vector3 randVel = { 8, 8, 8 };
 		Vector3 velocity;
 		velocity.x = (float)((rand() % (int)randVel.x) - randVel.x / 2);
 		velocity.y = (float)((rand() % (int)randVel.y) - randVel.y / 2);

@@ -28,8 +28,8 @@ void Stage02Scene::Initialize()
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
 	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightActive(1, true);
-	lightGroup->SetDirLightActive(2, true);
+	lightGroup->SetDirLightActive(1, false);
+	lightGroup->SetDirLightActive(2, false);
 	//光線方向初期値
 	float lightDir0[3] = { 2,1,1 };
 	float lightDir1[3] = { 0,0,1 };
@@ -50,7 +50,9 @@ void Stage02Scene::Initialize()
 	modelBuilding[0].reset(ObjModel::LoadFromOBJ("building01"));
 	modelBuilding[1].reset(ObjModel::LoadFromOBJ("building02"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
-	modelMeteorite.reset(ObjModel::LoadFromOBJ("meteorite"));
+	modelMeteorite.reset(ObjModel::LoadFromOBJ("meteorite", true));
+	modelMeteorite02.reset(ObjModel::LoadFromOBJ("meteorite02", true));
+	modelSpaceDust.reset(ObjModel::LoadFromOBJ("spaceDust", true));
 	modelPlayerBullet.reset(ObjModel::LoadFromOBJ("playerBullet", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
 	modelEnemyBullet.reset(ObjModel::LoadFromOBJ("enemyBullet", true));
@@ -136,7 +138,7 @@ void Stage02Scene::Initialize()
 	Meteorite::SetGameCamera(gameCamera.get());
 
 	//宇宙塵エフェクトに必要な情報をセット
-	SpaceDustEffect::SetSpaceDustModel(modelMeteorite.get());
+	SpaceDustEffect::SetSpaceDustModel(modelSpaceDust.get());
 	SpaceDustEffect::SetPlayer(player.get());
 	SpaceDustEffect::SetGameCamera(gameCamera.get());
 	SpaceDustEffect::SetIsScrollMode(false);
@@ -1038,7 +1040,7 @@ void Stage02Scene::InitializeEnemy()
 	}
 
 	//破壊可能隕石
-	MeteoriteEnemy::SetModel(modelMeteorite.get()); //モデルをセット
+	MeteoriteEnemy::SetModel(modelMeteorite02.get()); //モデルをセット
 }
 
 void Stage02Scene::UpdateMeteoriteSetCommands(const Vector3& targetPosition)
