@@ -1,7 +1,7 @@
 #pragma once
 #include "ObjObject3d.h"
-#include "Player.h"
-#include "GameCamera.h"
+#include "BasePlayer.h"
+#include "BaseGameCamera.h"
 
 /// <summary>
 /// 宇宙塵エフェクト
@@ -18,8 +18,8 @@ public: // 静的メンバ関数
 
 	//setter
 	static void SetSpaceDustModel(ObjModel* model) { SpaceDustEffect::spaceDustModel = model; };
-	static void SetPlayer(Player* player) { SpaceDustEffect::player = player; }
-	static void SetGameCamera(GameCamera* gameCamera) { SpaceDustEffect::gameCamera = gameCamera; }
+	static void SetPlayer(BasePlayer* player) { SpaceDustEffect::player = player; }
+	static void SetGameCamera(BaseGameCamera* gameCamera) { SpaceDustEffect::gameCamera = gameCamera; }
 	static void SetIsScrollMode(const bool isScrollMode) { SpaceDustEffect::isScrollMode = isScrollMode; }
 
 public: //メンバ関数
@@ -41,9 +41,9 @@ protected: //静的メンバ変数
 	//塵モデル
 	static ObjModel* spaceDustModel;
 	//自機
-	static Player* player;
+	static BasePlayer* player;
 	//ゲームカメラ
-	static GameCamera* gameCamera;
+	static BaseGameCamera* gameCamera;
 	//1粒の大きさ
 	static const float spaceDustSize;
 	//宇宙塵エフェクトがスクロール状態か

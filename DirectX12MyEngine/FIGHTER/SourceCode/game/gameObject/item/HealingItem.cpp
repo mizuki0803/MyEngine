@@ -1,9 +1,9 @@
 #include "HealingItem.h"
-#include "Player.h"
+#include "BasePlayer.h"
 #include "Easing.h"
 #include "ParticleEmitter.h"
 
-Player* HealingItem::player = nullptr;
+BasePlayer* HealingItem::player = nullptr;
 const float HealingItem::shineEffectCreateSize = 1.5f;
 
 HealingItem* HealingItem::Create(ObjModel* model, const Vector3& position, const float size)

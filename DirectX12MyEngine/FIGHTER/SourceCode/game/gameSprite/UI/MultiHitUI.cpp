@@ -3,7 +3,7 @@
 #include "Easing.h"
 #include <DirectXMath.h>
 
-MultiHitUI* MultiHitUI::Create(const Vector3& position, GameCamera* camera, const int enemyHitNum)
+MultiHitUI* MultiHitUI::Create(const Vector3& position, BaseGameCamera* camera, const int enemyHitNum)
 {
 	//複数撃破UIのインスタンスを生成
 	MultiHitUI* multiHitUI = new MultiHitUI();
@@ -21,7 +21,7 @@ MultiHitUI* MultiHitUI::Create(const Vector3& position, GameCamera* camera, cons
 	return multiHitUI;
 }
 
-bool MultiHitUI::Initialize(const Vector3& position, GameCamera* camera, const int enemyHitNum)
+bool MultiHitUI::Initialize(const Vector3& position, BaseGameCamera* camera, const int enemyHitNum)
 {
 	//HITワールド座標取得
 	this->hitWorldPos = position;
@@ -107,7 +107,7 @@ void MultiHitUI::Draw()
 	}
 }
 
-Vector2 MultiHitUI::GetScreenPos(const Vector3& position, GameCamera* camera)
+Vector2 MultiHitUI::GetScreenPos(const Vector3& position, BaseGameCamera* camera)
 {
 	Vector3 worldPos = position;
 

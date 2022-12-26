@@ -1,15 +1,15 @@
 #pragma once
-#include "GameCamera.h"
+#include "BaseGameCamera.h"
 
-//ステージ02自機クラスを前方宣言
-class Stage02Player;
+//ステージ01自機クラスを前方宣言
+class Stage01Player;
 //ボス本体を前方宣言
 class BossMainBody;
 
 /// <summary>
-/// ステージ02ゲームカメラ
+/// ステージ01ゲームカメラ
 /// </summary>
-class Stage02GameCamera : public GameCamera
+class Stage01GameCamera : public BaseGameCamera
 {
 public:
 	//ステージクリア後行動フェーズ
@@ -28,7 +28,7 @@ public: //メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="player">自機</param>
-	void Initialize(Stage02Player* player);
+	void Initialize(Stage01Player* player);
 
 	/// <summary>
 	/// 更新
@@ -103,11 +103,11 @@ private: //メンバ関数
 
 private: //静的メンバ変数
 	//ステージクリア後行動遷移
-	static void (Stage02GameCamera::* stageClearCameraActionFuncTable[])();
+	static void (Stage01GameCamera::* stageClearCameraActionFuncTable[])();
 
 private: //メンバ変数
 	//ステージ01自機
-	Stage02Player* player = nullptr;
+	Stage01Player* player = nullptr;
 	//ボス本体
 	BossMainBody* bossMainBody = nullptr;
 	//墜落状態のカメラ位置に移動するか

@@ -1,8 +1,8 @@
 #include "SpaceDustEffect.h"
 
 ObjModel* SpaceDustEffect::spaceDustModel = nullptr;
-Player* SpaceDustEffect::player = nullptr;
-GameCamera* SpaceDustEffect::gameCamera = nullptr;
+BasePlayer* SpaceDustEffect::player = nullptr;
+BaseGameCamera* SpaceDustEffect::gameCamera = nullptr;
 const float SpaceDustEffect::spaceDustSize = 0.1f;
 bool SpaceDustEffect::isScrollMode = false;
 
@@ -41,9 +41,9 @@ void SpaceDustEffect::Update()
 	//スクロール状態なら
 	if (isScrollMode) {
 		//自機の移動速度状態によって宇宙塵エフェクトをカメラで移動していた速度で動かす
-		float scrollSpeed = GameCamera::GetAdvanceSpeed();
-		if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { scrollSpeed *= GameCamera::GetHighSpeedMagnification(); }
-		else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { scrollSpeed *= GameCamera::GetSlowSpeedMagnification(); }
+		float scrollSpeed = BaseGameCamera::GetAdvanceSpeed();
+		if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::HighSpeed) { scrollSpeed *= BaseGameCamera::GetHighSpeedMagnification(); }
+		else if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::SlowSpeed) { scrollSpeed *= BaseGameCamera::GetSlowSpeedMagnification(); }
 
 		velocity.z -= scrollSpeed;
 	}

@@ -4,18 +4,18 @@
 #include "Vector2.h"
 
 //自機の前方宣言
-class Player;
+class BasePlayer;
 
 /// <summary>
-/// ゲームカメラ
+/// ゲームカメラ基盤
 /// </summary>
-class GameCamera : public Camera
+class BaseGameCamera : public Camera
 {
 public: //静的メンバ関数
 	//getter
-	static float GetAdvanceSpeed() { return GameCamera::advanceSpeed; }
-	static float GetHighSpeedMagnification() { return GameCamera::highSpeedMagnification; }
-	static float GetSlowSpeedMagnification() { return GameCamera::slowSpeedMagnification; }
+	static float GetAdvanceSpeed() { return BaseGameCamera::advanceSpeed; }
+	static float GetHighSpeedMagnification() { return BaseGameCamera::highSpeedMagnification; }
+	static float GetSlowSpeedMagnification() { return BaseGameCamera::slowSpeedMagnification; }
 
 public: //メンバ関数
 	/// <summary>
@@ -54,7 +54,7 @@ protected: //メンバ関数
 	/// <summary>
 	/// カメラ動き
 	/// </summary>
-	void CameraAction(Player* player);
+	void CameraAction(BasePlayer* player);
 
 	/// <summary>
 	/// 墜落
@@ -74,12 +74,12 @@ protected: //メンバ関数
 	/// <summary>
 	/// 移動
 	/// </summary>
-	void Move(Player* player);
+	void Move(BasePlayer* player);
 
 	/// <summary>
 	/// プレイヤーに合わせてノックバックする
 	/// </summary>
-	void Knockback(Player* player);
+	void Knockback(BasePlayer* player);
 
 	/// <summary>
 	/// シェイク

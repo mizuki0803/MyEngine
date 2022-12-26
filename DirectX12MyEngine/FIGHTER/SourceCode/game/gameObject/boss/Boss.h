@@ -6,7 +6,7 @@
 #include "BossBehaviorTree.h"
 
 //自機クラスを前方宣言
-class Player;
+class BasePlayer;
 
 /// <summary>
 /// ボス
@@ -41,7 +41,7 @@ public: //静的メンバ関数
 	static Boss* Create(const Vector3& position);
 
 	//setter
-	static void SetPlayer(Player* player) { Boss::player = player; }
+	static void SetPlayer(BasePlayer* player) { Boss::player = player; }
 
 public: //メンバ関数
 	/// <summary>
@@ -260,7 +260,7 @@ private: //メンバ関数
 
 private: //静的メンバ変数
 	//プレイヤー自機
-	static Player* player;
+	static BasePlayer* player;
 	//登場状態時間
 	static const float appearModeTime;
 	//攻撃状態時間

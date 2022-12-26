@@ -1,11 +1,11 @@
 #include "Enemy.h"
-#include "Player.h"
+#include "BasePlayer.h"
 #include "BaseStageScene.h"
 #include "EnemyDefeatCounter.h"
 #include "ParticleEmitter.h"
 #include "Easing.h"
 
-Player* Enemy::player = nullptr;
+BasePlayer* Enemy::player = nullptr;
 BaseStageScene* Enemy::stageScene = nullptr;
 ObjModel* Enemy::bulletModel = nullptr;
 bool Enemy::isGroundMode = true;

@@ -1,10 +1,10 @@
 #pragma once
-#include "Player.h"
+#include "BasePlayer.h"
 
 /// <summary>
-/// ステージ02自機
+/// ステージ01自機
 /// </summary>
-class Stage02Player : public Player
+class Stage01Player : public BasePlayer
 {
 public:
 	//ステージクリア後行動フェーズ
@@ -23,8 +23,8 @@ public: //静的メンバ関数
 	/// <param name="model">モデル</param>
 	/// <param name="startHP">開始時HP</param>
 	/// <param name="maxHP">最大HP</param>
-	/// <returns>ステージ02自機</returns>
-	static Stage02Player* Create(ObjModel* model, const int startHP, const int maxHP);
+	/// <returns>ステージ01自機</returns>
+	static Stage01Player* Create(ObjModel* model, const int startHP, const int maxHP);
 
 public: //メンバ関数
 	/// <summary>
@@ -60,6 +60,11 @@ private: //メンバ関数
 	void Crash() override;
 
 	/// <summary>
+	/// 回転
+	/// </summary>
+	void Rotate() override;
+
+	/// <summary>
 	/// ステージクリア行動
 	/// </summary>
 	void StageClear() override;
@@ -93,7 +98,7 @@ private: //静的メンバ変数
 	//自機の基準座標
 	static const Vector3 basePos;
 	//ステージクリア後行動遷移
-	static void (Stage02Player::* stageClearActionFuncTable[])();
+	static void (Stage01Player::* stageClearActionFuncTable[])();
 
 private: //メンバ変数
 	//ステージクリア後行動

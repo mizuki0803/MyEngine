@@ -2,7 +2,7 @@
 
 bool EnemyBreakEffect::isGroundMode = true;
 bool EnemyBreakEffect::isGravityMode = false;
-GameCamera* EnemyBreakEffect::gameCamera = nullptr;
+BaseGameCamera* EnemyBreakEffect::gameCamera = nullptr;
 
 EnemyBreakEffect* EnemyBreakEffect::Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const Vector3& rotSpeed, const Vector3& scale)
 {

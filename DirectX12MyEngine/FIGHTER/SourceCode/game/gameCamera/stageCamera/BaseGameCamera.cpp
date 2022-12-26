@@ -1,11 +1,11 @@
-#include "GameCamera.h"
-#include "Player.h"
+#include "BaseGameCamera.h"
+#include "BasePlayer.h"
 
-const float GameCamera::advanceSpeed = 0.5f;
-const float GameCamera::highSpeedMagnification = 2.8f;
-const float GameCamera::slowSpeedMagnification = 0.2f;
+const float BaseGameCamera::advanceSpeed = 0.5f;
+const float BaseGameCamera::highSpeedMagnification = 2.8f;
+const float BaseGameCamera::slowSpeedMagnification = 0.2f;
 
-void GameCamera::Update()
+void BaseGameCamera::Update()
 {
 	//平行移動行列の計算
 	XMMATRIX matTrans = XMMatrixTranslation(position.x, position.y, position.z);
@@ -27,7 +27,7 @@ void GameCamera::Update()
 	UpdateMatProjection();
 }
 
-void GameCamera::ShakeStart(const float shakePower, const float shakeTime)
+void BaseGameCamera::ShakeStart(const float shakePower, const float shakeTime)
 {
 	//シェイクタイマーをリセット
 	shakeTimer = 0;
@@ -39,7 +39,7 @@ void GameCamera::ShakeStart(const float shakePower, const float shakeTime)
 	isShake = true;
 }
 
-void GameCamera::UpdateMatWorld(const XMMATRIX& matTrans)
+void BaseGameCamera::UpdateMatWorld(const XMMATRIX& matTrans)
 {
 	//回転　
 	XMMATRIX matRot;
@@ -53,7 +53,7 @@ void GameCamera::UpdateMatWorld(const XMMATRIX& matTrans)
 	matWorld *= matTrans;	//ワールド行列に平行移動を反映
 }
 
-void GameCamera::UpdateSwayMatWorld(const XMMATRIX& matTrans)
+void BaseGameCamera::UpdateSwayMatWorld(const XMMATRIX& matTrans)
 {
 	//ゆらゆらを加算した回転角X
 	const float cameraRotX = rotation.x + swayX;
@@ -70,7 +70,7 @@ void GameCamera::UpdateSwayMatWorld(const XMMATRIX& matTrans)
 	cameraMatWorld *= matTrans;	//ワールド行列に平行移動を反映
 }
 
-void GameCamera::UpdateEyeTarget()
+void BaseGameCamera::UpdateEyeTarget()
 {
 	//視点をワールド座標に設定
 	eye = { cameraMatWorld.r[3].m128_f32[0], cameraMatWorld.r[3].m128_f32[1], cameraMatWorld.r[3].m128_f32[2] };
@@ -85,7 +85,7 @@ void GameCamera::UpdateEyeTarget()
 	up = MatrixTransformDirection(baseUp, cameraMatWorld);
 }
 
-void GameCamera::CameraAction(Player* player)
+void BaseGameCamera::CameraAction(BasePlayer* player)
 {
 	//ステージクリア状態
 	if (isStageClearMode) {
@@ -114,7 +114,7 @@ void GameCamera::CameraAction(Player* player)
 	}
 }
 
-void GameCamera::Rotate(const Vector3& playerRotation)
+void BaseGameCamera::Rotate(const Vector3& playerRotation)
 {
 	//回転(レールカメラに追従している自機の傾きを利用する)
 	rotation.x = playerRotation.x / 5;
@@ -122,7 +122,7 @@ void GameCamera::Rotate(const Vector3& playerRotation)
 	rotation.z = -playerRotation.y / 8;
 }
 
-void GameCamera::Sway()
+void BaseGameCamera::Sway()
 {
 	//ゆらゆら最大の速さ
 	const float rotXMaxSpeed = 0.008f;
@@ -187,20 +187,20 @@ void GameCamera::Sway()
 	swayX += swayXSpeed;
 }
 
-void GameCamera::Move(Player* player)
+void BaseGameCamera::Move(BasePlayer* player)
 {
 	//移動速度
 	Vector3 velocity;
 	//カメラが傾いている角度に移動させる
-	const float moveSpeed = Player::GetMoveBaseSpeed() * 8;
-	const Vector2 rotLimit = Player::GetRotLimit();
+	const float moveSpeed = BasePlayer::GetMoveBaseSpeed() * 8;
+	const Vector2 rotLimit = BasePlayer::GetRotLimit();
 	velocity.x = moveSpeed * (rotation.y / rotLimit.y);
 	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
 
 	//自機の移動速度変更に合わせて変更する
 	float moveSpeedPhaseSpeed = 1.0f;
-	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = highSpeedMagnification; }
-	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = slowSpeedMagnification; }
+	if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = highSpeedMagnification; }
+	else if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = slowSpeedMagnification; }
 
 	//前進する場合はZ方向に移動
 	if (isAdvance) { velocity.z = advanceSpeed * moveSpeedPhaseSpeed; }
@@ -214,17 +214,17 @@ void GameCamera::Move(Player* player)
 	position.y = min(position.y, moveLimitMax.y);
 }
 
-void GameCamera::Knockback(Player* player)
+void BaseGameCamera::Knockback(BasePlayer* player)
 {
 	//自機にあわせてカメラをノックバックさせる
-	const float speed = Player::GetKnockbackBaseSpeed() * 8;
+	const float speed = BasePlayer::GetKnockbackBaseSpeed() * 8;
 	Vector3 velocity = player->GetKnockbackVel();
 	velocity *= speed;
 
 	//自機の移動速度変更に合わせて変更する
 	float moveSpeedPhaseSpeed = 1.0f;
-	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = highSpeedMagnification; }
-	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = slowSpeedMagnification; }
+	if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::HighSpeed) { moveSpeedPhaseSpeed = highSpeedMagnification; }
+	else if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::SlowSpeed) { moveSpeedPhaseSpeed = slowSpeedMagnification; }
 
 	//前進する場合はZ方向に移動
 	const float knockBackSpeed = 0.3f;
@@ -239,7 +239,7 @@ void GameCamera::Knockback(Player* player)
 	position.y = min(position.y, moveLimitMax.y);
 }
 
-void GameCamera::Shake()
+void BaseGameCamera::Shake()
 {
 	//タイマーをカウント
 	shakeTimer++;

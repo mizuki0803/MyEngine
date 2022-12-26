@@ -2,7 +2,7 @@
 #include "ObjObject3d.h"
 
 //自機クラスを前方宣言
-class Player;
+class BasePlayer;
 
 /// <summary>
 /// 回復アイテム
@@ -18,7 +18,7 @@ public: //静的メンバ関数
 	static HealingItem* Create(ObjModel* model, const Vector3& position, const float size);
 
 	//setter
-	static void SetPlayer(Player* player) { HealingItem::player = player; }
+	static void SetPlayer(BasePlayer* player) { HealingItem::player = player; }
 
 public: //メンバ関数
 	/// <summary>
@@ -69,7 +69,7 @@ private: //メンバ関数
 
 private: //静的メンバ変数
 	//プレイヤー自機
-	static Player* player;
+	static BasePlayer* player;
 	//キラキラ演出の初期サイズ
 	static const float shineEffectCreateSize;
 	//キラキラ演出の初期生成間隔

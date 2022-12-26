@@ -1,10 +1,10 @@
 #include "GameBuildingManager.h"
-#include "Player.h"
-#include "GameCamera.h"
+#include "BasePlayer.h"
+#include "BaseGameCamera.h"
 
 std::array<ObjModel*, 2> GameBuildingManager::buildingModels;
-Player* GameBuildingManager::player = nullptr;
-GameCamera* GameBuildingManager::gameCamera = nullptr;
+BasePlayer* GameBuildingManager::player = nullptr;
+BaseGameCamera* GameBuildingManager::gameCamera = nullptr;
 
 GameBuildingManager* GameBuildingManager::Create(float centerDistance, float objectDistance, int startNum, const Vector3& basePos)
 {
@@ -203,9 +203,9 @@ void GameBuildingManager::ScrollMode()
 	if (!player || !gameCamera) { return; }
 
 	//自機の移動速度状態によってビルをカメラで移動していた速度で動かす
-	float moveSpeed = GameCamera::GetAdvanceSpeed();
-	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeed *= GameCamera::GetHighSpeedMagnification(); }
-	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeed *= GameCamera::GetSlowSpeedMagnification(); }
+	float moveSpeed = BaseGameCamera::GetAdvanceSpeed();
+	if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::HighSpeed) { moveSpeed *= BaseGameCamera::GetHighSpeedMagnification(); }
+	else if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::SlowSpeed) { moveSpeed *= BaseGameCamera::GetSlowSpeedMagnification(); }
 
 	//計算した移動速度で移動させる
 	for (const std::unique_ptr<Building>& building : buildings) {

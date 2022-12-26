@@ -198,6 +198,15 @@
     <Filter Include="ソース ファイル\game\gameObject\background\meteorite">
       <UniqueIdentifier>{cb178ef5-0be3-4e81-af3d-b1c79539827d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\gameCamera\stageCamera">
+      <UniqueIdentifier>{064653bf-0ce0-4348-94eb-d1196efe8c11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameCamera\sortieCamera">
+      <UniqueIdentifier>{780d792f-4aba-46d3-9001-811a40bdffb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\player\stagePlayer">
+      <UniqueIdentifier>{e915eecc-1c79-4c4d-8387-7ce83d31c377}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\main.cpp">
@@ -283,9 +292,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\engine\scene\BaseScene.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameCamera\GameCamera.cpp">
-      <Filter>ソース ファイル\game\gameCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameCamera\TitleCamera.cpp">
       <Filter>ソース ファイル\game\gameCamera</Filter>
@@ -377,9 +383,6 @@
     <ClCompile Include="SourceCode\game\gameObject\player\playerBullet\StraightBullet.cpp">
       <Filter>ソース ファイル\game\gameObject\player\playerBullet</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\player\Player.cpp">
-      <Filter>ソース ファイル\game\gameObject\player</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\TitlePlayer.cpp">
       <Filter>ソース ファイル\game\gameObject\titlePlayer</Filter>
     </ClCompile>
@@ -406,9 +409,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\SortiePlayer.cpp">
       <Filter>ソース ファイル\game\gameObject\sortiePlayer</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp">
-      <Filter>ソース ファイル\game\gameCamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameSprite\SceneChangeSprite.cpp">
       <Filter>ソース ファイル\game\gameSprite</Filter>
@@ -460,9 +460,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\StageSelectPlanet.cpp">
       <Filter>ソース ファイル\game\gameObject\stageSelectPlanet</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\StageDecisionUI.cpp">
-      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameSprite\UI\StageSelectUI.cpp">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
@@ -557,18 +554,6 @@
     <ClCompile Include="SourceCode\game\gameScene\stageScene\Stage02Scene.cpp">
       <Filter>ソース ファイル\game\gameScene\stageScene</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\player\Stage01Player.cpp">
-      <Filter>ソース ファイル\game\gameObject\player</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameCamera\Stage01GameCamera.cpp">
-      <Filter>ソース ファイル\game\gameCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameCamera\Stage02GameCamera.cpp">
-      <Filter>ソース ファイル\game\gameCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\player\Stage02Player.cpp">
-      <Filter>ソース ファイル\game\gameObject\player</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\background\Meteorite.cpp">
       <Filter>ソース ファイル\game\gameObject\background\meteorite</Filter>
     </ClCompile>
@@ -577,6 +562,30 @@
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameEffect\SpaceDustEffect.cpp">
       <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp">
+      <Filter>ソース ファイル\game\gameCamera\sortieCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\player\stagePlayer\BasePlayer.cpp">
+      <Filter>ソース ファイル\game\gameObject\player\stagePlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\player\stagePlayer\Stage01Player.cpp">
+      <Filter>ソース ファイル\game\gameObject\player\stagePlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\player\stagePlayer\Stage02Player.cpp">
+      <Filter>ソース ファイル\game\gameObject\player\stagePlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameSprite\UI\StageDecisionUI.cpp">
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameCamera\stageCamera\BaseGameCamera.cpp">
+      <Filter>ソース ファイル\game\gameCamera\stageCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameCamera\stageCamera\Stage01GameCamera.cpp">
+      <Filter>ソース ファイル\game\gameCamera\stageCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameCamera\stageCamera\Stage02GameCamera.cpp">
+      <Filter>ソース ファイル\game\gameCamera\stageCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -737,9 +746,6 @@
     <ClInclude Include="SourceCode\engine\scene\BaseScene.h">
       <Filter>ソース ファイル\engine\scene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameCamera\GameCamera.h">
-      <Filter>ソース ファイル\game\gameCamera</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameCamera\TitleCamera.h">
       <Filter>ソース ファイル\game\gameCamera</Filter>
     </ClInclude>
@@ -830,9 +836,6 @@
     <ClInclude Include="SourceCode\game\gameObject\player\playerBullet\StraightBullet.h">
       <Filter>ソース ファイル\game\gameObject\player\playerBullet</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\player\Player.h">
-      <Filter>ソース ファイル\game\gameObject\player</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\TitlePlayer.h">
       <Filter>ソース ファイル\game\gameObject\titlePlayer</Filter>
     </ClInclude>
@@ -859,9 +862,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\SortiePlayer.h">
       <Filter>ソース ファイル\game\gameObject\sortiePlayer</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h">
-      <Filter>ソース ファイル\game\gameCamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameEffect\SceneChangeEffect.h">
       <Filter>ソース ファイル\game\gameEffect</Filter>
@@ -916,9 +916,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\StageSelectPlanet.h">
       <Filter>ソース ファイル\game\gameObject\stageSelectPlanet</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\StageDecisionUI.h">
-      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameSprite\UI\StageSelectUI.h">
       <Filter>ソース ファイル\game\gameSprite\UI</Filter>
@@ -1007,9 +1004,6 @@
     <ClInclude Include="SourceCode\game\gameEffect\BossDeadEffect.h">
       <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\player\Stage01Player.h">
-      <Filter>ソース ファイル\game\gameObject\player</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameScene\stageScene\BaseStageScene.h">
       <Filter>ソース ファイル\game\gameScene\stageScene</Filter>
     </ClInclude>
@@ -1019,15 +1013,6 @@
     <ClInclude Include="SourceCode\game\gameScene\stageScene\Stage02Scene.h">
       <Filter>ソース ファイル\game\gameScene\stageScene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\game\gameCamera\Stage01GameCamera.h">
-      <Filter>ソース ファイル\game\gameCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameCamera\Stage02GameCamera.h">
-      <Filter>ソース ファイル\game\gameCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\player\Stage02Player.h">
-      <Filter>ソース ファイル\game\gameObject\player</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\background\Meteorite.h">
       <Filter>ソース ファイル\game\gameObject\background\meteorite</Filter>
     </ClInclude>
@@ -1036,6 +1021,30 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameEffect\SpaceDustEffect.h">
       <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h">
+      <Filter>ソース ファイル\game\gameCamera\sortieCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\player\stagePlayer\BasePlayer.h">
+      <Filter>ソース ファイル\game\gameObject\player\stagePlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\player\stagePlayer\Stage01Player.h">
+      <Filter>ソース ファイル\game\gameObject\player\stagePlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\player\stagePlayer\Stage02Player.h">
+      <Filter>ソース ファイル\game\gameObject\player\stagePlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameSprite\UI\StageDecisionUI.h">
+      <Filter>ソース ファイル\game\gameSprite\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameCamera\stageCamera\BaseGameCamera.h">
+      <Filter>ソース ファイル\game\gameCamera\stageCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameCamera\stageCamera\Stage01GameCamera.h">
+      <Filter>ソース ファイル\game\gameCamera\stageCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameCamera\stageCamera\Stage02GameCamera.h">
+      <Filter>ソース ファイル\game\gameCamera\stageCamera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

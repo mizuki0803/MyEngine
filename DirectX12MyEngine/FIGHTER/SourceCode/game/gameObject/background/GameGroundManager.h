@@ -3,9 +3,9 @@
 #include <array>
 
 //自機
-class Player;
+class BasePlayer;
 //ゲームカメラ
-class GameCamera;
+class BaseGameCamera;
 
 /// <summary>
 /// ゲームで使う地面管理
@@ -21,8 +21,8 @@ public:  //静的メンバ変数
 	static GameGroundManager* Create(ObjModel* model);
 
 	//setter
-	static void SetPlayer(Player* player) { GameGroundManager::player = player; }
-	static void SetGameCamera(GameCamera* gameCamera) { GameGroundManager::gameCamera = gameCamera; }
+	static void SetPlayer(BasePlayer* player) { GameGroundManager::player = player; }
+	static void SetGameCamera(BaseGameCamera* gameCamera) { GameGroundManager::gameCamera = gameCamera; }
 
 public: //メンバ変数
 	/// <summary>
@@ -56,9 +56,9 @@ private: //メンバ関数
 
 private: //静的メンバ変数
 	//自機
-	static Player* player;
+	static BasePlayer* player;
 	//ゲームカメラ
-	static GameCamera* gameCamera;
+	static BaseGameCamera* gameCamera;
 
 private: //メンバ変数
 	//地面オブジェクト

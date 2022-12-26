@@ -5,7 +5,7 @@
 #include "EnemyBreakEffect.h"
 
 //自機クラスを前方宣言
-class Player;
+class BasePlayer;
 //ステージシーンの前方宣言
 class BaseStageScene;
 
@@ -27,7 +27,7 @@ public: //enum
 
 public: //静的メンバ関数
 	//setter
-	static void SetPlayer(Player* player) { Enemy::player = player; }
+	static void SetPlayer(BasePlayer* player) { Enemy::player = player; }
 	static void SetStageScene(BaseStageScene* stageScene) { Enemy::stageScene = stageScene; }
 	static void SetBulletModel(ObjModel* model) { Enemy::bulletModel = model; }
 	static void SetIsGroundMode(bool isGroundMode) { Enemy::isGroundMode = isGroundMode; }
@@ -106,7 +106,7 @@ protected: //メンバ関数
 
 protected: //静的メンバ変数
 	//プレイヤー自機
-	static Player* player;
+	static BasePlayer* player;
 	//ステージシーン
 	static BaseStageScene* stageScene;
 	//敵弾のモデル

@@ -1,6 +1,6 @@
 #pragma once
 #include "ObjObject3d.h"
-#include "GameCamera.h"
+#include "BaseGameCamera.h"
 
 /// <summary>
 /// 隕石(破壊不可背景用)
@@ -21,7 +21,7 @@ public: //静的メンバ関数
 
 	//setter
 	static void SetMeteoriteModel(ObjModel* model) { Meteorite::meteoriteModel = model; };
-	static void SetGameCamera(GameCamera* gameCamera) { Meteorite::gameCamera = gameCamera; }
+	static void SetGameCamera(BaseGameCamera* gameCamera) { Meteorite::gameCamera = gameCamera; }
 
 public: //メンバ関数
 	/// <summary>
@@ -42,7 +42,7 @@ private: //静的メンバ変数
 	//隕石(破壊不可背景用)モデル
 	static ObjModel* meteoriteModel;
 	//ゲームカメラ
-	static GameCamera* gameCamera;
+	static BaseGameCamera* gameCamera;
 
 private: //メンバ変数
 	//移動速度

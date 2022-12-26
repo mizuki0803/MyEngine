@@ -1,9 +1,9 @@
 #include "GameGroundManager.h"
-#include "Player.h"
-#include "GameCamera.h"
+#include "BasePlayer.h"
+#include "BaseGameCamera.h"
 
-Player* GameGroundManager::player = nullptr;
-GameCamera* GameGroundManager::gameCamera = nullptr;
+BasePlayer* GameGroundManager::player = nullptr;
+BaseGameCamera* GameGroundManager::gameCamera = nullptr;
 
 GameGroundManager* GameGroundManager::Create(ObjModel* model)
 {
@@ -83,9 +83,9 @@ void GameGroundManager::ScrollMode()
 	if (!player || !gameCamera) { return; }
 
 	//自機の移動速度状態によってビルをカメラで移動していた速度で動かす
-	float moveSpeed = GameCamera::GetAdvanceSpeed();
-	if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::HighSpeed) { moveSpeed *= GameCamera::GetHighSpeedMagnification(); }
-	else if (player->GetMoveSpeedPhase() == Player::MoveSpeedPhase::SlowSpeed) { moveSpeed *= GameCamera::GetSlowSpeedMagnification(); }
+	float moveSpeed = BaseGameCamera::GetAdvanceSpeed();
+	if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::HighSpeed) { moveSpeed *= BaseGameCamera::GetHighSpeedMagnification(); }
+	else if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::SlowSpeed) { moveSpeed *= BaseGameCamera::GetSlowSpeedMagnification(); }
 
 	//計算した移動速度で移動させる
 	for (int i = 0; i < 2; i++) {

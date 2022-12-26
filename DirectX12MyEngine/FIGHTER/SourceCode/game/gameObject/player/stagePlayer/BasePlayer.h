@@ -12,9 +12,9 @@
 class BaseStageScene;
 
 /// <summary>
-/// 自機
+/// 自機基盤
 /// </summary>
-class Player : public ObjObject3d
+class BasePlayer : public ObjObject3d
 {
 public:
 	//移動速度状態
@@ -33,8 +33,8 @@ public: //静的メンバ関数
 	static const float GetKnockbackBaseSpeed() { return knockbackBaseSpeed; }
 
 	//setter
-	static void SetStageScene(BaseStageScene* stageScene) { Player::stageScene = stageScene; }
-	static void SetBulletModel(ObjModel* model) { Player::bulletModel = model; }
+	static void SetStageScene(BaseStageScene* stageScene) { BasePlayer::stageScene = stageScene; }
+	static void SetBulletModel(ObjModel* model) { BasePlayer::bulletModel = model; }
 
 public: //メンバ関数
 	/// <summary>

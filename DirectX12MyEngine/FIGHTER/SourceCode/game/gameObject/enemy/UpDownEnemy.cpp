@@ -1,5 +1,4 @@
 #include "UpDownEnemy.h"
-#include "Player.h"
 #include "ParticleEmitter.h"
 
 void (UpDownEnemy::* UpDownEnemy::actionFuncTable[])() = {

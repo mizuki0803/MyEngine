@@ -76,8 +76,8 @@ void Stage01Scene::Initialize()
 	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
 
 	//自機に必要な情報をセット
-	Player::SetStageScene(this);
-	Player::SetBulletModel(modelPlayerBullet.get()); //通常弾用モデルをセット
+	BasePlayer::SetStageScene(this);
+	BasePlayer::SetBulletModel(modelPlayerBullet.get()); //通常弾用モデルをセット
 	PlayerBullet::SetIsGroundMode(true); //自機弾の地面あり行動をONにする
 	HomingBullet::SetBulletModel(modelSphere.get()); //ホーミング弾用モデルをセット
 	//自機生成
@@ -945,7 +945,7 @@ void Stage01Scene::InitializeEnemy()
 	}
 
 	//到着出発敵
-	ComeGoEnemy::SetAttackMoveSpeed(GameCamera::GetAdvanceSpeed()); //移動スピードをセット
+	ComeGoEnemy::SetAttackMoveSpeed(BaseGameCamera::GetAdvanceSpeed()); //移動スピードをセット
 	ComeGoEnemy::SetModel(modelEnemyFighter.get()); //モデルをセット
 	//破壊時に出すモデルをセット
 	for (int i = 0; i < modelEnemyFighterBreak.size(); i++) {

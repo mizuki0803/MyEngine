@@ -1,7 +1,7 @@
 #include "Meteorite.h"
 
 ObjModel* Meteorite::meteoriteModel = nullptr;
-GameCamera* Meteorite::gameCamera = nullptr;
+BaseGameCamera* Meteorite::gameCamera = nullptr;
 
 Meteorite* Meteorite::Create(const Vector3& position, const Vector3& rotation, float size, const Vector3& velocity, const Vector3& rotSpeed)
 {

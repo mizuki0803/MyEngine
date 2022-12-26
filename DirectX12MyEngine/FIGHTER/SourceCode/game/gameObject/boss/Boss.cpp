@@ -1,7 +1,7 @@
 #include "Boss.h"
 #include "Input.h"
 #include "SpriteTextureLoader.h"
-#include "Player.h"
+#include "BasePlayer.h"
 #include "BossAvatarType01.h"
 #include "BossAvatarType02.h"
 #include "BossAvatarType03.h"
@@ -9,7 +9,7 @@
 #include "EnemyDefeatCounter.h"
 #include "ParticleEmitter.h"
 
-Player* Boss::player = nullptr;
+BasePlayer* Boss::player = nullptr;
 const float Boss::appearModeTime = 600.0f;
 const float Boss::attackModeTime = 600.0f;
 const float Boss::waitModeTime = 500.0f;

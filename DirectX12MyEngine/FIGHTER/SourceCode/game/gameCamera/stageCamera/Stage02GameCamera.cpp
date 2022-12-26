@@ -38,7 +38,7 @@ void Stage02GameCamera::Update()
 	CameraAction(player);
 
 	//ƒJƒƒ‰‚ÌXV
-	GameCamera::Update();
+	BaseGameCamera::Update();
 }
 
 void Stage02GameCamera::CrashStart()

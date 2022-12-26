@@ -1,19 +1,19 @@
-#include "Stage02Player.h"
+#include "Stage01Player.h"
 #include "Easing.h"
 #include "ParticleEmitter.h"
 
-void (Stage02Player::* Stage02Player::stageClearActionFuncTable[])() = {
-	&Stage02Player::StageClearSideMove,
-	&Stage02Player::StageClearReturn,
-	&Stage02Player::StageClearUp,
-	&Stage02Player::StageClearStay,
-	&Stage02Player::StageClearBoost,
+void (Stage01Player::* Stage01Player::stageClearActionFuncTable[])() = {
+	&Stage01Player::StageClearSideMove,
+	&Stage01Player::StageClearReturn,
+	&Stage01Player::StageClearUp,
+	&Stage01Player::StageClearStay,
+	&Stage01Player::StageClearBoost,
 };
 
-Stage02Player* Stage02Player::Create(ObjModel* model, const int startHP, const int maxHP)
+Stage01Player* Stage01Player::Create(ObjModel* model, const int startHP, const int maxHP)
 {
-	//ステージ02自機のインスタンスを生成
-	Stage02Player* player = new Stage02Player();
+	//ステージ01自機のインスタンスを生成
+	Stage01Player* player = new Stage01Player();
 	if (player == nullptr) {
 		return nullptr;
 	}
@@ -28,21 +28,21 @@ Stage02Player* Stage02Player::Create(ObjModel* model, const int startHP, const i
 	return player;
 }
 
-bool Stage02Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
+bool Stage01Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
 {
 	//自機の共通初期化
-	if (!Player::Initialize(model, startHP, maxHP)) {
+	if (!BasePlayer::Initialize(model, startHP, maxHP)) {
 		return false;
 	}
 
 	//自機の移動限界をセット
-	moveLimitMin = { -15.0f, -8.0f };
-	moveLimitMax = { 15.0f, 8.0f };
+	moveLimitMin = { -15.0f, -4.0f };
+	moveLimitMax = { 15.0f, moveLimitMin.y + 12.0f };
 
 	return true;
 }
 
-void Stage02Player::StageClearModeStart()
+void Stage01Player::StageClearModeStart()
 {
 	//カメラ追従を解除
 	SetIsCameraFollow(false);
@@ -69,7 +69,7 @@ void Stage02Player::StageClearModeStart()
 	isStageClearMode = true;
 }
 
-void Stage02Player::StageClearReturnStart(const Vector3& cameraPos)
+void Stage01Player::StageClearReturnStart(const Vector3& cameraPos)
 {
 	//カメラ座標を取得
 	stageClearCameraPos = cameraPos;
@@ -87,13 +87,13 @@ void Stage02Player::StageClearReturnStart(const Vector3& cameraPos)
 	stageClearModeTimer = 0;
 }
 
-void Stage02Player::StageClearBoostStart()
+void Stage01Player::StageClearBoostStart()
 {
 	//ブースト状態にする
 	stageClearModePhase = StageClearModePhase::Boost;
 }
 
-void Stage02Player::Crash()
+void Stage01Player::Crash()
 {
 	//座標移動
 	//墜落加速度
@@ -147,13 +147,45 @@ void Stage02Player::Crash()
 	ParticleEmitter::GetInstance()->Explosion(position, explosionSize, explosionTime);
 }
 
-void Stage02Player::StageClear()
+void Stage01Player::Rotate()
+{
+	//自機回転処理
+	BasePlayer::Rotate();
+
+	//地面に自機がめり込むワールドY座標
+	const float groundPos = 8.0f;
+	//地面にめり込まないようにする場合の角度限界値処理
+	if (GetWorldPos().y <= groundPos) {
+		//ワールドY座標の限界値
+		const float moveLimitWorldY = 4.0f;
+		//地面から角度制限開始座標までの割合を計算
+		const float ratio = (GetWorldPos().y - moveLimitWorldY) / (groundPos - moveLimitWorldY);
+
+		//割合値が0以上の場合
+		if (ratio >= 0) {
+			//地面に近づくほど傾かないようにする(通常の角度制限値 * 地面に近い割合)
+			const float groundRotLimit = rotLimit.x * ratio;
+			rotation.x = min(rotation.x, groundRotLimit);
+		}
+		//0未満の場合
+		else {
+			//下方向に傾かないようにする
+			rotation.x = min(rotation.x, 0);
+		}
+	}
+	//地面にめり込むワールドY座標と関係ない場所にいる場合は通常通りの角度制限を行う
+	else {
+		rotation.x = min(rotation.x, +rotLimit.x);
+	}
+}
+
+void Stage01Player::StageClear()
 {
 	//ステージクリア後行動
 	(this->*stageClearActionFuncTable[static_cast<size_t>(stageClearModePhase)])();
 }
 
-void Stage02Player::StageClearSideMove()
+void Stage01Player::StageClearSideMove()
 {
 	//タイマー更新
 	stageClearModeTimer++;
@@ -182,7 +214,7 @@ void Stage02Player::StageClearSideMove()
 	SpeedChangeNormalBlur();
 }
 
-void Stage02Player::StageClearReturn()
+void Stage01Player::StageClearReturn()
 {
 	//タイマー更新
 	const float maxTime = 250;
@@ -234,7 +266,7 @@ void Stage02Player::StageClearReturn()
 	}
 }
 
-void Stage02Player::StageClearUp()
+void Stage01Player::StageClearUp()
 {
 	//タイマー更新
 	const float upTime = 350;
@@ -267,7 +299,7 @@ void Stage02Player::StageClearUp()
 	}
 }
 
-void Stage02Player::StageClearStay()
+void Stage01Player::StageClearStay()
 {
 	//動きがないと寂しいのでゆらゆらさせておく
 	const float rotZSpeed = 0.03f;
@@ -300,7 +332,7 @@ void Stage02Player::StageClearStay()
 	position += velocity;
 }
 
-void Stage02Player::StageClearBoost()
+void Stage01Player::StageClearBoost()
 {
 	//ブースト移動
 	//自機が傾いている角度に移動させる

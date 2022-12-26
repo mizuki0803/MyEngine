@@ -1,6 +1,6 @@
 #pragma once
 #include "ObjObject3d.h"
-#include "GameCamera.h"
+#include "BaseGameCamera.h"
 
 /// <summary>
 /// 敵破壊用エフェクト
@@ -18,7 +18,7 @@ public: // 静的メンバ関数
 	//setter
 	static void SetIsGroundMode(bool isGroundMode) { EnemyBreakEffect::isGroundMode = isGroundMode; }
 	static void SetIsGravityMode(bool isGravityMode) { EnemyBreakEffect::isGravityMode = isGravityMode; }
-	static void SetGameCamera(GameCamera* gameCamera) { EnemyBreakEffect::gameCamera = gameCamera; }
+	static void SetGameCamera(BaseGameCamera* gameCamera) { EnemyBreakEffect::gameCamera = gameCamera; }
 
 public: //メンバ関数
 	/// <summary>
@@ -46,7 +46,7 @@ protected: //静的メンバ変数
 	//重力ありの行動を行うか
 	static bool isGravityMode;
 	//ゲームカメラ
-	static GameCamera* gameCamera;
+	static BaseGameCamera* gameCamera;
 	//寿命時間
 	static const int32_t lifeTime = 600;
 

@@ -3,9 +3,9 @@
 #include <array>
 
 //自機
-class Player;
+class BasePlayer;
 //ゲームカメラ
-class GameCamera;
+class BaseGameCamera;
 
 /// <summary>
 /// ゲームで使うビル管理
@@ -21,8 +21,8 @@ public:  //静的メンバ変数
 
 	//setter
 	static void SetBuidingModel(int modelNum, ObjModel* model);
-	static void SetPlayer(Player* player) { GameBuildingManager::player = player; }
-	static void SetGameCamera(GameCamera* gameCamera) { GameBuildingManager::gameCamera = gameCamera; }
+	static void SetPlayer(BasePlayer* player) { GameBuildingManager::player = player; }
+	static void SetGameCamera(BaseGameCamera* gameCamera) { GameBuildingManager::gameCamera = gameCamera; }
 
 public: //メンバ変数
 	/// <summary>
@@ -74,9 +74,9 @@ private: //静的メンバ変数
 	//ビルモデル
 	static std::array<ObjModel*, 2> buildingModels;
 	//自機
-	static Player* player;
+	static BasePlayer* player;
 	//ゲームカメラ
-	static GameCamera* gameCamera;
+	static BaseGameCamera* gameCamera;
 
 private: //メンバ変数
 	//ビルオブジェクト

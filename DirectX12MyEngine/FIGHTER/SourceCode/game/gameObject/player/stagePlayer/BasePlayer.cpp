@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "BasePlayer.h"
 #include "Input.h"
 #include "Easing.h"
 #include "BaseStageScene.h"
@@ -8,18 +8,18 @@
 #include "ParticleEmitter.h"
 #include "GamePostEffect.h"
 
-BaseStageScene* Player::stageScene = nullptr;
-ObjModel* Player::bulletModel = nullptr;
-const float Player::homingBulletSize = 2.5f;
-const Vector3 Player::basePos = { 0, 3, 16 };
-const Vector2 Player::rotLimit = { 35.0f, 25.0f };
-const XMFLOAT4 Player::damageColor = { 1, 0, 0, 1 };
-const float Player::moveBaseSpeed = 0.16f;
-const float Player::knockbackBaseSpeed = 0.25f;
-const float Player::maxSpeedChangeGauge = 100.0f;
-const float Player::normalSpeedBlurStrength = 0.03f;
+BaseStageScene* BasePlayer::stageScene = nullptr;
+ObjModel* BasePlayer::bulletModel = nullptr;
+const float BasePlayer::homingBulletSize = 2.5f;
+const Vector3 BasePlayer::basePos = { 0, 3, 16 };
+const Vector2 BasePlayer::rotLimit = { 35.0f, 25.0f };
+const XMFLOAT4 BasePlayer::damageColor = { 1, 0, 0, 1 };
+const float BasePlayer::moveBaseSpeed = 0.16f;
+const float BasePlayer::knockbackBaseSpeed = 0.25f;
+const float BasePlayer::maxSpeedChangeGauge = 100.0f;
+const float BasePlayer::normalSpeedBlurStrength = 0.03f;
 
-bool Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
+bool BasePlayer::Initialize(ObjModel* model, const int startHP, const int maxHP)
 {
 	//3Dオブジェクトの初期化
 	if (!ObjObject3d::Initialize()) {
@@ -65,7 +65,7 @@ bool Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
 	return true;
 }
 
-void Player::Update()
+void BasePlayer::Update()
 {
 	//自機のジェット噴射演出用パーティクル生成
 	JetEffectManager();
@@ -83,7 +83,7 @@ void Player::Update()
 	reticles->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
 }
 
-void Player::Draw()
+void BasePlayer::Draw()
 {
 	//死亡状態なら抜ける
 	if (isDead) { return; }
@@ -92,7 +92,7 @@ void Player::Draw()
 	ObjObject3d::Draw();
 }
 
-void Player::UpdateUI()
+void BasePlayer::UpdateUI()
 {
 	//死亡状態なら抜ける
 	if (isDead) { return; }
@@ -105,7 +105,7 @@ void Player::UpdateUI()
 	damageEffect->Update();
 }
 
-void Player::DrawUI()
+void BasePlayer::DrawUI()
 {
 	//墜落状態でないなら&&ステージクリア状態でないなら
 	if (!isCrash && !isStageClearMode) {
@@ -123,7 +123,7 @@ void Player::DrawUI()
 	damageEffect->Draw();
 }
 
-void Player::OnCollisionDamage(const Vector3& subjectPos)
+void BasePlayer::OnCollisionDamage(const Vector3& subjectPos)
 {
 	//ダメージを喰らう
 	Damage();
@@ -138,7 +138,7 @@ void Player::OnCollisionDamage(const Vector3& subjectPos)
 	damageEffect->DamageEffectStart(maxHP, HP);
 }
 
-void Player::OnCollisionHeal()
+void BasePlayer::OnCollisionHeal()
 {
 	//回復
 	Heal();
@@ -147,7 +147,7 @@ void Player::OnCollisionHeal()
 	hpUI->ItemGet(HP);
 }
 
-Vector3 Player::GetWorldPos()
+Vector3 BasePlayer::GetWorldPos()
 {
 	//ワールド座標を入れる変数
 	Vector3 worldPos;
@@ -159,7 +159,7 @@ Vector3 Player::GetWorldPos()
 	return worldPos;
 }
 
-void Player::Action()
+void BasePlayer::Action()
 {
 	//ステージクリア状態
 	if (isStageClearMode) {
@@ -203,7 +203,7 @@ void Player::Action()
 	}
 }
 
-void Player::JetEffectManager()
+void BasePlayer::JetEffectManager()
 {
 	//墜落状態以外なら通常ジェット演出
 	if (!isCrash) {
@@ -215,7 +215,7 @@ void Player::JetEffectManager()
 	}
 }
 
-void Player::CrashBlackSmoke()
+void BasePlayer::CrashBlackSmoke()
 {
 	//墜落開始してから黒煙を出すまでの時間
 	const int smokeStartTime = 30;
@@ -234,7 +234,7 @@ void Player::CrashBlackSmoke()
 	ParticleEmitter::GetInstance()->PlayerBlackSmokeJet(matWorld);
 }
 
-void Player::Damage()
+void BasePlayer::Damage()
 {
 	//体力を減らす
 	HP -= 10;
@@ -257,7 +257,7 @@ void Player::Damage()
 	color = damageColor;
 }
 
-void Player::DamageMode()
+void BasePlayer::DamageMode()
 {
 	//ダメージ状態の時間
 	const int damageTime = 80;
@@ -277,7 +277,7 @@ void Player::DamageMode()
 	}
 }
 
-void Player::SetDamageKnockback(const Vector3& subjectPos)
+void BasePlayer::SetDamageKnockback(const Vector3& subjectPos)
 {
 	//ノックバックする方向を決める(自機のワールド座標 - 対象のワールド座標)
 	knockbackVec = GetWorldPos() - subjectPos;
@@ -285,7 +285,7 @@ void Player::SetDamageKnockback(const Vector3& subjectPos)
 	knockbackVec.normalize();
 }
 
-void Player::DamageKnockback()
+void BasePlayer::DamageKnockback()
 {
 	//ノックバックする時間
 	const float knockbackTime = 35;
@@ -313,7 +313,7 @@ void Player::DamageKnockback()
 	position.y = min(position.y, moveLimitMax.y);
 }
 
-void Player::DamageColorChange()
+void BasePlayer::DamageColorChange()
 {
 	//ダメージ色切り替え間隔時間
 	const int colorChangeInterval = 3;
@@ -336,7 +336,7 @@ void Player::DamageColorChange()
 	}
 }
 
-void Player::CrashStart()
+void BasePlayer::CrashStart()
 {
 	//カメラ追従を解除
 	SetIsCameraFollow(false);
@@ -350,7 +350,7 @@ void Player::CrashStart()
 	isCrash = true;
 }
 
-void Player::Heal()
+void BasePlayer::Heal()
 {
 	//体力を増やす
 	const int healNum = 10;
@@ -362,7 +362,7 @@ void Player::Heal()
 	}
 }
 
-void Player::Rotate()
+void BasePlayer::Rotate()
 {
 	Input* input = Input::GetInstance();
 
@@ -476,7 +476,7 @@ void Player::Rotate()
 	rotation.x = min(rotation.x, +rotLimit.x);
 }
 
-void Player::Move()
+void BasePlayer::Move()
 {
 	//自機が傾いている角度に移動させる
 	Vector3 velocity = { 0, 0, 0 };
@@ -491,7 +491,7 @@ void Player::Move()
 	position.y = min(position.y, moveLimitMax.y);
 }
 
-void Player::Roll()
+void BasePlayer::Roll()
 {
 	//緊急回避時の動き
 	if (isRoll) {
@@ -504,7 +504,7 @@ void Player::Roll()
 	}
 }
 
-void Player::RollStart()
+void BasePlayer::RollStart()
 {
 	//ダメージ状態なら緊急回避は発動できないで抜ける
 	if (isDamage) { return; }
@@ -529,7 +529,7 @@ void Player::RollStart()
 	else if (isInputLeftRoll) { rollEndRot = rotAmount; }	//左回転
 }
 
-void Player::RollMode()
+void BasePlayer::RollMode()
 {
 	//タイマーを更新
 	const float rollTime = 40;
@@ -546,7 +546,7 @@ void Player::RollMode()
 	}
 }
 
-void Player::SpeedChange()
+void BasePlayer::SpeedChange()
 {
 	Input* input = Input::GetInstance();
 
@@ -586,7 +586,7 @@ void Player::SpeedChange()
 	SpeedChangeNormalBlur();
 }
 
-void Player::SpeedChangeStart(bool isPushHighSpeedInput, bool isPushSlowSpeedInput)
+void BasePlayer::SpeedChangeStart(bool isPushHighSpeedInput, bool isPushSlowSpeedInput)
 {
 	//加速or減速のキーボタンの入力がなければ抜ける
 	if (!(isPushHighSpeedInput || isPushSlowSpeedInput)) { return; }
@@ -619,7 +619,7 @@ void Player::SpeedChangeStart(bool isPushHighSpeedInput, bool isPushSlowSpeedInp
 	speedChangeTimer = 0;
 }
 
-void Player::SpeedChangeMode(bool isPushHighSpeedInput, bool isPushSlowSpeedInput)
+void BasePlayer::SpeedChangeMode(bool isPushHighSpeedInput, bool isPushSlowSpeedInput)
 {
 	//タイマー更新
 	speedChangeTimer++;
@@ -664,7 +664,7 @@ void Player::SpeedChangeMode(bool isPushHighSpeedInput, bool isPushSlowSpeedInpu
 	SetSpeedChangeModeEnd();
 }
 
-void Player::SetSpeedChangeModeEnd()
+void BasePlayer::SetSpeedChangeModeEnd()
 {
 	//速度変更を終了
 	isSpeedChange = false;
@@ -673,7 +673,7 @@ void Player::SetSpeedChangeModeEnd()
 	moveSpeedPhase = MoveSpeedPhase::ReturnNormalSpeed;
 }
 
-void Player::SpeedChangeModeEnd()
+void BasePlayer::SpeedChangeModeEnd()
 {
 	//減らしたゲージを増やしていく
 	const float gaugeIncSpeed = 0.55f;
@@ -689,7 +689,7 @@ void Player::SpeedChangeModeEnd()
 	moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
 }
 
-void Player::SpeedChangeHighSpeed()
+void BasePlayer::SpeedChangeHighSpeed()
 {
 	//加速時に移動する最大限界座標
 	const float highSpeedMaxPosZ = 25.0f;
@@ -710,7 +710,7 @@ void Player::SpeedChangeHighSpeed()
 	position.z = min(position.z, highSpeedMaxPosZ);
 }
 
-void Player::SpeedChangeSlowSpeed()
+void BasePlayer::SpeedChangeSlowSpeed()
 {
 	//減速時に移動する最小限界座標
 	const float slowSpeedMinPosZ = 10.0f;
@@ -731,7 +731,7 @@ void Player::SpeedChangeSlowSpeed()
 	position.z = max(position.z, slowSpeedMinPosZ);
 }
 
-void Player::SpeedChangeNormalSpeed()
+void BasePlayer::SpeedChangeNormalSpeed()
 {
 	//通常移動に戻す状態でなければ抜ける
 	if (!(moveSpeedPhase == MoveSpeedPhase::NormalSpeed || moveSpeedPhase == MoveSpeedPhase::ReturnNormalSpeed)) { return; }
@@ -757,7 +757,7 @@ void Player::SpeedChangeNormalSpeed()
 	}
 }
 
-void Player::SpeedChangeNormalBlur()
+void BasePlayer::SpeedChangeNormalBlur()
 {
 	//通常移動に戻す状態でなければ抜ける
 	if (!(moveSpeedPhase == MoveSpeedPhase::NormalSpeed || moveSpeedPhase == MoveSpeedPhase::ReturnNormalSpeed)) { return; }
@@ -789,7 +789,7 @@ void Player::SpeedChangeNormalBlur()
 	GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 }
 
-void Player::Attack()
+void BasePlayer::Attack()
 {
 	Input* input = Input::GetInstance();
 
@@ -808,7 +808,7 @@ void Player::Attack()
 	}
 }
 
-void Player::PushAttackButton()
+void BasePlayer::PushAttackButton()
 {
 	//ホーミング弾に切り替わる時間
 	const int32_t changeModeTime = 50;
@@ -867,7 +867,7 @@ void Player::PushAttackButton()
 	}
 }
 
-void Player::ReleaseAttackButton()
+void BasePlayer::ReleaseAttackButton()
 {
 	//チャージ完了時
 	if (isChargeShotMode) {
@@ -888,7 +888,7 @@ void Player::ReleaseAttackButton()
 	chargeTimer = 0;
 }
 
-void Player::UpdateBulletShotPos()
+void BasePlayer::UpdateBulletShotPos()
 {
 	//自機の中心座標からの距離
 	const Vector3 distancePos = { 0, -0.3f, 4.0f };
@@ -907,7 +907,7 @@ void Player::UpdateBulletShotPos()
 	bulletShotPos = { bulletShotMatWorld.r[3].m128_f32[0], bulletShotMatWorld.r[3].m128_f32[1], bulletShotMatWorld.r[3].m128_f32[2] };
 }
 
-void Player::ShotStraightBullet()
+void BasePlayer::ShotStraightBullet()
 {
 	//発射位置を自機のワールド座標に設定
 	Vector3 shotPos = GetWorldPos();
@@ -927,7 +927,7 @@ void Player::ShotStraightBullet()
 	ParticleEmitter::GetInstance()->Shot(bulletShotPos);
 }
 
-void Player::ShotHomingBullet()
+void BasePlayer::ShotHomingBullet()
 {
 	//発射位置を自機のワールド座標に設定
 	Vector3 shotPos = GetWorldPos();
