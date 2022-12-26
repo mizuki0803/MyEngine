@@ -87,7 +87,9 @@ void MeteoriteEnemy::Dead()
 void MeteoriteEnemy::Break()
 {
 	//破壊用エフェクト追加
-	for (int i = 0; i < 10; i++) {
+	const int effectNum = (int)scale.x * 3;
+
+	for (int i = 0; i < effectNum; i++) {
 		//モデルが未設定なら飛ばす
 		if (!meteoriteModel) { continue; }
 
@@ -108,8 +110,12 @@ void MeteoriteEnemy::Break()
 		//値が大きいので割り算して小さくする
 		const float div = 4;
 		velocity /= div;
-		//大きさをセット
-		const Vector3 scale = this->scale / 5;
+
+		//ランダムで大きさをセット(0.1～2.0)
+		const int randScaleNum = 20;
+		int randScale = rand() % randScaleNum + 1;
+		const float size = randScale * 0.1f;
+		const Vector3 scale = { size, size, size };
 
 		//破壊時エフェクト生成
 		BreakEffect(meteoriteModel, velocity, rotSpeed, scale);

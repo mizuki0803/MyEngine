@@ -28,7 +28,7 @@ void StageSelectScene::Initialize()
 	modelStageSelect.reset(ObjModel::LoadFromOBJ("stageSelect", true));
 	modelPlanetBasis.reset(ObjModel::LoadFromOBJ("planetBasis", true));
 	modelPlanetTrial.reset(ObjModel::LoadFromOBJ("planetTrial", true));
-	modelPlanetSoon.reset(ObjModel::LoadFromOBJ("planetSoon", true));
+	modelPlanetAstero.reset(ObjModel::LoadFromOBJ("planetAstero", true));
 
 	//ポストエフェクトのブラーを解除しておく
 	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
@@ -257,10 +257,10 @@ void StageSelectScene::CreatePlanets()
 	stage01Planet.reset(StageSelectPlanet::Create(modelPlanetTrial.get(), stageSelectFieldPos[1] + planetFieldDistance));
 	planets.push_back(std::move(stage01Planet));
 
-	//まだないステージ用惑星生成
-	std::unique_ptr<StageSelectPlanet> comingSoonPlanet;
-	comingSoonPlanet.reset(StageSelectPlanet::Create(modelPlanetSoon.get(), stageSelectFieldPos[2] + planetFieldDistance));
-	planets.push_back(std::move(comingSoonPlanet));
+	//ステージ02用生成
+	std::unique_ptr<StageSelectPlanet> stage02Planet;
+	stage02Planet.reset(StageSelectPlanet::Create(modelPlanetAstero.get(), stageSelectFieldPos[2] + planetFieldDistance));
+	planets.push_back(std::move(stage02Planet));
 }
 
 void StageSelectScene::GooutPlanet()

@@ -144,7 +144,7 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelStageSelect;
 	std::unique_ptr<ObjModel> modelPlanetBasis;
 	std::unique_ptr<ObjModel> modelPlanetTrial;
-	std::unique_ptr<ObjModel> modelPlanetSoon;
+	std::unique_ptr<ObjModel> modelPlanetAstero;
 
 	//ステージ選択用惑星
 	std::vector<std::unique_ptr<StageSelectPlanet>> planets;

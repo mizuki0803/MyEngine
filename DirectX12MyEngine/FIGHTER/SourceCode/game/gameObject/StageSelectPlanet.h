@@ -14,7 +14,7 @@ public: //静的メンバ関数
 	/// <returns>ステージ選択用惑星</returns>
 	static StageSelectPlanet* Create(ObjModel* model, const Vector3& position);
 
-public:
+public: //メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
