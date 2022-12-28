@@ -60,7 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameCamera\stageCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameObject\player\stagePlayer;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameScene\stageScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;$(ProjectDir)SourceCode\game\gameSprite\UI\warningUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameCamera\sortieCamera;$(ProjectDir)SourceCode\game\gameCamera\stageCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\sortiePlayer;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameObject\player\stagePlayer;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameScene\sortieScene;$(ProjectDir)SourceCode\game\gameScene\stageScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;$(ProjectDir)SourceCode\game\gameSprite\UI\warningUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -81,7 +81,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameCamera\stageCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameObject\player\stagePlayer;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameScene\stageScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;$(ProjectDir)SourceCode\game\gameSprite\UI\warningUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameCamera\sortieCamera;$(ProjectDir)SourceCode\game\gameCamera\stageCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\sortiePlayer;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameObject\player\stagePlayer;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameScene\sortieScene;$(ProjectDir)SourceCode\game\gameScene\stageScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;$(ProjectDir)SourceCode\game\gameSprite\UI\warningUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -130,7 +130,7 @@
     <ClCompile Include="SourceCode\engine\scene\BaseScene.cpp" />
     <ClCompile Include="SourceCode\engine\scene\SceneFactory.cpp" />
     <ClCompile Include="SourceCode\engine\scene\SceneManager.cpp" />
-    <ClCompile Include="SourceCode\game\gameCamera\SortieCamera.cpp" />
+    <ClCompile Include="SourceCode\game\gameCamera\sortieCamera\Stage01SortieCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\stageCamera\BaseGameCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\stageCamera\Stage01GameCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\stageCamera\Stage02GameCamera.cpp" />
@@ -181,13 +181,13 @@
     <ClCompile Include="SourceCode\game\gameObject\player\stagePlayer\BasePlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\player\stagePlayer\Stage01Player.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\player\stagePlayer\Stage02Player.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\SortiePlayer.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\sortiePlayer\Stage01SortiePlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\StageSelectPlanet.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\StageSelectPlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\TitlePlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\BaseGameScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\DebugScene.cpp" />
-    <ClCompile Include="SourceCode\game\gameScene\SortieScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\sortieScene\Stage01SortieScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\stageScene\BaseStageScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\stageScene\Stage01Scene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\stageScene\Stage02Scene.cpp" />
@@ -353,7 +353,7 @@
     <ClInclude Include="SourceCode\engine\scene\BaseScene.h" />
     <ClInclude Include="SourceCode\engine\scene\SceneFactory.h" />
     <ClInclude Include="SourceCode\engine\scene\SceneManager.h" />
-    <ClInclude Include="SourceCode\game\gameCamera\SortieCamera.h" />
+    <ClInclude Include="SourceCode\game\gameCamera\sortieCamera\Stage01SortieCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\stageCamera\BaseGameCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\stageCamera\Stage01GameCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\stageCamera\Stage02GameCamera.h" />
@@ -404,13 +404,13 @@
     <ClInclude Include="SourceCode\game\gameObject\player\stagePlayer\BasePlayer.h" />
     <ClInclude Include="SourceCode\game\gameObject\player\stagePlayer\Stage01Player.h" />
     <ClInclude Include="SourceCode\game\gameObject\player\stagePlayer\Stage02Player.h" />
-    <ClInclude Include="SourceCode\game\gameObject\SortiePlayer.h" />
+    <ClInclude Include="SourceCode\game\gameObject\sortiePlayer\Stage01SortiePlayer.h" />
     <ClInclude Include="SourceCode\game\gameObject\StageSelectPlanet.h" />
     <ClInclude Include="SourceCode\game\gameObject\StageSelectPlayer.h" />
     <ClInclude Include="SourceCode\game\gameObject\TitlePlayer.h" />
     <ClInclude Include="SourceCode\game\gameScene\BaseGameScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\DebugScene.h" />
-    <ClInclude Include="SourceCode\game\gameScene\SortieScene.h" />
+    <ClInclude Include="SourceCode\game\gameScene\sortieScene\Stage01SortieScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\stageScene\BaseStageScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\stageScene\Stage01Scene.h" />
     <ClInclude Include="SourceCode\game\gameScene\stageScene\Stage02Scene.h" />

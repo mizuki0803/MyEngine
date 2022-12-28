@@ -1,17 +1,17 @@
-#include "SortieCamera.h"
-#include "SortiePlayer.h"
+#include "Stage01SortieCamera.h"
+#include "Stage01SortiePlayer.h"
 #include "Easing.h"
 
-void (SortieCamera::* SortieCamera::sortieActionFuncTable[])() = {
-	&SortieCamera::StayPlayer,
-	&SortieCamera::RunningSideZoomPlayer,
-	&SortieCamera::CameraRunningSideSpeedMove,
+void (Stage01SortieCamera::* Stage01SortieCamera::sortieActionFuncTable[])() = {
+	&Stage01SortieCamera::StayPlayer,
+	&Stage01SortieCamera::RunningSideZoomPlayer,
+	&Stage01SortieCamera::CameraRunningSideSpeedMove,
 };
 
-const float SortieCamera::runningSideStartDistance = 45.0f;
-const float SortieCamera::runningSideEndDistance = 20.0f;
+const float Stage01SortieCamera::runningSideStartDistance = 45.0f;
+const float Stage01SortieCamera::runningSideEndDistance = 20.0f;
 
-void SortieCamera::Initialize()
+void Stage01SortieCamera::Initialize()
 {
 	//カメラ初期化
 	Camera::Initialize();
@@ -21,7 +21,7 @@ void SortieCamera::Initialize()
 	eye = player->GetPosition() + eyePlayerDistance;
 }
 
-void SortieCamera::Update()
+void Stage01SortieCamera::Update()
 {
 	//行動
 	(this->*sortieActionFuncTable[static_cast<size_t>(sortieMovePhase)])();
@@ -30,7 +30,7 @@ void SortieCamera::Update()
 	Camera::Update();
 }
 
-void SortieCamera::StayPlayer()
+void Stage01SortieCamera::StayPlayer()
 {
 	//カメラの注視点を自機方向に移動させる
 	target = player->GetPosition();
@@ -40,11 +40,11 @@ void SortieCamera::StayPlayer()
 	eyePlayerDistance.z = eye.z - player->GetPosition().z;
 	if (eyePlayerDistance.z <= runningSideStartDistance) {
 		//次のフェーズへ
-		sortieMovePhase = SortieActionPhase::RunningSideZoom;
+		sortieMovePhase = Stage01SortieActionPhase::RunningSideZoom;
 	}
 }
 
-void SortieCamera::RunningSideZoomPlayer()
+void Stage01SortieCamera::RunningSideZoomPlayer()
 {
 	//自機をズームする時間
 	const float zoomTime = 240;
@@ -63,17 +63,17 @@ void SortieCamera::RunningSideZoomPlayer()
 	//タイマーが指定した時間になったら
 	if (cameraActionTimer >= zoomTime) {
 		//次のフェーズへ
-		sortieMovePhase = SortieActionPhase::RunningSideSpeedMove;
+		sortieMovePhase = Stage01SortieActionPhase::RunningSideSpeedMove;
 
 		//並走&ズームを終了させる
 		isZoomEnd = true;
 	}
 }
 
-void SortieCamera::CameraRunningSideSpeedMove()
+void Stage01SortieCamera::CameraRunningSideSpeedMove()
 {
 	//カメラを自機の通常スピードで並走させる
-	eye.z += SortiePlayer::GetAdvanceSpeed();
+	eye.z += Stage01SortiePlayer::GetAdvanceSpeed();
 
 	//カメラの注視点を自機方向に移動させる
 	const Vector3 playerPos = player->GetPosition();

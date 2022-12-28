@@ -1,18 +1,18 @@
-#include "SortiePlayer.h"
+#include "Stage01SortiePlayer.h"
 #include "ParticleEmitter.h"
 #include "GamePostEffect.h"
 
-void (SortiePlayer::* SortiePlayer::sortieActionFuncTable[])() = {
-	&SortiePlayer::SortieAdvance,
-	&SortiePlayer::SortieBoost,
+void (Stage01SortiePlayer::* Stage01SortiePlayer::sortieActionFuncTable[])() = {
+	&Stage01SortiePlayer::SortieAdvance,
+	&Stage01SortiePlayer::SortieBoost,
 };
 
-const float SortiePlayer::advanceSpeed = 1.3f;
+const float Stage01SortiePlayer::advanceSpeed = 1.3f;
 
-SortiePlayer* SortiePlayer::Create(ObjModel* model, const Vector3& startPosition)
+Stage01SortiePlayer* Stage01SortiePlayer::Create(ObjModel* model, const Vector3& startPosition)
 {
-	//出撃シーン用自機のインスタンスを生成
-	SortiePlayer* sortiePlayer = new SortiePlayer();
+	//ステージ01出撃シーン用自機のインスタンスを生成
+	Stage01SortiePlayer* sortiePlayer = new Stage01SortiePlayer();
 	if (sortiePlayer == nullptr) {
 		return nullptr;
 	}
@@ -37,7 +37,7 @@ SortiePlayer* SortiePlayer::Create(ObjModel* model, const Vector3& startPosition
 	return sortiePlayer;
 }
 
-void SortiePlayer::Update()
+void Stage01SortiePlayer::Update()
 {
 	//行動
 	(this->*sortieActionFuncTable[static_cast<size_t>(sortieActionPhase)])();
@@ -49,10 +49,10 @@ void SortiePlayer::Update()
 	ParticleEmitter::GetInstance()->PlayerJet(matWorld, particleJetSizePhaseNum);
 }
 
-void SortiePlayer::BoostStart()
+void Stage01SortiePlayer::BoostStart()
 {
 	//ブースト状態にする
-	sortieActionPhase = SortieActionPhase::Boost;
+	sortieActionPhase = Stage01SortieActionPhase::Boost;
 
 	//パーティクルジェットを大きくする(加速用にする)
 	const int32_t particleSizePhase = 1;
@@ -64,13 +64,13 @@ void SortiePlayer::BoostStart()
 	GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 }
 
-void SortiePlayer::SortieAdvance()
+void Stage01SortiePlayer::SortieAdvance()
 {
 	//前進させる
 	position.z += advanceSpeed;
 }
 
-void SortiePlayer::SortieBoost()
+void Stage01SortiePlayer::SortieBoost()
 {
 	//ブーストさせる(通常スピードの2倍)
 	const float boostSpeed = advanceSpeed * 2;

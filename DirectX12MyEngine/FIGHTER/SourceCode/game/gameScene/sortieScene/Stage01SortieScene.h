@@ -2,9 +2,9 @@
 #include "BaseGameScene.h"
 #include "ObjObject3d.h"
 #include "LightGroup.h"
-#include "SortieCamera.h"
+#include "Stage01SortieCamera.h"
 #include "LightCamera.h"
-#include "SortiePlayer.h"
+#include "Stage01SortiePlayer.h"
 #include "Skydome.h"
 #include "Ground.h"
 #include "Building.h"
@@ -12,9 +12,9 @@
 #include <array>
 
 /// <summary>
-/// 出撃演出シーン
+/// ステージ01出撃演出シーン
 /// </summary>
-class SortieScene :public BaseGameScene
+class Stage01SortieScene :public BaseGameScene
 {
 public: //メンバ関数
 	/// <summary>
@@ -70,7 +70,7 @@ private: //メンバ関数
 
 private: //メンバ変数
 	//カメラ
-	std::unique_ptr<SortieCamera> sortieCamera;
+	std::unique_ptr<Stage01SortieCamera> sortieCamera;
 	//影用光源カメラ
 	std::unique_ptr<LightCamera> lightCamera;
 	//頭上からの影用光源カメラ
@@ -92,7 +92,7 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelFighter;
 
 	//出撃シーン用自機
-	std::unique_ptr<SortiePlayer> player;
+	std::unique_ptr<Stage01SortiePlayer> player;
 	//天球
 	std::unique_ptr<Skydome> skydome;
 	//地面

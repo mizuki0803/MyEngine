@@ -1,4 +1,4 @@
-#include "SortieScene.h"
+#include "Stage01SortieScene.h"
 #include "SceneManager.h"
 #include "Input.h"
 #include "Audio.h"
@@ -12,7 +12,7 @@
 #include <fstream>
 #include <iomanip>
 
-void SortieScene::Initialize()
+void Stage01SortieScene::Initialize()
 {
 	//ライト生成
 	lightGroup.reset(LightGroup::Create());
@@ -31,10 +31,10 @@ void SortieScene::Initialize()
 	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
 
 	//自機生成
-	player.reset(SortiePlayer::Create(modelFighter.get(), { 0, 20, -1000 }));
+	player.reset(Stage01SortiePlayer::Create(modelFighter.get(), { 0, 20, -1000 }));
 
 	//カメラ初期化
-	sortieCamera.reset(new SortieCamera());
+	sortieCamera.reset(new Stage01SortieCamera());
 	sortieCamera->SetSortiePlayer(player.get());
 	sortieCamera->Initialize();
 	//影用光源カメラ初期化
@@ -93,7 +93,7 @@ void SortieScene::Initialize()
 	ParticleEmitter::GetInstance()->AllDelete();
 }
 
-void SortieScene::Update()
+void Stage01SortieScene::Update()
 {
 	//デバッグテキストのインスタンスを取得
 	DebugText* debugText = DebugText::GetInstance();
@@ -145,11 +145,11 @@ void SortieScene::Update()
 	SceneChangeEffect::Update();
 }
 
-void SortieScene::DrawBackSprite()
+void Stage01SortieScene::DrawBackSprite()
 {
 }
 
-void SortieScene::Draw3D()
+void Stage01SortieScene::Draw3D()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawPrev();
@@ -176,7 +176,7 @@ void SortieScene::Draw3D()
 	///-------パーティクル描画ここまで-------///
 }
 
-void SortieScene::Draw3DLightView()
+void Stage01SortieScene::Draw3DLightView()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawLightViewPrev();
@@ -190,7 +190,7 @@ void SortieScene::Draw3DLightView()
 	///-------Object3d描画ここまで-------///
 }
 
-void SortieScene::Draw3DTopLightView()
+void Stage01SortieScene::Draw3DTopLightView()
 {
 	//Object3d共通コマンド
 	ObjObject3d::DrawLightViewPrev();
@@ -202,7 +202,7 @@ void SortieScene::Draw3DTopLightView()
 	///-------Object3d描画ここまで-------///
 }
 
-void SortieScene::DrawFrontSprite()
+void Stage01SortieScene::DrawFrontSprite()
 {
 	//スプライト共通コマンド
 	SpriteCommon::GetInstance()->DrawPrev();
@@ -215,7 +215,7 @@ void SortieScene::DrawFrontSprite()
 	///-------スプライト描画ここまで-------///
 }
 
-void SortieScene::LightCameraUpdate()
+void Stage01SortieScene::LightCameraUpdate()
 {
 	//ターゲットになる座標
 	const Vector3 targetPos = sortieCamera->GetEye();
@@ -235,10 +235,10 @@ void SortieScene::LightCameraUpdate()
 	topLightCamera->Update();
 }
 
-void SortieScene::SortieAction()
+void Stage01SortieScene::SortieAction()
 {
 	//既にブースト状態なら抜ける
-	if (player->GetSortieActionPhase() == SortiePlayer::SortieActionPhase::Boost) { return; }
+	if (player->GetSortieActionPhase() == Stage01SortiePlayer::Stage01SortieActionPhase::Boost) { return; }
 	//カメラの自機ズームが終了していなければ抜ける
 	if (!sortieCamera->GetIsZoomEnd()) { return; }
 
@@ -246,7 +246,7 @@ void SortieScene::SortieAction()
 	player->BoostStart();
 }
 
-void SortieScene::MovieSkip()
+void Stage01SortieScene::MovieSkip()
 {
 	//スキップ入力がなければ抜ける
 	if (!(Input::GetInstance()->TriggerKey(DIK_RETURN) || Input::GetInstance()->TriggerGamePadButton(Input::PAD_START))) { return; }
