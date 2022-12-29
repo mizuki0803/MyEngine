@@ -50,10 +50,14 @@ public: //メンバ関数
 	void StageClearBoostStart();
 
 	//getter
-	const int GetCrashBoundCount() { return crashBoundCount; }
 	StageClearModePhase GetStageClearModePhase() { return stageClearModePhase; }
 
 private: //メンバ関数
+	/// <summary>
+	/// 墜落開始
+	/// </summary>
+	void CrashStart() override;
+
 	/// <summary>
 	/// 墜落
 	/// </summary>
@@ -96,6 +100,8 @@ private: //静的メンバ変数
 	static void (Stage02Player::* stageClearActionFuncTable[])();
 
 private: //メンバ変数
+	//墜落してからの時間タイマー
+	int32_t crashTimer = 0;
 	//ステージクリア後行動
 	StageClearModePhase stageClearModePhase = StageClearModePhase::SideMove;
 	//ステージクリア後に使用するタイマー

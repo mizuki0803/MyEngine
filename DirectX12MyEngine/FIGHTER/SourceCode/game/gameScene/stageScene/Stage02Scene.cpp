@@ -986,6 +986,7 @@ void Stage02Scene::InitializeEnemy()
 	//全敵に必要な情報をセット
 	Enemy::SetStageScene(this); //全敵にステージシーンを教える
 	Enemy::SetPlayer(player.get()); //自機をセット
+	Enemy::SetGameCamera(gameCamera.get()); //ゲームカメラをセット
 	Enemy::SetBulletModel(modelEnemyBullet.get()); //弾のモデルをセット
 	Enemy::SetIsGroundMode(false); //地面あり行動をOFFにする
 	EnemyBreakEffect::SetIsGroundMode(false); //破壊エフェクトの地面あり行動をOFFにする
@@ -1146,6 +1147,8 @@ void Stage02Scene::BossBattleStart()
 {
 	//既にボスバトルなら抜ける
 	if (isBossBattle) { return; }
+	//自機が墜落状態なら抜ける
+	if (player->GetIsCrash()) { return; }
 
 	//ボスバトル開始座標
 	const float bossBattleStartPos = 3200;
@@ -1326,7 +1329,7 @@ void Stage02Scene::GameOver()
 		if (!player->GetIsDead()) { return; }
 
 		//タイマー更新
-		const float gameOverTime = 120;
+		const float gameOverTime = 150;
 		gameOverTimer++;
 
 		//タイマーが指定した時間になったらステージ02をやり直す

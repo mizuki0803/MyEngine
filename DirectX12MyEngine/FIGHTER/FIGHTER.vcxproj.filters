@@ -590,6 +590,15 @@
     <ClCompile Include="SourceCode\game\gameObject\sortiePlayer\Stage01SortiePlayer.cpp">
       <Filter>ソース ファイル\game\gameObject\sortiePlayer</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\sortiePlayer\Stage02SortiePlayer.cpp">
+      <Filter>ソース ファイル\game\gameObject\sortiePlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameCamera\sortieCamera\Stage02SortieCamera.cpp">
+      <Filter>ソース ファイル\game\gameCamera\sortieCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameScene\sortieScene\Stage02SortieScene.cpp">
+      <Filter>ソース ファイル\game\gameScene\sortieScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -1048,6 +1057,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\sortiePlayer\Stage01SortiePlayer.h">
       <Filter>ソース ファイル\game\gameObject\sortiePlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\sortiePlayer\Stage02SortiePlayer.h">
+      <Filter>ソース ファイル\game\gameObject\sortiePlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameCamera\sortieCamera\Stage02SortieCamera.h">
+      <Filter>ソース ファイル\game\gameCamera\sortieCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameScene\sortieScene\Stage02SortieScene.h">
+      <Filter>ソース ファイル\game\gameScene\sortieScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -448,5 +448,5 @@ void StageSelectScene::ChangeSelectScene()
 	//選択しているステージに応じてシーン変更
 	if (selectStage == StageName::Title) { SceneChangeStart({ 0,0,0,0 }, 40, 60, 60, "TITLE"); }
 	else if (selectStage == StageName::Stage01) { SceneChangeStart({ 0,0,0,0 }, 40, 60, 120, "SORTIE01"); }
-	else if (selectStage == StageName::Stage02) { SceneChangeStart({ 0,0,0,0 }, 40, 60, 120, "STAGE02"); }
+	else if (selectStage == StageName::Stage02) { SceneChangeStart({ 0,0,0,0 }, 40, 60, 120, "SORTIE02"); }
 }

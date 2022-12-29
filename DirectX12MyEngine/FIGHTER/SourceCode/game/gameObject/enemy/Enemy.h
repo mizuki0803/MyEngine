@@ -6,6 +6,8 @@
 
 //自機クラスを前方宣言
 class BasePlayer;
+//ゲームカメラを前方宣言
+class BaseGameCamera;
 //ステージシーンの前方宣言
 class BaseStageScene;
 
@@ -28,6 +30,7 @@ public: //enum
 public: //静的メンバ関数
 	//setter
 	static void SetPlayer(BasePlayer* player) { Enemy::player = player; }
+	static void SetGameCamera(BaseGameCamera* gameCamera) { Enemy::gameCamera = gameCamera; }
 	static void SetStageScene(BaseStageScene* stageScene) { Enemy::stageScene = stageScene; }
 	static void SetBulletModel(ObjModel* model) { Enemy::bulletModel = model; }
 	static void SetIsGroundMode(bool isGroundMode) { Enemy::isGroundMode = isGroundMode; }
@@ -107,6 +110,8 @@ protected: //メンバ関数
 protected: //静的メンバ変数
 	//プレイヤー自機
 	static BasePlayer* player;
+	//カメラ
+	static BaseGameCamera* gameCamera;
 	//ステージシーン
 	static BaseStageScene* stageScene;
 	//敵弾のモデル

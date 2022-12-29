@@ -48,8 +48,13 @@ void Stage02GameCamera::CrashStart()
 	//墜落状態のカメラ位置に移動する
 	isMoveCrashPos = true;
 
+	//墜落用の自機の中心座標からの距離
+	crashPlayerDistance = { 0, 0, -BasePlayer::GetBasePos().z };
+
 	//墜落状態のカメラ位置に移動前の座標をセット
 	moveCrashBeforePos = position;
+	//墜落状態のカメラ位置に移動前の角度をセット
+	moveCrashBeforeRota = rotation;
 	//ゆらゆら角度を0にしておく
 	swayX = 0;
 }
@@ -88,17 +93,37 @@ void Stage02GameCamera::BossDelete()
 }
 
 void Stage02GameCamera::Crash()
-{
+{	
+	//自機が死亡していたら抜ける
+	if (player->GetIsDead()) { return; }
+
+	//平行移動行列の計算
+	XMMATRIX matTrans = XMMatrixTranslation(crashPlayerDistance.x, crashPlayerDistance.y, crashPlayerDistance.z);
+
+	//ワールド行列の合成
+	XMMATRIX bulletShotMatWorld;
+	bulletShotMatWorld = XMMatrixIdentity();	//変形をリセット
+	bulletShotMatWorld *= matTrans;	//ワールド行列に平行移動を反映
+	//自機オブジェクトのワールド行列をかける
+	bulletShotMatWorld *= player->GetMatWorld();
+
+	//墜落用カメラ座標、回転角を取得
+	const Vector3 crashCameraPos = { bulletShotMatWorld.r[3].m128_f32[0], bulletShotMatWorld.r[3].m128_f32[1], bulletShotMatWorld.r[3].m128_f32[2] };
+	const Vector3 crashCameraRota = { player->GetRotation().x,  player->GetRotation().y, 0 };
+
 	//自機の少し上にカメラを移動させる
-	const Vector3 crashCameraPos = { player->GetWorldPos().x, player->GetWorldPos().y + 3, 0 };
 	if (isMoveCrashPos) {
 		//タイマーを更新
-		const float moveCrashPosTime = 40;
+		const float moveCrashPosTime = 60;
 		moveCrashPosTimer++;
 		const float time = moveCrashPosTimer / moveCrashPosTime;
 
 		position.x = Easing::OutQuad(moveCrashBeforePos.x, crashCameraPos.x, time);
 		position.y = Easing::OutQuad(moveCrashBeforePos.y, crashCameraPos.y, time);
+		position.z = Easing::OutQuad(moveCrashBeforePos.z, crashCameraPos.z, time);
+
+		rotation.x = Easing::OutQuad(moveCrashBeforeRota.x, crashCameraRota.x, time);
+		rotation.y = Easing::OutQuad(moveCrashBeforeRota.y, crashCameraRota.y, time);
 
 		//タイマーが指定した時間になったら緊急回避終了
 		if (moveCrashPosTimer >= moveCrashPosTime) {
@@ -107,16 +132,18 @@ void Stage02GameCamera::Crash()
 	}
 	//移動終了後も同じ座標を追従し続ける
 	else {
-		//X,Y座標は自機の少し上を追従する
-		position.x = crashCameraPos.x;
-		position.y = crashCameraPos.y;
+		//墜落用座標と回転角(自機の後ろ)を追従し続ける
+		position = crashCameraPos;
+		rotation.x = crashCameraRota.x;
+		rotation.y = crashCameraRota.y;
+
+		//だんだんカメラと自機の距離を離す
+		crashPlayerDistance.z -= 0.1f;
 	}
 
-	//Z軸回転する
-	const float rotSpeed = 1.5f;
-	//自機が2回バウンドするまでZ方向に移動する
-	if (player->GetCrashBoundCount() == 0) { rotation.z += rotSpeed; }
-	else if (player->GetCrashBoundCount() == 1) { rotation.z -= rotSpeed; }
+	//z軸をくるくる回転させておく
+	const float rotZSpeed = -0.1f;
+	rotation.z += rotZSpeed;
 }
 
 void Stage02GameCamera::StageClear()

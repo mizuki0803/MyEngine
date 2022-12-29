@@ -113,8 +113,8 @@ void Stage01GameCamera::Crash()
 	}
 
 	//Z軸回転する
-	const float rotSpeed = 1.5f;
-	//自機が2回バウンドするまでZ方向に移動する
+	const float rotSpeed = 1.2f;
+	//自機が2回バウンドするまでZ軸回転する
 	if (player->GetCrashBoundCount() == 0) { rotation.z += rotSpeed; }
 	else if (player->GetCrashBoundCount() == 1) { rotation.z -= rotSpeed; }
 }

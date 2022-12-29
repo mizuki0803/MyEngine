@@ -1,11 +1,13 @@
 #include "Enemy.h"
 #include "BasePlayer.h"
+#include "BaseGameCamera.h"
 #include "BaseStageScene.h"
 #include "EnemyDefeatCounter.h"
 #include "ParticleEmitter.h"
 #include "Easing.h"
 
 BasePlayer* Enemy::player = nullptr;
+BaseGameCamera* Enemy::gameCamera = nullptr;
 BaseStageScene* Enemy::stageScene = nullptr;
 ObjModel* Enemy::bulletModel = nullptr;
 bool Enemy::isGroundMode = true;
@@ -256,12 +258,10 @@ void Enemy::BreakEffect(ObjModel* model, const Vector3& velocity, const Vector3&
 
 void Enemy::FrontOfScreenDelete()
 {
-	//座標が自機より手前(画面外手前)まで行ったら削除
-	const float flontOfScreenDiffence = 50;
-	const float deletePos = player->GetWorldPos().z - flontOfScreenDiffence;
-	const Vector3 worldPos = GetWorldPos();
-
-	if (worldPos.z <= deletePos) {
+	//座標がカメラより手前(画面外手前)まで行ったら削除
+	const float flontOfScreenDiffence = 20;
+	const float deletePos = gameCamera->GetPosition().z - flontOfScreenDiffence;
+	if (position.z <= deletePos) {
 		isDelete = true;
 	}
 }

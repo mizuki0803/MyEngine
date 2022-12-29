@@ -909,9 +909,6 @@ void BasePlayer::UpdateBulletShotPos()
 
 void BasePlayer::ShotStraightBullet()
 {
-	//発射位置を自機のワールド座標に設定
-	Vector3 shotPos = GetWorldPos();
-
 	//弾の速度を設定
 	const float bulletSpeed = 6;
 	//自機からレティクルへのベクトルに合わせて飛ばす
@@ -929,9 +926,6 @@ void BasePlayer::ShotStraightBullet()
 
 void BasePlayer::ShotHomingBullet()
 {
-	//発射位置を自機のワールド座標に設定
-	Vector3 shotPos = GetWorldPos();
-
 	//弾の速度を設定
 	const float bulletSpeed = 1.6f;
 	//自機からレティクルへのベクトルに合わせて飛ばす

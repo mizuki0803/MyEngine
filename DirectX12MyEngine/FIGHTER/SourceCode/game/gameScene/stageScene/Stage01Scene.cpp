@@ -901,6 +901,7 @@ void Stage01Scene::InitializeEnemy()
 	//全敵に必要な情報をセット
 	Enemy::SetStageScene(this); //全敵にステージシーンを教える
 	Enemy::SetPlayer(player.get()); //自機をセット
+	Enemy::SetGameCamera(gameCamera.get()); //ゲームカメラをセット
 	Enemy::SetBulletModel(modelEnemyBullet.get()); //弾のモデルをセット
 	Enemy::SetIsGroundMode(true); //地面あり行動をONにする
 	EnemyBreakEffect::SetIsGroundMode(true); //破壊エフェクトの地面あり行動をONにする

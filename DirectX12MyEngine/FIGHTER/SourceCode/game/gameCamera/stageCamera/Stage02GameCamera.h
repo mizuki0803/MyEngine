@@ -112,10 +112,14 @@ private: //メンバ変数
 	BossMainBody* bossMainBody = nullptr;
 	//墜落状態のカメラ位置に移動するか
 	bool isMoveCrashPos = false;
+	//墜落用の自機の中心座標からの距離
+	Vector3 crashPlayerDistance = {};
 	//墜落状態のカメラ位置に移動タイマー
 	int32_t moveCrashPosTimer = 0;
 	//墜落状態のカメラ位置に移動前の座標
 	Vector3 moveCrashBeforePos;
+	//墜落状態のカメラ位置に移動前の角度
+	Vector3 moveCrashBeforeRota;
 	//ステージクリア後カメラ挙動
 	StageClearModePhase stageClearModePhase = StageClearModePhase::BossLook;
 	//ステージクリア後のカメラ挙動に使用するタイマー

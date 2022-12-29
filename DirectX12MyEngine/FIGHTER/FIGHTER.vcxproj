@@ -131,6 +131,7 @@
     <ClCompile Include="SourceCode\engine\scene\SceneFactory.cpp" />
     <ClCompile Include="SourceCode\engine\scene\SceneManager.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\sortieCamera\Stage01SortieCamera.cpp" />
+    <ClCompile Include="SourceCode\game\gameCamera\sortieCamera\Stage02SortieCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\stageCamera\BaseGameCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\stageCamera\Stage01GameCamera.cpp" />
     <ClCompile Include="SourceCode\game\gameCamera\stageCamera\Stage02GameCamera.cpp" />
@@ -182,12 +183,14 @@
     <ClCompile Include="SourceCode\game\gameObject\player\stagePlayer\Stage01Player.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\player\stagePlayer\Stage02Player.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\sortiePlayer\Stage01SortiePlayer.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\sortiePlayer\Stage02SortiePlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\StageSelectPlanet.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\StageSelectPlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\TitlePlayer.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\BaseGameScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\DebugScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\sortieScene\Stage01SortieScene.cpp" />
+    <ClCompile Include="SourceCode\game\gameScene\sortieScene\Stage02SortieScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\stageScene\BaseStageScene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\stageScene\Stage01Scene.cpp" />
     <ClCompile Include="SourceCode\game\gameScene\stageScene\Stage02Scene.cpp" />
@@ -354,6 +357,7 @@
     <ClInclude Include="SourceCode\engine\scene\SceneFactory.h" />
     <ClInclude Include="SourceCode\engine\scene\SceneManager.h" />
     <ClInclude Include="SourceCode\game\gameCamera\sortieCamera\Stage01SortieCamera.h" />
+    <ClInclude Include="SourceCode\game\gameCamera\sortieCamera\Stage02SortieCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\stageCamera\BaseGameCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\stageCamera\Stage01GameCamera.h" />
     <ClInclude Include="SourceCode\game\gameCamera\stageCamera\Stage02GameCamera.h" />
@@ -405,12 +409,14 @@
     <ClInclude Include="SourceCode\game\gameObject\player\stagePlayer\Stage01Player.h" />
     <ClInclude Include="SourceCode\game\gameObject\player\stagePlayer\Stage02Player.h" />
     <ClInclude Include="SourceCode\game\gameObject\sortiePlayer\Stage01SortiePlayer.h" />
+    <ClInclude Include="SourceCode\game\gameObject\sortiePlayer\Stage02SortiePlayer.h" />
     <ClInclude Include="SourceCode\game\gameObject\StageSelectPlanet.h" />
     <ClInclude Include="SourceCode\game\gameObject\StageSelectPlayer.h" />
     <ClInclude Include="SourceCode\game\gameObject\TitlePlayer.h" />
     <ClInclude Include="SourceCode\game\gameScene\BaseGameScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\DebugScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\sortieScene\Stage01SortieScene.h" />
+    <ClInclude Include="SourceCode\game\gameScene\sortieScene\Stage02SortieScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\stageScene\BaseStageScene.h" />
     <ClInclude Include="SourceCode\game\gameScene\stageScene\Stage01Scene.h" />
     <ClInclude Include="SourceCode\game\gameScene\stageScene\Stage02Scene.h" />

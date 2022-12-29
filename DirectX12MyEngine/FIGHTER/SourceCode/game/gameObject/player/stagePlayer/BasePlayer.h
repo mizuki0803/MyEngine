@@ -29,6 +29,7 @@ public: //静的メンバ関数
 
 	//getter
 	static const Vector2& GetRotLimit() { return rotLimit; }
+	static const Vector3& GetBasePos() { return basePos; }
 	static const float GetMoveBaseSpeed() { return moveBaseSpeed; }
 	static const float GetKnockbackBaseSpeed() { return knockbackBaseSpeed; }
 
@@ -137,7 +138,7 @@ protected: //メンバ関数
 	/// <summary>
 	/// 墜落開始
 	/// </summary>
-	void CrashStart();
+	virtual void CrashStart();
 
 	/// <summary>
 	/// 墜落
@@ -305,10 +306,6 @@ protected: //メンバ変数
 	bool isCrash = false;
 	//黒煙用タイマー
 	int32_t blackSmokeTimer = 0;
-	//墜落バウンド回数
-	int crashBoundCount = 0;
-	//墜落速度
-	Vector3 crashVel = { 0, 0, 0.2f };
 	//死亡フラグ
 	bool isDead = false;
 	//緊急回避中か

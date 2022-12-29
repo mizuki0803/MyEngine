@@ -97,18 +97,16 @@ void Stage01Player::Crash()
 {
 	//座標移動
 	//墜落加速度
-	Vector3 crashAccel = { 0, -0.009f, 0 };
+	Vector3 crashAccel = { 0, -0.01f, 0 };
 	crashVel += crashAccel;
 	position += crashVel;
 
 	//墜落回転する
-	const Vector3 rotSpeed = { 0, 0.1f, 5 };
+	const Vector3 rotSpeed = { 0, 0.1f, 10 };
 	//バウンドするまではZ軸左回転
 	if (crashBoundCount == 0) { rotation.z += rotSpeed.z; }
 	//1回バウンドしたらZ軸右回転 & Y軸回転
-	else if (crashBoundCount == 1) {
-		rotation -= rotSpeed;
-	}
+	else if (crashBoundCount == 1) { rotation -= rotSpeed; }
 
 	//ブラーの強さを通常移動時の強さに戻していく
 	SpeedChangeNormalBlur();

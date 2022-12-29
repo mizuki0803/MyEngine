@@ -101,6 +101,10 @@ private: //静的メンバ変数
 	static void (Stage01Player::* stageClearActionFuncTable[])();
 
 private: //メンバ変数
+	//墜落バウンド回数
+	int crashBoundCount = 0;
+	//墜落速度
+	Vector3 crashVel = { 0, 0, 0.25f };
 	//ステージクリア後行動
 	StageClearModePhase stageClearModePhase = StageClearModePhase::SideMove;
 	//ステージクリア後に使用するタイマー

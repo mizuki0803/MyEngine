@@ -93,57 +93,51 @@ void Stage02Player::StageClearBoostStart()
 	stageClearModePhase = StageClearModePhase::Boost;
 }
 
+void Stage02Player::CrashStart()
+{
+	//少し下向きに修正しておく
+	const float crashStartRota = 10;
+	rotation.x = crashStartRota;
+
+	//全敵共通の墜落開始
+	BasePlayer::CrashStart();
+}
+
 void Stage02Player::Crash()
 {
-	//座標移動
-	//墜落加速度
-	Vector3 crashAccel = { 0, -0.009f, 0 };
-	crashVel += crashAccel;
-	position += crashVel;
-
 	//墜落回転する
-	const Vector3 rotSpeed = { 0, 0.1f, 5 };
-	//バウンドするまではZ軸左回転
-	if (crashBoundCount == 0) { rotation.z += rotSpeed.z; }
-	//1回バウンドしたらZ軸右回転 & Y軸回転
-	else if (crashBoundCount == 1) {
-		rotation -= rotSpeed;
-	}
+	const Vector3 rotSpeed = { 0.25f, 0, 5 + crashTimer * 0.01f };
+	rotation += rotSpeed;
+	const float crashRotLimit = 90;
+	rotation.x = min(rotation.x, crashRotLimit);
+
+	//自機が傾いている角度に移動させる
+	const float crashMoveSpeed = 0.5f;
+	Vector3 velocity = { moveBaseSpeed, 1.0f + crashTimer * 0.01f, crashMoveSpeed };
+	velocity.x *= (rotation.y / rotLimit.y);
+	velocity.y *= -(rotation.x / crashRotLimit);
+	velocity.z *= (1 - (rotation.x / crashRotLimit));
+	//前に進む速度は0にならないようにしておくため、最小値を設定
+	const Vector3 velLimit = { 0, -1.5f, 0.1f };
+	velocity.y = max(velocity.y, velLimit.y);
+	velocity.z = max(velocity.z, velLimit.z);
+	position += velocity;
 
 	//ブラーの強さを通常移動時の強さに戻していく
 	SpeedChangeNormalBlur();
 
-	//Y座標が0以下でなければ抜ける
-	if (!(position.y <= 0)) { return; }
-	//座標は0以下にならない
-	position.y = 0;
+	//墜落タイマー更新
+	crashTimer++;
+	//墜落状態の最大時間を越えていなければ抜ける
+	const int crashTimeMax = 300;
+	if (crashTimer < crashTimeMax) { return; }
 
-	//墜落バウンド回数を増加させる
-	crashBoundCount++;
+	//死亡
+	isDead = true;
 
-	//爆発演出用変数
-	float explosionSize = 0;
-	int explosionTime = 0;
-
-	//墜落バウンド回数が一回目ならバウンドさせる
-	if (crashBoundCount == 1) {
-		//バウンド
-		const float boundStartVel = fabsf(crashVel.y) * 0.8f;
-		crashVel.y = boundStartVel;
-
-		//バウンド用爆発演出用設定
-		explosionSize = 0.5f;
-		explosionTime = 20;
-	}
-	//墜落バウンド回数が二回目なら死亡
-	else if (crashBoundCount >= 2) {
-		isDead = true;
-
-		//死亡用爆発演出用設定
-		explosionSize = 3.5f;
-		explosionTime = 60;
-	}
 	//爆発演出用パーティクル生成
+	const float explosionSize = 2.5f;
+	const int explosionTime = 60;
 	ParticleEmitter::GetInstance()->Explosion(position, explosionSize, explosionTime);
 }
 
