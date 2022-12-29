@@ -1,20 +1,17 @@
 #pragma once
-#include "BaseGameScene.h"
+#include "BaseStageScene.h"
 #include "ObjObject3d.h"
+#include "Collision.h"
 #include "LightGroup.h"
 #include "Stage02SortieCamera.h"
 #include "LightCamera.h"
 #include "Stage02SortiePlayer.h"
 #include "Skydome.h"
-#include "Ground.h"
-#include "Building.h"
-
-#include <array>
 
 /// <summary>
 /// ステージ02出撃演出シーン
 /// </summary>
-class Stage02SortieScene :public BaseGameScene
+class Stage02SortieScene :public BaseStageScene
 {
 public: //メンバ関数
 	/// <summary>
@@ -54,9 +51,19 @@ public: //メンバ関数
 
 private: //メンバ関数
 	/// <summary>
-	/// 影生成用ライトカメラ更新
+	/// オブジェクトの解放
 	/// </summary>
-	void LightCameraUpdate();
+	void ObjectRelease();
+
+	/// <summary>
+	/// 3Dオブジェクトの衝突判定
+	/// </summary>
+	void CollisionCheck3d();
+
+	/// <summary>
+	/// 敵初期化処理
+	/// </summary>
+	void InitializeEnemy();
 
 	/// <summary>
 	/// 出撃
@@ -88,6 +95,8 @@ private: //メンバ変数
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;
 	std::unique_ptr<ObjModel> modelFighter;
+	std::unique_ptr<ObjModel> modelMeteoriteBrown;
+	std::unique_ptr<ObjModel> modelPlayerBullet;
 
 	//出撃シーン用自機
 	std::unique_ptr<Stage02SortiePlayer> player;

@@ -245,6 +245,11 @@ void BasePlayer::Damage()
 
 		//HPは0以下にならない
 		HP = 0;
+
+		//爆発演出用パーティクル生成
+		const float explosionSize = 0.5f;
+		const int explosionTime = 20;
+		ParticleEmitter::GetInstance()->Explosion(position, explosionSize, explosionTime);
 	}
 
 	//ダメージ状態にする

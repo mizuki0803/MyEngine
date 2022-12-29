@@ -896,7 +896,7 @@ void Stage01Scene::CollisionCheck2d()
 void Stage01Scene::InitializeEnemy()
 {
 	//敵配置スクリプトの読み込み
-	LoadEnemySetData(enemySetCommands, "Resources/csv/EnemySetStage01.csv");
+	LoadSetData(enemySetCommands, "Resources/csv/EnemySetStage01.csv");
 
 	//全敵に必要な情報をセット
 	Enemy::SetStageScene(this); //全敵にステージシーンを教える

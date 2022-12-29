@@ -3,22 +3,22 @@
 #include "Easing.h"
 
 void (Stage02SortieCamera::* Stage02SortieCamera::sortieActionFuncTable[])() = {
-	&Stage02SortieCamera::StayPlayer,
-	&Stage02SortieCamera::RunningSideZoomPlayer,
-	&Stage02SortieCamera::CameraRunningSideSpeedMove,
+	&Stage02SortieCamera::LookPlayer,
+	&Stage02SortieCamera::ZoomPlayer,
+	&Stage02SortieCamera::RunningSidePlayer,
+	&Stage02SortieCamera::Stay,
 };
 
-const float Stage02SortieCamera::runningSideStartDistance = 45.0f;
-const float Stage02SortieCamera::runningSideEndDistance = 20.0f;
+const Vector3 Stage02SortieCamera::playerDistance = { 3, 1, -15 };
 
 void Stage02SortieCamera::Initialize()
 {
 	//カメラ初期化
 	Camera::Initialize();
 
-	//カメラの視点を自機の後方左上にセット
-	eyePlayerDistance = { 0, 1.5f, 350 };
-	eye = player->GetPosition() + eyePlayerDistance;
+	//カメラの初期値をセット
+	eye = { 40, 1, 0 };
+	moveBeforeEye = eye;
 }
 
 void Stage02SortieCamera::Update()
@@ -30,53 +30,82 @@ void Stage02SortieCamera::Update()
 	Camera::Update();
 }
 
-void Stage02SortieCamera::StayPlayer()
+void Stage02SortieCamera::LookPlayer()
 {
+	//自機の方向を向くのにかかる時間
+	const float lookTime = 400;
+	//タイマー更新
+	cameraActionTimer++;
+	const float time = cameraActionTimer / lookTime;
+
 	//カメラの注視点を自機方向に移動させる
-	target = player->GetPosition();
+	const Vector3 playerPos = player->GetPosition();
+	const Vector3 startTargetPos = { 0, 1, eye.z + 60 };
+	target.x = Easing::InOutQuad(startTargetPos.x, playerPos.x, time);
+	target.y = Easing::InOutQuad(startTargetPos.y, playerPos.y, time);
+	target.z = Easing::InOutQuad(startTargetPos.z, playerPos.z, time);
 	dirtyView = true;
 
-	//自機との距離が並走を開始する距離になったら
-	eyePlayerDistance.z = eye.z - player->GetPosition().z;
-	if (eyePlayerDistance.z <= runningSideStartDistance) {
+	//タイマーが指定した時間になったら
+	if (cameraActionTimer >= lookTime) {
 		//次のフェーズへ
-		sortieMovePhase = Stage02SortieActionPhase::RunningSideZoom;
+		sortieMovePhase = Stage02SortieActionPhase::ZoomPlayer;
+
+		//タイマーを初期化
+		cameraActionTimer = 0;
 	}
 }
 
-void Stage02SortieCamera::RunningSideZoomPlayer()
+void Stage02SortieCamera::ZoomPlayer()
 {
-	//自機をズームする時間
-	const float zoomTime = 240;
+	//ズームにかかる時間
+	const float zoomTime = 180;
 	//タイマー更新
 	cameraActionTimer++;
 	const float time = cameraActionTimer / zoomTime;
 
-	//カメラを自機に並走させる
-	eyePlayerDistance.z = Easing::OutQuint(runningSideStartDistance, runningSideEndDistance, time);
-	eye = player->GetPosition() + eyePlayerDistance;
-
-	//カメラの注視点を自機方向に移動させる
-	target = player->GetPosition();
+	//カメラを自機にズームさせる
+	const Vector3 playerPos = player->GetPosition();
+	const Vector3 moveAfterPos = playerPos + playerDistance;
+	eye.x = Easing::OutQuad(moveBeforeEye.x, moveAfterPos.x, time);
+	eye.y = Easing::OutQuad(moveBeforeEye.y, moveAfterPos.y, time);
+	eye.z = Easing::OutQuad(moveBeforeEye.z, moveAfterPos.z, time);
+	target = playerPos;
 	dirtyView = true;
 
 	//タイマーが指定した時間になったら
 	if (cameraActionTimer >= zoomTime) {
 		//次のフェーズへ
-		sortieMovePhase = Stage02SortieActionPhase::RunningSideSpeedMove;
+		sortieMovePhase = Stage02SortieActionPhase::RunningSide;
+
+		//タイマーを初期化
+		cameraActionTimer = 0;
+	}
+}
+
+void Stage02SortieCamera::RunningSidePlayer()
+{
+	//並走時間
+	const float runningTime = 215;
+	//タイマー更新
+	cameraActionTimer++;
+
+	//カメラを自機に並走させる
+	const Vector3 playerPos = player->GetPosition();
+	eye = playerPos + playerDistance;
+	target = playerPos;
+	dirtyView = true;
+
+	//タイマーが指定した時間になったら
+	if (cameraActionTimer >= runningTime) {
+		//次のフェーズへ
+		sortieMovePhase = Stage02SortieActionPhase::Stay;
 
 		//並走&ズームを終了させる
 		isZoomEnd = true;
 	}
 }
 
-void Stage02SortieCamera::CameraRunningSideSpeedMove()
+void Stage02SortieCamera::Stay()
 {
-	//カメラを自機の通常スピードで並走させる
-	eye.z += Stage02SortiePlayer::GetAdvanceSpeed();
-
-	//カメラの注視点を自機方向に移動させる
-	const Vector3 playerPos = player->GetPosition();
-	target = { playerPos.x, playerPos.y, eye.z - runningSideEndDistance };
-	dirtyView = true;
 }

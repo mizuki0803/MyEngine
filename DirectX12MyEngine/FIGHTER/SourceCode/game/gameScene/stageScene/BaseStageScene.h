@@ -79,7 +79,7 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="commands">ファイルから読み取った情報を入れておく場所</param>
 	/// <param name="fileName">ファイル名</param>
-	void LoadEnemySetData(std::stringstream& commands, const std::string& fileName);
+	void LoadSetData(std::stringstream& commands, const std::string& fileName);
 
 	/// <summary>
 	/// 敵発生コマンドの更新

@@ -50,8 +50,8 @@ void Stage02Scene::Initialize()
 	modelBuilding[0].reset(ObjModel::LoadFromOBJ("building01"));
 	modelBuilding[1].reset(ObjModel::LoadFromOBJ("building02"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
-	modelMeteorite.reset(ObjModel::LoadFromOBJ("meteorite", true));
-	modelMeteorite02.reset(ObjModel::LoadFromOBJ("meteorite02", true));
+	modelMeteoriteWhite.reset(ObjModel::LoadFromOBJ("meteoriteWhite", true));
+	modelMeteoriteBrown.reset(ObjModel::LoadFromOBJ("meteoriteBrown", true));
 	modelSpaceDust.reset(ObjModel::LoadFromOBJ("spaceDust", true));
 	modelPlayerBullet.reset(ObjModel::LoadFromOBJ("playerBullet", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
@@ -132,9 +132,9 @@ void Stage02Scene::Initialize()
 	skydome->SetRotation({ 0, 50, 0 });
 
 	//背景用隕石配置スクリプトの読み込み
-	LoadEnemySetData(meteoriteSetCommands, "Resources/csv/MeteoriteSetStage02.csv");
+	LoadSetData(meteoriteSetCommands, "Resources/csv/MeteoriteSetStage02.csv");
 	//背景用隕石に必要な情報をセット
-	Meteorite::SetMeteoriteModel(modelMeteorite.get());
+	Meteorite::SetMeteoriteModel(modelMeteoriteWhite.get());
 	Meteorite::SetGameCamera(gameCamera.get());
 
 	//宇宙塵エフェクトに必要な情報をセット
@@ -981,7 +981,7 @@ void Stage02Scene::CollisionCheck2d()
 void Stage02Scene::InitializeEnemy()
 {
 	//敵配置スクリプトの読み込み
-	LoadEnemySetData(enemySetCommands, "Resources/csv/EnemySetStage02.csv");
+	LoadSetData(enemySetCommands, "Resources/csv/EnemySetStage02.csv");
 
 	//全敵に必要な情報をセット
 	Enemy::SetStageScene(this); //全敵にステージシーンを教える
@@ -1041,7 +1041,7 @@ void Stage02Scene::InitializeEnemy()
 	}
 
 	//破壊可能隕石
-	MeteoriteEnemy::SetModel(modelMeteorite02.get()); //モデルをセット
+	MeteoriteEnemy::SetModel(modelMeteoriteBrown.get()); //モデルをセット
 }
 
 void Stage02Scene::UpdateMeteoriteSetCommands(const Vector3& targetPosition)

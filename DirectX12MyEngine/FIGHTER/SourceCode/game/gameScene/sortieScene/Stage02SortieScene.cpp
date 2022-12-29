@@ -8,6 +8,7 @@
 #include "ParticleEmitter.h"
 #include "SceneChangeEffect.h"
 #include "GamePostEffect.h"
+#include "MeteoriteEnemy.h"
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -23,12 +24,19 @@ void Stage02SortieScene::Initialize()
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeStage02"));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter"));
+	modelPlayerBullet.reset(ObjModel::LoadFromOBJ("playerBullet", true));
+	modelMeteoriteBrown.reset(ObjModel::LoadFromOBJ("meteoriteBrown", true));
 
 	//ポストエフェクトのブラーを解除しておく
 	GamePostEffect::GetPostEffect()->SetRadialBlur(false);
 
 	//自機生成
-	player.reset(Stage02SortiePlayer::Create(modelFighter.get(), { 0, 20, -1000 }));
+	player.reset(Stage02SortiePlayer::Create(modelFighter.get(), { 0, 0, -360 }));
+	//自機に必要な情報をセット
+	Stage02SortiePlayer::SetStageScene(this);
+	Stage02SortiePlayer::SetBulletModel(modelPlayerBullet.get()); //通常弾用モデルをセット
+	PlayerBullet::SetIsGroundMode(false); //自機弾の地面あり行動をOFFにする
+
 
 	//カメラ初期化
 	sortieCamera.reset(new Stage02SortieCamera());
@@ -43,10 +51,15 @@ void Stage02SortieScene::Initialize()
 	topLightCamera->Initialize({ 0, 500, 0 });
 	topLightCamera->SetProjectionNum({ 100, 100 }, { -100, -100 });
 
+	//全敵初期化処理
+	InitializeEnemy();
+	//敵発生コマンド更新
+	UpdateEnemySetCommands(player->GetPosition());
+
 	//天球生成
 	skydome.reset(Skydome::Create(modelSkydome.get()));
 	//見栄えがいい角度に変更しておく
-	skydome->SetRotation({ 0, 180, 0 });
+	skydome->SetRotation({ 0, 215, 0 });
 
 	//objオブジェクトにカメラをセット
 	ObjObject3d::SetCamera(sortieCamera.get());
@@ -66,13 +79,13 @@ void Stage02SortieScene::Update()
 	//デバッグテキストのインスタンスを取得
 	DebugText* debugText = DebugText::GetInstance();
 
+	//オブジェクト解放
+	ObjectRelease();
 	//出撃挙動管理
 	SortieAction();
 
 	//カメラ更新
 	sortieCamera->Update();
-	//影生成用ライトカメラ
-	LightCameraUpdate();
 
 	//ライト更新
 	lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
@@ -85,8 +98,23 @@ void Stage02SortieScene::Update()
 	//オブジェクト更新
 	//自機
 	player->Update();
+	//自機弾
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		bullet->Update();
+	}
+	//敵
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
+		enemy->Update();
+	}
+	//敵破壊エフェクト
+	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
+		breakEffect->Update();
+	}
 	//天球
 	skydome->Update();
+
+	//3D衝突判定管理
+	CollisionCheck3d();
 
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
@@ -119,6 +147,19 @@ void Stage02SortieScene::Draw3D()
 
 	//自機
 	player->Draw();
+	//自機弾
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		if (!(bullet->GetBulletType() == PlayerBullet::BulletType::Straight)) { continue; }
+		bullet->Draw();
+	}
+	//敵
+	for (const std::unique_ptr<Enemy>& enemy : enemys) {
+		enemy->Draw();
+	}
+	//敵破壊エフェクト
+	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
+		breakEffect->Draw();
+	}
 	//天球
 	skydome->Draw();
 
@@ -161,24 +202,78 @@ void Stage02SortieScene::DrawFrontSprite()
 	///-------スプライト描画ここまで-------///
 }
 
-void Stage02SortieScene::LightCameraUpdate()
+void Stage02SortieScene::ObjectRelease()
 {
-	//ターゲットになる座標
-	const Vector3 targetPos = sortieCamera->GetEye();
-	//ターゲットと視点の距離
-	const Vector3 targetDistance = { -300, 200, -150 };
-	//ライトカメラ用の視点
-	const Vector3 lightEye = targetPos + targetDistance;
-	lightCamera->SetEyeTarget(lightEye, targetPos);
-	lightCamera->Update();
+	//死亡した自機弾の削除
+	playerBullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
+		return bullet->GetIsDead();
+		});
 
+	//削除状態の敵の削除
+	enemys.remove_if([](std::unique_ptr<Enemy>& enemy) {
+		return enemy->GetIsDelete();
+		});
 
-	//頭上からのライトカメラ用ターゲットと視点の距離
-	const Vector3 topCameraTargetDistance = { 0, 500, 350 };
-	//頭上からのライトカメラ用の視点
-	const Vector3 topLightEye = targetPos + topCameraTargetDistance;
-	topLightCamera->SetEyeTarget(topLightEye, targetPos);
-	topLightCamera->Update();
+	//削除状態の敵破壊エフェクトの削除
+	enemyBreakEffects.remove_if([](std::unique_ptr<EnemyBreakEffect>& breakEffect) {
+		return breakEffect->GetIsDelete();
+		});
+}
+
+void Stage02SortieScene::CollisionCheck3d()
+{
+	//判定対象の座標
+	Vector3 posA, posB;
+	float radiusA, radiusB;
+
+#pragma region 敵と自機弾の衝突判定
+	//全ての敵と全ての自機弾の衝突判定
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//自機弾座標
+		posA = bullet->GetWorldPos();
+		//自機弾半径
+		radiusA = bullet->GetScale().x;
+
+		for (const std::unique_ptr<Enemy>& enemy : enemys) {
+			//敵座標
+			posB = enemy->GetWorldPos();
+			//敵半径
+			radiusB = enemy->GetScale().x;
+
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
+
+			//敵のコールバック関数を呼び出す
+			enemy->OnCollision(bullet->GetDamageNum());
+			//自機弾のコールバック関数を呼び出す
+			bullet->OnCollision(posB, radiusB);
+
+			//弾は一つの敵しか倒せないのでenemyループを抜ける
+			break;
+		}
+	}
+#pragma endregion
+}
+
+void Stage02SortieScene::InitializeEnemy()
+{
+	//敵配置スクリプトの読み込み
+	LoadSetData(enemySetCommands, "Resources/csv/EnemySetSortie02.csv");
+
+	//全敵に必要な情報をセット
+	Enemy::SetStageScene(this); //全敵にステージシーンを教える
+	Enemy::SetPlayer(nullptr); //自機をセット
+	Enemy::SetGameCamera(nullptr); //ゲームカメラをセット
+	Enemy::SetBulletModel(nullptr); //弾のモデルをセット
+	Enemy::SetIsGroundMode(false); //地面あり行動をOFFにする
+	EnemyBreakEffect::SetIsGroundMode(false); //破壊エフェクトの地面あり行動をOFFにする
+	EnemyBreakEffect::SetIsGravityMode(false); //破壊エフェクトの重力あり行動をOFFにする
+	EnemyBreakEffect::SetGameCamera(nullptr); //破壊エフェクトにゲームカメラをセット
+
+	//破壊可能隕石
+	MeteoriteEnemy::SetModel(modelMeteoriteBrown.get()); //モデルをセット
 }
 
 void Stage02SortieScene::SortieAction()

@@ -133,8 +133,8 @@ private: //ƒƒ“ƒo•Ï”
 	std::unique_ptr<ObjModel> modelGround;
 	std::array<std::unique_ptr<ObjModel>, 2> modelBuilding;
 	std::unique_ptr<ObjModel> modelSphere;
-	std::unique_ptr<ObjModel> modelMeteorite;
-	std::unique_ptr<ObjModel> modelMeteorite02;
+	std::unique_ptr<ObjModel> modelMeteoriteWhite;
+	std::unique_ptr<ObjModel> modelMeteoriteBrown;
 	std::unique_ptr<ObjModel> modelSpaceDust;
 	std::unique_ptr<ObjModel> modelPlayerBullet;
 	std::unique_ptr<ObjModel> modelFighter;

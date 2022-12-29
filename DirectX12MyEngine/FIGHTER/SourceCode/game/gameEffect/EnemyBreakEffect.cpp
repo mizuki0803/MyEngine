@@ -77,6 +77,9 @@ void EnemyBreakEffect::Move()
 
 void EnemyBreakEffect::FrontOfScreenDelete()
 {
+	//ゲームカメラがセットされていなければ抜ける
+	if (!gameCamera) { return; }
+
 	//座標が自機より手前(画面外手前)まで行ったら削除
 	const float flontOfScreenDiffence = 50;
 	const float deletePos = gameCamera->GetPosition().z - flontOfScreenDiffence;

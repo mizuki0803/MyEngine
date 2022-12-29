@@ -13,9 +13,10 @@ class Stage02SortieCamera : public Camera
 public:
 	//ステージ02出撃行動フェーズ
 	enum class Stage02SortieActionPhase {
-		Stay,					//自機が遠くから来るのを待つ
-		RunningSideZoom,		//自機を並走&ズーム
-		RunningSideSpeedMove,	//自機を並走していた速度で動く
+		LookPlayer,		//自機の方向を向く
+		ZoomPlayer,		//自機をズーム
+		RunningSide,	//自機を並走
+		Stay,			//カメラ停止
 	};
 
 public: //メンバ関数
@@ -37,37 +38,40 @@ public: //メンバ関数
 
 private: //メンバ関数
 	/// <summary>
-	/// 自機が遠くから来るのを待つ
+	/// 自機の方向を向く
 	/// </summary>
-	void StayPlayer();
+	void LookPlayer();
 
 	/// <summary>
-	/// 自機を並走ズーム
+	/// 自機の方向を向く
 	/// </summary>
-	void RunningSideZoomPlayer();
+	void ZoomPlayer();
 
 	/// <summary>
-	/// 自機並走していた速度で動かす
+	/// 自機を並走
 	/// </summary>
-	void CameraRunningSideSpeedMove();
+	void RunningSidePlayer();
+
+	/// <summary>
+	/// 停止
+	/// </summary>
+	void Stay();
 
 private: //静的メンバ変数
 	//出撃行動遷移
 	static void (Stage02SortieCamera::* sortieActionFuncTable[])();
-	//並走を開始する自機とカメラの距離
-	static const float runningSideStartDistance;
-	//並走を終了する自機とカメラの距離
-	static const float runningSideEndDistance;
+	//並走時の視点と自機の距離
+	static const Vector3 playerDistance;
 
 private: //メンバ変数
 	//プレイヤー自機
 	Stage02SortiePlayer* player = nullptr;
-	//カメラ視点と自機座標の距離
-	Vector3 eyePlayerDistance;
 	//出撃カメラ挙動
-	Stage02SortieActionPhase sortieMovePhase = Stage02SortieActionPhase::Stay;
+	Stage02SortieActionPhase sortieMovePhase = Stage02SortieActionPhase::LookPlayer;
 	//カメラ行動用タイマー
 	int32_t cameraActionTimer = 0;
+	//イージング用カメラ移動前視点
+	Vector3 moveBeforeEye = {};
 	//自機ズームを終了するか
 	bool isZoomEnd = false;
 };

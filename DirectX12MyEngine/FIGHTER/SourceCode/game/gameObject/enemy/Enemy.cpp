@@ -136,6 +136,8 @@ Vector2 Enemy::GetScreenPos()
 
 void Enemy::Fire()
 {
+	//自機がセットされていなければ抜ける
+	if (!player) { return; }
 	//座標が自機より手前なら発射しない
 	if (GetWorldPos().z <= player->GetWorldPos().z) { return; }
 
@@ -258,6 +260,9 @@ void Enemy::BreakEffect(ObjModel* model, const Vector3& velocity, const Vector3&
 
 void Enemy::FrontOfScreenDelete()
 {
+	//ゲームカメラがセットされていなければ抜ける
+	if (!gameCamera) { return; }
+
 	//座標がカメラより手前(画面外手前)まで行ったら削除
 	const float flontOfScreenDiffence = 20;
 	const float deletePos = gameCamera->GetPosition().z - flontOfScreenDiffence;

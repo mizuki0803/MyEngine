@@ -25,7 +25,7 @@ void BaseStageScene::AddEnemyBreakEffect(std::unique_ptr<EnemyBreakEffect> enemy
 	enemyBreakEffects.push_back(std::move(enemyBreakEffect));
 }
 
-void BaseStageScene::LoadEnemySetData(std::stringstream& commands, const std::string& fileName)
+void BaseStageScene::LoadSetData(std::stringstream& commands, const std::string& fileName)
 {
 	//ファイルを開く
 	std::ifstream file;
