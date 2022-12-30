@@ -9,7 +9,7 @@
 class BasePlayer;
 
 /// <summary>
-/// メダマーン
+/// ボス メダマーン
 /// </summary>
 class Medaman
 {

@@ -108,20 +108,10 @@ void Stage02Scene::Initialize()
 	//全敵初期化処理
 	InitializeEnemy();
 
-	//ボス(メダマーン)に必要な情報をセット
-	Medaman::SetPlayer(player.get());
-	MedamanMainBody::SetStageScene(this);
-	MedamanMainBody::SetMedamanMainBodyModel(modelMedamanMainBody.get());
-	MedamanMainBody::SetMedamanMainBodyDamageModel(modelMedamanMainBodyDamage.get());
-	MedamanMainBody::SetMedamanMainBodySleepModel(modelMedamanMainBodySleep.get());
-	MedamanMainBody::SetMedamanMainBodyDeadModel(modelMedamanMainBodyDead.get());
-	MedamanMainBody::SetBulletModel(modelEnemyBullet.get());
-	MedamanAvatar::SetStageScene(this);
-	MedamanAvatar::SetAvatarModel(modelMedamanAvatar.get());
-	MedamanAvatar::SetAvatarDamageModel(modelMedamanAvatarDamage.get());
-	MedamanAvatar::SetAvatarSleepModel(modelMedamanAvatarSleep.get());
-	MedamanAvatar::SetAvatarDeadModel(modelMedamanAvatarDead.get());
-	MedamanAvatar::SetBulletModel(modelEnemyBullet.get());
+	//ボス(ボス2)に必要な情報をセット
+	Boss2::SetPlayer(player.get());
+	Boss2Body::SetStageScene(this);
+	Boss2Body::SetBodyModel(modelMedamanMainBody.get());
 
 	//回復アイテムに必要な情報をセット
 	HealingItem::SetPlayer(player.get());
@@ -379,10 +369,6 @@ void Stage02Scene::Draw3DTopLightView()
 	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
 		breakEffect->DrawTopLightCameraView();
 	}
-	//ボス(メダマーン)
-	if (boss) {
-		boss->DrawTopLightCameraView();
-	}
 	//回復アイテム
 	for (const std::unique_ptr<HealingItem>& healingItem : healingItems) {
 		healingItem->DrawTopLightCameraView();
@@ -571,12 +557,12 @@ void Stage02Scene::ObjectRelease()
 		if (boss->GetIsDelete()) {
 			//自機を帰還させる
 			player->StageClearReturnStart(gameCamera->GetPosition());
-			//カメラのボス(メダマーン)本体情報を解除させる
+			//カメラのボス情報を解除させる
 			gameCamera->BossDelete();
 			//宇宙塵エフェクトのスクロール状態を解除
 			SpaceDustEffect::SetIsScrollMode(false);
 			//死亡後演出を生成
-			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetMainBody()->GetWorldPos()));
+			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetBody()->GetWorldPos(), false));
 			//カメラをシェイクさせる
 			const float shakePower = 25;
 			const float shakeTime = 80;
@@ -832,43 +818,11 @@ void Stage02Scene::CollisionCheck3d()
 	//ボスの存在がなければこの先の処理は行わない
 	if (!boss) { return; }
 
-#pragma region 自機とボス(メダマーン)分身の衝突判定
-	//自機が緊急回避をしていなければ判定する
-	if (!player->GetIsRoll()) {
-		//自機座標
-		posA = player->GetWorldPos();
-		//自機半径
-		radiusA = player->GetScale().x;
-
-		//ボス(メダマーン)分身のリストを持ってくる
-		const std::list<std::unique_ptr<MedamanAvatar>>& bossAvatars = boss->GetAvatars();
-		for (const std::unique_ptr<MedamanAvatar>& bossAvatar : bossAvatars) {
-			//自機がダメージノックバック状態なら飛ばす
-			if (player->GetIsDamageKnockback()) { continue; }
-
-			//ボス(メダマーン)分身座標
-			posB = bossAvatar->GetWorldPos();
-			//ボス(メダマーン)分身半径
-			radiusB = bossAvatar->GetScale().x;
-
-			//球と球の衝突判定を行う
-			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
-			//衝突していなければ飛ばす
-			if (!isCollision) { continue; }
-
-			//自機のダメージ用コールバック関数を呼び出す
-			player->OnCollisionDamage(posB);
-			//カメラをシェイクさせる
-			gameCamera->ShakeStart();
-		}
-	}
-#pragma endregion
-
-#pragma region 自機弾とボス(メダマーン)本体の衝突判定
+#pragma region 自機弾とボス(ボス2)胴体の衝突判定
 	//本体座標
-	posA = boss->GetMainBody()->GetWorldPos();
+	posA = boss->GetBody()->GetWorldPos();
 	//本体半径
-	radiusA = boss->GetMainBody()->GetScale().x;
+	radiusA = boss->GetBody()->GetScale().x;
 
 	//全て自機弾とボス(メダマーン)本体の衝突判定
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
@@ -882,51 +836,12 @@ void Stage02Scene::CollisionCheck3d()
 		//衝突していなければ飛ばす
 		if (!isCollision) { continue; }
 
-		//ボス(メダマーン)のコールバック関数を呼び出す
-		boss->OnCollisionMainBody(bullet->GetDamageNum(), posB, bullet->GetVelocity());
+		//ボス(ボス2)のコールバック関数を呼び出す
+		boss->OnCollisionBody(bullet->GetDamageNum(), posB, bullet->GetVelocity());
 		//自機弾のコールバック関数を呼び出す
-		//ダメージが通ったとき
-		if (boss->GetMainBody()->GetIsDamageTrigger()) { bullet->OnCollision(posA, radiusA); }
-		//ダメージが通らなかったとき
-		else { bullet->OnCollision(posA, radiusA, false); }
+		bullet->OnCollision(posA, radiusA);
 
 		break;
-	}
-#pragma endregion
-
-#pragma region 自機弾とボス(メダマーン)分身の衝突判定
-	//全てのボス(メダマーン)分身と全ての自機弾の衝突判定
-	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
-		//自機弾座標
-		posA = bullet->GetWorldPos();
-		//自機弾半径
-		radiusA = bullet->GetScale().x;
-
-		//ボス(メダマーン)分身のリストを持ってくる
-		const std::list<std::unique_ptr<MedamanAvatar>>& bossAvatars = boss->GetAvatars();
-		for (const std::unique_ptr<MedamanAvatar>& bossAvatar : bossAvatars) {
-			//ボス(メダマーン)分身座標
-			posB = bossAvatar->GetWorldPos();
-			//ボス(メダマーン)分身半径
-			radiusB = bossAvatar->GetScale().x;
-			//分身生存時は親子構造の為、本体の大きさを乗算して正しい大きさが分かる
-			if (!bossAvatar->GetIsDead()) { radiusB *= boss->GetMainBody()->GetScale().x; }
-
-			//球と球の衝突判定を行う
-			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
-			//衝突していなければ飛ばす
-			if (!isCollision) { continue; }
-
-			//ボス(メダマーン)のコールバック関数を呼び出す
-			boss->OnCollisionAvatar(bossAvatar.get(), bullet->GetDamageNum(), posA, bullet->GetVelocity());
-			//自機弾のコールバック関数を呼び出す
-			//ダメージが通ったとき
-			if (bossAvatar->GetIsDamageTrigger()) { bullet->OnCollision(posB, radiusB); }
-			//ダメージが通らなかったとき
-			else { bullet->OnCollision(posB, radiusB, false); }
-
-			break;
-		}
 	}
 #pragma endregion
 }
@@ -1151,7 +1066,7 @@ void Stage02Scene::BossBattleStart()
 	if (player->GetIsCrash()) { return; }
 
 	//ボスバトル開始座標
-	const float bossBattleStartPos = 3200;
+	const float bossBattleStartPos = 20;
 
 	//警告開始判定
 	if (!bossWarning) {
@@ -1177,10 +1092,10 @@ void Stage02Scene::BossBattleStart()
 		//ボス登場警告演出はもう使用しないので解放
 		bossWarning.reset();
 
-		//ボス(メダマーン)生成
+		//ボス(ボス2)生成
 		const float distance = 75;
-		const Vector3 bossBasePos = { 0, 23, bossBattleStartPos + distance };
-		boss.reset(Medaman::Create(bossBasePos));
+		const Vector3 bossBasePos = { 0, 3, bossBattleStartPos + distance };
+		boss.reset(Boss2::Create(bossBasePos));
 
 		//ボスバトル状態にする
 		isBossBattle = true;
@@ -1204,7 +1119,7 @@ void Stage02Scene::StageClear()
 		//自機をステージクリアの動きに変更
 		player->StageClearModeStart();
 		//カメラをステージクリアの動きに変更
-		gameCamera->StageClearModeStart(boss->GetMainBody());
+		gameCamera->StageClearModeStart(boss->GetBody());
 		//ハイスコア更新
 		EnemyDefeatCounter::CheckHighScore(1);
 	}
@@ -1228,7 +1143,6 @@ void Stage02Scene::StageResult()
 
 	//タイトルシーンに戻る
 	ReturnTitleScene();
-
 }
 
 void Stage02Scene::StageClearSetLightCameraPos()

@@ -1,9 +1,9 @@
 #include "BossDeadEffect.h"
 #include "ParticleEmitter.h"
 
-BossDeadEffect* BossDeadEffect::Create(const Vector3& deadPos)
+BossDeadEffect* BossDeadEffect::Create(const Vector3& deadPos, const bool isBlackSmoke)
 {
-	//弾弾のインスタンスを生成
+	//ボス死亡後エフェクトのインスタンスを生成
 	BossDeadEffect* bossDeadEffect = new BossDeadEffect();
 	if (bossDeadEffect == nullptr) {
 		return nullptr;
@@ -11,6 +11,8 @@ BossDeadEffect* BossDeadEffect::Create(const Vector3& deadPos)
 
 	//ボス死亡座標をセット
 	bossDeadEffect->deadPos = deadPos;
+	//黒煙を出すかセット
+	bossDeadEffect->isBlackSmoke = isBlackSmoke;
 
 	return bossDeadEffect;
 }
@@ -22,6 +24,10 @@ void BossDeadEffect::Update()
 
 	//爆発
 	Explosion();
+
+	//黒煙を出す状態でなければ抜ける
+	if (!isBlackSmoke) { return; }
+
 	//黒煙
 	BlackSmoke();
 }

@@ -1,5 +1,4 @@
 #include "Medaman.h"
-#include "Input.h"
 #include "SpriteTextureLoader.h"
 #include "BasePlayer.h"
 #include "MedamanAvatarType01.h"
@@ -86,7 +85,6 @@ void Medaman::Update()
 	if (bossNameUI) {
 		bossNameUI->Update();
 	}
-
 }
 
 void Medaman::Draw()

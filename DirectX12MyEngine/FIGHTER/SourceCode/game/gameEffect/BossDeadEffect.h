@@ -11,8 +11,9 @@ public: // 静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <param name="position">ボス死亡座標</param>
+	/// <param name="isBlackSmoke">黒煙を出すか</param>
 	/// <returns>ボス死亡後のエフェクト</returns>
-	static BossDeadEffect* Create(const Vector3& deadPos);
+	static BossDeadEffect* Create(const Vector3& deadPos, const bool isBlackSmoke);
 
 public: //メンバ関数
 	/// <summary>
@@ -39,4 +40,6 @@ private: //メンバ変数
 	int32_t timer = 0;
 	//爆発回数
 	int explosionCount = 0;
+	//黒煙を出すか
+	bool isBlackSmoke = false;
 };
