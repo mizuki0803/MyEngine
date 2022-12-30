@@ -3,8 +3,8 @@
 
 //ステージ01自機クラスを前方宣言
 class Stage01Player;
-//ボス本体を前方宣言
-class BossMainBody;
+//ボス(メダマーン)本体を前方宣言
+class MedamanMainBody;
 
 /// <summary>
 /// ステージ01ゲームカメラ
@@ -43,8 +43,8 @@ public: //メンバ関数
 	/// <summary>
 	/// ステージクリア後の動きを開始する
 	/// </summary>
-	/// <param name="bossMainBody">ボス本体</param>
-	void StageClearModeStart(BossMainBody* bossMainBody);
+	/// <param name="medamanMainBody">ボス(メダマーン)本体</param>
+	void StageClearModeStart(MedamanMainBody* medamanMainBody);
 
 	/// <summary>
 	/// ボスが削除されたら
@@ -108,8 +108,8 @@ private: //静的メンバ変数
 private: //メンバ変数
 	//ステージ01自機
 	Stage01Player* player = nullptr;
-	//ボス本体
-	BossMainBody* bossMainBody = nullptr;
+	//ボス(メダマーン)本体
+	MedamanMainBody* medamanMainBody = nullptr;
 	//墜落状態のカメラ位置に移動するか
 	bool isMoveCrashPos = false;
 	//墜落状態のカメラ位置に移動タイマー

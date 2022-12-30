@@ -17,7 +17,7 @@ void Stage02SortieCamera::Initialize()
 	Camera::Initialize();
 
 	//カメラの初期値をセット
-	eye = { 40, 1, 0 };
+	eye = { 35, 1, 0 };
 	moveBeforeEye = eye;
 }
 

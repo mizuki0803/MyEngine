@@ -1,7 +1,7 @@
 #include "Stage01GameCamera.h"
 #include "Easing.h"
 #include "Stage01Player.h"
-#include "BossMainBody.h"
+#include "MedamanMainBody.h"
 
 void (Stage01GameCamera::* Stage01GameCamera::stageClearCameraActionFuncTable[])() = {
 	&Stage01GameCamera::StageClearBossLook,
@@ -54,13 +54,13 @@ void Stage01GameCamera::CrashStart()
 	swayX = 0;
 }
 
-void Stage01GameCamera::StageClearModeStart(BossMainBody* bossMainBody)
+void Stage01GameCamera::StageClearModeStart(MedamanMainBody* medamanMainBody)
 {
-	//ボス本体をセット
-	this->bossMainBody = bossMainBody;
+	//ボス(メダマーン)本体をセット
+	this->medamanMainBody = medamanMainBody;
 	//ボスの方向を向くときのY座標をセット
 	const float upperNum = 10.0f;
-	bossLookPosY = bossMainBody->GetWorldPos().y + upperNum;
+	bossLookPosY = medamanMainBody->GetWorldPos().y + upperNum;
 	//移動前座標をセット
 	stageClearMoveBeforePos = position;
 	//移動前カメラ角度をセット
@@ -77,8 +77,8 @@ void Stage01GameCamera::BossDelete()
 	//ステージクリア後の状態でなければ抜ける
 	if (!isStageClearMode) { return; }
 
-	//ボス本体を解除
-	this->bossMainBody = nullptr;
+	//ボス(メダマーン)本体を解除
+	this->medamanMainBody = nullptr;
 	//移動前カメラ角度をセット
 	stageClearMoveBeforeRota = rotation;
 	//ステージクリア後の挙動を正面を向くへ
@@ -127,8 +127,8 @@ void Stage01GameCamera::StageClear()
 
 void Stage01GameCamera::StageClearBossLook()
 {
-	//ボス本体のインスタンスがなければ抜ける
-	if (!bossMainBody) { return; }
+	//ボス(メダマーン)本体のインスタンスがなければ抜ける
+	if (!medamanMainBody) { return; }
 
 	//ボスの方向を向く時間
 	const float bossLookTime = 120;
@@ -149,7 +149,7 @@ void Stage01GameCamera::StageClearBossLook()
 	}
 
 	//ボスの方向をだんだん向く
-	const Vector3 bossCameraVec = bossMainBody->GetWorldPos() - position;
+	const Vector3 bossCameraVec = medamanMainBody->GetWorldPos() - position;
 	Vector3 rota = {};
 	rota.y = XMConvertToDegrees(std::atan2(bossCameraVec.x, bossCameraVec.z));
 	XMMATRIX matRot;

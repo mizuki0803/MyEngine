@@ -62,14 +62,14 @@ void Stage01Scene::Initialize()
 	modelEnemyMiniRobotBreak[2].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak03"));
 	modelEnemyMiniRobotBreak[3].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak04"));
 	modelEnemyMiniRobotBreak[4].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak05"));
-	modelBossMainBody.reset(ObjModel::LoadFromOBJ("bossMainBody", true));
-	modelBossMainBodyDamage.reset(ObjModel::LoadFromOBJ("bossMainBodyDamage", true));
-	modelBossMainBodySleep.reset(ObjModel::LoadFromOBJ("bossMainBodySleep", true));
-	modelBossMainBodyDead.reset(ObjModel::LoadFromOBJ("bossMainBodyDead", true));
-	modelBossAvatar.reset(ObjModel::LoadFromOBJ("bossAvatar", true));
-	modelBossAvatarDamage.reset(ObjModel::LoadFromOBJ("bossAvatarDamage", true));
-	modelBossAvatarSleep.reset(ObjModel::LoadFromOBJ("bossAvatarSleep", true));
-	modelBossAvatarDead.reset(ObjModel::LoadFromOBJ("bossAvatarDead", true));
+	modelMedamanMainBody.reset(ObjModel::LoadFromOBJ("medamanMainBody", true));
+	modelMedamanMainBodyDamage.reset(ObjModel::LoadFromOBJ("medamanMainBodyDamage", true));
+	modelMedamanMainBodySleep.reset(ObjModel::LoadFromOBJ("medamanMainBodySleep", true));
+	modelMedamanMainBodyDead.reset(ObjModel::LoadFromOBJ("medamanMainBodyDead", true));
+	modelMedamanAvatar.reset(ObjModel::LoadFromOBJ("medamanAvatar", true));
+	modelMedamanAvatarDamage.reset(ObjModel::LoadFromOBJ("medamanAvatarDamage", true));
+	modelMedamanAvatarSleep.reset(ObjModel::LoadFromOBJ("medamanAvatarSleep", true));
+	modelMedamanAvatarDead.reset(ObjModel::LoadFromOBJ("medamanAvatarDead", true));
 	modelHealingItem.reset(ObjModel::LoadFromOBJ("healingItem"));
 
 	//ポストエフェクトのブラーを解除しておく
@@ -103,20 +103,20 @@ void Stage01Scene::Initialize()
 	//全敵初期化処理
 	InitializeEnemy();
 
-	//ボスに必要な情報をセット
-	Boss::SetPlayer(player.get());
-	BossMainBody::SetStageScene(this);
-	BossMainBody::SetBossMainBodyModel(modelBossMainBody.get());
-	BossMainBody::SetBossMainBodyDamageModel(modelBossMainBodyDamage.get());
-	BossMainBody::SetBossMainBodySleepModel(modelBossMainBodySleep.get());
-	BossMainBody::SetBossMainBodyDeadModel(modelBossMainBodyDead.get());
-	BossMainBody::SetBulletModel(modelEnemyBullet.get());
-	BossAvatar::SetStageScene(this);
-	BossAvatar::SetAvatarModel(modelBossAvatar.get());
-	BossAvatar::SetAvatarDamageModel(modelBossAvatarDamage.get());
-	BossAvatar::SetAvatarSleepModel(modelBossAvatarSleep.get());
-	BossAvatar::SetAvatarDeadModel(modelBossAvatarDead.get());
-	BossAvatar::SetBulletModel(modelEnemyBullet.get());
+	//ボス(メダマーン)に必要な情報をセット
+	Medaman::SetPlayer(player.get());
+	MedamanMainBody::SetStageScene(this);
+	MedamanMainBody::SetMedamanMainBodyModel(modelMedamanMainBody.get());
+	MedamanMainBody::SetMedamanMainBodyDamageModel(modelMedamanMainBodyDamage.get());
+	MedamanMainBody::SetMedamanMainBodySleepModel(modelMedamanMainBodySleep.get());
+	MedamanMainBody::SetMedamanMainBodyDeadModel(modelMedamanMainBodyDead.get());
+	MedamanMainBody::SetBulletModel(modelEnemyBullet.get());
+	MedamanAvatar::SetStageScene(this);
+	MedamanAvatar::SetAvatarModel(modelMedamanAvatar.get());
+	MedamanAvatar::SetAvatarDamageModel(modelMedamanAvatarDamage.get());
+	MedamanAvatar::SetAvatarSleepModel(modelMedamanAvatarSleep.get());
+	MedamanAvatar::SetAvatarDeadModel(modelMedamanAvatarDead.get());
+	MedamanAvatar::SetBulletModel(modelEnemyBullet.get());
 
 	//回復アイテムに必要な情報をセット
 	HealingItem::SetPlayer(player.get());
@@ -210,7 +210,7 @@ void Stage01Scene::Update()
 	for (const std::unique_ptr<Enemy>& enemy : enemys) {
 		enemy->Update();
 	}
-	//ボス
+	//ボス(メダマーン)
 	if (boss) {
 		boss->Update();
 	}
@@ -314,7 +314,7 @@ void Stage01Scene::Draw3D()
 	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
 		breakEffect->Draw();
 	}
-	//ボス
+	//ボス(メダマーン)
 	if (boss) {
 		boss->Draw();
 	}
@@ -375,7 +375,7 @@ void Stage01Scene::Draw3DTopLightView()
 	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
 		breakEffect->DrawTopLightCameraView();
 	}
-	//ボス
+	//ボス(メダマーン)
 	if (boss) {
 		boss->DrawTopLightCameraView();
 	}
@@ -395,7 +395,7 @@ void Stage01Scene::DrawFrontSprite()
 
 	//自機のUI
 	player->DrawUI();
-	//ボスのUI
+	//ボス(メダマーン)のUI
 	if (boss) {
 		boss->DrawUI();
 	}
@@ -530,12 +530,12 @@ void Stage01Scene::ObjectRelease()
 		return healingItem->GetIsDelete();
 		});
 
-	//削除状態のボスの削除
+	//削除状態のボス(メダマーン)の削除
 	if (boss) {
 		if (boss->GetIsDelete()) {
 			//自機を帰還させる
 			player->StageClearReturnStart(gameCamera->GetPosition());
-			//カメラのボス本体情報を解除させる
+			//カメラのボス(メダマーン)本体情報を解除させる
 			gameCamera->BossDelete();
 			//地面のスクロール状態を解除
 			gameGroundManager->SetIsScroll(false);
@@ -744,10 +744,10 @@ void Stage01Scene::CollisionCheck3d()
 	}
 #pragma endregion
 
-	//ボスの存在がなければこの先の処理は行わない
+	//ボス(メダマーン)の存在がなければこの先の処理は行わない
 	if (!boss) { return; }
 
-#pragma region 自機とボス分身の衝突判定
+#pragma region 自機とボス(メダマーン)分身の衝突判定
 	//自機が緊急回避をしていなければ判定する
 	if (!player->GetIsRoll()) {
 		//自機座標
@@ -755,15 +755,15 @@ void Stage01Scene::CollisionCheck3d()
 		//自機半径
 		radiusA = player->GetScale().x;
 
-		//ボス分身のリストを持ってくる
-		const std::list<std::unique_ptr<BossAvatar>>& bossAvatars = boss->GetAvatars();
-		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
+		//ボス(メダマーン)分身のリストを持ってくる
+		const std::list<std::unique_ptr<MedamanAvatar>>& bossAvatars = boss->GetAvatars();
+		for (const std::unique_ptr<MedamanAvatar>& bossAvatar : bossAvatars) {
 			//自機がダメージノックバック状態なら飛ばす
 			if (player->GetIsDamageKnockback()) { continue; }
 
-			//ボス分身座標
+			//ボス(メダマーン)分身座標
 			posB = bossAvatar->GetWorldPos();
-			//ボス分身半径
+			//ボス(メダマーン)分身半径
 			radiusB = bossAvatar->GetScale().x;
 
 			//球と球の衝突判定を行う
@@ -779,13 +779,13 @@ void Stage01Scene::CollisionCheck3d()
 	}
 #pragma endregion
 
-#pragma region 自機弾とボス本体の衝突判定
+#pragma region 自機弾とボス(メダマーン)本体の衝突判定
 	//本体座標
 	posA = boss->GetMainBody()->GetWorldPos();
 	//本体半径
 	radiusA = boss->GetMainBody()->GetScale().x;
 
-	//全て自機弾とボス本体の衝突判定
+	//全て自機弾とボス(メダマーン)本体の衝突判定
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
 		//自機弾座標
 		posB = bullet->GetWorldPos();
@@ -797,7 +797,7 @@ void Stage01Scene::CollisionCheck3d()
 		//衝突していなければ飛ばす
 		if (!isCollision) { continue; }
 
-		//ボスのコールバック関数を呼び出す
+		//ボス(メダマーン)のコールバック関数を呼び出す
 		boss->OnCollisionMainBody(bullet->GetDamageNum(), posB, bullet->GetVelocity());
 		//自機弾のコールバック関数を呼び出す
 		//ダメージが通ったとき
@@ -809,20 +809,20 @@ void Stage01Scene::CollisionCheck3d()
 	}
 #pragma endregion
 
-#pragma region 自機弾とボス分身の衝突判定
-	//全てのボス分身と全ての自機弾の衝突判定
+#pragma region 自機弾とボス(メダマーン)分身の衝突判定
+	//全てのボス(メダマーン)分身と全ての自機弾の衝突判定
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
 		//自機弾座標
 		posA = bullet->GetWorldPos();
 		//自機弾半径
 		radiusA = bullet->GetScale().x;
 
-		//ボス分身のリストを持ってくる
-		const std::list<std::unique_ptr<BossAvatar>>& bossAvatars = boss->GetAvatars();
-		for (const std::unique_ptr<BossAvatar>& bossAvatar : bossAvatars) {
-			//ボス分身座標
+		//ボス(メダマーン)分身のリストを持ってくる
+		const std::list<std::unique_ptr<MedamanAvatar>>& bossAvatars = boss->GetAvatars();
+		for (const std::unique_ptr<MedamanAvatar>& bossAvatar : bossAvatars) {
+			//ボス(メダマーン)分身座標
 			posB = bossAvatar->GetWorldPos();
-			//ボス分身半径
+			//ボス(メダマーン)分身半径
 			radiusB = bossAvatar->GetScale().x;
 			//分身生存時は親子構造の為、本体の大きさを乗算して正しい大きさが分かる
 			if (!bossAvatar->GetIsDead()) { radiusB *= boss->GetMainBody()->GetScale().x; }
@@ -832,7 +832,7 @@ void Stage01Scene::CollisionCheck3d()
 			//衝突していなければ飛ばす
 			if (!isCollision) { continue; }
 
-			//ボスのコールバック関数を呼び出す
+			//ボス(メダマーン)のコールバック関数を呼び出す
 			boss->OnCollisionAvatar(bossAvatar.get(), bullet->GetDamageNum(), posA, bullet->GetVelocity());
 			//自機弾のコールバック関数を呼び出す
 			//ダメージが通ったとき
@@ -1043,10 +1043,10 @@ void Stage01Scene::BossBattleStart()
 		//ボス登場警告演出はもう使用しないので解放
 		bossWarning.reset();
 
-		//ボス生成
+		//ボス(メダマーン)生成
 		const float distance = 75;
 		const Vector3 bossBasePos = { 0, 23, bossBattleStartPos + distance };
-		boss.reset(Boss::Create(bossBasePos));
+		boss.reset(Medaman::Create(bossBasePos));
 
 		//ボスバトル状態にする
 		isBossBattle = true;

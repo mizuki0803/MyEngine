@@ -60,7 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameCamera\sortieCamera;$(ProjectDir)SourceCode\game\gameCamera\stageCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\sortiePlayer;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameObject\player\stagePlayer;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameScene\sortieScene;$(ProjectDir)SourceCode\game\gameScene\stageScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;$(ProjectDir)SourceCode\game\gameSprite\UI\warningUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameCamera\sortieCamera;$(ProjectDir)SourceCode\game\gameCamera\stageCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\medaman;$(ProjectDir)SourceCode\game\gameObject\boss\medaman\medamanAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\sortiePlayer;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameObject\player\stagePlayer;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameScene\sortieScene;$(ProjectDir)SourceCode\game\gameScene\stageScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;$(ProjectDir)SourceCode\game\gameSprite\UI\warningUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -81,7 +81,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameCamera\sortieCamera;$(ProjectDir)SourceCode\game\gameCamera\stageCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\bossAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\sortiePlayer;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameObject\player\stagePlayer;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameScene\sortieScene;$(ProjectDir)SourceCode\game\gameScene\stageScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;$(ProjectDir)SourceCode\game\gameSprite\UI\warningUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(ProjectDir)SourceCode;$(ProjectDir)SourceCode\engine;$(ProjectDir)SourceCode\engine\2d;$(ProjectDir)SourceCode\engine\3d;$(ProjectDir)SourceCode\engine\audio;$(ProjectDir)SourceCode\engine\base;$(ProjectDir)SourceCode\engine\behaviorTree;$(ProjectDir)SourceCode\engine\camera;$(ProjectDir)SourceCode\engine\collision;$(ProjectDir)SourceCode\engine\input;$(ProjectDir)SourceCode\engine\light;$(ProjectDir)SourceCode\engine\math;$(ProjectDir)SourceCode\engine\scene;$(ProjectDir)SourceCode\game\gameCamera;$(ProjectDir)SourceCode\game\gameCamera\sortieCamera;$(ProjectDir)SourceCode\game\gameCamera\stageCamera;$(ProjectDir)SourceCode\game\gameEffect;$(ProjectDir)SourceCode\game\gameObject;$(ProjectDir)SourceCode\game\gameObject\background;$(ProjectDir)SourceCode\game\gameObject\boss;$(ProjectDir)SourceCode\game\gameObject\boss\medaman;$(ProjectDir)SourceCode\game\gameObject\boss\medaman\medamanAvatar;$(ProjectDir)SourceCode\game\gameObject\enemy;$(ProjectDir)SourceCode\game\gameObject\enemy\enemyBullet;$(ProjectDir)SourceCode\game\gameObject\item;$(ProjectDir)SourceCode\game\gameObject\sortiePlayer;$(ProjectDir)SourceCode\game\gameObject\player;$(ProjectDir)SourceCode\game\gameObject\player\playerBullet;$(ProjectDir)SourceCode\game\gameObject\player\reticle;$(ProjectDir)SourceCode\game\gameObject\player\reticle\playerReticle;$(ProjectDir)SourceCode\game\gameObject\player\stagePlayer;$(ProjectDir)SourceCode\game\gameScene;$(ProjectDir)SourceCode\game\gameScene\sortieScene;$(ProjectDir)SourceCode\game\gameScene\stageScene;$(ProjectDir)SourceCode\game\gameSprite;$(ProjectDir)SourceCode\game\gameSprite\UI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\bossUI\bossNameUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerHPUI;$(ProjectDir)SourceCode\game\gameSprite\UI\playerUI\playerSpeedChangeUI;$(ProjectDir)SourceCode\game\gameSprite\UI\warningUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -150,14 +150,14 @@
     <ClCompile Include="SourceCode\game\gameObject\background\Building.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Meteorite.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\background\Skydome.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\boss\Boss.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatar.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType01.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType02.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType03.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType04.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\boss\BossBehaviorTree.cpp" />
-    <ClCompile Include="SourceCode\game\gameObject\boss\BossMainBody.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\Medaman.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatar.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType01.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType02.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType03.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType04.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\MedamanBehaviorTree.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\MedamanMainBody.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\CannonEnemy.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\CircularEnemy.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\enemy\ComeGoEnemy.cpp" />
@@ -376,14 +376,14 @@
     <ClInclude Include="SourceCode\game\gameObject\background\Building.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Meteorite.h" />
     <ClInclude Include="SourceCode\game\gameObject\background\Skydome.h" />
-    <ClInclude Include="SourceCode\game\gameObject\boss\Boss.h" />
-    <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatar.h" />
-    <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType01.h" />
-    <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType02.h" />
-    <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType03.h" />
-    <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType04.h" />
-    <ClInclude Include="SourceCode\game\gameObject\boss\BossBehaviorTree.h" />
-    <ClInclude Include="SourceCode\game\gameObject\boss\BossMainBody.h" />
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\Medaman.h" />
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatar.h" />
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType01.h" />
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType02.h" />
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType03.h" />
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType04.h" />
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\MedamanBehaviorTree.h" />
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\MedamanMainBody.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\CannonEnemy.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\CircularEnemy.h" />
     <ClInclude Include="SourceCode\game\gameObject\enemy\ComeGoEnemy.h" />

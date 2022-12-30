@@ -123,9 +123,6 @@
     <Filter Include="ソース ファイル\game\gameObject\boss">
       <UniqueIdentifier>{91203ab6-acd7-4054-abd2-437daabf050b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\gameObject\boss\bossAvatar">
-      <UniqueIdentifier>{d23f1597-33f2-4e94-8915-89261bcb15f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\game\gameObject\sortiePlayer">
       <UniqueIdentifier>{58b537c3-9b84-4d42-ae86-a531e03fe10e}</UniqueIdentifier>
     </Filter>
@@ -209,6 +206,12 @@
     </Filter>
     <Filter Include="ソース ファイル\game\gameScene\sortieScene">
       <UniqueIdentifier>{fc264182-0760-40a4-9a67-21ceb7ffbb6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\boss\medaman">
+      <UniqueIdentifier>{715f9610-86f2-490d-b9c6-fdc6afe27a85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game\gameObject\boss\medaman\medamanAvatar">
+      <UniqueIdentifier>{d23f1597-33f2-4e94-8915-89261bcb15f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -310,30 +313,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\background\Skydome.cpp">
       <Filter>ソース ファイル\game\gameObject\background\skydome</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatar.cpp">
-      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType01.cpp">
-      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType02.cpp">
-      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType03.cpp">
-      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType04.cpp">
-      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\boss\Boss.cpp">
-      <Filter>ソース ファイル\game\gameObject\boss</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\boss\BossBehaviorTree.cpp">
-      <Filter>ソース ファイル\game\gameObject\boss</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\game\gameObject\boss\BossMainBody.cpp">
-      <Filter>ソース ファイル\game\gameObject\boss</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\enemy\CannonEnemy.cpp">
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
@@ -599,6 +578,30 @@
     <ClCompile Include="SourceCode\game\gameScene\sortieScene\Stage02SortieScene.cpp">
       <Filter>ソース ファイル\game\gameScene\sortieScene</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatar.cpp">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman\medamanAvatar</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType01.cpp">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman\medamanAvatar</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType02.cpp">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman\medamanAvatar</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType03.cpp">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman\medamanAvatar</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType04.cpp">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman\medamanAvatar</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\Medaman.cpp">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\MedamanBehaviorTree.cpp">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\boss\medaman\MedamanMainBody.cpp">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -772,30 +775,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\background\Skydome.h">
       <Filter>ソース ファイル\game\gameObject\background\skydome</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatar.h">
-      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType01.h">
-      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType02.h">
-      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType03.h">
-      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\boss\bossAvatar\BossAvatarType04.h">
-      <Filter>ソース ファイル\game\gameObject\boss\bossAvatar</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\boss\Boss.h">
-      <Filter>ソース ファイル\game\gameObject\boss</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\boss\BossBehaviorTree.h">
-      <Filter>ソース ファイル\game\gameObject\boss</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\game\gameObject\boss\BossMainBody.h">
-      <Filter>ソース ファイル\game\gameObject\boss</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\enemy\CannonEnemy.h">
       <Filter>ソース ファイル\game\gameObject\enemy</Filter>
@@ -1066,6 +1045,30 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameScene\sortieScene\Stage02SortieScene.h">
       <Filter>ソース ファイル\game\gameScene\sortieScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatar.h">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman\medamanAvatar</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType01.h">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman\medamanAvatar</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType02.h">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman\medamanAvatar</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType03.h">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman\medamanAvatar</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType04.h">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman\medamanAvatar</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\Medaman.h">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\MedamanBehaviorTree.h">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\boss\medaman\MedamanMainBody.h">
+      <Filter>ソース ファイル\game\gameObject\boss\medaman</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

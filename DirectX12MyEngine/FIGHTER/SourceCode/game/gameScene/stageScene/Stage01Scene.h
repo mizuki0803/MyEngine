@@ -3,7 +3,7 @@
 #include "Stage01GameCamera.h"
 #include "Collision.h"
 #include "Stage01Player.h"
-#include "Boss.h"
+#include "Medaman.h"
 #include "BossDeadEffect.h"
 #include "GameGroundManager.h"
 #include "GameBuildingManager.h"
@@ -136,21 +136,21 @@ private: //メンバ変数
 	std::array<std::unique_ptr<ObjModel>, 5> modelEnemyFighterBreak;
 	std::unique_ptr<ObjModel> modelEnemyMiniRobot;
 	std::array<std::unique_ptr<ObjModel>, 5> modelEnemyMiniRobotBreak;
-	std::unique_ptr<ObjModel> modelBossMainBody;
-	std::unique_ptr<ObjModel> modelBossMainBodyDamage;
-	std::unique_ptr<ObjModel> modelBossMainBodySleep;
-	std::unique_ptr<ObjModel> modelBossMainBodyDead;
-	std::unique_ptr<ObjModel> modelBossAvatar;
-	std::unique_ptr<ObjModel> modelBossAvatarDamage;
-	std::unique_ptr<ObjModel> modelBossAvatarSleep;
-	std::unique_ptr<ObjModel> modelBossAvatarDead;
+	std::unique_ptr<ObjModel> modelMedamanMainBody;
+	std::unique_ptr<ObjModel> modelMedamanMainBodyDamage;
+	std::unique_ptr<ObjModel> modelMedamanMainBodySleep;
+	std::unique_ptr<ObjModel> modelMedamanMainBodyDead;
+	std::unique_ptr<ObjModel> modelMedamanAvatar;
+	std::unique_ptr<ObjModel> modelMedamanAvatarDamage;
+	std::unique_ptr<ObjModel> modelMedamanAvatarSleep;
+	std::unique_ptr<ObjModel> modelMedamanAvatarDead;
 	std::unique_ptr<ObjModel> modelHealingItem;
 
 	//自機
 	std::unique_ptr<Stage01Player> player;
 
-	//ボス
-	std::unique_ptr<Boss> boss;
+	//ボス(メダマーン)
+	std::unique_ptr<Medaman> boss;
 	//ボス死亡後の演出管理
 	std::unique_ptr<BossDeadEffect> bossDeadEffect;
 

@@ -1,7 +1,7 @@
 #include "Stage02GameCamera.h"
 #include "Easing.h"
 #include "Stage02Player.h"
-#include "BossMainBody.h"
+#include "MedamanMainBody.h"
 
 void (Stage02GameCamera::* Stage02GameCamera::stageClearCameraActionFuncTable[])() = {
 	&Stage02GameCamera::StageClearBossLook,
@@ -59,7 +59,7 @@ void Stage02GameCamera::CrashStart()
 	swayX = 0;
 }
 
-void Stage02GameCamera::StageClearModeStart(BossMainBody* bossMainBody)
+void Stage02GameCamera::StageClearModeStart(MedamanMainBody* bossMainBody)
 {
 	//ボス本体をセット
 	this->bossMainBody = bossMainBody;
