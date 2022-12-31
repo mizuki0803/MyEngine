@@ -46,9 +46,6 @@ void Stage02Scene::Initialize()
 
 	//objからモデルデータを読み込む
 	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeStage02"));
-	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
-	modelBuilding[0].reset(ObjModel::LoadFromOBJ("building01"));
-	modelBuilding[1].reset(ObjModel::LoadFromOBJ("building02"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelMeteoriteWhite.reset(ObjModel::LoadFromOBJ("meteoriteWhite", true));
 	modelMeteoriteBrown.reset(ObjModel::LoadFromOBJ("meteoriteBrown", true));
@@ -69,13 +66,6 @@ void Stage02Scene::Initialize()
 	modelEnemyMiniRobotBreak[3].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak04"));
 	modelEnemyMiniRobotBreak[4].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak05"));
 	modelMedamanMainBody.reset(ObjModel::LoadFromOBJ("medamanMainBody", true));
-	modelMedamanMainBodyDamage.reset(ObjModel::LoadFromOBJ("medamanMainBodyDamage", true));
-	modelMedamanMainBodySleep.reset(ObjModel::LoadFromOBJ("medamanMainBodySleep", true));
-	modelMedamanMainBodyDead.reset(ObjModel::LoadFromOBJ("medamanMainBodyDead", true));
-	modelMedamanAvatar.reset(ObjModel::LoadFromOBJ("medamanAvatar", true));
-	modelMedamanAvatarDamage.reset(ObjModel::LoadFromOBJ("medamanAvatarDamage", true));
-	modelMedamanAvatarSleep.reset(ObjModel::LoadFromOBJ("medamanAvatarSleep", true));
-	modelMedamanAvatarDead.reset(ObjModel::LoadFromOBJ("medamanAvatarDead", true));
 	modelHealingItem.reset(ObjModel::LoadFromOBJ("healingItem"));
 
 	//ポストエフェクトのブラーを解除しておく
@@ -177,8 +167,6 @@ void Stage02Scene::Update()
 
 	//カメラ更新
 	gameCamera->Update();
-	//影生成用ライトカメラ
-	LightCameraUpdate();
 
 	//ライト更新
 	lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
@@ -201,7 +189,7 @@ void Stage02Scene::Update()
 	for (const std::unique_ptr<Enemy>& enemy : enemys) {
 		enemy->Update();
 	}
-	//ボス(メダマーン)
+	//ボス(ボス2)
 	if (boss) {
 		boss->Update();
 	}
@@ -218,6 +206,7 @@ void Stage02Scene::Update()
 		healingItem->Update();
 	}
 	//天球
+	skydome->SetPosition({ 0, 0, gameCamera->GetPosition().z }); //天球をカメラに追従させる
 	skydome->Update();
 	//背景用隕石
 	for (const std::unique_ptr<Meteorite>& meteorite : meteorites) {
@@ -305,7 +294,7 @@ void Stage02Scene::Draw3D()
 	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
 		breakEffect->Draw();
 	}
-	//ボス(メダマーン)
+	//ボス(ボス2)
 	if (boss) {
 		boss->Draw();
 	}
@@ -389,7 +378,7 @@ void Stage02Scene::DrawFrontSprite()
 
 	//自機のUI
 	player->DrawUI();
-	//ボス(メダマーン)のUI
+	//ボス(ボス2)のUI
 	if (boss) {
 		boss->DrawUI();
 	}
@@ -418,24 +407,6 @@ void Stage02Scene::DrawFrontSprite()
 	SceneChangeEffect::Draw();
 
 	///-------スプライト描画ここまで-------///
-}
-
-void Stage02Scene::LightCameraUpdate()
-{
-	//ターゲットになる座標
-	const Vector3 targetPos = gameCamera->GetPosition();
-	//ライトカメラ用の視点
-	const Vector3 lightEye = targetPos + lightCameraTargetDistance;
-	lightCamera->SetEyeTarget(lightEye, targetPos);
-	lightCamera->Update();
-
-
-	//頭上からのライトカメラ用ターゲットと視点の距離
-	const Vector3 topCameraTargetDistance = { 0, 500, -350 };
-	//頭上からのライトカメラ用の視点
-	const Vector3 topLightEye = targetPos + topCameraTargetDistance;
-	topLightCamera->SetEyeTarget(topLightEye, targetPos);
-	topLightCamera->Update();
 }
 
 void Stage02Scene::SpaceDustEffectCreateManager()
@@ -552,15 +523,11 @@ void Stage02Scene::ObjectRelease()
 		return spaceDustEffect->GetIsDelete();
 		});
 
-	//削除状態のボス(メダマーン)の削除
+	//削除状態のボス(ボス2)の削除
 	if (boss) {
 		if (boss->GetIsDelete()) {
-			//自機を帰還させる
-			player->StageClearReturnStart(gameCamera->GetPosition());
 			//カメラのボス情報を解除させる
 			gameCamera->BossDelete();
-			//宇宙塵エフェクトのスクロール状態を解除
-			SpaceDustEffect::SetIsScrollMode(false);
 			//死亡後演出を生成
 			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetBody()->GetWorldPos(), false));
 			//カメラをシェイクさせる
@@ -577,6 +544,19 @@ void Stage02Scene::ObjectRelease()
 	multiHitUIs.remove_if([](std::unique_ptr<MultiHitUI>& multiHitUI) {
 		return multiHitUI->GetIsDead();
 		});
+
+	//爆発終了状態のボス死亡後演出の削除
+	if (bossDeadEffect) {
+		if (bossDeadEffect->GetIsExplosionEnd()) {
+			//自機を前進させる
+			player->SetStageClearModePhase(Stage02Player::StageClearModePhase::Advance);
+			////カメラのステージクリア後行動を自機の正面に移動に変更
+			gameCamera->StageClearPlayerFrontStart();
+
+			//解放
+			bossDeadEffect.reset();
+		}
+	}
 }
 
 void Stage02Scene::CollisionCheck3d()
@@ -824,7 +804,7 @@ void Stage02Scene::CollisionCheck3d()
 	//本体半径
 	radiusA = boss->GetBody()->GetScale().x;
 
-	//全て自機弾とボス(メダマーン)本体の衝突判定
+	//全て自機弾とボス(ボス2)本体の衝突判定
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
 		//自機弾座標
 		posB = bullet->GetWorldPos();
@@ -1060,13 +1040,13 @@ void Stage02Scene::UpdateMeteoriteSetCommands(const Vector3& targetPosition)
 
 void Stage02Scene::BossBattleStart()
 {
-	//既にボス(メダマーン)バトルなら抜ける
+	//既にボス(ボス2)バトルなら抜ける
 	if (isBossBattle) { return; }
 	//自機が墜落状態なら抜ける
 	if (player->GetIsCrash()) { return; }
 
 	//ボスバトル開始座標
-	const float bossBattleStartPos = 20;
+	const float bossBattleStartPos = 3200;
 
 	//警告開始判定
 	if (!bossWarning) {
@@ -1093,7 +1073,7 @@ void Stage02Scene::BossBattleStart()
 		bossWarning.reset();
 
 		//ボス(ボス2)生成
-		const float distance = 75;
+		const float distance = 100;
 		const Vector3 bossBasePos = { 0, 3, bossBattleStartPos + distance };
 		boss.reset(Boss2::Create(bossBasePos));
 
@@ -1106,9 +1086,6 @@ void Stage02Scene::StageClear()
 {
 	//ステージクリアでないとき
 	if (!isStageClear) {
-		//天球をカメラに追従させる
-		skydome->SetPosition({ 0, 0, gameCamera->GetPosition().z });
-
 		//そもそもボスがいなければ抜ける
 		if (!boss) { return; }
 		//ボスが死亡していなければ抜ける
@@ -1120,8 +1097,13 @@ void Stage02Scene::StageClear()
 		player->StageClearModeStart();
 		//カメラをステージクリアの動きに変更
 		gameCamera->StageClearModeStart(boss->GetBody());
+		//倒した数カウンターを増やす(大きいボスなので10)
+		const int defeatNum = 10;
+		EnemyDefeatCounter::AddCounter(defeatNum);
 		//ハイスコア更新
 		EnemyDefeatCounter::CheckHighScore(1);
+		//宇宙塵エフェクトのスクロール状態を解除
+		SpaceDustEffect::SetIsScrollMode(false);
 	}
 	//ステージクリア後
 	else {
@@ -1132,61 +1114,39 @@ void Stage02Scene::StageClear()
 
 void Stage02Scene::StageResult()
 {
-	//ステージクリア時の影の向きに変更
-	StageClearSetLightCameraPos();
-
 	//ステージクリアテキスト生成と解放
-	StageClearTextCreateAndRelease();
+	StageClearTextCreate();
 
 	//ステージリザルトUI生成と解放
 	StageResultUICreateAndRelease();
+
+	//ステージクリア後自機のブースト行動開始判定
+	StageClearPlayerBoostStart();
 
 	//タイトルシーンに戻る
 	ReturnTitleScene();
 }
 
-void Stage02Scene::StageClearSetLightCameraPos()
+void Stage02Scene::StageClearTextCreate()
 {
-	//既にステージクリア用影状態なら抜ける
-	if (isStageClearShadow) { return; }
-	//自機のステージクリア後行動が上昇でなければ抜ける
-	if (!(player->GetStageClearModePhase() == Stage02Player::StageClearModePhase::Up)) { return; }
+	//既にステージクリアテキストのインスタンスがあったら抜ける
+	if (stageClearText) { return; }
+	//カメラのステージクリア後行動が自機の周りを回るでなければ抜ける
+	if (!(gameCamera->GetStageClearModePhase() == Stage02GameCamera::StageClearModePhase::PlayerAround)) { return; }
 
-	//ステージクリア用影状態にする
-	isStageClearShadow = true;
-	//影用光源カメラを遠ざける
-	lightCameraTargetDistance = { -400, 450, -400 };
-	lightCamera->SetProjectionNum({ 1300, 1300 }, { -200, -1300 });
-}
-
-void Stage02Scene::StageClearTextCreateAndRelease()
-{
-	//ステージクリアテキストのインスタンスがないとき
-	if (!stageClearText) {
-		//カメラのステージクリア後行動が自機をズームでなければ抜ける
-		if (!(gameCamera->GetStageClearModePhase() == Stage02GameCamera::StageClearModePhase::PlayerZoom)) { return; }
-
-		//ステージクリアテキスト生成
-		stageClearText.reset(StageClearText::Create());
-	}
-	//ステージクリアテキストのインスタンスがあるとき
-	else {
-		//カメラのステージクリア後行動が自機の方向をずっと向くでなければ抜ける
-		if (!(gameCamera->GetStageClearModePhase() == Stage02GameCamera::StageClearModePhase::PlayerFollow)) { return; }
-
-		//ステージクリアテキストの解放
-		stageClearText.reset();
-	}
+	//ステージクリアテキスト生成
+	stageClearText.reset(StageClearText::Create());
 }
 
 void Stage02Scene::StageResultUICreateAndRelease()
 {
 	//ステージリザルトUIのインスタンスがないとき
 	if (!stageResultUI) {
-		//カメラのステージクリア後行動が自機横に移動でなければ抜ける
-		if (!(gameCamera->GetStageClearModePhase() == Stage02GameCamera::StageClearModePhase::PlayerSideMove)) { return; }
-		//自機のステージクリア後行動が停止でなければ抜ける
-		if (!(player->GetStageClearModePhase() == Stage02Player::StageClearModePhase::Stay)) { return; }
+		//カメラの自機の周りを回る回転角が指定した値以上なら抜ける
+		const float angleLimit = -120;
+		if (gameCamera->GetPlayerAroundRotAngle() >= angleLimit) { return; }
+		//カメラのステージクリア後行動が自機の周りを回るでなければ抜ける
+		if (!(gameCamera->GetStageClearModePhase() == Stage02GameCamera::StageClearModePhase::PlayerAround)) { return; }
 
 		//ステージリザルトUI生成
 		stageResultUI.reset(StageResultUI::Create(EnemyDefeatCounter::GetDefeatCount(), false));
@@ -1195,8 +1155,6 @@ void Stage02Scene::StageResultUICreateAndRelease()
 	else {
 		//リザルト表示が完了していなければ抜ける
 		if (!stageResultUI->GetIsResultEnd()) { return; }
-		//カメラのステージクリア後行動が自機の方向をずっと向くでなければ抜ける
-		if (!(gameCamera->GetStageClearModePhase() == Stage02GameCamera::StageClearModePhase::PlayerKeepLook)) { return; }
 
 		//リザルト終了のためボタンスプライトを表示する
 		if (!stageResultUI->GetIsDrawButtonSprite()) {
@@ -1206,12 +1164,30 @@ void Stage02Scene::StageResultUICreateAndRelease()
 		//指定の入力をしなければ抜ける
 		if (!(Input::GetInstance()->TriggerKey(DIK_SPACE) || Input::GetInstance()->TriggerGamePadButton(Input::PAD_B))) { return; }
 
-		//自機のステージクリア後ブーストを開始する
-		player->StageClearBoostStart();
+		//カメラのステージクリア後行動を自機のブーストを見る位置に移動に変更する
+		gameCamera->StageClearPlayerBoostLookPosStart();
 
 		//ステージリザルトUIの解放
 		stageResultUI.reset();
 	}
+}
+
+void Stage02Scene::StageClearPlayerBoostStart()
+{
+	//自機のステージクリア後行動が前進でなければ抜ける
+	if (!(player->GetStageClearModePhase() == Stage02Player::StageClearModePhase::Advance)) { return; }
+	//カメラのステージクリア後行動が自機のブーストを見る位置に移動でなければ抜ける
+	if (!(gameCamera->GetStageClearModePhase() == Stage02GameCamera::StageClearModePhase::PlayerBoostPos)) { return; }
+	//カメラのステージクリア後行動が完了していなければ抜ける
+	if (!gameCamera->GetIsStageClearModeCompletion()) { return; }
+
+	//自機のステージクリア後ブーストを開始する
+	player->SetStageClearModePhase(Stage02Player::StageClearModePhase::Boost);
+
+	//ポストエフェクトのブラーをかける
+	GamePostEffect::GetPostEffect()->SetRadialBlur(true);
+	const float blurStrength = 0.8f;
+	GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 }
 
 void Stage02Scene::ReturnTitleScene()

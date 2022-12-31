@@ -91,6 +91,16 @@ void Boss2Body::Fall(const float time)
 	position = Easing::LerpVec3(bornPos, basePos, time);
 }
 
+void Boss2Body::Dead()
+{
+	//‰ºŒü‚«‚É‰ñ“]‚³‚¹‚é
+	const float rotSpeed = 0.15f;
+	rotation.x -= rotSpeed;
+
+	//­‚µ‰º‚ÉˆÚ“®
+	position.y -= 0.05f;
+}
+
 Vector3 Boss2Body::GetWorldPos()
 {
 	//ƒ[ƒ‹ƒhÀ•W‚ğ“ü‚ê‚é•Ï”

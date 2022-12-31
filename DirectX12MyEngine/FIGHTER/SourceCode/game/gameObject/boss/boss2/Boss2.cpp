@@ -31,7 +31,7 @@ bool Boss2::Initialize(const Vector3& position)
 	body.reset(Boss2Body::Create(position));
 
 	//HPセット
-	int maxHP = Boss2Body::GetMaxHP();
+	int maxHP = 1;
 	HP = maxHP;
 
 	//ビヘイビアツリー生成
@@ -139,7 +139,7 @@ bool Boss2::WaitMode()
 	//待機状態でなければ抜ける
 	if (!(phase == Phase::Wait)) { return false; }
 
-    return true;
+	return true;
 }
 
 bool Boss2::DeadExplosion()
@@ -147,10 +147,17 @@ bool Boss2::DeadExplosion()
 	//死亡状態でなければ抜ける
 	if (!(phase == Phase::Dead)) { return false; }
 
-	//爆発演出発生タイマー更新
-	const float explosionTime = 20;
-	explosionTimer++;
-	if ((explosionTimer % (int)explosionTime) == 0) {
+	//死亡状態の時間
+	const int deadModeTime = 480;
+	//タイマー更新
+	deadModeTimer++;
+
+	//胴体の死亡行動
+	body->Dead();
+
+	//一定間隔で爆発
+	const int explosionInterval = 20;
+	if ((deadModeTimer % (int)explosionInterval) == 0) {
 		//爆発演出用パーティクル生成
 		Vector3 particlePos = body->GetWorldPos();
 		const float distance = 8.0f;
@@ -159,15 +166,11 @@ bool Boss2::DeadExplosion()
 		particlePos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
 		const float size = 2.0f;
 		ParticleEmitter::GetInstance()->Explosion(particlePos, size);
+	}
 
-		//爆発演出回数更新
-		explosionCount++;
-
-		//爆発が指定回数に達したら削除フラグを立てる
-		const int explosionNum = 12;
-		if (explosionCount >= explosionNum) {
-			isDelete = true;
-		}
+	//タイマーが指定した時間になったら削除
+	if (deadModeTimer >= deadModeTime) {
+		isDelete = true;
 	}
 
 	return true;
@@ -184,10 +187,6 @@ void Boss2::Damage(const int damageNum)
 
 		phase = Phase::Dead;
 		isDead = true;
-
-		//倒した数カウンターを増やす(本体 + 分身数)
-		const int defeatNum = 5;
-		EnemyDefeatCounter::AddCounter(defeatNum);
 	}
 
 	//ダメージを喰らったのでHPバーの長さを変更する

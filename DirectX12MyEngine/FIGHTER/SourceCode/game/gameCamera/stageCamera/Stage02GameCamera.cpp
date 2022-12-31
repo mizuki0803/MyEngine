@@ -4,13 +4,11 @@
 #include "Boss2Body.h"
 
 void (Stage02GameCamera::* Stage02GameCamera::stageClearCameraActionFuncTable[])() = {
-	&Stage02GameCamera::StageClearBossLook,
-	&Stage02GameCamera::StageClearFrontLook,
-	&Stage02GameCamera::StageClearPlayerLook,
-	&Stage02GameCamera::StageClearPlayerZoom,
-	&Stage02GameCamera::StageClearPlayerFollow,
-	&Stage02GameCamera::StageClearPlayerSideMove,
-	&Stage02GameCamera::StageClearPlayerKeepLook,
+	&Stage02GameCamera::StageClearBossSide,
+	&Stage02GameCamera::StageClearBossBack,
+	&Stage02GameCamera::StageClearPlayerFront,
+	&Stage02GameCamera::StageClearPlayerAround,
+	&Stage02GameCamera::StageClearPlayerBoostLookPos,
 };
 
 void Stage02GameCamera::Initialize(Stage02Player* player)
@@ -20,7 +18,7 @@ void Stage02GameCamera::Initialize(Stage02Player* player)
 
 	//初期座標を設定
 	const Vector3 playerPos = player->GetPosition();
-	const Vector3 startPosition = { playerPos.x, playerPos.y + 10, -30 };
+	const Vector3 startPosition = { playerPos.x, playerPos.y + 2, -30 };
 	position = startPosition;
 
 	//ビュー行列と射影行列の初期化
@@ -49,7 +47,7 @@ void Stage02GameCamera::CrashStart()
 	isMoveCrashPos = true;
 
 	//墜落用の自機の中心座標からの距離
-	crashPlayerDistance = { 0, 0, -BasePlayer::GetBasePos().z };
+	crashPlayerDistance = { 0, 0, -player->GetBasePos().z };
 
 	//墜落状態のカメラ位置に移動前の座標をセット
 	moveCrashBeforePos = position;
@@ -63,9 +61,6 @@ void Stage02GameCamera::StageClearModeStart(Boss2Body* boss2Body)
 {
 	//ボス胴体をセット
 	this->boss2Body = boss2Body;
-	//ボスの方向を向くときのY座標をセット
-	const float upperNum = 10.0f;
-	bossLookPosY = boss2Body->GetWorldPos().y + upperNum;
 	//移動前座標をセット
 	stageClearMoveBeforePos = position;
 	//移動前カメラ角度をセット
@@ -77,6 +72,38 @@ void Stage02GameCamera::StageClearModeStart(Boss2Body* boss2Body)
 	isStageClearMode = true;
 }
 
+void Stage02GameCamera::StageClearPlayerFrontStart()
+{
+	//ステージクリア後の状態でなければ抜ける
+	if (!isStageClearMode) { return; }
+
+	//移動前座標をセット
+	stageClearMoveBeforePos = position;
+	//移動前カメラ角度をセット
+	stageClearMoveBeforeRota = rotation;
+	if (stageClearMoveBeforeRota.y < 0) { stageClearMoveBeforeRota.y += 360; } //角度修正
+
+	//ステージクリア後の行動を自機の正面に移動へ
+	stageClearModePhase = StageClearModePhase::PlayerFront;
+	//タイマー初期化
+	stageClearModeTimer = 0;
+}
+
+void Stage02GameCamera::StageClearPlayerBoostLookPosStart()
+{
+	//移動前の自機周りを回るときの回転角度をセット(回すために一周分の増やす)
+	beforePlayerAroundRotAngle = playerAroundRotAngle - 360;
+	//移動前の自機周りを回るときの自機との距離をセット
+	beforePlayerAroundDistance = playerAroundDistance;
+	//移動前座標をセット
+	stageClearMoveBeforePos = position;
+
+	//ステージクリア後の行動を自機のブーストを見る位置に移動へ
+	stageClearModePhase = StageClearModePhase::PlayerBoostPos;
+	//タイマー初期化
+	stageClearModeTimer = 0;
+}
+
 void Stage02GameCamera::BossDelete()
 {
 	//ステージクリア後の状態でなければ抜ける
@@ -84,16 +111,10 @@ void Stage02GameCamera::BossDelete()
 
 	//ボス胴体を解除
 	this->boss2Body = nullptr;
-	//移動前カメラ角度をセット
-	stageClearMoveBeforeRota = rotation;
-	//ステージクリア後の挙動を正面を向くへ
-	stageClearModePhase = StageClearModePhase::FrontLook;
-	//タイマー初期化
-	stageClearModeTimer = 0;
 }
 
 void Stage02GameCamera::Crash()
-{	
+{
 	//自機が死亡していたら抜ける
 	if (player->GetIsDead()) { return; }
 
@@ -152,28 +173,25 @@ void Stage02GameCamera::StageClear()
 	(this->*stageClearCameraActionFuncTable[static_cast<size_t>(stageClearModePhase)])();
 }
 
-void Stage02GameCamera::StageClearBossLook()
+void Stage02GameCamera::StageClearBossSide()
 {
 	//ボス胴体のインスタンスがなければ抜ける
 	if (!boss2Body) { return; }
 
-	//ボスの方向を向く時間
-	const float bossLookTime = 120;
+	//ボスの横に移動するのにかかる時間
+	const float sideMoveTime = 240;
 	//タイマー更新
 	stageClearModeTimer++;
 	//指定の時間を越えない
-	stageClearModeTimer = min(stageClearModeTimer, (int)bossLookTime);
-	const float time = stageClearModeTimer / bossLookTime;
+	stageClearModeTimer = min(stageClearModeTimer, (int)sideMoveTime);
+	const float time = stageClearModeTimer / sideMoveTime;
 
-	//座標を上に移動
-	position.y = Easing::OutCubic(stageClearMoveBeforePos.y, bossLookPosY, time);
-
-	//X座標が中心付近にいたら左右にずらす
-	const float xPosMin = 10.0f;
-	if (fabsf(stageClearMoveBeforePos.x) <= xPosMin) {
-		if (stageClearMoveBeforePos.x >= 0) { position.x = Easing::OutCubic(stageClearMoveBeforePos.x, xPosMin, time); }
-		else { position.x = Easing::OutCubic(stageClearMoveBeforePos.x, -xPosMin, time); }
-	}
+	//座標をボス横に移動
+	const Vector3 bossDistance = { 45, -1, 0 };
+	const Vector3 bossSidePos = boss2Body->GetPosition() + bossDistance;
+	position.x = Easing::InOutQuad(stageClearMoveBeforePos.x, bossSidePos.x, time);
+	position.y = Easing::InOutQuad(stageClearMoveBeforePos.y, bossSidePos.y, time);
+	position.z = Easing::InBack(stageClearMoveBeforePos.z, bossSidePos.z, time);
 
 	//ボスの方向をだんだん向く
 	const Vector3 bossCameraVec = boss2Body->GetWorldPos() - position;
@@ -183,62 +201,13 @@ void Stage02GameCamera::StageClearBossLook()
 	matRot = XMMatrixRotationY(XMConvertToRadians(-rota.y));
 	Vector3 bossCameraVecZ = MatrixTransformDirection(bossCameraVec, matRot);
 	rota.x = XMConvertToDegrees(std::atan2(-bossCameraVecZ.y, bossCameraVecZ.z));
-	rotation.x = Easing::OutCubic(stageClearMoveBeforeRota.x, rota.x, time);
-	rotation.y = Easing::OutCubic(stageClearMoveBeforeRota.y, rota.y, time);
-	rotation.z = Easing::OutCubic(stageClearMoveBeforeRota.z, rota.z, time);
-}
+	rotation.x = Easing::InQuad(stageClearMoveBeforeRota.x, rota.x, time);
+	rotation.y = Easing::InQuad(stageClearMoveBeforeRota.y, rota.y, time);
+	rotation.z = Easing::InQuad(stageClearMoveBeforeRota.z, rota.z, time);
 
-void Stage02GameCamera::StageClearFrontLook()
-{
-	//方向を切り替える時間
-	const float lookChangeTime = 300;
-	//タイマー更新
-	stageClearModeTimer++;
-	stageClearModeTimer = min(stageClearModeTimer, (int)lookChangeTime);
-	const float time = stageClearModeTimer / lookChangeTime;
-
-	//正面を向く
-	rotation.x = Easing::InOutCubic(stageClearMoveBeforeRota.x, 0, time);
-	rotation.y = Easing::InOutCubic(stageClearMoveBeforeRota.y, 0, time);
-	rotation.z = Easing::InOutCubic(stageClearMoveBeforeRota.z, 0, time);
-
-	//自機がカメラの後ろにいったら次のフェーズへ
-	const float changePhaseDistance = 10.0f;
-	if (player->GetWorldPos().z <= position.z + changePhaseDistance) {
-		stageClearModePhase = StageClearModePhase::PlayerLook;
-
-		//移動前カメラ角度をセット
-		stageClearMoveBeforeRota = rotation;
-		//タイマー初期化
-		stageClearModeTimer = 0;
-	}
-}
-
-void Stage02GameCamera::StageClearPlayerLook()
-{
-	//方向を切り替える時間
-	const float lookChangeTime = 20;
-	//タイマー更新
-	stageClearModeTimer++;
-	//指定の時間を越えない
-	stageClearModeTimer = min(stageClearModeTimer, (int)lookChangeTime);
-	const float time = stageClearModeTimer / lookChangeTime;
-
-	//自機の方向をだんだん向く
-	const Vector3 playerCameraVec = player->GetWorldPos() - position;
-	Vector3 rota = {};
-	rota.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rota.y));
-	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
-	rota.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
-	rotation.x = Easing::InOutCubic(stageClearMoveBeforeRota.x, rota.x, time);
-	rotation.y = Easing::InOutCubic(stageClearMoveBeforeRota.y, rota.y, time);
-	rotation.z = Easing::InOutCubic(stageClearMoveBeforeRota.z, 0, time);
-
-	//自機が停止状態に入ったら次のフェーズへ
-	if (player->GetStageClearModePhase() == Stage02Player::StageClearModePhase::Stay) {
-		stageClearModePhase = StageClearModePhase::PlayerZoom;
+	//指定した時間になったら次のフェーズへ
+	if (stageClearModeTimer >= sideMoveTime) {
+		stageClearModePhase = StageClearModePhase::BossBack;
 
 		//タイマー初期化
 		stageClearModeTimer = 0;
@@ -247,16 +216,47 @@ void Stage02GameCamera::StageClearPlayerLook()
 	}
 }
 
-void Stage02GameCamera::StageClearPlayerZoom()
+void Stage02GameCamera::StageClearBossBack()
 {
-	//ズームする時間
-	const float zoomTime = 300;
+	//ボス胴体のインスタンスがなければ抜ける
+	if (!boss2Body) { return; }
+
+	//ボスの後ろに移動するのにかかる時間
+	const float backMoveTime = 260;
 	//タイマー更新
 	stageClearModeTimer++;
-	const float time = stageClearModeTimer / zoomTime;
+	//指定の時間を越えない
+	stageClearModeTimer = min(stageClearModeTimer, (int)backMoveTime);
+	const float time = stageClearModeTimer / backMoveTime;
+
+	//座標をボス後ろに移動
+	const Vector3 bossDistance = { 0, -1, 80 };
+	const Vector3 bossSidePos = boss2Body->GetPosition() + bossDistance;
+	position.x = Easing::OutQuad(stageClearMoveBeforePos.x, bossSidePos.x, time);
+	position.y = Easing::OutQuad(stageClearMoveBeforePos.y, bossSidePos.y, time);
+	position.z = Easing::OutQuad(stageClearMoveBeforePos.z, bossSidePos.z, time);
+
+	//ボスの方向を向く
+	const Vector3 bossCameraVec = boss2Body->GetWorldPos() - position;
+	rotation.y = XMConvertToDegrees(std::atan2(bossCameraVec.x, bossCameraVec.z));
+	XMMATRIX matRot;
+	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
+	Vector3 bossCameraVecZ = MatrixTransformDirection(bossCameraVec, matRot);
+	rotation.x = XMConvertToDegrees(std::atan2(-bossCameraVecZ.y, bossCameraVecZ.z));
+}
+
+void Stage02GameCamera::StageClearPlayerFront()
+{
+	//自機の正面に移動するのにかかる時間
+	const float playerFrontMoveTime = 240;
+	//タイマー更新
+	stageClearModeTimer++;
+	//指定の時間を越えない
+	stageClearModeTimer = min(stageClearModeTimer, (int)playerFrontMoveTime);
+	const float time = stageClearModeTimer / playerFrontMoveTime;
 
 	//自機の中心座標からの距離
-	const Vector3 distancePos = { 0, 0.5f, -10.0f };
+	const Vector3 distancePos = { 0, -0.5f, 15.0f };
 	//平行移動行列の計算
 	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
 	//自機の後ろワールド行列
@@ -273,48 +273,59 @@ void Stage02GameCamera::StageClearPlayerZoom()
 	position.y = Easing::InOutQuad(stageClearMoveBeforePos.y, playerBack.y, time);
 	position.z = Easing::InOutQuad(stageClearMoveBeforePos.z, playerBack.z, time);
 
-	//自機の方向を向く
+	//自機の方向をだんだん向く
 	const Vector3 playerCameraVec = player->GetWorldPos() - position;
-	rotation.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
+	Vector3 rota = {};
+	rota.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
+	if (rota.y <= 0) { rota.y += 360; } //角度修正
 	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
+	matRot = XMMatrixRotationY(XMConvertToRadians(-rota.y));
 	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
+	rota.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
+	rotation.x = Easing::OutCubic(stageClearMoveBeforeRota.x, rota.x, time);
+	rotation.y = Easing::OutCubic(stageClearMoveBeforeRota.y, rota.y, time);
+	rotation.z = Easing::OutCubic(stageClearMoveBeforeRota.z, rota.z, time);
 
 	//指定した時間になったら次のフェーズへ
-	if (stageClearModeTimer >= zoomTime) {
-		stageClearModePhase = StageClearModePhase::PlayerFollow;
+	if (stageClearModeTimer >= playerFrontMoveTime) {
+		stageClearModePhase = StageClearModePhase::PlayerAround;
 
 		//タイマー初期化
 		stageClearModeTimer = 0;
-	}
-}
-
-void Stage02GameCamera::StageClearPlayerFollow()
-{
-	//追従する時間
-	const float followTime = 90;
-	//タイマー更新
-	stageClearModeTimer++;
-	const float time = stageClearModeTimer / followTime;
-
-	//指定した時間になったら次のフェーズへ
-	if (stageClearModeTimer >= followTime) {
-		stageClearModePhase = StageClearModePhase::PlayerSideMove;
-
-		//タイマー初期化
-		stageClearModeTimer = 0;
-
 		//移動前座標をセット
 		stageClearMoveBeforePos = position;
+		//自機との距離を記録
+		playerAroundDistance = fabsf(playerCameraVec.z);
 	}
 }
 
-void Stage02GameCamera::StageClearPlayerSideMove()
+void Stage02GameCamera::StageClearPlayerAround()
 {
-	//移動する時間
-	const float moveTime = 300;
+	//自機座標
+	const Vector3 playerPos = player->GetWorldPos();
 
+	//角度を変更し続ける
+	const float rotSpeed = 0.3f;
+	playerAroundRotAngle -= rotSpeed;
+	//360を越えないようにする
+	if (playerAroundRotAngle <= -360) { playerAroundRotAngle += 360; }
+
+	//自機周りを回る
+	const float radian = XMConvertToRadians(playerAroundRotAngle);
+	position.x = playerAroundDistance * sinf(radian) + playerPos.x;
+	position.z = playerAroundDistance * cosf(radian) + playerPos.z;
+
+	//自機の方向を向く
+	const Vector3 playerCameraVec = playerPos - position;
+	rotation.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
+	XMMATRIX matRot;
+	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
+	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
+	rotation.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
+}
+
+void Stage02GameCamera::StageClearPlayerBoostLookPos()
+{
 	//自機の方向を向く
 	const Vector3 playerCameraVec = player->GetWorldPos() - position;
 	rotation.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
@@ -323,42 +334,31 @@ void Stage02GameCamera::StageClearPlayerSideMove()
 	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
 	rotation.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
 
+	//ステージクリア後を完了する時間
+	const int stageClearModeCompletionTime = 300;
 	//タイマー更新
 	stageClearModeTimer++;
-	float time = stageClearModeTimer / moveTime;
+	//タイマーが指定した時間になったら完了フラグを立てる
+	if (stageClearModeTimer > stageClearModeCompletionTime) {
+		isStageClearModeCompletion = true;
 
-	//自機の中心座標からの距離
-	const Vector3 distancePos = { 10.0f, 0, -4.0f };
-	//平行移動行列の計算
-	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
-	//自機横ワールド行列
-	XMMATRIX playerSideMatWorld;
-	playerSideMatWorld = XMMatrixIdentity();	//変形をリセット
-	playerSideMatWorld *= matTrans;	//ワールド行列に平行移動を反映
-	//自機のワールド行列をかける
-	playerSideMatWorld *= player->GetMatWorld();
-	//自機横座標を取得(Y座標は移動前より少し上)
-	const float upNum = 0.5f;
-	Vector3 playerSide = { playerSideMatWorld.r[3].m128_f32[0], stageClearMoveBeforePos.y + upNum, playerSideMatWorld.r[3].m128_f32[2] };
-
-	//自機横に移動する
-	position.x = Easing::OutQuad(stageClearMoveBeforePos.x, playerSide.x, time);
-	position.y = Easing::OutQuad(stageClearMoveBeforePos.y, playerSide.y, time);
-	position.z = Easing::OutQuad(stageClearMoveBeforePos.z, playerSide.z, time);
-
-	//指定した時間になったら次のフェーズへ
-	if (stageClearModeTimer >= moveTime) {
-		stageClearModePhase = StageClearModePhase::PlayerKeepLook;
+		//抜ける
+		return;
 	}
-}
 
-void Stage02GameCamera::StageClearPlayerKeepLook()
-{
-	//自機の方向を向く
-	const Vector3 playerCameraVec = player->GetWorldPos() - position;
-	rotation.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
-	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
+	//自機に並走させる
+	const float radian = XMConvertToRadians(playerAroundRotAngle);
+	const Vector3 playerPos = player->GetWorldPos();//自機座標
+	position.x = playerAroundDistance * sinf(radian) + playerPos.x;
+	position.z = playerAroundDistance * cosf(radian) + playerPos.z;
+
+	//自機周り1周にかかる時間
+	const float rotRoundTime = 240;
+	if (stageClearModeTimer > rotRoundTime) { return; }
+	const float time = stageClearModeTimer / rotRoundTime;
+
+	//自機の周りを一周させる
+	playerAroundRotAngle = Easing::OutQuart(beforePlayerAroundRotAngle, -165, time);
+	playerAroundDistance = Easing::OutQuart(beforePlayerAroundDistance, 17.5f, time);
+	position.y = Easing::OutQuart(stageClearMoveBeforePos.y, playerPos.y + 6, time);
 }

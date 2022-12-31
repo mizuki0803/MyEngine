@@ -50,11 +50,6 @@ public: //メンバ関数
 	void DrawFrontSprite() override;
 
 	/// <summary>
-	/// 影生成用ライトカメラ更新
-	/// </summary>
-	void LightCameraUpdate();
-
-	/// <summary>
 	/// 宇宙塵エフェクト生成管理
 	/// </summary>
 	void SpaceDustEffectCreateManager();
@@ -100,19 +95,19 @@ public: //メンバ関数
 	void StageResult();
 
 	/// <summary>
-	/// ステージクリア時の影の向きに変更
+	/// ステージクリアテキスト生成
 	/// </summary>
-	void StageClearSetLightCameraPos();
-
-	/// <summary>
-	/// ステージクリアテキスト生成と解放
-	/// </summary>
-	void StageClearTextCreateAndRelease();
+	void StageClearTextCreate();
 
 	/// <summary>
 	/// ステージリザルトUI生成と解放
 	/// </summary>
 	void StageResultUICreateAndRelease();
+
+	/// <summary>
+	/// ステージクリア後自機のブースト行動開始判定
+	/// </summary>
+	void StageClearPlayerBoostStart();
 
 	/// <summary>
 	/// タイトルシーンに戻る処理
@@ -130,8 +125,6 @@ private: //メンバ変数
 
 	//objモデルデータ
 	std::unique_ptr<ObjModel> modelSkydome;
-	std::unique_ptr<ObjModel> modelGround;
-	std::array<std::unique_ptr<ObjModel>, 2> modelBuilding;
 	std::unique_ptr<ObjModel> modelSphere;
 	std::unique_ptr<ObjModel> modelMeteoriteWhite;
 	std::unique_ptr<ObjModel> modelMeteoriteBrown;
@@ -144,13 +137,6 @@ private: //メンバ変数
 	std::unique_ptr<ObjModel> modelEnemyMiniRobot;
 	std::array<std::unique_ptr<ObjModel>, 5> modelEnemyMiniRobotBreak;
 	std::unique_ptr<ObjModel> modelMedamanMainBody;
-	std::unique_ptr<ObjModel> modelMedamanMainBodyDamage;
-	std::unique_ptr<ObjModel> modelMedamanMainBodySleep;
-	std::unique_ptr<ObjModel> modelMedamanMainBodyDead;
-	std::unique_ptr<ObjModel> modelMedamanAvatar;
-	std::unique_ptr<ObjModel> modelMedamanAvatarDamage;
-	std::unique_ptr<ObjModel> modelMedamanAvatarSleep;
-	std::unique_ptr<ObjModel> modelMedamanAvatarDead;
 	std::unique_ptr<ObjModel> modelHealingItem;
 
 	//自機
@@ -171,9 +157,4 @@ private: //メンバ変数
 
 	//宇宙塵エフェクト
 	std::list<std::unique_ptr<SpaceDustEffect>> spaceDustEffects;
-
-	//ステージクリア用の影状態か
-	bool isStageClearShadow = false;
-	//ターゲットと光源カメラの距離
-	Vector3 lightCameraTargetDistance = { -300, 200, -150 };
 };

@@ -95,8 +95,6 @@ private: //メンバ関数
 	void StageClearBoost();
 
 private: //静的メンバ変数
-	//自機の基準座標
-	static const Vector3 basePos;
 	//ステージクリア後行動遷移
 	static void (Stage01Player::* stageClearActionFuncTable[])();
 

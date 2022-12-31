@@ -9,10 +9,8 @@ class Stage02Player : public BasePlayer
 public:
 	//ステージクリア後行動フェーズ
 	enum class StageClearModePhase {
-		SideMove,	//横旋回移動
-		Return,		//旋回帰還
-		Up,			//上昇
 		Stay,		//停止
+		Advance,	//前進
 		Boost,		//ブースト
 	};
 
@@ -38,19 +36,11 @@ public: //メンバ関数
 	/// </summary>
 	void StageClearModeStart();
 
-	/// <summary>
-	/// ステージクリア後の帰還を開始する
-	/// </summary>
-	/// <param name="cameraPos">カメラ座標</param>
-	void StageClearReturnStart(const Vector3& cameraPos);
-
-	/// <summary>
-	/// ステージクリア後のブーストを開始する
-	/// </summary>
-	void StageClearBoostStart();
-
 	//getter
 	StageClearModePhase GetStageClearModePhase() { return stageClearModePhase; }
+
+	//setter
+	void SetStageClearModePhase(StageClearModePhase stageClearModePhase) { this->stageClearModePhase = stageClearModePhase; }
 
 private: //メンバ関数
 	/// <summary>
@@ -69,24 +59,19 @@ private: //メンバ関数
 	void StageClear() override;
 
 	/// <summary>
-	/// ステージクリア後の横移動
-	/// </summary>
-	void StageClearSideMove();
-
-	/// <summary>
-	/// ステージクリア後の帰還
-	/// </summary>
-	void StageClearReturn();
-
-	/// <summary>
-	/// ステージクリア後の上昇
-	/// </summary>
-	void StageClearUp();
-
-	/// <summary>
 	/// ステージクリア後の停止
 	/// </summary>
 	void StageClearStay();
+
+	/// <summary>
+	/// 回転角を0に修正
+	/// </summary>
+	void StageClearRotateFix();
+
+	/// <summary>
+	/// ステージクリア後の前進
+	/// </summary>
+	void StageClearAdvance();
 
 	/// <summary>
 	/// ステージクリア後のブースト
@@ -94,8 +79,6 @@ private: //メンバ関数
 	void StageClearBoost();
 
 private: //静的メンバ変数
-	//自機の基準座標
-	static const Vector3 basePos;
 	//ステージクリア後行動遷移
 	static void (Stage02Player::* stageClearActionFuncTable[])();
 
@@ -103,17 +86,11 @@ private: //メンバ変数
 	//墜落してからの時間タイマー
 	int32_t crashTimer = 0;
 	//ステージクリア後行動
-	StageClearModePhase stageClearModePhase = StageClearModePhase::SideMove;
+	StageClearModePhase stageClearModePhase = StageClearModePhase::Stay;
 	//ステージクリア後に使用するタイマー
 	int32_t stageClearModeTimer = 0;
-	//ステージクリア移動方向が右か
-	bool isStageClearMoveRight = true;
 	//ステージクリア移動速度
 	Vector3 stageClearMoveVelocity;
 	//ステージクリア時角度
 	Vector3 stageClearRota;
-	//ステージクリア後に使用するカメラホーミング用座標
-	Vector3 stageClearCameraPos;
-	//カメラホーミング用座標
-	Vector3 cameraHomingPos;
 };

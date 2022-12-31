@@ -30,6 +30,9 @@ Stage01Player* Stage01Player::Create(ObjModel* model, const int startHP, const i
 
 bool Stage01Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
 {
+	//基準の座標をセット
+	basePos = { 0, 3, 16 };
+
 	//自機の共通初期化
 	if (!BasePlayer::Initialize(model, startHP, maxHP)) {
 		return false;

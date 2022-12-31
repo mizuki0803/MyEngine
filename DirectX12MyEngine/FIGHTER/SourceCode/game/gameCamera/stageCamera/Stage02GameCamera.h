@@ -14,13 +14,11 @@ class Stage02GameCamera : public BaseGameCamera
 public:
 	//ステージクリア後行動フェーズ
 	enum class StageClearModePhase {
-		BossLook,		//ボスの方向を向く
-		FrontLook,		//正面の方向を向く
-		PlayerLook,		//自機の方向を向く
-		PlayerZoom,		//自機をズーム
-		PlayerFollow,	//自機を追従(実際はなにもしない)
-		PlayerSideMove,	//自機横に移動
-		PlayerKeepLook,	//自機の方向をずっと向く
+		BossSide,		//ボスの横に移動
+		BossBack,		//ボスの後ろに移動
+		PlayerFront,	//自機を正面に移動
+		PlayerAround,	//自機の周りを回る
+		PlayerBoostPos,	//自機のブーストを見る位置に移動
 	};
 
 public: //メンバ関数
@@ -47,12 +45,24 @@ public: //メンバ関数
 	void StageClearModeStart(Boss2Body* boss2Body);
 
 	/// <summary>
-	/// ボスが削除されたら
+	/// ステージクリア後の自機の正面に移動する行動を開始する
+	/// </summary>
+	void StageClearPlayerFrontStart();
+
+	/// <summary>
+	/// ステージクリア後の自機ブーストを見る位置に移動する行動を開始する
+	/// </summary>
+	void StageClearPlayerBoostLookPosStart();
+
+	/// <summary>
+	/// ボスの情報を削除
 	/// </summary>
 	void BossDelete();
 
 	//setter
 	StageClearModePhase GetStageClearModePhase() { return stageClearModePhase; }
+	const float GetPlayerAroundRotAngle() { return playerAroundRotAngle; };
+	const bool GetIsStageClearModeCompletion()  { return isStageClearModeCompletion; }
 
 private: //メンバ関数
 	/// <summary>
@@ -66,39 +76,29 @@ private: //メンバ関数
 	void StageClear() override;
 
 	/// <summary>
-	/// ステージクリア後のボスの方向を向く行動
+	/// ステージクリア後のボスの横に移動する行動
 	/// </summary>
-	void StageClearBossLook();
+	void StageClearBossSide();
 
 	/// <summary>
-	/// ステージクリア後の正面の方向を向く行動
+	/// ステージクリア後のボスの後ろに移動する行動
 	/// </summary>
-	void StageClearFrontLook();
+	void StageClearBossBack();
 
 	/// <summary>
-	/// ステージクリア後の自機の方向を向く行動
+	/// ステージクリア後の自機の正面に移動する行動
 	/// </summary>
-	void StageClearPlayerLook();
+	void StageClearPlayerFront();
 
 	/// <summary>
-	/// ステージクリア後の自機をズームする行動
+	/// ステージクリア後の自機の周りを回る行動
 	/// </summary>
-	void StageClearPlayerZoom();
+	void StageClearPlayerAround();
 
 	/// <summary>
-	/// ステージクリア後の自機追従する行動
+	/// ステージクリア後の自機ブーストを見る位置に移動する行動
 	/// </summary>
-	void StageClearPlayerFollow();
-
-	/// <summary>
-	/// ステージクリア後の自機横に移動する行動
-	/// </summary>
-	void StageClearPlayerSideMove();
-
-	/// <summary>
-	/// ステージクリア後の自機の方向をずっと向く行動
-	/// </summary>
-	void StageClearPlayerKeepLook();
+	void StageClearPlayerBoostLookPos();
 
 
 private: //静的メンバ変数
@@ -121,13 +121,21 @@ private: //メンバ変数
 	//墜落状態のカメラ位置に移動前の角度
 	Vector3 moveCrashBeforeRota;
 	//ステージクリア後カメラ挙動
-	StageClearModePhase stageClearModePhase = StageClearModePhase::BossLook;
+	StageClearModePhase stageClearModePhase = StageClearModePhase::BossSide;
 	//ステージクリア後のカメラ挙動に使用するタイマー
 	int32_t stageClearModeTimer = 0;
-	//ボスの方向を向くときのY座標
-	float bossLookPosY = 0;
 	//ステージクリア後の移動前座標
 	Vector3 stageClearMoveBeforePos;
 	//ステージクリア後の移動前カメラ角度
 	Vector3 stageClearMoveBeforeRota;
+	//自機周りを回るときの回転角度
+	float playerAroundRotAngle = 0;
+	//自機周りを回るときの自機との距離
+	float playerAroundDistance = 0;
+	//移動前の自機周りを回るときの回転角度
+	float beforePlayerAroundRotAngle = 0;
+	//移動前の自機周りを回るときの自機との距離
+	float beforePlayerAroundDistance = 0;
+	//カメラのステージクリア後が完了したか
+	bool isStageClearModeCompletion = false;
 };

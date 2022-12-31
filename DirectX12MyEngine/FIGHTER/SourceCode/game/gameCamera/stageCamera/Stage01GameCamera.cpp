@@ -277,7 +277,6 @@ void Stage01GameCamera::StageClearPlayerFollow()
 
 		//タイマー初期化
 		stageClearModeTimer = 0;
-
 		//移動前座標をセット
 		stageClearMoveBeforePos = position;
 	}

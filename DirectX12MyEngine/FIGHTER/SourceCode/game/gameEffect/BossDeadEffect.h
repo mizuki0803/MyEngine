@@ -21,6 +21,9 @@ public: //メンバ関数
 	/// </summary>
 	void Update();
 
+	//getter
+	const bool GetIsExplosionEnd() { return isExplosionEnd; }
+
 
 private: //メンバ関数
 	/// <summary>
@@ -40,6 +43,8 @@ private: //メンバ変数
 	int32_t timer = 0;
 	//爆発回数
 	int explosionCount = 0;
+	//爆発を終了したか
+	bool isExplosionEnd = false;
 	//黒煙を出すか
 	bool isBlackSmoke = false;
 };

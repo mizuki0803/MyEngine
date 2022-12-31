@@ -42,6 +42,11 @@ public: //メンバ関数
 	/// <param name="time">イージング用(0～1)の数値</param>
 	void Fall(const float time);
 
+	/// <summary>
+	/// 死亡
+	/// </summary>
+	void Dead();
+
 	//getter
 	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }

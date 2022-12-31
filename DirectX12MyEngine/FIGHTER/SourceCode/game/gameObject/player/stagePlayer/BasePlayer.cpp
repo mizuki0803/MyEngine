@@ -11,7 +11,6 @@
 BaseStageScene* BasePlayer::stageScene = nullptr;
 ObjModel* BasePlayer::bulletModel = nullptr;
 const float BasePlayer::homingBulletSize = 2.5f;
-const Vector3 BasePlayer::basePos = { 0, 3, 16 };
 const Vector2 BasePlayer::rotLimit = { 35.0f, 25.0f };
 const XMFLOAT4 BasePlayer::damageColor = { 1, 0, 0, 1 };
 const float BasePlayer::moveBaseSpeed = 0.16f;

@@ -34,9 +34,8 @@ void BossDeadEffect::Update()
 
 void BossDeadEffect::Explosion()
 {
-	//既に爆発回数が十分なら抜ける
-	const int explosionNum = 6;
-	if (explosionCount >= explosionNum) { return; }
+	//既に爆発終了フラグが立っていたら抜ける
+	if (isExplosionEnd) { return; }
 
 	//毎フレーム出すと多いので間隔を設定
 	const int explosionInterval = 10;
@@ -52,6 +51,11 @@ void BossDeadEffect::Explosion()
 
 	//爆発演出回数更新
 	explosionCount++;
+	//爆発が指定した回数発生したら終了フラグを立てる
+	const int explosionNum = 6;
+	if (explosionCount >= explosionNum) {
+		isExplosionEnd = true;
+	}
 }
 
 void BossDeadEffect::BlackSmoke()

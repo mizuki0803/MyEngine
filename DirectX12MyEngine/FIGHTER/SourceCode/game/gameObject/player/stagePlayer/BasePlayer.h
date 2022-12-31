@@ -29,7 +29,6 @@ public: //静的メンバ関数
 
 	//getter
 	static const Vector2& GetRotLimit() { return rotLimit; }
-	static const Vector3& GetBasePos() { return basePos; }
 	static const float GetMoveBaseSpeed() { return moveBaseSpeed; }
 	static const float GetKnockbackBaseSpeed() { return knockbackBaseSpeed; }
 
@@ -81,6 +80,7 @@ public: //メンバ関数
 	Vector3 GetWorldPos();
 	const XMMATRIX& GetMatWorld() { return matWorld; }
 	const int GetHP() { return HP; }
+	const Vector3& GetBasePos() { return basePos; }
 	const bool GetIsDamageKnockback() { return isDamageKnockBack; }
 	const bool GetIsCrash() { return isCrash; }
 	const bool GetIsDead() { return isDead; }
@@ -266,8 +266,6 @@ protected: //静的メンバ変数
 	static ObjModel* bulletModel;
 	//ホーミング弾の大きさ
 	static const float homingBulletSize;
-	//自機の基準座標
-	static const Vector3 basePos;
 	//自機の回転限界
 	static const Vector2 rotLimit;
 	//ダメージ状態の色
@@ -288,6 +286,8 @@ protected: //メンバ変数
 	int HP = 0;
 	//HPUI
 	std::unique_ptr<PlayerHPUI> hpUI;
+	//基準の座標
+	Vector3 basePos = {};
 	//ダメージ演出
 	std::unique_ptr<PlayerDamageEffect> damageEffect;
 	//ダメージフラグ

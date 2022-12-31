@@ -112,10 +112,6 @@ private: //メンバ変数
 	int32_t waitModeTimer = 0;
 	//死亡状態時間タイマー
 	int32_t deadModeTimer = 0;
-	//爆発演出発生タイマー
-	int32_t explosionTimer = 0;
-	//爆発発生回数
-	int32_t explosionCount = 0;
 	//ボス名表示UI
 	std::unique_ptr<BossNameUI> bossNameUI;
 	//HPUI
