@@ -17,8 +17,8 @@ void Stage02GameCamera::Initialize(Stage02Player* player)
 	this->player = player;
 
 	//初期座標を設定
-	const Vector3 playerPos = player->GetPosition();
-	const Vector3 startPosition = { playerPos.x, playerPos.y + 2, -30 };
+	const Vector3 playerDistance = { 0, 2, -30 };
+	const Vector3 startPosition = player->GetPosition() + playerDistance;
 	position = startPosition;
 
 	//ビュー行列と射影行列の初期化

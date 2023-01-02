@@ -19,8 +19,8 @@ void Stage01GameCamera::Initialize(Stage01Player* player)
 	this->player = player;
 
 	//初期座標を設定
-	const Vector3 playerPos = player->GetPosition();
-	const Vector3 startPosition = { playerPos.x, playerPos.y + 10, -30 };
+	const Vector3 playerDistance = { 0, 10, -30 };
+	const Vector3 startPosition = player->GetPosition() + playerDistance;
 	position = startPosition;
 
 	//ビュー行列と射影行列の初期化
@@ -89,11 +89,14 @@ void Stage01GameCamera::BossDelete()
 
 void Stage01GameCamera::Crash()
 {
+	const Vector3 playerDistance = { 0, 4.0f, 0 }; //自機とカメラの距離
+	
 	//自機の少し上にカメラを移動させる
-	const Vector3 crashCameraPos = { player->GetWorldPos().x, player->GetWorldPos().y + 3, 0 };
+	const Vector3 crashCameraPos = player->GetWorldPos() + playerDistance;
 	if (isMoveCrashPos) {
+		//移動にかかる時間
+		const float moveCrashPosTime = 60;
 		//タイマーを更新
-		const float moveCrashPosTime = 40;
 		moveCrashPosTimer++;
 		const float time = moveCrashPosTimer / moveCrashPosTime;
 
@@ -113,7 +116,7 @@ void Stage01GameCamera::Crash()
 	}
 
 	//Z軸回転する
-	const float rotSpeed = 1.2f;
+	const float rotSpeed = 0.8f;
 	//自機が2回バウンドするまでZ軸回転する
 	if (player->GetCrashBoundCount() == 0) { rotation.z += rotSpeed; }
 	else if (player->GetCrashBoundCount() == 1) { rotation.z -= rotSpeed; }

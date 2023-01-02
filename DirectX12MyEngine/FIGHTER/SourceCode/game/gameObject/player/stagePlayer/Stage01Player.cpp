@@ -105,7 +105,7 @@ void Stage01Player::Crash()
 	position += crashVel;
 
 	//墜落回転する
-	const Vector3 rotSpeed = { 0, 0.1f, 10 };
+	const Vector3 rotSpeed = { 0, 0.1f, 7 };
 	//バウンドするまではZ軸左回転
 	if (crashBoundCount == 0) { rotation.z += rotSpeed.z; }
 	//1回バウンドしたらZ軸右回転 & Y軸回転
@@ -129,7 +129,7 @@ void Stage01Player::Crash()
 	//墜落バウンド回数が一回目ならバウンドさせる
 	if (crashBoundCount == 1) {
 		//バウンド
-		const float boundStartVel = fabsf(crashVel.y) * 0.8f;
+		const float boundStartVel = fabsf(crashVel.y) * 0.7f;
 		crashVel.y = boundStartVel;
 
 		//バウンド用爆発演出用設定
