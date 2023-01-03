@@ -65,8 +65,8 @@ public: //メンバ関数
 	/// <summary>
 	/// 自機の翼から出る飛行機雲(ヴェイパー)
 	/// </summary>
-	/// <param name="playerMatWorld">自機ワールド行列</param>
-	void PlayerVapour(const XMMATRIX& playerMatWorld);
+	/// <param name="position">パーティクル生成座標</param>
+	void PlayerVapor(const Vector3& position);
 
 	/// <summary>
 	/// ショット演出

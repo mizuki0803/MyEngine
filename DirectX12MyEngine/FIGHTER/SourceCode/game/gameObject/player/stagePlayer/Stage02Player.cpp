@@ -70,7 +70,7 @@ void Stage02Player::CrashStart()
 void Stage02Player::Crash()
 {
 	//墜落回転する
-	const Vector3 rotSpeed = { 0.25f, 0, 5 + crashTimer * 0.01f };
+	const Vector3 rotSpeed = { 0.25f, 0, 4 + crashTimer * 0.01f };
 	rotation += rotSpeed;
 	const float crashRotLimit = 90;
 	rotation.x = min(rotation.x, crashRotLimit);
@@ -93,7 +93,7 @@ void Stage02Player::Crash()
 	//墜落タイマー更新
 	crashTimer++;
 	//墜落状態の最大時間を越えていなければ抜ける
-	const int crashTimeMax = 300;
+	const int crashTimeMax = 240;
 	if (crashTimer < crashTimeMax) { return; }
 
 	//死亡

@@ -1,6 +1,8 @@
 #include "Vector3.h"
 #include <cmath>	//sqrt
 
+using namespace DirectX;
+
 Vector3::Vector3()
 	:Vector3(0, 0, 0)
 {
@@ -163,4 +165,19 @@ const Vector3 MatrixTransformWDivision(Vector3 v, DirectX::XMMATRIX m)
 	result /= result.z;
 
 	return result;
+}
+
+const Vector3 LocalTranslation(Vector3 distance, DirectX::XMMATRIX m)
+{
+	//平行移動行列の計算
+	XMMATRIX matTrans = XMMatrixTranslation(distance.x, distance.y, distance.z);
+	//ワールド行列の合成
+	XMMATRIX matWorld = {};
+	matWorld = XMMatrixIdentity();	//変形をリセット
+	matWorld *= matTrans;	//ワールド行列に平行移動を反映
+	//自機オブジェクトのワールド行列をかける
+	matWorld *= m;
+	
+	//座標を取得
+	return { matWorld.r[3].m128_f32[0], matWorld.r[3].m128_f32[1], matWorld.r[3].m128_f32[2] };
 }

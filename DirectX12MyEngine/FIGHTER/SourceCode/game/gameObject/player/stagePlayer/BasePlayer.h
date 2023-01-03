@@ -5,6 +5,7 @@
 #include "PlayerHPUI.h"
 #include "PlayerSpeedChangeUI.h"
 #include "PlayerDamageEffect.h"
+#include "PlayerVaporEffect.h"
 #include <memory>
 #include <list>
 
@@ -94,6 +95,11 @@ public: //メンバ関数
 	const bool GetIsStageClearModeCompletion() { return isStageClearModeCompletion; }
 
 protected: //メンバ関数
+	/// <summary>
+	/// 両翼の座標を更新
+	/// </summary>
+	void UpdateWingPos();
+
 	/// <summary>
 	/// 行動
 	/// </summary>
@@ -316,6 +322,8 @@ protected: //メンバ変数
 	float rollStartRot = 0;
 	//緊急回避終了時のZ軸角度
 	float rollEndRot = 0;
+	//飛行機雲演出
+	std::unique_ptr<PlayerVaporEffect> vaporEffect;
 	//速度変更ゲージ
 	float speedChangeGauge = maxSpeedChangeGauge;
 	//速度変更ゲージUI

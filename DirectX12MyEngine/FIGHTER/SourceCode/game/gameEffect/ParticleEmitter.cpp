@@ -122,16 +122,8 @@ void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld, const int player
 {
 	//自機の中心座標からの距離
 	const Vector3 distancePos = { 0, -0.25f, -1.2f };
-	//平行移動行列の計算
-	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
-	//ワールド行列の合成
-	XMMATRIX matWorld;
-	matWorld = XMMatrixIdentity();	//変形をリセット
-	matWorld *= matTrans;	//ワールド行列に平行移動を反映
-	//自機オブジェクトのワールド行列をかける
-	matWorld *= playerMatWorld;
 	//パーティクル生成座標を取得
-	Vector3 pos = { matWorld.r[3].m128_f32[0], matWorld.r[3].m128_f32[1], matWorld.r[3].m128_f32[2] };
+	const Vector3 pos = LocalTranslation(distancePos, playerMatWorld);
 
 	//パーティクル(小)生成
 	{
@@ -232,16 +224,8 @@ void ParticleEmitter::PlayerBlackSmokeJet(const XMMATRIX& playerMatWorld)
 {
 	//自機の中心座標からの距離
 	const Vector3 distancePos = { 0, -0.25f, -1.2f };
-	//平行移動行列の計算
-	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
-	//ワールド行列の合成
-	XMMATRIX matWorld;
-	matWorld = XMMatrixIdentity();	//変形をリセット
-	matWorld *= matTrans;	//ワールド行列に平行移動を反映
-	//自機オブジェクトのワールド行列をかける
-	matWorld *= playerMatWorld;
 	//パーティクル生成座標を取得
-	Vector3 pos = { matWorld.r[3].m128_f32[0], matWorld.r[3].m128_f32[1], matWorld.r[3].m128_f32[2] };
+	const Vector3 pos = LocalTranslation(distancePos, playerMatWorld);
 
 	//座標を元に黒煙エフェクトを作成
 	for (int i = 0; i < 2; i++) {
@@ -274,6 +258,26 @@ void ParticleEmitter::PlayerBlackSmokeJet(const XMMATRIX& playerMatWorld)
 		//追加
 		blackSmokeParticle->Add(life, pos, vel, acc, startScale, endScale, lerpFloat, startColor, endColor);
 	}
+}
+
+void ParticleEmitter::PlayerVapor(const Vector3& position)
+{
+	//生存時間
+	const int life = (rand() % 10) + 20;
+	//速度、加速度は0
+	const Vector3 vel{};
+	const Vector3 acc{};
+	//大きさ変更のイージング
+	std::function<float(const float, const float, const float) > lerp =
+		std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+	//大きさ
+	const float scale = 0.4f;
+	//色
+	const XMFLOAT4 startColor = { 0.05f, 0.05f, 0.05f, 1.0f }; //濃い白
+	const XMFLOAT4 endColor = { 0.002f, 0.002f, 0.002f, 1.0f }; //薄い白
+
+	//追加
+	circleParticle->Add(life, position, vel, acc, scale, scale, lerp, startColor, endColor);
 }
 
 void ParticleEmitter::Shot(const Vector3& position)

@@ -614,6 +614,12 @@
     <ClCompile Include="SourceCode\game\gameObject\boss\boss2\Boss2Body.cpp">
       <Filter>ソース ファイル\game\gameObject\boss\boss2</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameEffect\PlayerVaporEffect.cpp">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\math\Spline.cpp">
+      <Filter>ソース ファイル\engine\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -1090,6 +1096,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\boss\boss2\Boss2Body.h">
       <Filter>ソース ファイル\game\gameObject\boss\boss2</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameEffect\PlayerVaporEffect.h">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\math\Spline.h">
+      <Filter>ソース ファイル\engine\math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

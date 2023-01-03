@@ -42,3 +42,4 @@ const Vector3 operator/(const Vector3& v, float s);
 const Vector3 MatrixTransformPosition(Vector3 v, DirectX::XMMATRIX m);
 const Vector3 MatrixTransformDirection(Vector3 v, DirectX::XMMATRIX m);
 const Vector3 MatrixTransformWDivision(Vector3 v, DirectX::XMMATRIX m);
+const Vector3 LocalTranslation(Vector3 distance, DirectX::XMMATRIX m); //ローカル移動でのワールド座標取得

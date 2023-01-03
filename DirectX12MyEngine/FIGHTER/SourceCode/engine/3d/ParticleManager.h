@@ -176,7 +176,7 @@ private:
 	//テクスチャ格納ディレクトリ
 	static std::string directoryPath;
 	//頂点数
-	static const int vertexCount = 1024;
+	static const int vertexCount = 2048;
 	//頂点データ配列
 	VertexPos vertices[vertexCount];
 	//カメラ

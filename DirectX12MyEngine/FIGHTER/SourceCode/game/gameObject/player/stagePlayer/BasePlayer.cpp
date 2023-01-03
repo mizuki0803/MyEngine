@@ -51,6 +51,8 @@ bool BasePlayer::Initialize(ObjModel* model, const int startHP, const int maxHP)
 	speedChangeUI.reset(PlayerSpeedChangeUI::Create(speedChangeUIPosition, maxSpeedChangeGauge));
 	//ダメージ演出生成
 	damageEffect.reset(PlayerDamageEffect::Create());
+	//飛行機雲演出生成
+	vaporEffect.reset(new PlayerVaporEffect());
 
 
 	//ポストエフェクトにラジアルブラーをかける
@@ -78,6 +80,8 @@ void BasePlayer::Update()
 	//オブジェクト更新
 	ObjObject3d::Update();
 
+	//両翼の座標更新
+	UpdateWingPos();
 	//レティクル更新
 	reticles->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
 }
@@ -156,6 +160,19 @@ Vector3 BasePlayer::GetWorldPos()
 	worldPos.z = matWorld.r[3].m128_f32[2];
 
 	return worldPos;
+}
+
+void BasePlayer::UpdateWingPos()
+{
+	//自機の中心座標からの距離
+	const Vector3 leftDistancePos = { -2.0f, -0.2f, -0.9f };
+	const Vector3 rightDistancePos = { 2.0f, -0.2f, -0.9f };
+	//左翼座標を取得
+	const Vector3 leftWingPos = LocalTranslation(leftDistancePos, matWorld);
+	//右翼座標を取得
+	const Vector3 rightWingPos = LocalTranslation(rightDistancePos, matWorld);
+
+	vaporEffect->Update(leftWingPos, rightWingPos);
 }
 
 void BasePlayer::Action()
@@ -536,7 +553,7 @@ void BasePlayer::RollStart()
 void BasePlayer::RollMode()
 {
 	//タイマーを更新
-	const float rollTime = 40;
+	const float rollTime = 45;
 	rollTimer++;
 	const float time = rollTimer / rollTime;
 
@@ -896,19 +913,9 @@ void BasePlayer::UpdateBulletShotPos()
 {
 	//自機の中心座標からの距離
 	const Vector3 distancePos = { 0, -0.3f, 4.0f };
-	//平行移動行列の計算
-	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
-
-	//ワールド行列の合成
-	XMMATRIX bulletShotMatWorld;
-	bulletShotMatWorld = XMMatrixIdentity();	//変形をリセット
-	bulletShotMatWorld *= matTrans;	//ワールド行列に平行移動を反映
-
-	//自機オブジェクトのワールド行列をかける
-	bulletShotMatWorld *= matWorld;
 
 	//弾発射座標を取得
-	bulletShotPos = { bulletShotMatWorld.r[3].m128_f32[0], bulletShotMatWorld.r[3].m128_f32[1], bulletShotMatWorld.r[3].m128_f32[2] };
+	bulletShotPos = LocalTranslation(distancePos, matWorld);
 }
 
 void BasePlayer::ShotStraightBullet()

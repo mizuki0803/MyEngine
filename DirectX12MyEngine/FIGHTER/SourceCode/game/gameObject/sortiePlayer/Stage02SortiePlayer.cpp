@@ -90,19 +90,9 @@ void Stage02SortiePlayer::UpdateBulletShotPos()
 {
 	//自機の中心座標からの距離
 	const Vector3 distancePos = { 0, -0.3f, 5.0f };
-	//平行移動行列の計算
-	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
-
-	//ワールド行列の合成
-	XMMATRIX bulletShotMatWorld;
-	bulletShotMatWorld = XMMatrixIdentity();	//変形をリセット
-	bulletShotMatWorld *= matTrans;	//ワールド行列に平行移動を反映
-
-	//自機オブジェクトのワールド行列をかける
-	bulletShotMatWorld *= matWorld;
 
 	//弾発射座標を取得
-	bulletShotPos = { bulletShotMatWorld.r[3].m128_f32[0], bulletShotMatWorld.r[3].m128_f32[1], bulletShotMatWorld.r[3].m128_f32[2] };
+	bulletShotPos = LocalTranslation(distancePos, matWorld);
 }
 
 void Stage02SortiePlayer::ShotStraightBullet()

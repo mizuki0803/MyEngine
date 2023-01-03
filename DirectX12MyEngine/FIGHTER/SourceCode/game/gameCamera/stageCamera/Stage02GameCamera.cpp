@@ -118,18 +118,8 @@ void Stage02GameCamera::Crash()
 	//自機が死亡していたら抜ける
 	if (player->GetIsDead()) { return; }
 
-	//平行移動行列の計算
-	XMMATRIX matTrans = XMMatrixTranslation(crashPlayerDistance.x, crashPlayerDistance.y, crashPlayerDistance.z);
-
-	//ワールド行列の合成
-	XMMATRIX bulletShotMatWorld;
-	bulletShotMatWorld = XMMatrixIdentity();	//変形をリセット
-	bulletShotMatWorld *= matTrans;	//ワールド行列に平行移動を反映
-	//自機オブジェクトのワールド行列をかける
-	bulletShotMatWorld *= player->GetMatWorld();
-
 	//墜落用カメラ座標、回転角を取得
-	const Vector3 crashCameraPos = { bulletShotMatWorld.r[3].m128_f32[0], bulletShotMatWorld.r[3].m128_f32[1], bulletShotMatWorld.r[3].m128_f32[2] };
+	const Vector3 crashCameraPos = LocalTranslation(crashPlayerDistance, player->GetMatWorld());
 	const Vector3 crashCameraRota = { player->GetRotation().x,  player->GetRotation().y, 0 };
 
 	//自機の少し上にカメラを移動させる
