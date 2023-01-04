@@ -23,15 +23,16 @@ public: //静的メンバ関数
 	/// <param name="model">モデル</param>
 	/// <param name="startHP">開始時HP</param>
 	/// <param name="maxHP">最大HP</param>
+	/// <param name="isVaporCreate">飛行機雲演出を生成するか</param>
 	/// <returns>ステージ01自機</returns>
-	static Stage01Player* Create(ObjModel* model, const int startHP, const int maxHP);
+	static Stage01Player* Create(ObjModel* model, const int startHP, const int maxHP, const bool isVaporCreate);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <returns>成否</returns>
-	bool Initialize(ObjModel* model, const int startHP, const int maxHP) override;
+	bool Initialize(ObjModel* model, const int startHP, const int maxHP, const bool isVaporCreate) override;
 
 	/// <summary>
 	/// ステージクリア後の動きを開始する

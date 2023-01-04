@@ -44,8 +44,9 @@ public: //メンバ関数
 	/// <param name="model">モデル</param>
 	/// <param name="startHP">開始時HP</param>
 	/// <param name="maxHP">最大HP</param>
+	/// <param name="isVaporCreate">飛行機雲演出を生成するか</param>
 	/// <returns>成否</returns>
-	virtual bool Initialize(ObjModel* model, const int startHP, const int maxHP);
+	virtual bool Initialize(ObjModel* model, const int startHP, const int maxHP, const bool isVaporCreate);
 
 	/// <summary>
 	/// 更新
@@ -86,6 +87,7 @@ public: //メンバ関数
 	const bool GetIsCrash() { return isCrash; }
 	const bool GetIsDead() { return isDead; }
 	const bool GetIsRoll() { return isRoll; }
+	PlayerVaporEffect* GetVaporEffect() { return vaporEffect.get(); }
 	MoveSpeedPhase GetMoveSpeedPhase() { return moveSpeedPhase; }
 	const Vector2& GetMoveLimitMax() { return moveLimitMax; }
 	const Vector2& GetMoveLimitMin() { return moveLimitMin; }
@@ -322,6 +324,8 @@ protected: //メンバ変数
 	float rollStartRot = 0;
 	//緊急回避終了時のZ軸角度
 	float rollEndRot = 0;
+	//飛行機雲演出を出すか
+	bool isVaporCreate = false;
 	//飛行機雲演出
 	std::unique_ptr<PlayerVaporEffect> vaporEffect;
 	//速度変更ゲージ

@@ -66,7 +66,9 @@ public: //メンバ関数
 	/// 自機の翼から出る飛行機雲(ヴェイパー)
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
-	void PlayerVapor(const Vector3& position);
+	/// <param name="size">パーティクル大きさ</param>
+	/// <param name="velocity">パーティクル移動速度</param>
+	void PlayerVapor(const Vector3& position, const float size, const Vector3& velocity = {});
 
 	/// <summary>
 	/// ショット演出

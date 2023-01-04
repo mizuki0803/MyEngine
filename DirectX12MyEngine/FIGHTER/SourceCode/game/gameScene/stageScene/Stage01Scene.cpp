@@ -83,7 +83,7 @@ void Stage01Scene::Initialize()
 	//自機生成
 	const int maxHP = 101; //最大HP
 	const int startHP = maxHP / 2 + 1; //開始時HP
-	player.reset(Stage01Player::Create(modelFighter.get(), startHP, maxHP));
+	player.reset(Stage01Player::Create(modelFighter.get(), startHP, maxHP, true));
 	player->SetIsCameraFollow(true);
 	
 
@@ -541,6 +541,8 @@ void Stage01Scene::ObjectRelease()
 			gameGroundManager->SetIsScroll(false);
 			//ビルのスクロール状態を解除
 			gameBuildingManager->SetIsScroll(false);
+			//飛行機雲演出のスクロール状態を解除
+			player->GetVaporEffect()->SetIsScrollMode(false);
 			//後ろ側にビルを大量設置
 			gameBuildingManager->CreateBehindObjects();
 			//死亡後演出を生成
@@ -1030,6 +1032,8 @@ void Stage01Scene::BossBattleStart()
 		gameGroundManager->SetIsScroll(true);
 		//ビルをスクロール状態にする
 		gameBuildingManager->SetIsScroll(true);
+		//飛行機雲演出をスクロール状態にする
+		player->GetVaporEffect()->SetIsScrollMode(true);
 
 		//ボス登場警告演出生成
 		const int warningTime = 300;
@@ -1190,6 +1194,8 @@ void Stage01Scene::GameOver()
 		gameGroundManager->SetIsScroll(false);
 		//ビルのスクロール状態を解除
 		gameBuildingManager->SetIsScroll(false);
+		//飛行機雲演出のスクロール状態を解除
+		player->GetVaporEffect()->SetIsScrollMode(false);
 	}
 	//ゲームオーバーのとき
 	else {

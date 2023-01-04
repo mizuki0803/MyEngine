@@ -3,6 +3,11 @@
 #include "Easing.h"
 #include "GamePostEffect.h"
 
+void (TitlePlayer::* TitlePlayer::sortieActionFuncTable[])() = {
+	&TitlePlayer::SortieStay,
+	&TitlePlayer::SortieBoost,
+};
+
 TitlePlayer* TitlePlayer::Create(ObjModel* model, const Vector3& startPosition)
 {
 	//タイトルシーン用自機のインスタンスを生成
@@ -11,21 +16,34 @@ TitlePlayer* TitlePlayer::Create(ObjModel* model, const Vector3& startPosition)
 		return nullptr;
 	}
 
-	//モデルをセット
-	assert(model);
-	titlePlayer->model = model;
-
 	// 初期化
-	if (!titlePlayer->Initialize()) {
+	if (!titlePlayer->Initialize(model, startPosition)) {
 		delete titlePlayer;
 		assert(0);
 		return nullptr;
 	}
 
-	//座標をセット
-	titlePlayer->position = startPosition;
-
 	return titlePlayer;
+}
+
+bool TitlePlayer::Initialize(ObjModel* model, const Vector3& startPosition)
+{
+	//オブジェクトの初期化
+	if (!ObjObject3d::Initialize()) {
+		return false;
+	}
+
+	//モデルをセット
+	assert(model);
+	this->model = model;
+
+	//座標をセット
+	position = startPosition;
+
+	//飛行機雲演出生成
+	vaporEffect.reset(new PlayerVaporEffect());
+
+	return true;
 }
 
 void TitlePlayer::Update()
@@ -37,18 +55,42 @@ void TitlePlayer::Update()
 
 	//オブジェクト更新
 	ObjObject3d::Update();
+
+	//両翼の座標更新
+	UpdateWingPos();
 }
 
 void TitlePlayer::Sortie()
 {
-	//発射するまでの時間
-	const float sortieStartTime = 180;
-	sortieStartTimer++;
+	//出撃行動
+	(this->*sortieActionFuncTable[static_cast<size_t>(sortieModePhase)])();
 
 	//自機のジェット噴射演出用パーティクル生成
 	ParticleEmitter::GetInstance()->PlayerJet(matWorld);
+}
 
-	if (sortieStartTimer <= sortieStartTime) { return; }
+void TitlePlayer::SortieStay()
+{
+	//発射するまでの時間
+	const float sortieStartTime = 180;
+	sortieTimer++;
+
+	//タイマーが指定した時間になったら
+	if (sortieTimer >= sortieStartTime) {
+		//次のフェーズへ
+		sortieModePhase = SortieModePhase::Boost;
+		//タイマーを初期化
+		sortieTimer = 0;
+
+		//飛行機雲の生成を開始する
+		vaporEffect->VaporStart();
+	}
+}
+
+void TitlePlayer::SortieBoost()
+{
+	//タイマー更新
+	sortieTimer++;
 
 	//回転速度
 	const float rotSpeed = 0.2f;
@@ -74,14 +116,27 @@ void TitlePlayer::Sortie()
 		//だんだんブラーを弱くする時間
 		const int blurChangeTime = 300;
 		//既に弱くしたら抜ける
-		if ((sortieStartTimer - sortieStartTime) > blurChangeTime) { return; }
+		if (sortieTimer > blurChangeTime) { return; }
 
 		//ブラー最小の広がる強さ
 		const float blurStrengthMin = 0.05f;
 
 		//イージングで強さを変更
-		const float time = (float)(sortieStartTimer - sortieStartTime) / blurChangeTime;
+		const float time = (float)sortieTimer / blurChangeTime;
 		const float blurStrength = Easing::OutQuad(blurStrengthMax, blurStrengthMin, time);
 		GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 	}
+}
+
+void TitlePlayer::UpdateWingPos()
+{
+	//自機の中心座標からの距離
+	const Vector3 leftDistancePos = { -2.0f, -0.2f, -0.9f };
+	const Vector3 rightDistancePos = { 2.0f, -0.2f, -0.9f };
+	//左翼座標を取得
+	const Vector3 leftWingPos = LocalTranslation(leftDistancePos, matWorld);
+	//右翼座標を取得
+	const Vector3 rightWingPos = LocalTranslation(rightDistancePos, matWorld);
+
+	vaporEffect->Update(leftWingPos, rightWingPos);
 }

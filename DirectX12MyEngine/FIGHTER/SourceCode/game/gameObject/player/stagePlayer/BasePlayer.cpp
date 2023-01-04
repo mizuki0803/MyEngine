@@ -18,7 +18,7 @@ const float BasePlayer::knockbackBaseSpeed = 0.25f;
 const float BasePlayer::maxSpeedChangeGauge = 100.0f;
 const float BasePlayer::normalSpeedBlurStrength = 0.03f;
 
-bool BasePlayer::Initialize(ObjModel* model, const int startHP, const int maxHP)
+bool BasePlayer::Initialize(ObjModel* model, const int startHP, const int maxHP, const bool isVaporCreate)
 {
 	//3Dオブジェクトの初期化
 	if (!ObjObject3d::Initialize()) {
@@ -34,7 +34,6 @@ bool BasePlayer::Initialize(ObjModel* model, const int startHP, const int maxHP)
 	assert(model);
 	this->model = model;
 
-
 	//レティクルを生成
 	reticles.reset(PlayerReticles::Create());
 
@@ -42,6 +41,9 @@ bool BasePlayer::Initialize(ObjModel* model, const int startHP, const int maxHP)
 	HP = startHP;
 	//最大HPをセット
 	this->maxHP = maxHP;
+
+	//飛行機雲演出を生成するかセット
+	this->isVaporCreate = isVaporCreate;
 
 	//HPUI生成
 	const Vector2 hpUIPosition = { 20, 20 };
@@ -51,9 +53,9 @@ bool BasePlayer::Initialize(ObjModel* model, const int startHP, const int maxHP)
 	speedChangeUI.reset(PlayerSpeedChangeUI::Create(speedChangeUIPosition, maxSpeedChangeGauge));
 	//ダメージ演出生成
 	damageEffect.reset(PlayerDamageEffect::Create());
-	//飛行機雲演出生成
-	vaporEffect.reset(new PlayerVaporEffect());
 
+	//飛行機雲演出生成
+	if (isVaporCreate) { vaporEffect.reset(new PlayerVaporEffect()); }
 
 	//ポストエフェクトにラジアルブラーをかける
 	if (!GamePostEffect::GetPostEffect()->GetIsRadialBlur()) {
@@ -81,7 +83,8 @@ void BasePlayer::Update()
 	ObjObject3d::Update();
 
 	//両翼の座標更新
-	UpdateWingPos();
+	if (isVaporCreate) { UpdateWingPos(); }
+
 	//レティクル更新
 	reticles->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
 }
@@ -367,6 +370,9 @@ void BasePlayer::CrashStart()
 	//パーティクルの大きさを統一するため、移動はもうしないが通常移動状態にしておく
 	moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
 
+	//飛行機雲の生成を終了する
+	if (isVaporCreate) { vaporEffect->VaporEnd(); }
+
 	//墜落状態にする
 	isCrash = true;
 }
@@ -535,7 +541,7 @@ void BasePlayer::RollStart()
 	bool isInputRightRoll = (input->TriggerKey(DIK_RSHIFT) || input->TriggerGamePadButton(Input::PAD_RB));
 	bool isInputLeftRoll = (input->TriggerKey(DIK_LSHIFT) || input->TriggerGamePadButton(Input::PAD_LB));
 
-	if (!(isInputRightRoll || isInputLeftRoll)) {return;}
+	if (!(isInputRightRoll || isInputLeftRoll)) { return; }
 
 	//緊急回避状態にする
 	isRoll = true;
@@ -616,6 +622,9 @@ void BasePlayer::SpeedChangeStart(bool isPushHighSpeedInput, bool isPushSlowSpee
 	if (isPushHighSpeedInput) {
 		moveSpeedPhase = MoveSpeedPhase::HighSpeed;
 
+		//飛行機雲の生成を開始する
+		if (isVaporCreate) { vaporEffect->VaporStart(); }
+
 		//ポストエフェクトのラジアルブラーを強める
 		if (GamePostEffect::GetPostEffect()->GetIsRadialBlur()) {
 			const float highSpeedBlur = 0.4f;
@@ -689,6 +698,9 @@ void BasePlayer::SetSpeedChangeModeEnd()
 {
 	//速度変更を終了
 	isSpeedChange = false;
+
+	//飛行機雲の生成を終了する
+	if (isVaporCreate) { vaporEffect->VaporEnd(); }
 
 	//移動速度を通常に戻す状態にする
 	moveSpeedPhase = MoveSpeedPhase::ReturnNormalSpeed;

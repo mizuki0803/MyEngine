@@ -8,7 +8,7 @@ void (Stage02Player::* Stage02Player::stageClearActionFuncTable[])() = {
 	&Stage02Player::StageClearBoost,
 };
 
-Stage02Player* Stage02Player::Create(ObjModel* model, const int startHP, const int maxHP)
+Stage02Player* Stage02Player::Create(ObjModel* model, const int startHP, const int maxHP, const bool isVaporCreate)
 {
 	//ステージ02自機のインスタンスを生成
 	Stage02Player* player = new Stage02Player();
@@ -17,7 +17,7 @@ Stage02Player* Stage02Player::Create(ObjModel* model, const int startHP, const i
 	}
 
 	// 初期化
-	if (!player->Initialize(model, startHP, maxHP)) {
+	if (!player->Initialize(model, startHP, maxHP, isVaporCreate)) {
 		delete player;
 		assert(0);
 		return nullptr;
@@ -26,13 +26,13 @@ Stage02Player* Stage02Player::Create(ObjModel* model, const int startHP, const i
 	return player;
 }
 
-bool Stage02Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
+bool Stage02Player::Initialize(ObjModel* model, const int startHP, const int maxHP, const bool isVaporCreate)
 {
 	//基準の座標をセット
 	basePos = { 0, -2, 16 };
 
 	//自機の共通初期化
-	if (!BasePlayer::Initialize(model, startHP, maxHP)) {
+	if (!BasePlayer::Initialize(model, startHP, maxHP, isVaporCreate)) {
 		return false;
 	}
 

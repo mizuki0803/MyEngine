@@ -79,7 +79,7 @@ void Stage02Scene::Initialize()
 	//自機生成
 	const int maxHP = 101; //最大HP
 	const int startHP = maxHP / 2 + 1; //開始時HP
-	player.reset(Stage02Player::Create(modelFighter.get(), startHP, maxHP));
+	player.reset(Stage02Player::Create(modelFighter.get(), startHP, maxHP, false));
 	player->SetIsCameraFollow(true);
 
 	//ゲームカメラ初期化

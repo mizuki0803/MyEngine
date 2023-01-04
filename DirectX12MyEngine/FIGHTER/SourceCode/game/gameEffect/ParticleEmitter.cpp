@@ -260,24 +260,21 @@ void ParticleEmitter::PlayerBlackSmokeJet(const XMMATRIX& playerMatWorld)
 	}
 }
 
-void ParticleEmitter::PlayerVapor(const Vector3& position)
+void ParticleEmitter::PlayerVapor(const Vector3& position, const float size, const Vector3& velocity)
 {
 	//生存時間
-	const int life = (rand() % 10) + 20;
-	//速度、加速度は0
-	const Vector3 vel{};
+	const int life = (rand() % 10) + 30;
+	//加速度は0
 	const Vector3 acc{};
 	//大きさ変更のイージング
 	std::function<float(const float, const float, const float) > lerp =
 		std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-	//大きさ
-	const float scale = 0.4f;
 	//色
 	const XMFLOAT4 startColor = { 0.05f, 0.05f, 0.05f, 1.0f }; //濃い白
 	const XMFLOAT4 endColor = { 0.002f, 0.002f, 0.002f, 1.0f }; //薄い白
 
 	//追加
-	circleParticle->Add(life, position, vel, acc, scale, scale, lerp, startColor, endColor);
+	circleParticle->Add(life, position, velocity, acc, size, size, lerp, startColor, endColor);
 }
 
 void ParticleEmitter::Shot(const Vector3& position)

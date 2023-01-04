@@ -10,7 +10,7 @@ void (Stage01Player::* Stage01Player::stageClearActionFuncTable[])() = {
 	&Stage01Player::StageClearBoost,
 };
 
-Stage01Player* Stage01Player::Create(ObjModel* model, const int startHP, const int maxHP)
+Stage01Player* Stage01Player::Create(ObjModel* model, const int startHP, const int maxHP, const bool isVaporCreate)
 {
 	//ステージ01自機のインスタンスを生成
 	Stage01Player* player = new Stage01Player();
@@ -19,7 +19,7 @@ Stage01Player* Stage01Player::Create(ObjModel* model, const int startHP, const i
 	}
 
 	// 初期化
-	if (!player->Initialize(model, startHP, maxHP)) {
+	if (!player->Initialize(model, startHP, maxHP, isVaporCreate)) {
 		delete player;
 		assert(0);
 		return nullptr;
@@ -28,13 +28,13 @@ Stage01Player* Stage01Player::Create(ObjModel* model, const int startHP, const i
 	return player;
 }
 
-bool Stage01Player::Initialize(ObjModel* model, const int startHP, const int maxHP)
+bool Stage01Player::Initialize(ObjModel* model, const int startHP, const int maxHP, const bool isVaporCreate)
 {
 	//基準の座標をセット
 	basePos = { 0, 3, 16 };
 
 	//自機の共通初期化
-	if (!BasePlayer::Initialize(model, startHP, maxHP)) {
+	if (!BasePlayer::Initialize(model, startHP, maxHP, isVaporCreate)) {
 		return false;
 	}
 
@@ -68,6 +68,9 @@ void Stage01Player::StageClearModeStart()
 	//パーティクルの大きさを統一するため、移動はもうしないが通常移動状態にしておく
 	moveSpeedPhase = MoveSpeedPhase::NormalSpeed;
 
+	//飛行機雲の生成を終了する
+	if (isVaporCreate) { vaporEffect->VaporEnd(); }
+
 	//ステージクリア後の動きをする
 	isStageClearMode = true;
 }
@@ -94,6 +97,9 @@ void Stage01Player::StageClearBoostStart()
 {
 	//ブースト状態にする
 	stageClearModePhase = StageClearModePhase::Boost;
+
+	//飛行機雲の生成を開始する
+	if (isVaporCreate) { vaporEffect->VaporStart(); }
 }
 
 void Stage01Player::Crash()
