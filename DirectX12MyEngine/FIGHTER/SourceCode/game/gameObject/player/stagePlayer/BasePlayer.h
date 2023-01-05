@@ -6,6 +6,7 @@
 #include "PlayerSpeedChangeUI.h"
 #include "PlayerDamageEffect.h"
 #include "PlayerVaporEffect.h"
+#include "PlayerRollingEffect.h"
 #include <memory>
 #include <list>
 
@@ -318,6 +319,8 @@ protected: //メンバ変数
 	bool isDead = false;
 	//緊急回避中か
 	bool isRoll = false;
+	//緊急回避用演出
+	std::list<std::unique_ptr<PlayerRollingEffect>> rollingEffects;
 	//緊急回避用タイマー
 	int32_t rollTimer = 0;
 	//緊急回避開始時のZ軸角度

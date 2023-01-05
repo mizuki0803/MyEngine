@@ -70,6 +70,15 @@ bool BasePlayer::Initialize(ObjModel* model, const int startHP, const int maxHP,
 
 void BasePlayer::Update()
 {
+	//削除状態の緊急回避演出を削除
+	rollingEffects.remove_if([](std::unique_ptr<PlayerRollingEffect>& rollingEffect) {
+		return rollingEffect->GetIsDelete();
+		});
+	//緊急回避演出更新
+	for (const std::unique_ptr<PlayerRollingEffect>& rollingEffect : rollingEffects) {
+		rollingEffect->Update();
+	}
+
 	//自機のジェット噴射演出用パーティクル生成
 	JetEffectManager();
 
@@ -554,6 +563,12 @@ void BasePlayer::RollStart()
 	const float rotAmount = 360; //回転量
 	if (isInputRightRoll) { rollEndRot = -rotAmount; }		//右回転
 	else if (isInputLeftRoll) { rollEndRot = rotAmount; }	//左回転
+
+	//緊急回避演出生成
+	std::unique_ptr<PlayerRollingEffect> newRollingEffect;
+	std::function<Vector3()> getTergetPos = std::bind(&BasePlayer::GetWorldPos, this);
+	newRollingEffect.reset(PlayerRollingEffect::Create(getTergetPos, true));
+	rollingEffects.push_back(std::move(newRollingEffect));
 }
 
 void BasePlayer::RollMode()

@@ -620,6 +620,9 @@
     <ClCompile Include="SourceCode\engine\math\Spline.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\game\gameEffect\PlayerRollingEffect.cpp">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -1102,6 +1105,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\math\Spline.h">
       <Filter>ソース ファイル\engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameEffect\PlayerRollingEffect.h">
+      <Filter>ソース ファイル\game\gameEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

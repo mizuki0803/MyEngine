@@ -583,7 +583,7 @@ bool ParticleManager::LoadTexture(UINT texNumber, const std::string& filename)
 
 void ParticleManager::Add(const int life, const Vector3& position, const Vector3& velocity, const Vector3& accel,
 	const float startScale, const float endScale, std::function<float(const float, const float, const float)> easingScale,
-	const XMFLOAT4& startColor, const XMFLOAT4& endColor, const float rotSpeed)
+	const XMFLOAT4& startColor, const XMFLOAT4& endColor, const float rotation, const float rotSpeed)
 {
 	//パーティクルの要素数が頂点数以上なら追加できないようにする
 	UINT particleNum = (UINT)std::distance(particles.begin(), particles.end());
@@ -605,6 +605,38 @@ void ParticleManager::Add(const int life, const Vector3& position, const Vector3
 	p.startColor = startColor;
 	p.endColor = endColor;
 	p.color = startColor;
+	p.rotation = rotation;
+	p.rotSpeed = rotSpeed;
+	p.getTargetPos = nullptr;
+}
+
+void ParticleManager::AddTargetFollow(const int life, std::function<Vector3()> getTargetPos, const Vector3& localPos, const Vector3& velocity,
+	const Vector3& accel, const float startScale, const float endScale, std::function<float(const float, const float, const float)> easingScale,
+	const XMFLOAT4& startColor, const XMFLOAT4& endColor, const float rotation, const float rotSpeed)
+{
+	//パーティクルの要素数が頂点数以上なら追加できないようにする
+	UINT particleNum = (UINT)std::distance(particles.begin(), particles.end());
+	if (particleNum >= vertexCount) { return; }
+
+	//リストに要素を追加
+	particles.emplace_front();
+	//追加した要素の参照
+	Particle& p = particles.front();
+	//値のセット
+	p.position = {};
+	p.velocity = velocity;
+	p.accel = accel;
+	p.getTargetPos = getTargetPos;
+	p.localPos = localPos;
+	p.numFrame = life;
+	p.startScale = startScale;
+	p.endScale = endScale;
+	p.easingScale = easingScale;
+	p.scale = startScale;
+	p.startColor = startColor;
+	p.endColor = endColor;
+	p.color = startColor;
+	p.rotation = rotation;
 	p.rotSpeed = rotSpeed;
 }
 
@@ -697,8 +729,19 @@ void ParticleManager::Update()
 		it->frame++;
 		//速度に加速度を加算
 		it->velocity = it->velocity + it->accel;
-		//速度による移動
-		it->position = it->position + it->velocity;
+
+		//追従をするなら
+		if (it->getTargetPos) {
+			//速度による移動
+			it->localPos = it->localPos + it->velocity;
+			//追従用座標関数から取得した座標とローカル座標を加算した値を描画座標とする
+			it->position = it->getTargetPos() + it->localPos;
+		}
+		//追従をしない通常の場合
+		else {
+			//速度による移動
+			it->position = it->position + it->velocity;
+		}
 
 		//進行度を0～1の範囲に換算
 		float f = (float)it->numFrame / it->frame;

@@ -42,7 +42,7 @@ void main(
 		element.svpos = mul(mat, element.svpos);
 
 		//‰ñ“]Šp‚©‚çƒ‰ƒWƒAƒ“‚ğZo
-		float radian = (input[0].rot * 3.141592f / 360);
+		float radian = (input[0].rot * 3.141592f / 180);
 		float s = sin(radian);
 		float c = cos(radian);
 		float2x2 rotMatrix = float2x2(c, -s, s, c);

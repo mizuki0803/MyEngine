@@ -71,6 +71,13 @@ public: //メンバ関数
 	void PlayerVapor(const Vector3& position, const float size, const Vector3& velocity = {});
 
 	/// <summary>
+	/// 自機緊急回避用演出
+	/// </summary>
+	/// <param name="getTargetPos">パーティクルが追従する座標取得関数</param>
+	/// <param name="size">パーティクル大きさ</param>
+	void PlayerRolling(const int lifeTime, std::function<Vector3()> getTargetPos, const Vector3& localPos, const float rotation, const float size, const XMFLOAT4& color);
+
+	/// <summary>
 	/// ショット演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
@@ -163,4 +170,6 @@ private: //メンバ変数
 	std::unique_ptr<ParticleManager> blackSmokeParticle;
 	//パーティクルマネージャー(キラキラ)
 	std::unique_ptr<ParticleManager> shineParticle;
+	//パーティクルマネージャー(曲線)
+	std::unique_ptr<ParticleManager> curveParticle;
 };

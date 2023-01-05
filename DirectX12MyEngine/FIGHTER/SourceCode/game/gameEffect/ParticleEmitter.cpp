@@ -20,6 +20,7 @@ void ParticleEmitter::Initialize()
 	explosionParticle.reset(ParticleManager::Create(2));
 	blackSmokeParticle.reset(ParticleManager::Create(2));
 	shineParticle.reset(ParticleManager::Create(3));
+	curveParticle.reset(ParticleManager::Create(4));
 }
 
 void ParticleEmitter::Update()
@@ -29,6 +30,7 @@ void ParticleEmitter::Update()
 	explosionParticle->Update();
 	blackSmokeParticle->Update();
 	shineParticle->Update();
+	curveParticle->Update();
 }
 
 void ParticleEmitter::DrawAll()
@@ -40,6 +42,7 @@ void ParticleEmitter::DrawAll()
 	circleParticle->Draw();
 	explosionParticle->Draw();
 	shineParticle->Draw();
+	curveParticle->Draw();
 
 	//減算合成描画前処理
 	ParticleManager::DrawPrevSubBlend();
@@ -275,6 +278,21 @@ void ParticleEmitter::PlayerVapor(const Vector3& position, const float size, con
 
 	//追加
 	circleParticle->Add(life, position, velocity, acc, size, size, lerp, startColor, endColor);
+}
+
+void ParticleEmitter::PlayerRolling(const int lifeTime, std::function<Vector3()> getTargetPos, const Vector3& localPos, const float rotation, const float size, const XMFLOAT4& color)
+{
+	//加速度は0
+	const Vector3 vel{};
+	const Vector3 acc{};
+	//大きさ変更のイージング
+	std::function<float(const float, const float, const float) > lerp =
+		std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+	//色
+	const XMFLOAT4 endColor = { 0, 0, 0, 1.0f }; //無色
+
+	//追加
+	curveParticle->AddTargetFollow(lifeTime, getTargetPos, localPos, vel, acc, size, size, lerp, color, endColor, rotation);
 }
 
 void ParticleEmitter::Shot(const Vector3& position)
@@ -658,13 +676,16 @@ void ParticleEmitter::ItemShine(const Vector3& position, const float size, const
 		const XMFLOAT4 startColor = { 0.8f, 0.8f, 0.6f, 1 }; //黄色
 		const XMFLOAT4 endColor = { 0.4f, 0.4f, 0.3f, 1 }; //薄い黄色
 
+		//初期回転角
+		const float rot = ((float)rand() / RAND_MAX * 360);
+
 		//回転速度
-		const float mdRotSpeed = 5.0f;
-		const float baseSpeed = 10.0f * ((float)num / 2);
+		const float mdRotSpeed = 2.5f;
+		const float baseSpeed = 5.0f * ((float)num / 2);
 		const float rotSpeed = ((float)rand() / RAND_MAX * mdRotSpeed) + baseSpeed;
 
 		//追加
-		shineParticle->Add(life, pos, vel, acc, scale, scale, lerpFloat, startColor, endColor, rotSpeed);
+		shineParticle->Add(life, pos, vel, acc, scale, scale, lerpFloat, startColor, endColor, rot, rotSpeed);
 	}
 }
 
@@ -683,4 +704,5 @@ void ParticleEmitter::LoadTexture()
 	ParticleManager::LoadTexture(1, "effect1.png");
 	ParticleManager::LoadTexture(2, "effect2.png");
 	ParticleManager::LoadTexture(3, "effect3.png");
+	ParticleManager::LoadTexture(4, "effect4.png");
 }
