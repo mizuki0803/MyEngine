@@ -3,26 +3,26 @@
 #include "Sequencer.h"
 #include <d3dx12.h>
 
-class Boss2;
+class Galaxy;
 
 /// <summary>
 /// ステージ2ボスの行動遷移ビヘイビアツリー
 /// </summary>
-class Boss2BehaviorTree
+class GalaxyBehaviorTree
 {
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <returns>ボス02の行動遷移ビヘイビアツリー</returns>
-	static Boss2BehaviorTree* Create(Boss2* boss2);
+	/// <returns>ギャラクシーの行動遷移ビヘイビアツリー</returns>
+	static GalaxyBehaviorTree* Create(Galaxy* galaxy);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <returns>成否</returns>
-	bool Initialize(Boss2* boss2);
+	bool Initialize(Galaxy* galaxy);
 
 	/// <summary>
 	/// 行動遷移
@@ -41,8 +41,8 @@ private: //メンバ関数
 	void AppearModeSequenceNode();
 
 private:
-	//ボス02
-	Boss2* boss2 = nullptr;
+	//ギャラクシー
+	Galaxy* galaxy = nullptr;
 	//セレクター
 	std::unique_ptr<Selector> topSelector;
 	//シーケンサー

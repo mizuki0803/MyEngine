@@ -3,8 +3,8 @@
 
 //ステージ02自機クラスを前方宣言
 class Stage02Player;
-//ボス2胴体を前方宣言
-class Boss2Body;
+//ギャラクシー胴体を前方宣言
+class GalaxyBody;
 
 /// <summary>
 /// ステージ02ゲームカメラ
@@ -42,7 +42,7 @@ public: //メンバ関数
 	/// ステージクリア後の動きを開始する
 	/// </summary>
 	/// <param name="bossMainBody">ボス胴体</param>
-	void StageClearModeStart(Boss2Body* boss2Body);
+	void StageClearModeStart(GalaxyBody* galaxyBody);
 
 	/// <summary>
 	/// ステージクリア後の自機の正面に移動する行動を開始する
@@ -109,7 +109,7 @@ private: //メンバ変数
 	//ステージ01自機
 	Stage02Player* player = nullptr;
 	//ボス胴体
-	Boss2Body* boss2Body = nullptr;
+	GalaxyBody* galaxyBody = nullptr;
 	//墜落状態のカメラ位置に移動するか
 	bool isMoveCrashPos = false;
 	//墜落用の自機の中心座標からの距離

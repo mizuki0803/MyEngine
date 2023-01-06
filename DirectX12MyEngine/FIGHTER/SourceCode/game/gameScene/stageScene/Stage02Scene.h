@@ -3,7 +3,7 @@
 #include "Stage02GameCamera.h"
 #include "Collision.h"
 #include "Stage02Player.h"
-#include "Boss2.h"
+#include "Galaxy.h"
 #include "BossDeadEffect.h"
 #include "Meteorite.h"
 #include "SpaceDustEffect.h"
@@ -142,7 +142,7 @@ private: //メンバ変数
 	//自機
 	std::unique_ptr<Stage02Player> player;
 	//ボス
-	std::unique_ptr<Boss2> boss;
+	std::unique_ptr<Galaxy> boss;
 	//ボス死亡後の演出管理
 	std::unique_ptr<BossDeadEffect> bossDeadEffect;
 

@@ -1,8 +1,8 @@
 #pragma once
-#include "Boss2Body.h"
+#include "GalaxyBody.h"
 #include "BossNameUI.h"
 #include "BossHPUI.h"
-#include "Boss2BehaviorTree.h"
+#include "GalaxyBehaviorTree.h"
 
 //自機クラスを前方宣言
 class BasePlayer;
@@ -10,7 +10,7 @@ class BasePlayer;
 /// <summary>
 /// ボス ステージ2ボス
 /// </summary>
-class Boss2
+class Galaxy
 {
 public:
 	//行動フェーズ
@@ -25,10 +25,10 @@ public: //静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <returns>02</returns>
-	static Boss2* Create(const Vector3& position);
+	static Galaxy* Create(const Vector3& position);
 
 	//setter
-	static void SetPlayer(BasePlayer* player) { Boss2::player = player; }
+	static void SetPlayer(BasePlayer* player) { Galaxy::player = player; }
 
 public: //メンバ関数
 	/// <summary>
@@ -80,7 +80,7 @@ public: //メンバ関数
 
 	//getter
 	const Phase& GetPhase() { return this->phase; }
-	Boss2Body* GetBody() { return body.get(); }
+	GalaxyBody* GetBody() { return body.get(); }
 	const bool GetIsDead() { return isDead; }
 	const bool GetIsDelete() { return isDelete; }
 
@@ -101,9 +101,9 @@ private: //静的メンバ変数
 
 private: //メンバ変数
 	//胴体
-	std::unique_ptr<Boss2Body> body;
+	std::unique_ptr<GalaxyBody> body;
 	//ステージ2ボスの行動遷移ビヘイビアツリー
-	std::unique_ptr<Boss2BehaviorTree> behaviorTree;
+	std::unique_ptr<GalaxyBehaviorTree> behaviorTree;
 	//行動
 	Phase phase = Phase::Appear;
 	//登場状態時間タイマー

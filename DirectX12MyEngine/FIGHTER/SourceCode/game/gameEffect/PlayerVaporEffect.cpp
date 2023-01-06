@@ -91,7 +91,7 @@ void PlayerVaporEffect::ChangeVaporSize()
 	//飛行機雲のサイズを小さくする場合
 	else if (vaporSizeChangeMode == VaporSizeChangeMode::Smaller) {
 		//サイズを小さくする
-		const float sizeChangeNum = -0.005f; //サイズ変更の量
+		const float sizeChangeNum = -0.007f; //サイズ変更の量
 		vaporSize += sizeChangeNum;
 
 		//サイズが0以下になったら生成状態を解除する

@@ -1,42 +1,42 @@
-#include "Boss2Body.h"
+#include "GalaxyBody.h"
 #include "Easing.h"
 #include "ParticleEmitter.h"
 
-BaseStageScene* Boss2Body::stageScene = nullptr;
-ObjModel* Boss2Body::bodyModel = nullptr;
-const Vector3 Boss2Body::normalSize = { 4.5f, 4.5f, 4.5f };
-const Vector3 Boss2Body::damageSize = Boss2Body::normalSize * 1.1f;
-const XMFLOAT4 Boss2Body::damageColor = { 1, 0.2f, 0.2f, 1 };
+BaseStageScene* GalaxyBody::stageScene = nullptr;
+ObjModel* GalaxyBody::bodyModel = nullptr;
+const Vector3 GalaxyBody::normalSize = { 4.5f, 4.5f, 4.5f };
+const Vector3 GalaxyBody::damageSize = GalaxyBody::normalSize * 1.1f;
+const XMFLOAT4 GalaxyBody::damageColor = { 1, 0.2f, 0.2f, 1 };
 
-Boss2Body* Boss2Body::Create(const Vector3& basePos)
+GalaxyBody* GalaxyBody::Create(const Vector3& basePos)
 {
 	//メダマーン(本体)のインスタンスを生成
-	Boss2Body* boss2Body = new Boss2Body();
-	if (boss2Body == nullptr) {
+	GalaxyBody* galaxyBody = new GalaxyBody();
+	if (galaxyBody == nullptr) {
 		return nullptr;
 	}
 
 	//寝ている状態のモデルをセット
 	assert(bodyModel);
-	boss2Body->model = bodyModel;
+	galaxyBody->model = bodyModel;
 
 	// 初期化
-	if (!boss2Body->Initialize()) {
-		delete boss2Body;
+	if (!galaxyBody->Initialize()) {
+		delete galaxyBody;
 		assert(0);
 		return nullptr;
 	}
 
 	//停止する基準の座標をセット
-	boss2Body->basePos = basePos;
+	galaxyBody->basePos = basePos;
 
 	//大きさをセット
-	boss2Body->scale = normalSize;
+	galaxyBody->scale = normalSize;
 
-	return boss2Body;
+	return galaxyBody;
 }
 
-void Boss2Body::Update()
+void GalaxyBody::Update()
 {
 	//ダメージ状態のみの処理
 	if (isDamage) {
@@ -47,7 +47,7 @@ void Boss2Body::Update()
 	ObjObject3d::Update();
 }
 
-void Boss2Body::Damage(int attackPower, const Vector3& collisionPos, const Vector3& subjectVel)
+void GalaxyBody::Damage(int attackPower, const Vector3& collisionPos, const Vector3& subjectVel)
 {
 	//引数の攻撃力をダメージ量にセット
 	damageNum = attackPower;
@@ -82,7 +82,7 @@ void Boss2Body::Damage(int attackPower, const Vector3& collisionPos, const Vecto
 	DamageExplosion(collisionPos);
 }
 
-void Boss2Body::Fall(const float time)
+void GalaxyBody::Fall(const float time)
 {
 	//基準の位置の真上から降りてくる
 	Vector3 bornPos = basePos;
@@ -91,7 +91,7 @@ void Boss2Body::Fall(const float time)
 	position = Easing::LerpVec3(bornPos, basePos, time);
 }
 
-void Boss2Body::Dead()
+void GalaxyBody::Dead()
 {
 	//下向きに回転させる
 	const float rotSpeed = 0.15f;
@@ -101,7 +101,7 @@ void Boss2Body::Dead()
 	position.y -= 0.05f;
 }
 
-Vector3 Boss2Body::GetWorldPos()
+Vector3 GalaxyBody::GetWorldPos()
 {
 	//ワールド座標を入れる変数
 	Vector3 worldPos;
@@ -113,11 +113,11 @@ Vector3 Boss2Body::GetWorldPos()
 	return worldPos;
 }
 
-void Boss2Body::Wait()
+void GalaxyBody::Wait()
 {
 }
 
-void Boss2Body::DamageMode()
+void GalaxyBody::DamageMode()
 {
 	//ダメージ状態の時間
 	const int damageTime = 20;
@@ -145,14 +145,14 @@ void Boss2Body::DamageMode()
 	}
 }
 
-void Boss2Body::SetDamageKnockback(const Vector3& subjectVel)
+void GalaxyBody::SetDamageKnockback(const Vector3& subjectVel)
 {
 	//ノックバックする方向を決める(対象の速度の方向)
 	knockbackVec = subjectVel;
 	knockbackVec.normalize();
 }
 
-void Boss2Body::DamageKnockback()
+void GalaxyBody::DamageKnockback()
 {
 	//ノックバックする時間
 	const float knockbackTime = 5;
@@ -169,7 +169,7 @@ void Boss2Body::DamageKnockback()
 	position += knockbackVel;
 }
 
-void Boss2Body::DamageSizeReturn()
+void GalaxyBody::DamageSizeReturn()
 {
 	//大きくしたサイズを元に戻す時間
 	const float sizeReturnTime = 10;
@@ -181,7 +181,7 @@ void Boss2Body::DamageSizeReturn()
 	scale = Easing::LerpVec3(damageSize, normalSize, time);
 }
 
-void Boss2Body::DamageExplosion(const Vector3& position)
+void GalaxyBody::DamageExplosion(const Vector3& position)
 {
 	//敵内部に演出が出てしまうことがあるので、敵の大きさ分押し戻す
 	Vector3 pos = position;
@@ -197,7 +197,7 @@ void Boss2Body::DamageExplosion(const Vector3& position)
 	ParticleEmitter::GetInstance()->Explosion(pos, size);
 }
 
-void Boss2Body::DamageColorMode()
+void GalaxyBody::DamageColorMode()
 {
 	//ダメージ色切り替え時間
 	const int damageColorChangeTime = 2;

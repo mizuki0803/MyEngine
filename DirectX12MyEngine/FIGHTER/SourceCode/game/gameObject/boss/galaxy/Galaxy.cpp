@@ -1,46 +1,46 @@
-#include "Boss2.h"
+#include "Galaxy.h"
 #include "BasePlayer.h"
 #include "EnemyDefeatCounter.h"
 #include "ParticleEmitter.h"
 
-BasePlayer* Boss2::player = nullptr;
-const float Boss2::appearModeTime = 600.0f;
-const float Boss2::waitModeTime = 500.0f;
+BasePlayer* Galaxy::player = nullptr;
+const float Galaxy::appearModeTime = 600.0f;
+const float Galaxy::waitModeTime = 500.0f;
 
-Boss2* Boss2::Create(const Vector3& position)
+Galaxy* Galaxy::Create(const Vector3& position)
 {
-	//ボス2のインスタンスを生成
-	Boss2* boss2 = new Boss2();
-	if (boss2 == nullptr) {
+	//ギャラクシーのインスタンスを生成
+	Galaxy* galaxy = new Galaxy();
+	if (galaxy == nullptr) {
 		return nullptr;
 	}
 
 	// 初期化
-	if (!boss2->Initialize(position)) {
-		delete boss2;
+	if (!galaxy->Initialize(position)) {
+		delete galaxy;
 		assert(0);
 		return nullptr;
 	}
 
-	return boss2;
+	return galaxy;
 }
 
-bool Boss2::Initialize(const Vector3& position)
+bool Galaxy::Initialize(const Vector3& position)
 {
 	//胴体生成
-	body.reset(Boss2Body::Create(position));
+	body.reset(GalaxyBody::Create(position));
 
 	//HPセット
 	int maxHP = 1;
 	HP = maxHP;
 
 	//ビヘイビアツリー生成
-	behaviorTree.reset(Boss2BehaviorTree::Create(this));
+	behaviorTree.reset(GalaxyBehaviorTree::Create(this));
 
 	return true;
 }
 
-void Boss2::Update()
+void Galaxy::Update()
 {
 	//更新
 	body->Update();//胴体
@@ -58,13 +58,13 @@ void Boss2::Update()
 	}
 }
 
-void Boss2::Draw()
+void Galaxy::Draw()
 {
 	//描画
 	body->Draw();//胴体
 }
 
-void Boss2::DrawUI()
+void Galaxy::DrawUI()
 {
 	//HPUI描画
 	if (hpUI) {
@@ -76,17 +76,17 @@ void Boss2::DrawUI()
 	}
 }
 
-void Boss2::OnCollisionBody(const int damageNum, const Vector3& collisionPos, const Vector3& subjectVel)
+void Galaxy::OnCollisionBody(const int damageNum, const Vector3& collisionPos, const Vector3& subjectVel)
 {
 	//胴体にダメージ
 	body->Damage(damageNum, collisionPos, subjectVel);
 
-	//ボス2にダメージ(実際に喰らったダメージ量をセット)
+	//ギャラクシーにダメージ(実際に喰らったダメージ量をセット)
 	const int mainBodyDamageNum = body->GetDamageNum();
 	Damage(mainBodyDamageNum);
 }
 
-bool Boss2::AppearModeCount()
+bool Galaxy::AppearModeCount()
 {
 	//登場状態でなければ抜ける
 	if (!(phase == Phase::Appear)) { return false; }
@@ -97,7 +97,7 @@ bool Boss2::AppearModeCount()
 	//指定した時間になったらボス名表示UI生成
 	const float bossNameUICreateTime = 160;
 	if (appearModeTimer >= bossNameUICreateTime && !bossNameUI) {
-		bossNameUI.reset(BossNameUI::Create(0));
+		bossNameUI.reset(BossNameUI::Create(1));
 	}
 
 	//指定した時間になったらHPバー生成
@@ -118,7 +118,7 @@ bool Boss2::AppearModeCount()
 	return true;
 }
 
-bool Boss2::AppearFall()
+bool Galaxy::AppearFall()
 {
 	//降下にかかる時間
 	const float fallTime = 400;
@@ -134,7 +134,7 @@ bool Boss2::AppearFall()
 	return true;
 }
 
-bool Boss2::WaitMode()
+bool Galaxy::WaitMode()
 {
 	//待機状態でなければ抜ける
 	if (!(phase == Phase::Wait)) { return false; }
@@ -142,7 +142,7 @@ bool Boss2::WaitMode()
 	return true;
 }
 
-bool Boss2::DeadExplosion()
+bool Galaxy::DeadExplosion()
 {
 	//死亡状態でなければ抜ける
 	if (!(phase == Phase::Dead)) { return false; }
@@ -176,7 +176,7 @@ bool Boss2::DeadExplosion()
 	return true;
 }
 
-void Boss2::Damage(const int damageNum)
+void Galaxy::Damage(const int damageNum)
 {
 	//引数の数字の分ダメージを喰らう
 	HP -= damageNum;

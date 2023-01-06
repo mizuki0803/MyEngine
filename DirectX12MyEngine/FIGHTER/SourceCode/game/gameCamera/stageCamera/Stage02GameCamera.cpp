@@ -1,7 +1,7 @@
 #include "Stage02GameCamera.h"
 #include "Easing.h"
 #include "Stage02Player.h"
-#include "Boss2Body.h"
+#include "GalaxyBody.h"
 
 void (Stage02GameCamera::* Stage02GameCamera::stageClearCameraActionFuncTable[])() = {
 	&Stage02GameCamera::StageClearBossSide,
@@ -57,10 +57,10 @@ void Stage02GameCamera::CrashStart()
 	swayX = 0;
 }
 
-void Stage02GameCamera::StageClearModeStart(Boss2Body* boss2Body)
+void Stage02GameCamera::StageClearModeStart(GalaxyBody* galaxyBody)
 {
 	//ボス胴体をセット
-	this->boss2Body = boss2Body;
+	this->galaxyBody = galaxyBody;
 	//移動前座標をセット
 	stageClearMoveBeforePos = position;
 	//移動前カメラ角度をセット
@@ -110,7 +110,7 @@ void Stage02GameCamera::BossDelete()
 	if (!isStageClearMode) { return; }
 
 	//ボス胴体を解除
-	this->boss2Body = nullptr;
+	this->galaxyBody = nullptr;
 }
 
 void Stage02GameCamera::Crash()
@@ -166,7 +166,7 @@ void Stage02GameCamera::StageClear()
 void Stage02GameCamera::StageClearBossSide()
 {
 	//ボス胴体のインスタンスがなければ抜ける
-	if (!boss2Body) { return; }
+	if (!galaxyBody) { return; }
 
 	//ボスの横に移動するのにかかる時間
 	const float sideMoveTime = 240;
@@ -178,13 +178,13 @@ void Stage02GameCamera::StageClearBossSide()
 
 	//座標をボス横に移動
 	const Vector3 bossDistance = { 45, -1, 0 };
-	const Vector3 bossSidePos = boss2Body->GetPosition() + bossDistance;
+	const Vector3 bossSidePos = galaxyBody->GetPosition() + bossDistance;
 	position.x = Easing::InOutQuad(stageClearMoveBeforePos.x, bossSidePos.x, time);
 	position.y = Easing::InOutQuad(stageClearMoveBeforePos.y, bossSidePos.y, time);
 	position.z = Easing::InBack(stageClearMoveBeforePos.z, bossSidePos.z, time);
 
 	//ボスの方向をだんだん向く
-	const Vector3 bossCameraVec = boss2Body->GetWorldPos() - position;
+	const Vector3 bossCameraVec = galaxyBody->GetWorldPos() - position;
 	Vector3 rota = {};
 	rota.y = XMConvertToDegrees(std::atan2(bossCameraVec.x, bossCameraVec.z));
 	XMMATRIX matRot;
@@ -209,7 +209,7 @@ void Stage02GameCamera::StageClearBossSide()
 void Stage02GameCamera::StageClearBossBack()
 {
 	//ボス胴体のインスタンスがなければ抜ける
-	if (!boss2Body) { return; }
+	if (!galaxyBody) { return; }
 
 	//ボスの後ろに移動するのにかかる時間
 	const float backMoveTime = 260;
@@ -221,13 +221,13 @@ void Stage02GameCamera::StageClearBossBack()
 
 	//座標をボス後ろに移動
 	const Vector3 bossDistance = { 0, -1, 80 };
-	const Vector3 bossSidePos = boss2Body->GetPosition() + bossDistance;
+	const Vector3 bossSidePos = galaxyBody->GetPosition() + bossDistance;
 	position.x = Easing::OutQuad(stageClearMoveBeforePos.x, bossSidePos.x, time);
 	position.y = Easing::OutQuad(stageClearMoveBeforePos.y, bossSidePos.y, time);
 	position.z = Easing::OutQuad(stageClearMoveBeforePos.z, bossSidePos.z, time);
 
 	//ボスの方向を向く
-	const Vector3 bossCameraVec = boss2Body->GetWorldPos() - position;
+	const Vector3 bossCameraVec = galaxyBody->GetWorldPos() - position;
 	rotation.y = XMConvertToDegrees(std::atan2(bossCameraVec.x, bossCameraVec.z));
 	XMMATRIX matRot;
 	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));

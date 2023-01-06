@@ -5,24 +5,24 @@
 class BaseStageScene;
 
 /// <summary>
-/// ボス2(胴体)
+/// ギャラクシー(胴体)
 /// </summary>
-class Boss2Body : public ObjObject3d
+class GalaxyBody : public ObjObject3d
 {
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <returns>ボス2(胴体)</returns>
-	static Boss2Body* Create(const Vector3& basePos);
+	/// <returns>ギャラクシー(胴体)</returns>
+	static GalaxyBody* Create(const Vector3& basePos);
 
 	//getter
-	static const int GetMaxHP() { return Boss2Body::maxHP; }
-	static const Vector3& GetNormalSize() { return Boss2Body::normalSize; }
+	static const int GetMaxHP() { return GalaxyBody::maxHP; }
+	static const Vector3& GetNormalSize() { return GalaxyBody::normalSize; }
 
 	//setter
-	static void SetStageScene(BaseStageScene* stageScene) { Boss2Body::stageScene = stageScene; }
-	static void SetBodyModel(ObjModel* model) { Boss2Body::bodyModel = model; }
+	static void SetStageScene(BaseStageScene* stageScene) { GalaxyBody::stageScene = stageScene; }
+	static void SetBodyModel(ObjModel* model) { GalaxyBody::bodyModel = model; }
 
 public: //メンバ関数
 	/// <summary>

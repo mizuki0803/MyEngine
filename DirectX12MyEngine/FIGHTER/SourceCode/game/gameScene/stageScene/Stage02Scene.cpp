@@ -98,10 +98,10 @@ void Stage02Scene::Initialize()
 	//全敵初期化処理
 	InitializeEnemy();
 
-	//ボス(ボス2)に必要な情報をセット
-	Boss2::SetPlayer(player.get());
-	Boss2Body::SetStageScene(this);
-	Boss2Body::SetBodyModel(modelMedamanMainBody.get());
+	//ボス(ギャラクシー)に必要な情報をセット
+	Galaxy::SetPlayer(player.get());
+	GalaxyBody::SetStageScene(this);
+	GalaxyBody::SetBodyModel(modelMedamanMainBody.get());
 
 	//回復アイテムに必要な情報をセット
 	HealingItem::SetPlayer(player.get());
@@ -189,7 +189,7 @@ void Stage02Scene::Update()
 	for (const std::unique_ptr<Enemy>& enemy : enemys) {
 		enemy->Update();
 	}
-	//ボス(ボス2)
+	//ボス(ギャラクシー)
 	if (boss) {
 		boss->Update();
 	}
@@ -294,7 +294,7 @@ void Stage02Scene::Draw3D()
 	for (const std::unique_ptr<EnemyBreakEffect>& breakEffect : enemyBreakEffects) {
 		breakEffect->Draw();
 	}
-	//ボス(ボス2)
+	//ボス(ギャラクシー)
 	if (boss) {
 		boss->Draw();
 	}
@@ -378,7 +378,7 @@ void Stage02Scene::DrawFrontSprite()
 
 	//自機のUI
 	player->DrawUI();
-	//ボス(ボス2)のUI
+	//ボス(ギャラクシー)のUI
 	if (boss) {
 		boss->DrawUI();
 	}
@@ -523,7 +523,7 @@ void Stage02Scene::ObjectRelease()
 		return spaceDustEffect->GetIsDelete();
 		});
 
-	//削除状態のボス(ボス2)の削除
+	//削除状態のボス(ギャラクシー)の削除
 	if (boss) {
 		if (boss->GetIsDelete()) {
 			//カメラのボス情報を解除させる
@@ -798,13 +798,13 @@ void Stage02Scene::CollisionCheck3d()
 	//ボスの存在がなければこの先の処理は行わない
 	if (!boss) { return; }
 
-#pragma region 自機弾とボス(ボス2)胴体の衝突判定
+#pragma region 自機弾とボス(ギャラクシー)胴体の衝突判定
 	//本体座標
 	posA = boss->GetBody()->GetWorldPos();
 	//本体半径
 	radiusA = boss->GetBody()->GetScale().x;
 
-	//全て自機弾とボス(ボス2)本体の衝突判定
+	//全て自機弾とボス(ギャラクシー)本体の衝突判定
 	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
 		//自機弾座標
 		posB = bullet->GetWorldPos();
@@ -816,7 +816,7 @@ void Stage02Scene::CollisionCheck3d()
 		//衝突していなければ飛ばす
 		if (!isCollision) { continue; }
 
-		//ボス(ボス2)のコールバック関数を呼び出す
+		//ボス(ギャラクシー)のコールバック関数を呼び出す
 		boss->OnCollisionBody(bullet->GetDamageNum(), posB, bullet->GetVelocity());
 		//自機弾のコールバック関数を呼び出す
 		bullet->OnCollision(posA, radiusA);
@@ -1040,7 +1040,7 @@ void Stage02Scene::UpdateMeteoriteSetCommands(const Vector3& targetPosition)
 
 void Stage02Scene::BossBattleStart()
 {
-	//既にボス(ボス2)バトルなら抜ける
+	//既にボス(ギャラクシー)バトルなら抜ける
 	if (isBossBattle) { return; }
 	//自機が墜落状態なら抜ける
 	if (player->GetIsCrash()) { return; }
@@ -1072,10 +1072,10 @@ void Stage02Scene::BossBattleStart()
 		//ボス登場警告演出はもう使用しないので解放
 		bossWarning.reset();
 
-		//ボス(ボス2)生成
+		//ボス(ギャラクシー)生成
 		const float distance = 100;
 		const Vector3 bossBasePos = { 0, 3, bossBattleStartPos + distance };
-		boss.reset(Boss2::Create(bossBasePos));
+		boss.reset(Galaxy::Create(bossBasePos));
 
 		//ボスバトル状態にする
 		isBossBattle = true;

@@ -77,7 +77,7 @@ void BossNameUI::CountDrawTimer()
 		sprites[1].reset(Sprite::Create(SpriteTextureLoader::BossName, { 0, 0 }));
 		const Vector2 pos = { 70, 580 };
 		sprites[1]->SetPosition(pos);
-		const Vector2 texSize = { 1200, 95 };
+		const Vector2 texSize = { 800, 95 };
 		sprites[1]->SetTexSize(texSize);
 		sprites[1]->SetSize(texSize);
 		sprites[1]->SetTexLeftTop({ texSize.x * bossType, 0 });
