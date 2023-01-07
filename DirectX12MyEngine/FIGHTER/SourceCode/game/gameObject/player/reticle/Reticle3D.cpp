@@ -69,15 +69,3 @@ void Reticle3D::Update()
 		constBuffB0->Unmap(0, nullptr);
 	}
 }
-
-Vector3 Reticle3D::GetWorldPos()
-{
-	//ワールド座標を入れる変数
-	Vector3 worldPos;
-	//平行移動成分を取得
-	worldPos.x = matWorld.r[3].m128_f32[0];
-	worldPos.y = matWorld.r[3].m128_f32[1];
-	worldPos.z = matWorld.r[3].m128_f32[2];
-
-	return worldPos;
-}

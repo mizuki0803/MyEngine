@@ -57,15 +57,3 @@ void EnemyBullet::OnCollision()
 	//死亡させる
 	isDead = true;
 }
-
-Vector3 EnemyBullet::GetWorldPos()
-{
-	//ワールド座標を入れる変数
-	Vector3 worldPos;
-	//平行移動成分を取得
-	worldPos.x = matWorld.r[3].m128_f32[0];
-	worldPos.y = matWorld.r[3].m128_f32[1];
-	worldPos.z = matWorld.r[3].m128_f32[2];
-
-	return worldPos;
-}

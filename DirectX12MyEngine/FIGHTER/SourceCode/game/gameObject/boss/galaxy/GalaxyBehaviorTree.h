@@ -40,6 +40,21 @@ private: //メンバ関数
 	/// </summary>
 	void AppearModeSequenceNode();
 
+	/// <summary>
+	/// 攻撃状態シーケンスノード
+	/// </summary>
+	void AttackModeSequenceNode();
+
+	/// <summary>
+	/// 攻撃内容セレクトノード
+	/// </summary>
+	void AttackTypeSelectNode();
+
+	/// <summary>
+	/// 攻撃セレクトノード
+	/// </summary>
+	void AttackSelectNode();
+
 private:
 	//ギャラクシー
 	Galaxy* galaxy = nullptr;
@@ -47,4 +62,10 @@ private:
 	std::unique_ptr<Selector> topSelector;
 	//シーケンサー
 	std::unique_ptr<Sequencer> appearModeSequencer;
+	//シーケンサー
+	std::unique_ptr<Sequencer> attackModeSequencer;
+	//セレクター
+	std::unique_ptr<Selector> attackTypeSelector;
+	//セレクター
+	std::unique_ptr<Selector> attackSelector;
 };

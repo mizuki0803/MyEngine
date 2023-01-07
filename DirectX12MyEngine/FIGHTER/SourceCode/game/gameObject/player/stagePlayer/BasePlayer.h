@@ -80,7 +80,6 @@ public: //ƒƒ“ƒoŠÖ”
 	virtual void OnCollisionHeal();
 
 	//getter
-	Vector3 GetWorldPos();
 	const XMMATRIX& GetMatWorld() { return matWorld; }
 	const int GetHP() { return HP; }
 	const Vector3& GetBasePos() { return basePos; }

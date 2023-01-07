@@ -99,18 +99,6 @@ void Enemy::OnCollision(const int damageNum)
 	ParticleEmitter::GetInstance()->Explosion(position, explosionSize);
 }
 
-Vector3 Enemy::GetWorldPos()
-{
-	//ワールド座標を入れる変数
-	Vector3 worldPos;
-	//平行移動成分を取得
-	worldPos.x = matWorld.r[3].m128_f32[0];
-	worldPos.y = matWorld.r[3].m128_f32[1];
-	worldPos.z = matWorld.r[3].m128_f32[2];
-
-	return worldPos;
-}
-
 Vector2 Enemy::GetScreenPos()
 {
 	Vector3 worldPos = GetWorldPos();

@@ -16,25 +16,12 @@ public:
 
 public: //メンバ関数
 	/// <summary>
-	/// 初期化
-	/// </summary>
-	//bool Initialize() override;
-
-	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update() override;
 
-	/// <summary>
-	/// 描画
-	/// </summary>
-	//void Draw() override;
-
 	//setter
 	void SetFollowMatWorld(const XMMATRIX& followMatWorld) { this->followMatWorld = followMatWorld; }
-
-	//getter
-	Vector3 GetWorldPos();
 
 private:
 	//追従対象のワールド行列

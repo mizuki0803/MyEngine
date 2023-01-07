@@ -66,6 +66,8 @@ void Stage02Scene::Initialize()
 	modelEnemyMiniRobotBreak[3].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak04"));
 	modelEnemyMiniRobotBreak[4].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak05"));
 	modelMedamanMainBody.reset(ObjModel::LoadFromOBJ("medamanMainBody", true));
+	modelMedamanAvatar.reset(ObjModel::LoadFromOBJ("medamanAvatar", true));
+	modelMedamanAvatarDead.reset(ObjModel::LoadFromOBJ("medamanAvatarDead", true));
 	modelHealingItem.reset(ObjModel::LoadFromOBJ("healingItem"));
 
 	//ポストエフェクトのブラーを解除しておく
@@ -102,6 +104,14 @@ void Stage02Scene::Initialize()
 	Galaxy::SetPlayer(player.get());
 	GalaxyBody::SetStageScene(this);
 	GalaxyBody::SetBodyModel(modelMedamanMainBody.get());
+	GalaxyBow::SetStageScene(this);
+	GalaxyBow::SetBowModel(modelMedamanAvatar.get());
+	GalaxyBow::SetBowDeadModel(modelMedamanAvatarDead.get());
+	GalaxyBow::SetBulletModel(modelEnemyBullet.get());
+	GalaxyCannon::SetStageScene(this);
+	GalaxyCannon::SetCannonModel(modelMedamanAvatar.get());
+	GalaxyCannon::SetCannonDeadModel(modelMedamanAvatarDead.get());
+	GalaxyCannon::SetBulletModel(modelEnemyBullet.get());
 
 	//回復アイテムに必要な情報をセット
 	HealingItem::SetPlayer(player.get());
@@ -816,12 +826,74 @@ void Stage02Scene::CollisionCheck3d()
 		//衝突していなければ飛ばす
 		if (!isCollision) { continue; }
 
-		//ボス(ギャラクシー)のコールバック関数を呼び出す
-		boss->OnCollisionBody(bullet->GetDamageNum(), posB, bullet->GetVelocity());
 		//自機弾のコールバック関数を呼び出す
-		bullet->OnCollision(posA, radiusA);
+		bullet->OnCollision(posA, radiusA, false);
 
 		break;
+	}
+#pragma endregion
+
+#pragma region 自機弾とボス(ギャラクシー)船首の衝突判定
+	//船首座標
+	posA = boss->GetBow()->GetWorldPos();
+	//船首半径 親子構造の為、本体の大きさを乗算して正しい大きさが分かる
+	radiusA = boss->GetBow()->GetScale().x * boss->GetBody()->GetScale().x;
+
+	//全て自機弾とボス(ギャラクシー)船首の衝突判定
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//自機弾座標
+		posB = bullet->GetWorldPos();
+		//自機弾弾半径
+		radiusB = bullet->GetScale().x;
+
+		//球と球の衝突判定を行う
+		bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+		//衝突していなければ飛ばす
+		if (!isCollision) { continue; }
+
+		//ボス(ギャラクシー)のコールバック関数を呼び出す
+		boss->OnCollisionBow(bullet->GetDamageNum(), posB);
+		//自機弾のコールバック関数を呼び出す
+		//ダメージが通ったとき
+		if (boss->GetBow()->GetIsDamageTrigger()) { bullet->OnCollision(posA, radiusA); }
+		//ダメージが通らなかったとき
+		else { bullet->OnCollision(posA, radiusA, false); }
+
+		break;
+	}
+#pragma endregion
+
+#pragma region 自機弾とボス(ギャラクシー)大砲の衝突判定
+	//全てのボス(ギャラクシー)大砲と全ての自機弾の衝突判定
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//自機弾座標
+		posA = bullet->GetWorldPos();
+		//自機弾半径
+		radiusA = bullet->GetScale().x;
+
+		//ボス(ギャラクシー)大砲のリストを持ってくる
+		const std::list<std::unique_ptr<GalaxyCannon>>& bossCannons = boss->GetCannons();
+		for (const std::unique_ptr<GalaxyCannon>& bossCannon : bossCannons) {
+			//ボス(ギャラクシー)大砲座標
+			posB = bossCannon->GetWorldPos();
+			//ボス(ギャラクシー)大砲半径 親子構造の為、本体の大きさを乗算して正しい大きさが分かる
+			radiusB = bossCannon->GetScale().x * boss->GetBody()->GetScale().x;
+
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
+
+			//ボス(ギャラクシー)のコールバック関数を呼び出す
+			boss->OnCollisionCannon(bossCannon.get(), bullet->GetDamageNum(), posA);
+			//自機弾のコールバック関数を呼び出す
+			//ダメージが通ったとき
+			if (bossCannon->GetIsDamageTrigger()) { bullet->OnCollision(posB, radiusB); }
+			//ダメージが通らなかったとき
+			else { bullet->OnCollision(posB, radiusB, false); }
+
+			break;
+		}
 	}
 #pragma endregion
 }
@@ -1073,9 +1145,10 @@ void Stage02Scene::BossBattleStart()
 		bossWarning.reset();
 
 		//ボス(ギャラクシー)生成
-		const float distance = 100;
-		const Vector3 bossBasePos = { 0, 3, bossBattleStartPos + distance };
-		boss.reset(Galaxy::Create(bossBasePos));
+		const float distance = 100; //自機との距離
+		const Vector3 bossBasePos = { 0, 3, bossBattleStartPos + distance }; //戦闘の基準座標
+		const Vector3 bossBornPos = bossBasePos + Vector3{ 0, 0, 400 }; //登場座標
+		boss.reset(Galaxy::Create(bossBornPos, bossBasePos));
 
 		//ボスバトル状態にする
 		isBossBattle = true;

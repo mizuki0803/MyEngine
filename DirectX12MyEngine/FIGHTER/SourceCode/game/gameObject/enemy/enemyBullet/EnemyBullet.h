@@ -26,7 +26,6 @@ public: //ƒƒ“ƒoŠÖ”
 	virtual void OnCollision();
 
 	//getter
-	Vector3 GetWorldPos();
 	bool GetIsDead() const { return isDead; }
 
 protected: //Ã“Iƒƒ“ƒo•Ï”

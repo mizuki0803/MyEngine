@@ -9,15 +9,31 @@ class BaseStageScene;
 /// </summary>
 class GalaxyBody : public ObjObject3d
 {
+public: //enum
+	//登場の行動フェーズ
+	enum class AppearPhase {
+		Advance,	//前進
+		Wait,		//待機
+		Rotation,	//回転
+	};
+
+	//攻撃するパーツ変更の行動フェーズ
+	enum class AttackPartChangePhase {
+		Wait,		//待機
+		Rotation,	//回転
+	};
+
+
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="bornPos">生成座標</param>
+	/// <param name="basePos">基準座標</param>
 	/// <returns>ギャラクシー(胴体)</returns>
-	static GalaxyBody* Create(const Vector3& basePos);
+	static GalaxyBody* Create(const Vector3& bornPos, const Vector3& basePos);
 
 	//getter
-	static const int GetMaxHP() { return GalaxyBody::maxHP; }
 	static const Vector3& GetNormalSize() { return GalaxyBody::normalSize; }
 
 	//setter
@@ -33,14 +49,24 @@ public: //メンバ関数
 	/// <summary>
 	/// ダメージを喰らう
 	/// </summary>
-	/// <param name="attackPower">攻撃力</param>
-	void Damage(int attackPower, const Vector3& collisionPos, const Vector3& subjectVel);
+	void Damage();
 
 	/// <summary>
-	/// 降下
+	/// 登場
 	/// </summary>
-	/// <param name="time">イージング用(0～1)の数値</param>
-	void Fall(const float time);
+	void Appear();
+
+	/// <summary>
+	/// 攻撃するパーツを変更する回転を開始
+	/// </summary>
+	/// <param name="rotSpeed">回転速度</param>
+	/// <param name="changeRota">変更後の角度</param>
+	void AttackPartChangeRotaStart(const float rotSpeed, const float changeRota);
+
+	/// <summary>
+	/// 攻撃するパーツを変更行動
+	/// </summary>
+	void AttackPartChange();
 
 	/// <summary>
 	/// 死亡
@@ -48,32 +74,14 @@ public: //メンバ関数
 	void Dead();
 
 	//getter
-	Vector3 GetWorldPos();
-	const bool GetIsDead() { return isDead; }
-	const bool GetIsDelete() { return isDelete; }
-	const int GetDamageNum() { return damageNum; }
+	const bool GetIsAppear() { return isAppear; }
+	const bool GetIsAttackPartChangeRota() { return isAttackPartChangeRota; }
 
 private: //メンバ関数
-	/// <summary>
-	/// 待機処理
-	/// </summary>
-	void Wait();
-
 	/// <summary>
 	/// ダメージ状態の処理
 	/// </summary>
 	void DamageMode();
-
-	/// <summary>
-	/// ダメージ状態のノックバック情報をセット
-	/// </summary>
-	/// <param name="subjectVel">対象の速度</param>
-	void SetDamageKnockback(const Vector3& subjectVel);
-
-	/// <summary>
-	/// ダメージ状態のノックバック
-	/// </summary>
-	void DamageKnockback();
 
 	/// <summary>
 	/// ダメージ状態で大きくしたサイズを戻していく処理
@@ -83,12 +91,37 @@ private: //メンバ関数
 	/// <summary>
 	/// ダメージ爆発
 	/// </summary>
-	void DamageExplosion(const Vector3& position);
+	void DamageExplosion();
 
 	/// <summary>
 	/// ダメージを喰らった状態の色にする
 	/// </summary>
 	void DamageColorMode();
+
+	/// <summary>
+	/// 登場の前進行動
+	/// </summary>
+	void AppaerAdvance();
+
+	/// <summary>
+	/// 登場の待機行動
+	/// </summary>
+	void AppaerWait();
+
+	/// <summary>
+	/// 登場の回転行動
+	/// </summary>
+	void AppaerRotation();
+
+	/// <summary>
+	/// 攻撃するパーツ変更の待機行動
+	/// </summary>
+	void AttackPartChangeWait();
+
+	/// <summary>
+	/// 攻撃するパーツ変更の回転行動
+	/// </summary>
+	void AttackPartChangeRotation();
 
 private: //静的メンバ変数
 	//ステージシーン
@@ -99,22 +132,18 @@ private: //静的メンバ変数
 	static const Vector3 normalSize;
 	//ダメージ状態のサイズ
 	static const Vector3 damageSize;
-	//体力
-	static const int maxHP = 30;
 	//ダメージ状態の色
 	static const XMFLOAT4 damageColor;
+	//登場状態の行動遷移
+	static void (GalaxyBody::* appearPhaseFuncTable[])();
+	//攻撃するパーツ変更状態の行動遷移
+	static void (GalaxyBody::* attackPartChangePhaseFuncTable[])();
 
 private: //メンバ変数
+	//生成座標
+	Vector3 bornPos;
 	//停止する基準の座標
 	Vector3 basePos;
-	//体力
-	int HP = maxHP;
-	//死亡フラグ
-	bool isDead = false;
-	//削除フラグ
-	bool isDelete = false;
-	//喰らうダメージ量
-	int damageNum;
 	//ダメージフラグ
 	bool isDamage = false;
 	//ダメージを喰らった瞬間か
@@ -123,8 +152,20 @@ private: //メンバ変数
 	int32_t damageTimer = 0;
 	//ダメージ色か
 	bool isDamageColor = false;
-	//ノックバック方向
-	Vector3 knockbackVec;
-	//ノックバック速度
-	Vector3 knockbackVel;
+	//行動に使用するタイマー
+	int32_t actionTimer = 0;
+	//登場中か
+	bool isAppear = true;
+	//登場の行動フェーズ
+	AppearPhase appearPhase = AppearPhase::Advance;
+	//攻撃するパーツ変更をする回転をするか
+	bool isAttackPartChangeRota = false;
+	//攻撃するパーツ変更の行動フェーズ
+	AttackPartChangePhase attackPartChangePhase = AttackPartChangePhase::Wait;
+	//攻撃するパーツ変更をする回転速度
+	float attackPartChangeRotSpeed = 0;
+	//攻撃するパーツ変更をする回転後の角度
+	float  attackPartChangeRota = 0;
+	//攻撃するパーツ変更をする回転が右向きか
+	bool isAttackPartChangeRotaRight = true;
 };

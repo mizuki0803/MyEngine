@@ -151,7 +151,6 @@ public: //ƒƒ“ƒoŠÖ”
 	void ChangeDeadModel();
 
 	//getter
-	Vector3 GetWorldPos();
 	const bool GetIsDead() { return isDead; }
 	const bool GetIsDelete() { return isDelete; }
 	const int GetDamageNum() { return damageNum; }

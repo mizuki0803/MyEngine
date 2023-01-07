@@ -53,7 +53,6 @@ public: //ƒƒ“ƒoŠÖ”
 	virtual void OnCollision(const int damageNum);
 
 	//getter
-	Vector3 GetWorldPos();
 	Vector2 GetScreenPos();
 	bool GetIsCollisionFrame() const { return isCollisionFrame; }
 	bool GetIsDead() const { return isDead; }

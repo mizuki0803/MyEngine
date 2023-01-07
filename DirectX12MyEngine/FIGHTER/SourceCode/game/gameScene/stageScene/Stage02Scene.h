@@ -137,6 +137,8 @@ private: //ƒƒ“ƒo•Ï”
 	std::unique_ptr<ObjModel> modelEnemyMiniRobot;
 	std::array<std::unique_ptr<ObjModel>, 5> modelEnemyMiniRobotBreak;
 	std::unique_ptr<ObjModel> modelMedamanMainBody;
+	std::unique_ptr<ObjModel> modelMedamanAvatar;
+	std::unique_ptr<ObjModel> modelMedamanAvatarDead;
 	std::unique_ptr<ObjModel> modelHealingItem;
 
 	//©‹@

@@ -32,7 +32,6 @@ public: //ƒƒ“ƒoŠÖ”
 	virtual void OnCollision();
 
 	//getter
-	Vector3 GetWorldPos();
 	bool GetIsTouched() const { return isTouched; }
 	bool GetIsDelete() const { return isDelete; }
 

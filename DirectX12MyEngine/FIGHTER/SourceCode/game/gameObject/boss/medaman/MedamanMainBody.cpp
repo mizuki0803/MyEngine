@@ -306,18 +306,6 @@ void MedamanMainBody::ChangeDeadModel()
 	model = mainBodyDeadModel;
 }
 
-Vector3 MedamanMainBody::GetWorldPos()
-{
-	//ワールド座標を入れる変数
-	Vector3 worldPos;
-	//平行移動成分を取得
-	worldPos.x = matWorld.r[3].m128_f32[0];
-	worldPos.y = matWorld.r[3].m128_f32[1];
-	worldPos.z = matWorld.r[3].m128_f32[2];
-
-	return worldPos;
-}
-
 void MedamanMainBody::Fire(const float scale, const float bulletSpeed)
 {
 	//弾の速度を設定
@@ -417,7 +405,7 @@ void MedamanMainBody::DamageExplosion(const Vector3& position)
 	pos.y += (float)((rand() % (int)randPos.y) - randPos.y / 2);
 	pos.z += (float)((rand() % (int)randPos.z));
 
-	//ショット死亡演出用パーティクル生成
+	//爆発演出用パーティクル生成
 	const float size = 0.75f;
 	ParticleEmitter::GetInstance()->Explosion(pos, size);
 }

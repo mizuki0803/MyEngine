@@ -31,7 +31,6 @@ public: //ƒƒ“ƒoŠÖ”
 	virtual void OnCollision(const Vector3& subjectPos, float subjectSize, bool isToDamage = true) = 0;
 
 	//getter
-	Vector3 GetWorldPos();
 	const int GetDamageNum() { return damageNum; }
 	BulletType GetBulletType() { return bulletType; }
 	const Vector3& GetVelocity() { return velocity; }

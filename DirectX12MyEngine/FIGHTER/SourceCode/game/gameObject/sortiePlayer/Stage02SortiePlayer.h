@@ -44,7 +44,6 @@ public: //ƒƒ“ƒoŠÖ”
 	void BoostStart();
 
 	//getter
-	Vector3 GetWorldPos();
 	Stage02SortieActionPhase GetSortieActionPhase() { return sortieActionPhase; }
 	bool GetIsSortieEnd() { return isSortieEnd; }
 

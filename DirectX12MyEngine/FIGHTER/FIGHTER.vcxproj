@@ -156,6 +156,8 @@
     <ClCompile Include="SourceCode\game\gameObject\boss\galaxy\Galaxy.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\boss\galaxy\GalaxyBehaviorTree.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\boss\galaxy\GalaxyBody.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\boss\galaxy\GalaxyBow.cpp" />
+    <ClCompile Include="SourceCode\game\gameObject\boss\galaxy\GalaxyCannon.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\boss\medaman\Medaman.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatar.cpp" />
     <ClCompile Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType01.cpp" />
@@ -388,6 +390,8 @@
     <ClInclude Include="SourceCode\game\gameObject\boss\galaxy\Galaxy.h" />
     <ClInclude Include="SourceCode\game\gameObject\boss\galaxy\GalaxyBehaviorTree.h" />
     <ClInclude Include="SourceCode\game\gameObject\boss\galaxy\GalaxyBody.h" />
+    <ClInclude Include="SourceCode\game\gameObject\boss\galaxy\GalaxyBow.h" />
+    <ClInclude Include="SourceCode\game\gameObject\boss\galaxy\GalaxyCannon.h" />
     <ClInclude Include="SourceCode\game\gameObject\boss\medaman\Medaman.h" />
     <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatar.h" />
     <ClInclude Include="SourceCode\game\gameObject\boss\medaman\medamanAvatar\MedamanAvatarType01.h" />

@@ -115,6 +115,7 @@ public: //ƒƒ“ƒoŠÖ”
 	virtual void DrawTopLightCameraView();
 
 	//getter
+	const Vector3 GetWorldPos();
 	const Vector3& GetPosition() { return position; }
 	const Vector3& GetRotation() { return rotation; }
 	const Vector3& GetScale() { return scale; }

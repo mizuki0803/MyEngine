@@ -2,15 +2,27 @@
 #include "Easing.h"
 #include "ParticleEmitter.h"
 
+void (GalaxyBody::* GalaxyBody::appearPhaseFuncTable[])() = {
+	&GalaxyBody::AppaerAdvance,
+	&GalaxyBody::AppaerWait,
+	&GalaxyBody::AppaerRotation,
+};
+
+void (GalaxyBody::* GalaxyBody::attackPartChangePhaseFuncTable[])() = {
+	&GalaxyBody::AttackPartChangeWait,
+	&GalaxyBody::AttackPartChangeRotation,
+};
+
+
 BaseStageScene* GalaxyBody::stageScene = nullptr;
 ObjModel* GalaxyBody::bodyModel = nullptr;
-const Vector3 GalaxyBody::normalSize = { 4.5f, 4.5f, 4.5f };
+const Vector3 GalaxyBody::normalSize = { 15, 15, 15 };
 const Vector3 GalaxyBody::damageSize = GalaxyBody::normalSize * 1.1f;
 const XMFLOAT4 GalaxyBody::damageColor = { 1, 0.2f, 0.2f, 1 };
 
-GalaxyBody* GalaxyBody::Create(const Vector3& basePos)
+GalaxyBody* GalaxyBody::Create(const Vector3& bornPos, const Vector3& basePos)
 {
-	//メダマーン(本体)のインスタンスを生成
+	//ギャラクシー(胴体)のインスタンスを生成
 	GalaxyBody* galaxyBody = new GalaxyBody();
 	if (galaxyBody == nullptr) {
 		return nullptr;
@@ -27,9 +39,10 @@ GalaxyBody* GalaxyBody::Create(const Vector3& basePos)
 		return nullptr;
 	}
 
-	//停止する基準の座標をセット
+	//生成座標をセット
+	galaxyBody->position = bornPos;
+	//停止座標をセット
 	galaxyBody->basePos = basePos;
-
 	//大きさをセット
 	galaxyBody->scale = normalSize;
 
@@ -38,7 +51,7 @@ GalaxyBody* GalaxyBody::Create(const Vector3& basePos)
 
 void GalaxyBody::Update()
 {
-	//ダメージ状態のみの処理
+	//ダメージ状態の処理
 	if (isDamage) {
 		DamageMode();
 	}
@@ -47,22 +60,8 @@ void GalaxyBody::Update()
 	ObjObject3d::Update();
 }
 
-void GalaxyBody::Damage(int attackPower, const Vector3& collisionPos, const Vector3& subjectVel)
+void GalaxyBody::Damage()
 {
-	//引数の攻撃力をダメージ量にセット
-	damageNum = attackPower;
-
-	//ダメージを与える
-	HP -= damageNum;
-
-	//HPが0以下になったら死亡
-	if (HP <= 0) {
-		isDead = true;
-
-		//HPゲージバグを起こさないようマイナス分を0に調整
-		damageNum += HP;
-	}
-
 	//ダメージ状態にする
 	isDamage = true;
 	//ダメージを喰らった瞬間なのでtrue
@@ -75,46 +74,47 @@ void GalaxyBody::Damage(int attackPower, const Vector3& collisionPos, const Vect
 	//サイズを少し大きくする
 	scale = damageSize;
 
-	//ノックバック情報をセット
-	SetDamageKnockback(subjectVel);
-
 	//爆発生成する
-	DamageExplosion(collisionPos);
+	DamageExplosion();
 }
 
-void GalaxyBody::Fall(const float time)
+void GalaxyBody::Appear()
 {
-	//基準の位置の真上から降りてくる
-	Vector3 bornPos = basePos;
-	const float fallNum = 70;
-	bornPos.y = basePos.y + fallNum;
-	position = Easing::LerpVec3(bornPos, basePos, time);
+	//登場行動
+	(this->*appearPhaseFuncTable[static_cast<size_t>(appearPhase)])();
+}
+
+void GalaxyBody::AttackPartChangeRotaStart(const float rotSpeed, const float changeRota)
+{
+	//回転速度をセット
+	attackPartChangeRotSpeed = rotSpeed;
+	//回転後の角度をセット
+	attackPartChangeRota = changeRota;
+
+	//回転が右向きか判定
+	if (rotSpeed >= 0) { isAttackPartChangeRotaRight = true; }
+	else { isAttackPartChangeRotaRight = false; }
+
+	//攻撃するパーツ変更の行動フェーズを待機にしておく
+	attackPartChangePhase = AttackPartChangePhase::Wait;
+	//攻撃するパーツ変更をする状態にする
+	isAttackPartChangeRota = true;
+}
+
+void GalaxyBody::AttackPartChange()
+{
+	//行動
+	(this->*attackPartChangePhaseFuncTable[static_cast<size_t>(attackPartChangePhase)])();
 }
 
 void GalaxyBody::Dead()
 {
 	//下向きに回転させる
-	const float rotSpeed = 0.15f;
+	const float rotSpeed = 0.1f;
 	rotation.x -= rotSpeed;
 
 	//少し下に移動
 	position.y -= 0.05f;
-}
-
-Vector3 GalaxyBody::GetWorldPos()
-{
-	//ワールド座標を入れる変数
-	Vector3 worldPos;
-	//平行移動成分を取得
-	worldPos.x = matWorld.r[3].m128_f32[0];
-	worldPos.y = matWorld.r[3].m128_f32[1];
-	worldPos.z = matWorld.r[3].m128_f32[2];
-
-	return worldPos;
-}
-
-void GalaxyBody::Wait()
-{
 }
 
 void GalaxyBody::DamageMode()
@@ -122,9 +122,6 @@ void GalaxyBody::DamageMode()
 	//ダメージ状態の時間
 	const int damageTime = 20;
 	damageTimer++;
-
-	//ノックバック
-	DamageKnockback();
 
 	//大きくしたサイズを戻す
 	DamageSizeReturn();
@@ -145,30 +142,6 @@ void GalaxyBody::DamageMode()
 	}
 }
 
-void GalaxyBody::SetDamageKnockback(const Vector3& subjectVel)
-{
-	//ノックバックする方向を決める(対象の速度の方向)
-	knockbackVec = subjectVel;
-	knockbackVec.normalize();
-}
-
-void GalaxyBody::DamageKnockback()
-{
-	//ノックバックする時間
-	const float knockbackTime = 5;
-	//指定した時間以上なら抜ける
-	if (damageTimer > knockbackTime) { return; }
-
-	const float time = damageTimer / knockbackTime;
-
-	//速度を作成
-	const float knockbackBaseSpeed = 0.2f;
-	knockbackVel = knockbackVec * (1 - time) * knockbackBaseSpeed;
-
-	//自機をノックバックさせる
-	position += knockbackVel;
-}
-
 void GalaxyBody::DamageSizeReturn()
 {
 	//大きくしたサイズを元に戻す時間
@@ -181,18 +154,18 @@ void GalaxyBody::DamageSizeReturn()
 	scale = Easing::LerpVec3(damageSize, normalSize, time);
 }
 
-void GalaxyBody::DamageExplosion(const Vector3& position)
+void GalaxyBody::DamageExplosion()
 {
 	//敵内部に演出が出てしまうことがあるので、敵の大きさ分押し戻す
 	Vector3 pos = position;
 	pos.z -= scale.z / 2;
 	//ランダムでずらす
-	const Vector3 randPos = { 2, 2, 1 };
+	const Vector3 randPos = { 15, 15, 1 };
 	pos.x += (float)((rand() % (int)randPos.x) - randPos.x / 2);
 	pos.y += (float)((rand() % (int)randPos.y) - randPos.y / 2);
 	pos.z += (float)((rand() % (int)randPos.z));
 
-	//ショット死亡演出用パーティクル生成
+	//爆発演出用パーティクル生成
 	const float size = 0.75f;
 	ParticleEmitter::GetInstance()->Explosion(pos, size);
 }
@@ -218,4 +191,75 @@ void GalaxyBody::DamageColorMode()
 			color = damageColor;
 		}
 	}
+}
+
+void GalaxyBody::AppaerAdvance()
+{
+	//基準の位置の前進してくる
+	const float advanceSpeed = 0.8f;
+	position.z -= advanceSpeed;
+
+	//停止座標まで進んでいなければ抜ける
+	if (position.z > basePos.z) { return; }
+	
+	//次のフェーズへ
+	appearPhase = AppearPhase::Wait;
+}
+
+void GalaxyBody::AppaerWait()
+{
+	//待機する時間
+	const int waitTime = 50;
+	//タイマー更新
+	actionTimer++;
+
+	//タイマーが指定した時間以下なら抜ける
+	if (actionTimer < waitTime) { return; }
+
+	//タイマーを初期化しておく
+	actionTimer = 0;
+	//次のフェーズへ
+	appearPhase = AppearPhase::Rotation;
+}
+
+void GalaxyBody::AppaerRotation()
+{
+	//右向きにする
+	const float rotSpeed = 0.5f;
+	rotation.y += rotSpeed;
+
+	//右を完全に向いていなければ抜ける
+	if (rotation.y <= 90) { return; }
+
+	//登場行動終了
+	isAppear = false;
+}
+
+void GalaxyBody::AttackPartChangeWait()
+{
+	//待機する時間
+	const int waitTime = 100;
+	//タイマー更新
+	actionTimer++;
+
+	//タイマーが指定した時間以下なら抜ける
+	if (actionTimer < waitTime) { return; }
+
+	//タイマーを初期化しておく
+	actionTimer = 0;
+	//次のフェーズへ
+	attackPartChangePhase = AttackPartChangePhase::Rotation;
+}
+
+void GalaxyBody::AttackPartChangeRotation()
+{
+	//回転速度を加算
+	rotation.y += attackPartChangeRotSpeed;
+
+	//回転後の角度まで行っていなければ抜ける
+	if (isAttackPartChangeRotaRight && rotation.y <= attackPartChangeRota) { return; }		//右回転
+	else if (!isAttackPartChangeRotaRight && rotation.y >= attackPartChangeRota) { return; }//左回転
+
+	//攻撃するパーツ変更をする回転を終了
+	isAttackPartChangeRota = false;
 }
