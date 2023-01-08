@@ -138,6 +138,12 @@ void GalaxyBehaviorTree::AttackTypeSelectNode()
 	attackTypeSelector->AddNode(attackTypeRapidFireCannonSelect);
 
 
+	//攻撃内容:火炎放射(船首)を設定する
+	std::function<bool()> attackTypeFlamethrowerBowSelect =
+		std::bind(&Galaxy::AttackTypeFlamethrowerBowSelect, galaxy);
+	attackTypeSelector->AddNode(attackTypeFlamethrowerBowSelect);
+
+
 	//攻撃内容:あを設定する
 	std::function<bool()> attackTypeASelect =
 		std::bind(&Galaxy::AttackTypeASelect, galaxy);
@@ -152,6 +158,12 @@ void GalaxyBehaviorTree::AttackSelectNode()
 	std::function<bool()> attackTypeRapidFireCannon =
 		std::bind(&Galaxy::AttackTypeRapidFireCannon, galaxy);
 	attackSelector->AddNode(attackTypeRapidFireCannon);
+
+
+	//攻撃内容:火炎放射(船首)を実行する
+	std::function<bool()> attackTypeFlamethrowerBow =
+		std::bind(&Galaxy::AttackTypeFlamethrowerBow, galaxy);
+	attackSelector->AddNode(attackTypeFlamethrowerBow);
 
 
 	//攻撃内容;あを実行する

@@ -107,7 +107,7 @@ void Stage02Scene::Initialize()
 	GalaxyBow::SetStageScene(this);
 	GalaxyBow::SetBowModel(modelMedamanAvatar.get());
 	GalaxyBow::SetBowDeadModel(modelMedamanAvatarDead.get());
-	GalaxyBow::SetBulletModel(modelEnemyBullet.get());
+	GalaxyBow::SetBulletModel(modelSphere.get());
 	GalaxyCannon::SetStageScene(this);
 	GalaxyCannon::SetCannonModel(modelMedamanAvatar.get());
 	GalaxyCannon::SetCannonDeadModel(modelMedamanAvatarDead.get());

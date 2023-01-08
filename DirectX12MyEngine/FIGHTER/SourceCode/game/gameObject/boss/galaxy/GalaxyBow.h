@@ -9,6 +9,14 @@ class BaseStageScene;
 /// </summary>
 class GalaxyBow : public ObjObject3d
 {
+private: //攻撃内容のフェーズ
+	//火炎放射
+	enum class AttackTypeFlamethrowerPhase {
+		Charge,	//溜め
+		Shot,	//発射
+		Wait,	//待機
+	};
+
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
@@ -47,6 +55,11 @@ public: //メンバ関数
 	/// </summary>
 	void AttackModeStart();
 
+	/// <summary>
+	/// 攻撃内容:火炎放射
+	/// </summary>
+	void AttackTypeFlamethrower(const Vector3& playerPos);
+
 	//getter	
 	const bool GetIsDead() { return isDead; }
 	const int GetDamageNum() { return damageNum; }
@@ -58,6 +71,11 @@ protected: //メンバ関数
 	/// 通常弾発射
 	/// </summary>
 	void Fire(const float scale, const float bulletSpeed);
+
+	/// <summary>
+	/// 標的に飛ばす発射
+	/// </summary>
+	void RockonFire(const float scale, const float bulletSpeed);
 
 	/// <summary>
 	/// ダメージ状態の処理
@@ -79,6 +97,21 @@ protected: //メンバ関数
 	/// </summary>
 	void DamageColorChange();
 
+	/// <summary>
+	/// 攻撃内容:火炎放射の溜め処理
+	/// </summary>
+	void AttackTypeFlamethrowerCharge();
+
+	/// <summary>
+	/// 攻撃内容:火炎放射の発射処理
+	/// </summary>
+	void AttackTypeFlamethrowerShot();
+
+	/// <summary>
+	/// 攻撃内容:火炎放射の待機処理
+	/// </summary>
+	void AttackTypeFlamethrowerWait();
+
 
 protected: //静的メンバ変数
 	//ステージシーン
@@ -97,6 +130,8 @@ protected: //静的メンバ変数
 	static const Vector3 damageSize;
 	//ダメージ状態の色
 	static const XMFLOAT4 damageColor;
+	//攻撃内容:火炎放射の行動遷移
+	static void (GalaxyBow::* attackTypeFlamethrowerPhaseFuncTable[])();
 
 protected: //メンバ変数
 	//体力
@@ -119,4 +154,10 @@ protected: //メンバ変数
 	Vector3 bulletShotPos;
 	//攻撃中か
 	bool isAttack = false;
+	//攻撃で使うタイマー
+	int32_t attackTimer = 0;
+	//攻撃内容:火炎放射の行動
+	AttackTypeFlamethrowerPhase attackTypeFlamethrowerPhase = AttackTypeFlamethrowerPhase::Charge;
+	//標的座標
+	Vector3 fireTargetPosition;
 };

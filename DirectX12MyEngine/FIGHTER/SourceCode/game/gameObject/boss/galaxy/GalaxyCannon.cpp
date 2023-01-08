@@ -5,9 +5,11 @@
 #include "ParticleEmitter.h"
 
 void (GalaxyCannon::* GalaxyCannon::attackTypeRapidFirePhaseFuncTable[])() = {
+	&GalaxyCannon::AttackTypeRapidFireStartWait,
 	&GalaxyCannon::AttackTypeRapidFireCharge,
 	&GalaxyCannon::AttackTypeRapidFireShot,
 	&GalaxyCannon::AttackTypeRapidFireReturn,
+	&GalaxyCannon::AttackTypeRapidFireWait,
 };
 
 BaseStageScene* GalaxyCannon::stageScene = nullptr;
@@ -109,6 +111,19 @@ void GalaxyCannon::UpdateBulletShotPos()
 
 	//弾発射座標を取得
 	bulletShotPos = LocalTranslation(distancePos, matWorld);
+}
+
+void GalaxyCannon::AttackModeStart()
+{
+	//攻撃内容:速射の変数の初期化
+	attackTypeRapidFirePhase = AttackTypeRapidFirePhase::StartWait;
+	rapidFireCount = 0;
+
+	//攻撃で使うタイマーを初期化
+	attackTimer = 0;
+
+	//攻撃中にする
+	isAttack = true;
 }
 
 void GalaxyCannon::AttackTypeRapidFire()
@@ -220,21 +235,24 @@ void GalaxyCannon::DamageColorChange()
 	}
 }
 
-void GalaxyCannon::AttackModeStart()
+void GalaxyCannon::AttackTypeRapidFireStartWait()
 {
-	//攻撃内容:分身体当たりの変数の初期化
-	attackTypeRapidFirePhase = AttackTypeRapidFirePhase::Charge;
-	//攻撃で使うタイマーを初期化
-	attackTimer = 0;
+	//タイマー更新
+	attackTimer++;
 
-	//攻撃中にする
-	isAttack = true;
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackTimer >= rapidFireStartWaitTime) {
+		attackTypeRapidFirePhase = AttackTypeRapidFirePhase::Charge;
+
+		//タイマーを初期化しておく
+		attackTimer = 0;
+	}
 }
 
 void GalaxyCannon::AttackTypeRapidFireCharge()
 {
 	//チャージにかかる時間
-	const float chargeTime = 60;
+	const float chargeTime = 40;
 	//タイマー更新
 	attackTimer++;
 	const float time = attackTimer / chargeTime;
@@ -242,7 +260,7 @@ void GalaxyCannon::AttackTypeRapidFireCharge()
 	//イージングで後ろに引っ張る
 	const float easeStart = basePos.x;
 	const float easeEnd = basePos.x - 0.5f;
-	position.x = Easing::OutCubic(easeStart, easeEnd, time);
+	position.x = Easing::OutQuint(easeStart, easeEnd, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (attackTimer >= chargeTime) {
@@ -256,7 +274,7 @@ void GalaxyCannon::AttackTypeRapidFireCharge()
 void GalaxyCannon::AttackTypeRapidFireShot()
 {
 	//発射にかかる時間
-	const float shotModeTime = 15;
+	const float shotModeTime = 5;
 	//タイマー更新
 	attackTimer++;
 	const float time = attackTimer / shotModeTime;
@@ -267,12 +285,15 @@ void GalaxyCannon::AttackTypeRapidFireShot()
 	position.x = Easing::OutQuint(easeStart, easeEnd, time);
 
 	//発射するタイミングになったら発射
-	const int shotTime = 10;
+	const int shotTime = 3;
 	if (attackTimer == shotTime) {
 		//弾発射
 		const float bulletSize = 1.5f;
 		const float bulletSpeed = 2.0f;
 		Fire(bulletSize, bulletSpeed);
+
+		//発射回数更新
+		rapidFireCount++;
 	}
 
 	//タイマーが指定した時間になったら次のフェーズへ
@@ -287,7 +308,7 @@ void GalaxyCannon::AttackTypeRapidFireShot()
 void GalaxyCannon::AttackTypeRapidFireReturn()
 {
 	//戻すのにかかる時間
-	const float returnTime = 30;
+	const float returnTime = 10;
 	//タイマー更新
 	attackTimer++;
 	const float time = attackTimer / returnTime;
@@ -297,10 +318,37 @@ void GalaxyCannon::AttackTypeRapidFireReturn()
 	const float easeEnd = basePos.x;
 	position.x = Easing::InQuad(easeStart, easeEnd, time);
 
-	//タイマーが指定した時間になったら
+	//タイマーが指定した時間になったら次のフェーズへ
 	if (attackTimer >= returnTime) {
+		attackTypeRapidFirePhase = AttackTypeRapidFirePhase::Wait;
+
+		//タイマーを初期化しておく
+		attackTimer = 0;
+	}
+}
+
+void GalaxyCannon::AttackTypeRapidFireWait()
+{
+	//攻撃中でなければ抜ける
+	if (!isAttack) { return; }
+
+	//既に指定した回数発射していたら攻撃終了させて抜ける
+	const int rapidFireNum = 10;
+	if (rapidFireCount >= rapidFireNum) {
 		//攻撃状態終了
 		isAttack = false;
+
+		return;
+	}
+
+	//待機時間
+	const float waitTime = 20;
+	//タイマー更新
+	attackTimer++;
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackTimer >= waitTime) {
+		attackTypeRapidFirePhase = AttackTypeRapidFirePhase::Charge;
 
 		//タイマーを初期化しておく
 		attackTimer = 0;

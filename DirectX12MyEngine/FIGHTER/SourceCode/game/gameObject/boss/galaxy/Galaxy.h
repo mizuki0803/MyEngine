@@ -36,6 +36,7 @@ public:
 		None,				//未設定
 		RapidFireCannon,	//速射(大砲)
 		a,					//あ
+		FlamethrowerBow,	//火炎放射(船首)
 	};
 
 public: //静的メンバ関数
@@ -125,6 +126,11 @@ public: //メンバ関数
 	bool AttackTypeASelect();
 
 	/// <summary>
+	/// 攻撃内容:火炎放射(船首)を設定するか
+	/// </summary>
+	bool AttackTypeFlamethrowerBowSelect();
+
+	/// <summary>
 	/// 攻撃内容;速射(大砲)
 	/// </summary>
 	bool AttackTypeRapidFireCannon();
@@ -133,6 +139,11 @@ public: //メンバ関数
 	/// 攻撃内容;「あ」
 	/// </summary>
 	bool AttackTypeA();
+
+	/// <summary>
+	/// 攻撃内容:火炎放射(船首)
+	/// </summary>
+	bool AttackTypeFlamethrowerBow();
 
 	/// <summary>
 	/// 待機状態

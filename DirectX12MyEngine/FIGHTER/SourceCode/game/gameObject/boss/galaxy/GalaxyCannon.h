@@ -12,9 +12,11 @@ class GalaxyCannon : public ObjObject3d
 private: //攻撃内容のフェーズ
 	//速射
 	enum class AttackTypeRapidFirePhase {
+		StartWait,//開始時の待機
 		Charge,	//溜め
 		Shot,	//発射
 		Return,	//戻す
+		Wait,	//待機
 	};
 
 public: //静的メンバ関数
@@ -67,6 +69,9 @@ public: //メンバ関数
 	const bool GetIsDamageTrigger() { return isDamageTrigger; }
 	const bool GetIsAttack() { return isAttack; }
 
+	//setter
+	void SetRapidFireStartWaitTime(const int startWaitTime) { rapidFireStartWaitTime = startWaitTime; }
+
 protected: //メンバ関数
 	/// <summary>
 	/// 通常弾発射
@@ -99,6 +104,11 @@ protected: //メンバ関数
 	void DamageColorChange();
 
 	/// <summary>
+	/// 攻撃内容:速射の開始時待機処理
+	/// </summary>
+	void AttackTypeRapidFireStartWait();
+
+	/// <summary>
 	/// 攻撃内容:速射の溜め処理
 	/// </summary>
 	void AttackTypeRapidFireCharge();
@@ -112,6 +122,11 @@ protected: //メンバ関数
 	/// 攻撃内容:速射の戻す処理
 	/// </summary>
 	void AttackTypeRapidFireReturn();
+
+	/// <summary>
+	/// 攻撃内容:速射の待機処理
+	/// </summary>
+	void AttackTypeRapidFireWait();
 
 
 protected: //静的メンバ変数
@@ -160,5 +175,9 @@ protected: //メンバ変数
 	//攻撃で使うタイマー
 	int32_t attackTimer = 0;
 	//攻撃内容:速射の行動
-	AttackTypeRapidFirePhase attackTypeRapidFirePhase = AttackTypeRapidFirePhase::Charge;
+	AttackTypeRapidFirePhase attackTypeRapidFirePhase = AttackTypeRapidFirePhase::StartWait;
+	//攻撃内容:速射の開始時待機フレーム数
+	int rapidFireStartWaitTime = 0;
+	//攻撃内容:速射の発射回数
+	int rapidFireCount = 0;
 };

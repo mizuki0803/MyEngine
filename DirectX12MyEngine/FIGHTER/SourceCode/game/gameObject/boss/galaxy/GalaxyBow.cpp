@@ -2,7 +2,14 @@
 #include "Easing.h"
 #include "BaseStageScene.h"
 #include "BossChargeBullet.h"
+#include "EnemyFireBullet.h"
 #include "ParticleEmitter.h"
+
+void (GalaxyBow::* GalaxyBow::attackTypeFlamethrowerPhaseFuncTable[])() = {
+	&GalaxyBow::AttackTypeFlamethrowerCharge,
+	&GalaxyBow::AttackTypeFlamethrowerShot ,
+	&GalaxyBow::AttackTypeFlamethrowerWait,
+};
 
 BaseStageScene* GalaxyBow::stageScene = nullptr;
 ObjModel* GalaxyBow::bowModel = nullptr;
@@ -98,7 +105,7 @@ void GalaxyBow::Damage(int attackPower, const Vector3& collisionPos)
 void GalaxyBow::UpdateBulletShotPos()
 {
 	//中心座標からの距離
-	const Vector3 distancePos = { 0, 0, scale.z * parent->GetScale().z - 1.0f };
+	const Vector3 distancePos = { 0, 0, -(scale.z * parent->GetScale().z) / 2 };
 
 	//弾発射座標を取得
 	bulletShotPos = LocalTranslation(distancePos, matWorld);
@@ -106,19 +113,50 @@ void GalaxyBow::UpdateBulletShotPos()
 
 void GalaxyBow::AttackModeStart()
 {
+	//攻撃内容:速射の変数の初期化
+	attackTypeFlamethrowerPhase = AttackTypeFlamethrowerPhase::Charge;
+
+	//攻撃で使うタイマーを初期化
+	attackTimer = 0;
+
 	//攻撃中にする
 	isAttack = true;
+}
+
+void GalaxyBow::AttackTypeFlamethrower(const Vector3& playerPos)
+{
+	//標的の座標を更新
+	fireTargetPosition = playerPos;
+
+	//攻撃内容:火炎放射行動
+	(this->*attackTypeFlamethrowerPhaseFuncTable[static_cast<size_t>(attackTypeFlamethrowerPhase)])();
 }
 
 void GalaxyBow::Fire(const float scale, const float bulletSpeed)
 {
 	//弾の速度を設定
-	Vector3 velocity(0, 0, bulletSpeed);
+	Vector3 velocity(0, 0, -bulletSpeed);
 	velocity = MatrixTransformDirection(velocity, matWorld);
 
 	//弾を生成
 	std::unique_ptr<EnemyBullet> newBullet;
 	newBullet.reset(EnemyBullet::Create(bulletModel, bulletShotPos, velocity, scale));
+	stageScene->AddEnemyBullet(std::move(newBullet));
+}
+
+void GalaxyBow::RockonFire(const float scale, const float bulletSpeed)
+{
+	//座標が標的より手前なら発射しない
+	if (GetWorldPos().z <= fireTargetPosition.z) { return; }
+
+	//弾の速度を設定
+	Vector3 DifferenceVec = fireTargetPosition - bulletShotPos;
+	DifferenceVec.normalize();
+	Vector3 velocity = DifferenceVec * bulletSpeed;
+
+	//弾を生成
+	std::unique_ptr<EnemyBullet> newBullet;
+	newBullet.reset(EnemyFireBullet::Create(bulletModel, bulletShotPos, velocity, scale));
 	stageScene->AddEnemyBullet(std::move(newBullet));
 }
 
@@ -199,4 +237,69 @@ void GalaxyBow::DamageColorChange()
 		//ダメージ色にする
 		color = damageColor;
 	}
+}
+
+void GalaxyBow::AttackTypeFlamethrowerCharge()
+{
+	//チャージにかかる時間
+	const float chargeTime = 180;
+	//タイマー更新
+	attackTimer++;
+
+	//爆発させる間隔の時間
+	const int explosionInterval = 3;
+	if (attackTimer % explosionInterval == 0) {
+		//爆発
+		//船首の口元に合わせる
+		Vector3 pos = bulletShotPos;
+		//ランダムでずらす
+		const Vector3 randPos = { 2, 2, 1 };
+		pos.x += (float)((rand() % (int)randPos.x) - randPos.x / 2);
+		pos.y += (float)((rand() % (int)randPos.y) - randPos.y / 2);
+		pos.z += (float)((rand() % (int)randPos.z));
+
+		//炎演出用パーティクル生成
+		const float size = 0.5f;
+		ParticleEmitter::GetInstance()->Explosion(pos, size);
+	}
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackTimer >= chargeTime) {
+		attackTypeFlamethrowerPhase = AttackTypeFlamethrowerPhase::Shot;
+
+		//タイマーを初期化しておく
+		attackTimer = 0;
+	}
+}
+
+void GalaxyBow::AttackTypeFlamethrowerShot()
+{
+	//発射する時間
+	const float shotModeTime = 450;
+	//タイマー更新
+	attackTimer++;
+
+	//発射する間隔になったら発射
+	const int shotInterval = 10;
+	if (attackTimer % shotInterval == 0) {
+		//弾発射
+		const float bulletSize = 1.5f;
+		const float bulletSpeed = 1.0f;
+		RockonFire(bulletSize, bulletSpeed);
+	}
+
+	//タイマーが指定した時間になったら次のフェーズへ
+	if (attackTimer >= shotModeTime) {
+		attackTypeFlamethrowerPhase = AttackTypeFlamethrowerPhase::Wait;
+
+		//攻撃状態終了
+		isAttack = false;
+
+		//タイマーを初期化しておく
+		attackTimer = 0;
+	}
+}
+
+void GalaxyBow::AttackTypeFlamethrowerWait()
+{
 }

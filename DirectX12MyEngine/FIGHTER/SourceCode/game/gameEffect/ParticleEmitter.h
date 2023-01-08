@@ -100,7 +100,16 @@ public: //メンバ関数
 	/// チャージショット死亡演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">大きさ</param>
 	void ChargeShotDead(const Vector3& position, const float size);
+
+	/// <summary>
+	/// 火炎球演出
+	/// </summary>
+	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="time">生存時間</param>
+	void FireBall(const Vector3& position, const float size = 1, const int time = 10);
 
 	/// <summary>
 	/// ボスチャージ演出

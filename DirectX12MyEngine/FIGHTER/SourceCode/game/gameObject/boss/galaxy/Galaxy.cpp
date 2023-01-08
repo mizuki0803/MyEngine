@@ -4,7 +4,7 @@
 #include "ParticleEmitter.h"
 
 BasePlayer* Galaxy::player = nullptr;
-const float Galaxy::waitModeTime = 500.0f;
+const float Galaxy::waitModeTime = 300.0f;
 
 Galaxy* Galaxy::Create(const Vector3& bornPos, const Vector3& basePos)
 {
@@ -37,8 +37,9 @@ bool Galaxy::Initialize(const Vector3& bornPos, const Vector3& basePos)
 	bow.reset(GalaxyBow::Create(body.get(), { 0, -0.5f, -1 }));
 	//大砲生成
 	std::vector<Vector3> cannonPos = {
-		{0.5f, -0.3f, 1},
-		{0.5f, -0.3f, -1},
+		{1, -0.3f, -1},
+		{1, -0.3f, 0},
+		{1, -0.3f, 1},
 	};
 	for (int i = 0; i < cannonPos.size(); i++) {
 		std::unique_ptr<GalaxyCannon> newCannon;
@@ -250,6 +251,17 @@ bool Galaxy::AttackTypeRapidFireCannonSelect()
 	//プレイヤー自機が画面左側にいたら抜ける
 	if (player->GetPosition().x <= 0) { return false; }
 
+	//大砲に攻撃内容:速射の開始時待機フレーム数をセット
+	int rapidFireCannonStartWaitTime = 0;
+	//大砲の発射間隔
+	const int rapidFireCannonInterval = 10;
+	for (const std::unique_ptr<GalaxyCannon>& cannon : cannons) {
+		cannon->SetRapidFireStartWaitTime(rapidFireCannonStartWaitTime);
+
+		//発射間隔の数を加算してずらす
+		rapidFireCannonStartWaitTime += rapidFireCannonInterval;
+	}
+
 	//攻撃内容:速射(大砲)をセット
 	attackType = AttackType::RapidFireCannon;
 	//1つ前の攻撃内容を更新
@@ -264,6 +276,26 @@ bool Galaxy::AttackTypeASelect()
 	attackType = AttackType::a;
 	//1つ前の攻撃内容を更新
 	preAttackType = AttackType::a;
+
+	return true;
+}
+
+bool Galaxy::AttackTypeFlamethrowerBowSelect()
+{
+	//船首が攻撃するパーツでなければ抜ける
+	if (!(attackPartPhase == AttackPartPhase::Front)) { return false; }
+
+	//前回の攻撃内容が火炎放射(船首)だったら抜ける
+	if (preAttackType == AttackType::FlamethrowerBow) { return false; }
+
+	//プレイヤー自機が画面左側にいたら抜ける
+	if (player->GetPosition().x <= 0) { return false; }
+
+
+	//攻撃内容:速射(大砲)をセット
+	attackType = AttackType::FlamethrowerBow;
+	//1つ前の攻撃内容を更新
+	preAttackType = AttackType::FlamethrowerBow;
 
 	return true;
 }
@@ -290,7 +322,19 @@ bool Galaxy::AttackTypeA()
 
 
 
-	return false;
+	return true;
+}
+
+bool Galaxy::AttackTypeFlamethrowerBow()
+{
+	//攻撃内容が火炎放射(船首)でなければ抜ける
+	if (!(attackType == AttackType::FlamethrowerBow)) { return false; }
+
+	//弾発射の標的座標をセット
+	const Vector3 targetPos = player->GetWorldPos();
+	bow->AttackTypeFlamethrower(targetPos);
+
+	return true;
 }
 
 bool Galaxy::WaitMode()
@@ -404,6 +448,9 @@ void Galaxy::AttackModeStart()
 	else if (attackPartPhase == AttackPartPhase::Front) {
 		bow->AttackModeStart();
 	}
+
+	//攻撃内容を未設定にしておく
+	attackType = AttackType::None;
 }
 
 void Galaxy::CheckAllCannonDead()

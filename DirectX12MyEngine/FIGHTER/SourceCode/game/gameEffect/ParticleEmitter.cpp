@@ -424,6 +424,44 @@ void ParticleEmitter::ChargeShotDead(const Vector3& position, const float size)
 	}
 }
 
+void ParticleEmitter::FireBall(const Vector3& position, const float size, const int time)
+{
+	for (int i = 0; i < 5; i++) {
+		//生存時間
+		int life = (rand() % 30) + time;
+
+		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
+		Vector3 pos = position;
+		const float mdPos2 = 0.8f;
+		pos.x += ((float)rand() / RAND_MAX * mdPos2 - mdPos2 / 2.0f) * size;
+		pos.y += ((float)rand() / RAND_MAX * mdPos2 - mdPos2 / 2.0f) * size;
+		pos.z += ((float)rand() / RAND_MAX * mdPos2 - mdPos2 / 2.0f) * size;
+
+		//X,Y,Z全て[-0.05f, +0.05f]でランダムに分布
+		const float mdVel = 0.05f;
+		Vector3 vel{};
+		vel.x = ((float)rand() / RAND_MAX * mdVel - mdVel / 2.0f) * size;
+		vel.y = ((float)rand() / RAND_MAX * mdVel - mdVel / 2.0f) * size;
+		vel.z = ((float)rand() / RAND_MAX * mdVel - mdVel / 2.0f) * size;
+		Vector3 acc{};
+
+		//大きさ
+		float startScale = size;
+		float endScale = size * 2;
+		//大きさ変更のイージング
+		std::function<float(const float, const float, const float) > lerp =
+			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		//色
+		const float mdGreen = 0.2f;
+		const float green = 0.2f + (float)rand() / RAND_MAX * mdGreen;
+		const XMFLOAT4 startColor = { 0.9f, green, 0.1f, 1.0f }; //濃い赤
+		const XMFLOAT4 endColor = { 0, 0, 0, 1.0f }; //無色
+
+		//追加
+		explosionParticle->Add(life, pos, vel, acc, startScale, endScale, lerp, startColor, endColor);
+	}
+}
+
 void ParticleEmitter::BossCharge(const Vector3& position, const float size)
 {
 	//生存時間

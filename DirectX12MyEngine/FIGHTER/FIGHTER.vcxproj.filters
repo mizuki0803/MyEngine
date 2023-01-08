@@ -216,9 +216,6 @@
     <Filter Include="ソース ファイル\game\gameObject\boss\galaxy">
       <UniqueIdentifier>{aee0b26b-9b0c-4e20-9eb8-1e8059e0cbd8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\game\gameObject\boss\galaxy\galaxyCannon">
-      <UniqueIdentifier>{2bb87a63-0061-4f62-bc5a-1fe3c8396100}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\main.cpp">
@@ -630,7 +627,10 @@
       <Filter>ソース ファイル\game\gameObject\boss\galaxy</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\game\gameObject\boss\galaxy\GalaxyCannon.cpp">
-      <Filter>ソース ファイル\game\gameObject\boss\galaxy\galaxyCannon</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\galaxy</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\game\gameObject\enemy\enemyBullet\EnemyFireBullet.cpp">
+      <Filter>ソース ファイル\game\gameObject\enemy\enemyBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1122,7 +1122,10 @@
       <Filter>ソース ファイル\game\gameObject\boss\galaxy</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\boss\galaxy\GalaxyCannon.h">
-      <Filter>ソース ファイル\game\gameObject\boss\galaxy\galaxyCannon</Filter>
+      <Filter>ソース ファイル\game\gameObject\boss\galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\game\gameObject\enemy\enemyBullet\EnemyFireBullet.h">
+      <Filter>ソース ファイル\game\gameObject\enemy\enemyBullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
