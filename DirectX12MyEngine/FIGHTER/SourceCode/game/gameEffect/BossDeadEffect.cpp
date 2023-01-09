@@ -1,7 +1,7 @@
 #include "BossDeadEffect.h"
 #include "ParticleEmitter.h"
 
-BossDeadEffect* BossDeadEffect::Create(const Vector3& deadPos, const bool isBlackSmoke)
+BossDeadEffect* BossDeadEffect::Create(const Vector3& deadPos, const float explosionSize, const bool isBlackSmoke, const bool isGround)
 {
 	//ボス死亡後エフェクトのインスタンスを生成
 	BossDeadEffect* bossDeadEffect = new BossDeadEffect();
@@ -11,8 +11,12 @@ BossDeadEffect* BossDeadEffect::Create(const Vector3& deadPos, const bool isBlac
 
 	//ボス死亡座標をセット
 	bossDeadEffect->deadPos = deadPos;
+	//爆発の大きさをセット
+	bossDeadEffect->explosionSize = explosionSize;
 	//黒煙を出すかセット
 	bossDeadEffect->isBlackSmoke = isBlackSmoke;
+	//地面用の爆発をするかをセット
+	bossDeadEffect->isGround = isGround;
 
 	return bossDeadEffect;
 }
@@ -38,7 +42,7 @@ void BossDeadEffect::Explosion()
 	if (isExplosionEnd) { return; }
 
 	//毎フレーム出すと多いので間隔を設定
-	const int explosionInterval = 10;
+	const int explosionInterval = 15;
 	//指定した間隔以外なら抜ける
 	if (timer % explosionInterval != 0) { return; }
 
@@ -46,8 +50,9 @@ void BossDeadEffect::Explosion()
 	Vector3 explosionPos = deadPos;
 	const float distance = 15.0f;
 	explosionPos.x += (float)rand() / RAND_MAX * distance - distance / 2.0f;
+	if (!isGround) { explosionPos.y += (float)rand() / RAND_MAX * distance - distance / 2.0f; }
 	explosionPos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
-	ParticleEmitter::GetInstance()->BossDeadExplosion(explosionPos);
+	ParticleEmitter::GetInstance()->BossDeadExplosion(explosionPos, explosionSize, isGround);
 
 	//爆発演出回数更新
 	explosionCount++;

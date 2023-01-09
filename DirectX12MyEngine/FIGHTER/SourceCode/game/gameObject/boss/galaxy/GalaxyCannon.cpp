@@ -18,7 +18,7 @@ ObjModel* GalaxyCannon::cannonModel = nullptr;
 ObjModel* GalaxyCannon::cannonDeadModel = nullptr;
 ObjModel* GalaxyCannon::bulletModel = nullptr;
 std::array<ObjModel*, 5> GalaxyCannon::breakModels;
-const Vector3 GalaxyCannon::normalSize = { 0.20f, 0.20f, 0.20f };
+const Vector3 GalaxyCannon::normalSize = { 0.22f, 0.22f, 0.22f };
 const Vector3 GalaxyCannon::damageSize = normalSize * 1.1f;
 const XMFLOAT4 GalaxyCannon::damageColor = { 1, 0.2f, 0.2f, 1 };
 

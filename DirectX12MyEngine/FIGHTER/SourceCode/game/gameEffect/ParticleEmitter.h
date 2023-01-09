@@ -141,7 +141,7 @@ public: //メンバ関数
 	/// ボス死亡専用爆発演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
-	void BossDeadExplosion(const Vector3& position);
+	void BossDeadExplosion(const Vector3& position, const float size, const bool isGround);
 
 	/// <summary>
 	/// 黒煙演出

@@ -11,9 +11,11 @@ public: // 静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <param name="position">ボス死亡座標</param>
+	/// <param name="explosionSize">爆発の大きさ</param>
 	/// <param name="isBlackSmoke">黒煙を出すか</param>
+	/// <param name="isGround">地面用の爆発をするか</param>
 	/// <returns>ボス死亡後のエフェクト</returns>
-	static BossDeadEffect* Create(const Vector3& deadPos, const bool isBlackSmoke);
+	static BossDeadEffect* Create(const Vector3& deadPos, const float explosionSize,  const bool isBlackSmoke, const bool isGround);
 
 public: //メンバ関数
 	/// <summary>
@@ -41,8 +43,12 @@ private: //メンバ変数
 	Vector3 deadPos;
 	//経過時間
 	int32_t timer = 0;
+	//爆発の大きさ
+	float explosionSize = 0;
 	//爆発回数
 	int explosionCount = 0;
+	//地面用爆発か
+	bool isGround = false;
 	//爆発を終了したか
 	bool isExplosionEnd = false;
 	//黒煙を出すか

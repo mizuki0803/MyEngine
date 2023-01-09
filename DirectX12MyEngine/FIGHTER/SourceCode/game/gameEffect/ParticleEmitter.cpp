@@ -600,38 +600,43 @@ void ParticleEmitter::Explosion(const Vector3& position, const float size, const
 	}
 }
 
-void ParticleEmitter::BossDeadExplosion(const Vector3& position)
+void ParticleEmitter::BossDeadExplosion(const Vector3& position, const float size, const bool isGround)
 {
-	for (int j = 0; j < 20; j++) {
+	for (int j = 0; j < 15; j++) {
 		//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
 		const float mdPos = 3.0f;
 		Vector3 pos = position;
-		pos.x += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f);
-		pos.y += ((float)rand() / RAND_MAX * mdPos);
-		pos.z += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f);
+		pos.x += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f) * size;
+		if (isGround) { pos.y += ((float)rand() / RAND_MAX * mdPos) * size; }
+		else { pos.y += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f) * size; }
+		pos.z += ((float)rand() / RAND_MAX * mdPos - mdPos / 2.0f) * size;
 
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 25; i++) {
 			//生存時間
 			int life = (rand() % 30) + 75;
 
 			//X,Y,Z全て[-5.0f, +5.0f]でランダムに分布
 			const float mdPos2 = 2.5f;
-			pos.x += ((float)rand() / RAND_MAX * mdPos2 - mdPos2 / 2.0f);
-			pos.z += ((float)rand() / RAND_MAX * mdPos2 - mdPos2 / 2.0f);
+			pos.x += ((float)rand() / RAND_MAX * mdPos2 - mdPos2 / 2.0f) * size;
+			if(!isGround) { pos.y += ((float)rand() / RAND_MAX * mdPos2 - mdPos2 / 2.0f) * size; }
+			pos.z += ((float)rand() / RAND_MAX * mdPos2 - mdPos2 / 2.0f) * size;
 
 			//X,Y,Z全て[-0.25f, +0.25f]でランダムに分布
 			const float mdVel = 0.75f;
 			Vector3 vel{};
-			vel.x = ((float)rand() / RAND_MAX * mdVel - mdVel / 2.0f);
-			vel.y = ((float)rand() / RAND_MAX * mdVel);
-			vel.z = ((float)rand() / RAND_MAX * mdVel - mdVel / 2.0f);
+			vel.x = ((float)rand() / RAND_MAX * mdVel - mdVel / 2.0f) * size;
+			if (isGround) { vel.y = ((float)rand() / RAND_MAX * mdVel) * size; }
+			else { vel.y = ((float)rand() / RAND_MAX * mdVel - mdVel / 2.0f) * size; }
+			vel.z = ((float)rand() / RAND_MAX * mdVel - mdVel / 2.0f) * size;
 			Vector3 acc{};
-			const float mdAcc = 0.01f;
-			acc.y = -(float)rand() / RAND_MAX * mdAcc;
+			if (isGround) {
+				const float mdAcc = 0.01f;
+				acc.y = -(float)rand() / RAND_MAX * mdAcc;
+			}
 
 			const float mdScale = 5.0f;
-			float startScale = 3.0f;
-			float endScale = (20.0f + (float)rand() / RAND_MAX * mdScale - mdScale / 2.0f);
+			float startScale = 3.0f * size;
+			float endScale = (20.0f + (float)rand() / RAND_MAX * mdScale - mdScale / 2.0f) * size;
 			//大きさ変更のイージング
 			std::function<float(const float, const float, const float) > outQuart =
 				std::bind(&Easing::OutQuart, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);

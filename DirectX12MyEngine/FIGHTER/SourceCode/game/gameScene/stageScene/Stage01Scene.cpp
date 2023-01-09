@@ -546,7 +546,8 @@ void Stage01Scene::ObjectRelease()
 			//後ろ側にビルを大量設置
 			gameBuildingManager->CreateBehindObjects();
 			//死亡後演出を生成
-			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetMainBody()->GetWorldPos(), true));
+			const float explosionSize = 1.0f; //死亡の演出の大きさ
+			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetMainBody()->GetWorldPos(), explosionSize, true, true));
 			//カメラをシェイクさせる
 			const float shakePower = 25;
 			const float shakeTime = 80;

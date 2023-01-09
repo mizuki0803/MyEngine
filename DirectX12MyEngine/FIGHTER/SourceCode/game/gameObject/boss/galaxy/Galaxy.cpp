@@ -382,7 +382,7 @@ bool Galaxy::DeadExplosion()
 	if (!(phase == Phase::Dead)) { return false; }
 
 	//死亡状態の時間
-	const int deadModeTime = 480;
+	const int deadModeTime = 560;
 	//タイマー更新
 	deadModeTimer++;
 
@@ -390,15 +390,24 @@ bool Galaxy::DeadExplosion()
 	body->Dead();
 
 	//一定間隔で爆発
-	const int explosionInterval = 20;
+	const int explosionInterval = 10;
 	if ((deadModeTimer % (int)explosionInterval) == 0) {
 		//爆発演出用パーティクル生成
 		Vector3 particlePos = body->GetWorldPos();
-		const float distance = 8.0f;
-		particlePos.x += (float)rand() / RAND_MAX * distance - distance / 2.0f;
-		particlePos.y += (float)rand() / RAND_MAX * distance - distance / 2.0f;
-		particlePos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
-		const float size = 2.0f;
+		//演出の大きさ(削除が近いと大きくする)
+		float size = 4.0f;
+		//削除が近くないときは小爆発を散らばせる
+		if (deadModeTimer < deadModeTime - 30) {
+			const float distance = 80.0f;
+			particlePos.x += (float)rand() / RAND_MAX * distance - distance / 2.0f;
+			particlePos.y += (float)rand() / RAND_MAX * distance - distance / 4.0f;
+			particlePos.z += (float)rand() / RAND_MAX * distance - distance / 2.0f;
+		}
+		//削除が近いときは大爆発を散らばせる
+		else { 
+			size = 40;
+		}
+
 		ParticleEmitter::GetInstance()->Explosion(particlePos, size);
 	}
 

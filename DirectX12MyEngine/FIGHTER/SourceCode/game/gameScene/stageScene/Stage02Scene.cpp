@@ -65,7 +65,7 @@ void Stage02Scene::Initialize()
 	modelEnemyMiniRobotBreak[2].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak03"));
 	modelEnemyMiniRobotBreak[3].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak04"));
 	modelEnemyMiniRobotBreak[4].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak05"));
-	modelGalaxyBody.reset(ObjModel::LoadFromOBJ("galaxyBody"));
+	modelGalaxyBody.reset(ObjModel::LoadFromOBJ("galaxyBody", true));
 	modelGalaxyPropeller.reset(ObjModel::LoadFromOBJ("galaxyPropeller"));
 	modelGalaxyCannon.reset(ObjModel::LoadFromOBJ("galaxyCannon", true));
 	modelGalaxyCannonDead.reset(ObjModel::LoadFromOBJ("galaxyCannonDead", true));
@@ -554,7 +554,8 @@ void Stage02Scene::ObjectRelease()
 			//カメラのボス情報を解除させる
 			gameCamera->BossDelete();
 			//死亡後演出を生成
-			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetBody()->GetWorldPos(), false));
+			const float explosionSize = 2.5f; //死亡の演出の大きさ
+			bossDeadEffect.reset(BossDeadEffect::Create(boss->GetBody()->GetWorldPos(), explosionSize, false, false));
 			//カメラをシェイクさせる
 			const float shakePower = 25;
 			const float shakeTime = 80;

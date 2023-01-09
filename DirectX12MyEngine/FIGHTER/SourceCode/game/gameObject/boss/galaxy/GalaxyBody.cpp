@@ -110,7 +110,7 @@ void GalaxyBody::AttackPartChange()
 void GalaxyBody::Dead()
 {
 	//ãŒü‚«‚É‰ñ“]‚³‚¹‚é
-	const float rotSpeed = 0.1f;
+	const float rotSpeed = 0.08f;
 	rotation.x += rotSpeed;
 
 	//­‚µ‰º‚ÉˆÚ“®
