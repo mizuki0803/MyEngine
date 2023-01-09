@@ -1,7 +1,7 @@
 #include "EnemyFireBullet.h"
 #include "ParticleEmitter.h"
 
-EnemyFireBullet* EnemyFireBullet::Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float size)
+EnemyFireBullet* EnemyFireBullet::Create(const Vector3& position, const Vector3& velocity, const float size)
 {
 	//敵火炎弾のインスタンスを生成
 	EnemyFireBullet* enemyFireBullet = new EnemyFireBullet();
@@ -15,9 +15,6 @@ EnemyFireBullet* EnemyFireBullet::Create(ObjModel* model, const Vector3& positio
 		assert(0);
 		return nullptr;
 	}
-	//モデルをセット
-	assert(model);
-	enemyFireBullet->model = model;
 
 	//座標をセット
 	enemyFireBullet->position = position;

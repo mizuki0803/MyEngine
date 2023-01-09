@@ -3,6 +3,7 @@
 #include "BaseStageScene.h"
 #include "BossChargeBullet.h"
 #include "ParticleEmitter.h"
+#include "EnemyBreakEffect.h"
 
 void (GalaxyCannon::* GalaxyCannon::attackTypeRapidFirePhaseFuncTable[])() = {
 	&GalaxyCannon::AttackTypeRapidFireStartWait,
@@ -16,7 +17,8 @@ BaseStageScene* GalaxyCannon::stageScene = nullptr;
 ObjModel* GalaxyCannon::cannonModel = nullptr;
 ObjModel* GalaxyCannon::cannonDeadModel = nullptr;
 ObjModel* GalaxyCannon::bulletModel = nullptr;
-const Vector3 GalaxyCannon::normalSize = { 0.25f, 0.25f, 0.25f };
+std::array<ObjModel*, 5> GalaxyCannon::breakModels;
+const Vector3 GalaxyCannon::normalSize = { 0.20f, 0.20f, 0.20f };
 const Vector3 GalaxyCannon::damageSize = normalSize * 1.1f;
 const XMFLOAT4 GalaxyCannon::damageColor = { 1, 0.2f, 0.2f, 1 };
 
@@ -53,6 +55,13 @@ GalaxyCannon* GalaxyCannon::Create(ObjObject3d* parent, const Vector3& basePos)
 	return galaxyCannon;
 }
 
+void GalaxyCannon::SetBreakModel(int modelNum, ObjModel* model)
+{
+	//破壊時のモデルをセット
+	assert(model);
+	breakModels[modelNum] = model;
+}
+
 void GalaxyCannon::Update()
 {
 	//ダメージ状態の処理
@@ -76,6 +85,12 @@ void GalaxyCannon::Damage(int attackPower, const Vector3& collisionPos)
 	if (HP <= 0) {
 		//死亡状態にする
 		isDead = true;
+
+		//破壊用演出を追加
+		Break();
+		
+		//基準座標に戻す
+		position = basePos;
 
 		//HPゲージバグを起こさないようマイナス分を0に調整
 		damageNum += HP;
@@ -252,14 +267,14 @@ void GalaxyCannon::AttackTypeRapidFireStartWait()
 void GalaxyCannon::AttackTypeRapidFireCharge()
 {
 	//チャージにかかる時間
-	const float chargeTime = 40;
+	const float chargeTime = 50;
 	//タイマー更新
 	attackTimer++;
 	const float time = attackTimer / chargeTime;
 
 	//イージングで後ろに引っ張る
 	const float easeStart = basePos.x;
-	const float easeEnd = basePos.x - 0.5f;
+	const float easeEnd = basePos.x - 0.3f;
 	position.x = Easing::OutQuint(easeStart, easeEnd, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
@@ -280,7 +295,7 @@ void GalaxyCannon::AttackTypeRapidFireShot()
 	const float time = attackTimer / shotModeTime;
 
 	//イージングで一気に押し出す
-	const float easeStart = basePos.x - 0.5f;
+	const float easeStart = basePos.x - 0.3f;
 	const float easeEnd = basePos.x + 0.25f;
 	position.x = Easing::OutQuint(easeStart, easeEnd, time);
 
@@ -288,8 +303,8 @@ void GalaxyCannon::AttackTypeRapidFireShot()
 	const int shotTime = 3;
 	if (attackTimer == shotTime) {
 		//弾発射
-		const float bulletSize = 1.5f;
-		const float bulletSpeed = 2.0f;
+		const float bulletSize = 3.0f;
+		const float bulletSpeed = 0.7f;
 		Fire(bulletSize, bulletSpeed);
 
 		//発射回数更新
@@ -352,5 +367,40 @@ void GalaxyCannon::AttackTypeRapidFireWait()
 
 		//タイマーを初期化しておく
 		attackTimer = 0;
+	}
+}
+
+void GalaxyCannon::Break()
+{
+	//破壊用エフェクト追加
+	for (int i = 0; i < breakModels.size(); i++) {
+		//モデルが未設定なら飛ばす
+		if (!breakModels[i]) { continue; }
+
+		//ランダムでエフェクトの速度をセット
+		const Vector3 randVel = { 4, 4, 4 };
+		Vector3 velocity;
+		velocity.x = (float)((rand() % (int)randVel.x) - randVel.x / 2);
+		velocity.y = (float)((rand() % (int)randVel.y) - randVel.y / 2);
+		velocity.z = -(float)((rand() % (int)randVel.z));
+
+		//ランダムでエフェクトの回転の速さをセット
+		const Vector3 randRotSpeed = { 5, 5, 5 };
+		Vector3 rotSpeed;
+		rotSpeed.x = (float)((rand() % (int)randRotSpeed.x) - randRotSpeed.x / 2);
+		rotSpeed.y = (float)((rand() % (int)randRotSpeed.y) - randRotSpeed.y / 2);
+		rotSpeed.z = (float)((rand() % (int)randRotSpeed.z) - randRotSpeed.z / 2);
+
+		//値が大きいので割り算して小さくする
+		const float div = 2;
+		velocity /= div;
+
+		//大きさをセット
+		const Vector3 size = scale * 20;
+
+		//破壊用エフェクトを生成
+		std::unique_ptr<EnemyBreakEffect> newBreakEffect;
+		newBreakEffect.reset(EnemyBreakEffect::Create(breakModels[i], bulletShotPos, velocity, rotSpeed, size));
+		stageScene->AddEnemyBreakEffect(std::move(newBreakEffect));
 	}
 }

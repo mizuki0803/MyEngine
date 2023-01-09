@@ -11,7 +11,7 @@ public: //Ã“Iƒƒ“ƒoŠÖ”
 	/// ¶¬ˆ—
 	/// </summary>
 	/// <returns>“G‰Î‰Š’e</returns>
-	static EnemyFireBullet* Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float size);
+	static EnemyFireBullet* Create(const Vector3& position, const Vector3& velocity, const float size);
 
 
 public: //ƒƒ“ƒoŠÖ”

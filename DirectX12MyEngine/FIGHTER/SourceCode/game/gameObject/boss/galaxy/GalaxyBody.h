@@ -52,6 +52,11 @@ public: //メンバ関数
 	void Damage();
 
 	/// <summary>
+	/// 上下ゆらゆら
+	/// </summary>
+	void Sway();
+
+	/// <summary>
 	/// 登場
 	/// </summary>
 	void Appear();
@@ -152,6 +157,12 @@ private: //メンバ変数
 	int32_t damageTimer = 0;
 	//ダメージ色か
 	bool isDamageColor = false;
+	//ゆらゆらが上移動か
+	bool isSwayUp = false;
+	//ゆらゆらの速度
+	Vector3 swayVel = {};
+	//ゆらゆらの速度が最大か
+	bool isSwaySpeedMax = false;
 	//行動に使用するタイマー
 	int32_t actionTimer = 0;
 	//登場中か

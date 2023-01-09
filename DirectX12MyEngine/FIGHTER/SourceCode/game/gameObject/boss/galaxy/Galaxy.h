@@ -1,5 +1,6 @@
 #pragma once
 #include "GalaxyBody.h"
+#include "GalaxyPropeller.h"
 #include "GalaxyBow.h"
 #include "GalaxyCannon.h"
 #include "BossNameUI.h"
@@ -35,7 +36,6 @@ public:
 	enum class AttackType {
 		None,				//未設定
 		RapidFireCannon,	//速射(大砲)
-		a,					//あ
 		FlamethrowerBow,	//火炎放射(船首)
 	};
 
@@ -121,11 +121,6 @@ public: //メンバ関数
 	bool AttackTypeRapidFireCannonSelect();
 
 	/// <summary>
-	/// 攻撃内容:「あ」を設定するか
-	/// </summary>
-	bool AttackTypeASelect();
-
-	/// <summary>
 	/// 攻撃内容:火炎放射(船首)を設定するか
 	/// </summary>
 	bool AttackTypeFlamethrowerBowSelect();
@@ -134,11 +129,6 @@ public: //メンバ関数
 	/// 攻撃内容;速射(大砲)
 	/// </summary>
 	bool AttackTypeRapidFireCannon();
-
-	/// <summary>
-	/// 攻撃内容;「あ」
-	/// </summary>
-	bool AttackTypeA();
 
 	/// <summary>
 	/// 攻撃内容:火炎放射(船首)
@@ -163,6 +153,7 @@ public: //メンバ関数
 	//getter
 	const Phase& GetPhase() { return this->phase; }
 	GalaxyBody* GetBody() { return body.get(); }
+	const std::list<std::unique_ptr<GalaxyPropeller>>& GetPropellers() { return propellers; };
 	GalaxyBow* GetBow() { return bow.get(); }
 	const std::list<std::unique_ptr<GalaxyCannon>>& GetCannons() { return cannons; };
 	const bool GetIsDead() { return isDead; }
@@ -194,6 +185,8 @@ private: //静的メンバ変数
 private: //メンバ変数
 	//胴体
 	std::unique_ptr<GalaxyBody> body;
+	//プロペラ
+	std::list<std::unique_ptr<GalaxyPropeller>>propellers;
 	//船首
 	std::unique_ptr<GalaxyBow> bow;
 	//大砲
@@ -210,8 +203,6 @@ private: //メンバ変数
 	AttackPartPhase attackPartPhase = AttackPartPhase::None;
 	//攻撃内容
 	AttackType attackType = AttackType::None;
-	//1つ前に発動した攻撃内容
-	AttackType preAttackType = AttackType::None;
 	//待機状態時間タイマー
 	int32_t waitModeTimer = 0;
 	//死亡状態時間タイマー

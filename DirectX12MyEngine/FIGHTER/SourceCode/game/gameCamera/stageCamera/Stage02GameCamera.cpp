@@ -177,7 +177,7 @@ void Stage02GameCamera::StageClearBossSide()
 	const float time = stageClearModeTimer / sideMoveTime;
 
 	//座標をボス横に移動
-	const Vector3 bossDistance = { 45, -1, 0 };
+	const Vector3 bossDistance = { 100, -1, 0 };
 	const Vector3 bossSidePos = galaxyBody->GetPosition() + bossDistance;
 	position.x = Easing::InOutQuad(stageClearMoveBeforePos.x, bossSidePos.x, time);
 	position.y = Easing::InOutQuad(stageClearMoveBeforePos.y, bossSidePos.y, time);
@@ -220,7 +220,7 @@ void Stage02GameCamera::StageClearBossBack()
 	const float time = stageClearModeTimer / backMoveTime;
 
 	//座標をボス後ろに移動
-	const Vector3 bossDistance = { 0, -1, 80 };
+	const Vector3 bossDistance = { 0, -1, 140 };
 	const Vector3 bossSidePos = galaxyBody->GetPosition() + bossDistance;
 	position.x = Easing::OutQuad(stageClearMoveBeforePos.x, bossSidePos.x, time);
 	position.y = Easing::OutQuad(stageClearMoveBeforePos.y, bossSidePos.y, time);

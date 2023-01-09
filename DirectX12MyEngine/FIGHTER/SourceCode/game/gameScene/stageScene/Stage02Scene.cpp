@@ -65,7 +65,15 @@ void Stage02Scene::Initialize()
 	modelEnemyMiniRobotBreak[2].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak03"));
 	modelEnemyMiniRobotBreak[3].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak04"));
 	modelEnemyMiniRobotBreak[4].reset(ObjModel::LoadFromOBJ("enemyMiniRobotBreak05"));
-	modelMedamanMainBody.reset(ObjModel::LoadFromOBJ("medamanMainBody", true));
+	modelGalaxyBody.reset(ObjModel::LoadFromOBJ("galaxyBody"));
+	modelGalaxyPropeller.reset(ObjModel::LoadFromOBJ("galaxyPropeller"));
+	modelGalaxyCannon.reset(ObjModel::LoadFromOBJ("galaxyCannon", true));
+	modelGalaxyCannonDead.reset(ObjModel::LoadFromOBJ("galaxyCannonDead", true));
+	modelGalaxyCannonBreak[0].reset(ObjModel::LoadFromOBJ("galaxyCannonBreak01"));
+	modelGalaxyCannonBreak[1].reset(ObjModel::LoadFromOBJ("galaxyCannonBreak02"));
+	modelGalaxyCannonBreak[2].reset(ObjModel::LoadFromOBJ("galaxyCannonBreak03"));
+	modelGalaxyCannonBreak[3].reset(ObjModel::LoadFromOBJ("galaxyCannonBreak04"));
+	modelGalaxyCannonBreak[4].reset(ObjModel::LoadFromOBJ("galaxyCannonBreak05"));
 	modelMedamanAvatar.reset(ObjModel::LoadFromOBJ("medamanAvatar", true));
 	modelMedamanAvatarDead.reset(ObjModel::LoadFromOBJ("medamanAvatarDead", true));
 	modelHealingItem.reset(ObjModel::LoadFromOBJ("healingItem"));
@@ -103,14 +111,21 @@ void Stage02Scene::Initialize()
 	//ボス(ギャラクシー)に必要な情報をセット
 	Galaxy::SetPlayer(player.get());
 	GalaxyBody::SetStageScene(this);
-	GalaxyBody::SetBodyModel(modelMedamanMainBody.get());
+	GalaxyBody::SetBodyModel(modelGalaxyBody.get());
+	GalaxyPropeller::SetPropellerModel(modelGalaxyPropeller.get());
 	GalaxyBow::SetStageScene(this);
 	GalaxyBow::SetBowModel(modelMedamanAvatar.get());
 	GalaxyBow::SetBowDeadModel(modelMedamanAvatarDead.get());
 	GalaxyBow::SetBulletModel(modelSphere.get());
 	GalaxyCannon::SetStageScene(this);
-	GalaxyCannon::SetCannonModel(modelMedamanAvatar.get());
-	GalaxyCannon::SetCannonDeadModel(modelMedamanAvatarDead.get());
+	GalaxyCannon::SetCannonModel(modelGalaxyCannon.get());
+	GalaxyCannon::SetCannonDeadModel(modelGalaxyCannonDead.get());
+	//破壊時に出すモデルをセット
+	for (int i = 0; i < modelGalaxyCannonBreak.size(); i++) {
+		//モデルが未設定なら飛ばす
+		if (!modelGalaxyCannonBreak[i]) { continue; }
+		GalaxyCannon::SetBreakModel(i, modelGalaxyCannonBreak[i].get());
+	}
 	GalaxyCannon::SetBulletModel(modelEnemyBullet.get());
 
 	//回復アイテムに必要な情報をセット
@@ -833,6 +848,37 @@ void Stage02Scene::CollisionCheck3d()
 	}
 #pragma endregion
 
+#pragma region 自機弾とボス(ギャラクシー)プロペラの衝突判定
+	//全てのボス(ギャラクシー)プロペラと全ての自機弾の衝突判定
+	for (const std::unique_ptr<PlayerBullet>& bullet : playerBullets) {
+		//自機弾座標
+		posA = bullet->GetWorldPos();
+		//自機弾半径
+		radiusA = bullet->GetScale().x;
+
+		//ボス(ギャラクシー)プロペラのリストを持ってくる
+		const std::list<std::unique_ptr<GalaxyPropeller>>& bossPropellers = boss->GetPropellers();
+		for (const std::unique_ptr<GalaxyPropeller>& bossPropeller : bossPropellers) {
+			//ボス(ギャラクシー)プロペラ座標
+			posB = bossPropeller->GetWorldPos();
+			//ボス(ギャラクシー)プロペラ半径 親子構造の為、本体の大きさを乗算して正しい大きさが分かる
+			radiusB = bossPropeller->GetScale().x * boss->GetBody()->GetScale().x;
+			//少し小さくしておく
+			radiusB *= 0.8f;
+
+			//球と球の衝突判定を行う
+			bool isCollision = Collision::CheckSphereToSphere(posA, posB, radiusA, radiusB);
+			//衝突していなければ飛ばす
+			if (!isCollision) { continue; }
+
+			//自機弾のコールバック関数を呼び出す
+			bullet->OnCollision(posB, radiusB, false);
+
+			break;
+		}
+	}
+#pragma endregion
+
 #pragma region 自機弾とボス(ギャラクシー)船首の衝突判定
 	//船首座標
 	posA = boss->GetBow()->GetWorldPos();
@@ -1145,8 +1191,8 @@ void Stage02Scene::BossBattleStart()
 		bossWarning.reset();
 
 		//ボス(ギャラクシー)生成
-		const float distance = 100; //自機との距離
-		const Vector3 bossBasePos = { 0, 3, bossBattleStartPos + distance }; //戦闘の基準座標
+		const float distance = 150; //自機との距離
+		const Vector3 bossBasePos = { 0, -6, bossBattleStartPos + distance }; //戦闘の基準座標
 		const Vector3 bossBornPos = bossBasePos + Vector3{ 0, 0, 400 }; //登場座標
 		boss.reset(Galaxy::Create(bossBornPos, bossBasePos));
 

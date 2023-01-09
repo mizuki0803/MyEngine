@@ -4,7 +4,7 @@
 #include "ParticleEmitter.h"
 
 BasePlayer* Galaxy::player = nullptr;
-const float Galaxy::waitModeTime = 300.0f;
+const float Galaxy::waitModeTime = 180.0f;
 
 Galaxy* Galaxy::Create(const Vector3& bornPos, const Vector3& basePos)
 {
@@ -33,13 +33,36 @@ bool Galaxy::Initialize(const Vector3& bornPos, const Vector3& basePos)
 
 	//胴体生成
 	body.reset(GalaxyBody::Create(bornPos, basePos));
+	//プロペラ生成
+	std::vector<Vector3> propellerPos = {
+		{0, 2, -0.95f},
+		{0.4f, 1.45f, 1.05f},
+		{-0.4f, 1.45f, 1.05f},
+	};
+	std::vector<float> propellerSize = {
+		2, 1.6f, 1.6f
+	};
+	float propellerRota = 0;
+	const float propellerRotSpped = 5;
+	for (int i = 0; i < propellerPos.size(); i++) {
+		std::unique_ptr<GalaxyPropeller> newPropeller;
+		newPropeller.reset(GalaxyPropeller::Create(body.get(), propellerPos[i],
+			{ 0, propellerRota, 0 }, propellerRotSpped, propellerSize[i]));
+		propellers.push_back(std::move(newPropeller));
+
+		propellerRota += 120;
+	}
 	//船首生成
-	bow.reset(GalaxyBow::Create(body.get(), { 0, -0.5f, -1 }));
+	bow.reset(GalaxyBow::Create(body.get(), { 0, 0.1f, -2.75f }));
 	//大砲生成
 	std::vector<Vector3> cannonPos = {
-		{1, -0.3f, -1},
-		{1, -0.3f, 0},
-		{1, -0.3f, 1},
+		{0.9f, 0, -1.5f},
+		{0.9f, 0, -1},
+		{0.9f, 0, -0.5f},
+		{0.9f, 0, 0},
+		{0.9f, 0, 0.5f},
+		{0.9f, 0, 1},
+		{0.9f, 0, 1.5f},
 	};
 	for (int i = 0; i < cannonPos.size(); i++) {
 		std::unique_ptr<GalaxyCannon> newCannon;
@@ -59,8 +82,16 @@ bool Galaxy::Initialize(const Vector3& bornPos, const Vector3& basePos)
 
 void Galaxy::Update()
 {
+	//登場,死亡状態以外なら胴体をゆらゆらさせる
+	if (!(phase == Phase::Appear || phase == Phase::Dead)) {
+		body->Sway();
+	}
+
 	//更新
 	body->Update();//胴体
+	for (const std::unique_ptr<GalaxyPropeller>& propeller : propellers) {
+		propeller->Update();//プロペラ
+	}
 	bow->Update();//船首
 	for (const std::unique_ptr<GalaxyCannon>& cannon : cannons) {
 		cannon->Update();//大砲
@@ -83,6 +114,9 @@ void Galaxy::Draw()
 {
 	//描画
 	body->Draw();//胴体
+	for (const std::unique_ptr<GalaxyPropeller>& propeller : propellers) {
+		propeller->Draw();//プロペラ
+	}
 	bow->Draw();//船首
 	for (const std::unique_ptr<GalaxyCannon>& cannon : cannons) {
 		cannon->Draw();//大砲
@@ -245,37 +279,18 @@ bool Galaxy::AttackTypeRapidFireCannonSelect()
 	//大砲が攻撃するパーツでなければ抜ける
 	if (!(attackPartPhase == AttackPartPhase::Cannon)) { return false; }
 
-	//前回の攻撃内容が速射(大砲)だったら抜ける
-	if (preAttackType == AttackType::RapidFireCannon) { return false; }
-
-	//プレイヤー自機が画面左側にいたら抜ける
-	if (player->GetPosition().x <= 0) { return false; }
-
 	//大砲に攻撃内容:速射の開始時待機フレーム数をセット
-	int rapidFireCannonStartWaitTime = 0;
-	//大砲の発射間隔
-	const int rapidFireCannonInterval = 10;
+	const std::vector<int> rapidFireCannonStartWaitTime = {
+		60, 80, 100, 120, 100, 80, 60
+	};
+	int i = 0;
 	for (const std::unique_ptr<GalaxyCannon>& cannon : cannons) {
-		cannon->SetRapidFireStartWaitTime(rapidFireCannonStartWaitTime);
-
-		//発射間隔の数を加算してずらす
-		rapidFireCannonStartWaitTime += rapidFireCannonInterval;
+		cannon->SetRapidFireStartWaitTime(rapidFireCannonStartWaitTime[i]);
+		i++;
 	}
 
 	//攻撃内容:速射(大砲)をセット
 	attackType = AttackType::RapidFireCannon;
-	//1つ前の攻撃内容を更新
-	preAttackType = AttackType::RapidFireCannon;
-
-	return true;
-}
-
-bool Galaxy::AttackTypeASelect()
-{
-	//攻撃内容:aをセット
-	attackType = AttackType::a;
-	//1つ前の攻撃内容を更新
-	preAttackType = AttackType::a;
 
 	return true;
 }
@@ -285,17 +300,8 @@ bool Galaxy::AttackTypeFlamethrowerBowSelect()
 	//船首が攻撃するパーツでなければ抜ける
 	if (!(attackPartPhase == AttackPartPhase::Front)) { return false; }
 
-	//前回の攻撃内容が火炎放射(船首)だったら抜ける
-	if (preAttackType == AttackType::FlamethrowerBow) { return false; }
-
-	//プレイヤー自機が画面左側にいたら抜ける
-	if (player->GetPosition().x <= 0) { return false; }
-
-
 	//攻撃内容:速射(大砲)をセット
 	attackType = AttackType::FlamethrowerBow;
-	//1つ前の攻撃内容を更新
-	preAttackType = AttackType::FlamethrowerBow;
 
 	return true;
 }
@@ -311,16 +317,6 @@ bool Galaxy::AttackTypeRapidFireCannon()
 
 		cannon->AttackTypeRapidFire();
 	}
-
-	return true;
-}
-
-bool Galaxy::AttackTypeA()
-{
-	//攻撃内容がaでなければ抜ける
-	if (!(attackType == AttackType::a)) { return false; }
-
-
 
 	return true;
 }
@@ -425,6 +421,11 @@ void Galaxy::Damage(const int damageNum)
 
 		phase = Phase::Dead;
 		isDead = true;
+
+		//プロペラの回転を止める
+		for (const std::unique_ptr<GalaxyPropeller>& propeller : propellers) {
+			propeller->SetIsRotation(false);
+		}
 	}
 
 	//ダメージを喰らったのでHPバーの長さを変更する

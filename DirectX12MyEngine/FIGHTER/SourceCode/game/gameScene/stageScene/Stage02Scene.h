@@ -136,7 +136,11 @@ private: //ÉÅÉìÉoïœêî
 	std::array<std::unique_ptr<ObjModel>, 5> modelEnemyFighterBreak;
 	std::unique_ptr<ObjModel> modelEnemyMiniRobot;
 	std::array<std::unique_ptr<ObjModel>, 5> modelEnemyMiniRobotBreak;
-	std::unique_ptr<ObjModel> modelMedamanMainBody;
+	std::unique_ptr<ObjModel> modelGalaxyBody;
+	std::unique_ptr<ObjModel> modelGalaxyPropeller;
+	std::unique_ptr<ObjModel> modelGalaxyCannon;
+	std::unique_ptr<ObjModel> modelGalaxyCannonDead;
+	std::array<std::unique_ptr<ObjModel>, 5> modelGalaxyCannonBreak;
 	std::unique_ptr<ObjModel> modelMedamanAvatar;
 	std::unique_ptr<ObjModel> modelMedamanAvatarDead;
 	std::unique_ptr<ObjModel> modelHealingItem;

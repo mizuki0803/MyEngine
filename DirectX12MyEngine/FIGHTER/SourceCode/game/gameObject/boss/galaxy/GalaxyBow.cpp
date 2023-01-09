@@ -15,7 +15,7 @@ BaseStageScene* GalaxyBow::stageScene = nullptr;
 ObjModel* GalaxyBow::bowModel = nullptr;
 ObjModel* GalaxyBow::bowDeadModel = nullptr;
 ObjModel* GalaxyBow::bulletModel = nullptr;
-const Vector3 GalaxyBow::normalSize = { 0.3f, 0.3f, 0.3f };
+const Vector3 GalaxyBow::normalSize = { 0.25f, 0.25f, 0.25f };
 const Vector3 GalaxyBow::damageSize = normalSize * 1.1f;
 const XMFLOAT4 GalaxyBow::damageColor = { 1, 0.2f, 0.2f, 1 };
 
@@ -156,7 +156,7 @@ void GalaxyBow::RockonFire(const float scale, const float bulletSpeed)
 
 	//íeÇê∂ê¨
 	std::unique_ptr<EnemyBullet> newBullet;
-	newBullet.reset(EnemyFireBullet::Create(bulletModel, bulletShotPos, velocity, scale));
+	newBullet.reset(EnemyFireBullet::Create(bulletShotPos, velocity, scale));
 	stageScene->AddEnemyBullet(std::move(newBullet));
 }
 
@@ -283,7 +283,7 @@ void GalaxyBow::AttackTypeFlamethrowerShot()
 	const int shotInterval = 10;
 	if (attackTimer % shotInterval == 0) {
 		//íeî≠éÀ
-		const float bulletSize = 1.5f;
+		const float bulletSize = 2.0f;
 		const float bulletSpeed = 1.0f;
 		RockonFire(bulletSize, bulletSpeed);
 	}

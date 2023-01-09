@@ -23,6 +23,8 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="parent">親オブジェクト</param> 
+	/// <param name="basePos">基準座標</param>
 	/// <returns>ギャラクシー(大砲)</returns>
 	static GalaxyCannon* Create(ObjObject3d* parent, const Vector3& basePos);
 
@@ -34,6 +36,7 @@ public: //静的メンバ関数
 	static void SetCannonModel(ObjModel* model) { GalaxyCannon::cannonModel = model; }
 	static void SetCannonDeadModel(ObjModel* model) { GalaxyCannon::cannonDeadModel = model; }
 	static void SetBulletModel(ObjModel* model) { GalaxyCannon::bulletModel = model; }
+	static void SetBreakModel(int modelNum, ObjModel* model);
 
 public: //メンバ関数
 	/// <summary>
@@ -128,18 +131,25 @@ protected: //メンバ関数
 	/// </summary>
 	void AttackTypeRapidFireWait();
 
+	/// <summary>
+	/// 破壊
+	/// </summary>
+	void Break();
+
 
 protected: //静的メンバ変数
 	//ステージシーン
 	static BaseStageScene* stageScene;
 	//最大体力
-	static const int maxHP = 10;
+	static const int maxHP = 6;
 	//大砲のモデル
 	static ObjModel* cannonModel;
 	//死亡状態のモデル
 	static ObjModel* cannonDeadModel;
 	//敵弾のモデル
 	static ObjModel* bulletModel;
+	//破壊時に出すモデル
+	static std::array<ObjModel*, 5> breakModels;
 	//通常サイズ
 	static const Vector3 normalSize;
 	//ダメージ状態のサイズ

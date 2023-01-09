@@ -16,8 +16,8 @@ void (GalaxyBody::* GalaxyBody::attackPartChangePhaseFuncTable[])() = {
 
 BaseStageScene* GalaxyBody::stageScene = nullptr;
 ObjModel* GalaxyBody::bodyModel = nullptr;
-const Vector3 GalaxyBody::normalSize = { 15, 15, 15 };
-const Vector3 GalaxyBody::damageSize = GalaxyBody::normalSize * 1.1f;
+const Vector3 GalaxyBody::normalSize = { 25, 25, 25 };
+const Vector3 GalaxyBody::damageSize = GalaxyBody::normalSize * 1.05f;
 const XMFLOAT4 GalaxyBody::damageColor = { 1, 0.2f, 0.2f, 1 };
 
 GalaxyBody* GalaxyBody::Create(const Vector3& bornPos, const Vector3& basePos)
@@ -109,9 +109,9 @@ void GalaxyBody::AttackPartChange()
 
 void GalaxyBody::Dead()
 {
-	//下向きに回転させる
+	//上向きに回転させる
 	const float rotSpeed = 0.1f;
-	rotation.x -= rotSpeed;
+	rotation.x += rotSpeed;
 
 	//少し下に移動
 	position.y -= 0.05f;
@@ -262,4 +262,69 @@ void GalaxyBody::AttackPartChangeRotation()
 
 	//攻撃するパーツ変更をする回転を終了
 	isAttackPartChangeRota = false;
+}
+
+void GalaxyBody::Sway()
+{
+	//ゆらゆら最大の速さ
+	const float rotXMaxSpeed = 0.02f;
+	//ゆらゆら折り返し
+	const float swayLimitBasePosDistance = 10;
+	//ゆらゆらの加速度
+	const float swayXSpeedAccel = 0.001f;
+	//上移動
+	if (isSwayUp) {
+		//速度が最大でないとき
+		if (!isSwaySpeedMax) {
+			//速度に加速度を加算する
+			swayVel.y += swayXSpeedAccel;
+
+			//速さが最大になったらフラグを立てる
+			if (swayVel.y >= rotXMaxSpeed) {
+				isSwaySpeedMax = true;
+			}
+		}
+		//ゆらゆらの座標が折り返しまで来たら
+		if (position.y >= basePos.y + swayLimitBasePosDistance) {
+			//速度に加速度を減算していく
+			swayVel.y -= swayXSpeedAccel;
+
+			//速度が0になったら
+			if (swayVel.y <= 0) {
+				//下移動に変更
+				isSwayUp = false;
+				//速度最大フラグを下ろしておく
+				isSwaySpeedMax = false;
+			}
+		}
+	}
+	//下移動
+	else {
+		//速度が最大でないとき
+		if (!isSwaySpeedMax) {
+			//速度に加速度を減算する
+			swayVel.y -= swayXSpeedAccel;
+
+			//速度が最大になったらフラグを立てる
+			if (swayVel.y <= -rotXMaxSpeed) {
+				isSwaySpeedMax = true;
+			}
+		}
+		//ゆらゆらの速度が折り返しまで来たら
+		if (position.y <= basePos.y - swayLimitBasePosDistance) {
+			//速度に加速度を加算していく
+			swayVel.y += swayXSpeedAccel;
+
+			//速度が0になったら
+			if (swayVel.y >= 0) {
+				//上移動に変更
+				isSwayUp = true;
+				//速度最大フラグを下ろしておく
+				isSwaySpeedMax = false;
+			}
+		}
+	}
+
+	//Y座標に速度を加算してゆらゆらさせる
+	position += swayVel;
 }

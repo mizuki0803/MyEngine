@@ -142,12 +142,6 @@ void GalaxyBehaviorTree::AttackTypeSelectNode()
 	std::function<bool()> attackTypeFlamethrowerBowSelect =
 		std::bind(&Galaxy::AttackTypeFlamethrowerBowSelect, galaxy);
 	attackTypeSelector->AddNode(attackTypeFlamethrowerBowSelect);
-
-
-	//UŒ‚“à—e:‚ ‚ğİ’è‚·‚é
-	std::function<bool()> attackTypeASelect =
-		std::bind(&Galaxy::AttackTypeASelect, galaxy);
-	attackTypeSelector->AddNode(attackTypeASelect);
 }
 
 void GalaxyBehaviorTree::AttackSelectNode()
@@ -164,10 +158,4 @@ void GalaxyBehaviorTree::AttackSelectNode()
 	std::function<bool()> attackTypeFlamethrowerBow =
 		std::bind(&Galaxy::AttackTypeFlamethrowerBow, galaxy);
 	attackSelector->AddNode(attackTypeFlamethrowerBow);
-
-
-	//UŒ‚“à—e;‚ ‚ğÀs‚·‚é
-	std::function<bool()> attackTypeA =
-		std::bind(&Galaxy::AttackTypeA, galaxy);
-	attackSelector->AddNode(attackTypeA);
 }
