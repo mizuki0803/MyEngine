@@ -53,7 +53,7 @@ bool Galaxy::Initialize(const Vector3& bornPos, const Vector3& basePos)
 		propellerRota += 120;
 	}
 	//ëDéÒê∂ê¨
-	bow.reset(GalaxyBow::Create(body.get(), { 0, 0.1f, -2.75f }));
+	bow.reset(GalaxyBow::Create(body.get(), { 0, 0.05f, -2.75f }));
 	//ëÂñCê∂ê¨
 	std::vector<Vector3> cannonPos = {
 		{0.9f, 0, -1.5f},

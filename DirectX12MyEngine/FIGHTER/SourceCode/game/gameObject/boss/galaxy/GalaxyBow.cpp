@@ -105,7 +105,7 @@ void GalaxyBow::Damage(int attackPower, const Vector3& collisionPos)
 void GalaxyBow::UpdateBulletShotPos()
 {
 	//’†SÀ•W‚©‚ç‚Ì‹——£
-	const Vector3 distancePos = { 0, 0, -(scale.z * parent->GetScale().z) / 2 };
+	const Vector3 distancePos = { 0, 0, -(scale.z * parent->GetScale().z) / 4 };
 
 	//’e”­ËÀ•W‚ğæ“¾
 	bulletShotPos = LocalTranslation(distancePos, matWorld);
