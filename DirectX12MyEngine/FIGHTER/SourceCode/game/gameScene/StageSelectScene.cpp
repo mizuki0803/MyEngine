@@ -233,6 +233,7 @@ void StageSelectScene::LightCameraUpdate()
 	const Vector3 lightEye = targetPos + targetDistance;
 	topLightCamera->SetEyeTarget(lightEye, targetPos);
 	topLightCamera->Update();
+	lightCamera->Update();
 }
 
 void StageSelectScene::CreatePlanets()

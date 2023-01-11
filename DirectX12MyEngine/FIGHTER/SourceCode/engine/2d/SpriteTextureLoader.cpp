@@ -14,6 +14,7 @@ void SpriteTextureLoader::TextureLoad()
 	spriteCommon->LoadTexture(TextureName::BButton, "bButton.png");
 	spriteCommon->LoadTexture(TextureName::PlanetName, "planetName.png");
 	spriteCommon->LoadTexture(TextureName::HighScoreFrame, "highScoreFrame.png");
+	spriteCommon->LoadTexture(TextureName::RankMedal, "rankMedal.png");
 	spriteCommon->LoadTexture(TextureName::StageSelectHowToPlay, "stageSelectHowToPlay.png");
 	spriteCommon->LoadTexture(TextureName::StageDecision, "stageDecision.png");
 	spriteCommon->LoadTexture(TextureName::HowToPlay, "howToPlay.png");

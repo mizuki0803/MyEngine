@@ -8,19 +8,27 @@
 /// </summary>
 class StageResultUI
 {
+private: //リザルト行動のフェーズ
+	enum class ResultActionPhase {
+		UpdateDisplayNum,	//表示用数字更新
+		RankMedalSet,		//スコアに応じた色のメダルをセット
+	};
+
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="enemyDefeatNum">敵撃破数</param>
+	/// <param name="enemyDefeatRank">ランク</param>
 	/// <returns>ステージクリア情報結果UI</returns>
-	static StageResultUI* Create(const int enemyDefeatNum, bool isHighScore);
+	static StageResultUI* Create(const int enemyDefeatNum, const int enemyDefeatRank);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <returns>成否</returns>
-	bool Initialize(const int enemyDefeatNum);
+	bool Initialize(const int enemyDefeatNum, const int enemyDefeatRank);
 
 	/// <summary>
 	/// 更新
@@ -50,13 +58,28 @@ private: //メンバ関数
 	/// </summary>
 	void UpdateNumberSprite();
 
+	/// <summary>
+	/// ランクに応じてメダルをセットする行動
+	/// </summary>
+	void RankMedalSetAction();
+
+private: //静的メンバ変数
+	//リザルトの行動遷移
+	static void (StageResultUI::* resultActionPhaseFuncTable[])();
+
 private: //メンバ変数
 	//枠スプライト
 	std::unique_ptr<Sprite> frameSprite;
 	//数字スプライト
 	std::vector<std::unique_ptr<NumberSprite>> numberSprites;
+	//ランクメダルスプライト
+	std::unique_ptr<Sprite> rankMedalSprite;
 	//Bボタンスプライト
 	std::unique_ptr<Sprite> bButtonSprite;
+	//リザルト行動
+	ResultActionPhase resultActionPhase = ResultActionPhase::UpdateDisplayNum;
+	//行動用タイマー
+	int32_t actionTimer = 0;
 	//取得用撃破数
 	int enemyDefeatNum = 0;
 	//取得用撃破数の桁数
@@ -65,8 +88,6 @@ private: //メンバ変数
 	int enemyDefeatDisplayNum = 0;
 	//表示用撃破数の桁数
 	int enemyDefeatDisplayNumDigit = 0;
-	//表示用撃破数更新用タイマー
-	int32_t updateDisplayNumTimer = 0;
 	//リザルトを表示し終えたか
 	bool isResultEnd = false;
 	//ボタンスプライトを描画するか

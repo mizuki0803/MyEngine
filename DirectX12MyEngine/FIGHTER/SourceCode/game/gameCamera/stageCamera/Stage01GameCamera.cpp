@@ -18,6 +18,9 @@ void Stage01GameCamera::Initialize(Stage01Player* player)
 	//自機をセット
 	this->player = player;
 
+	//前進スピードをセット
+	advanceSpeed = 0.5f;
+
 	//初期座標を設定
 	const Vector3 playerDistance = { 0, 10, -30 };
 	const Vector3 startPosition = player->GetPosition() + playerDistance;

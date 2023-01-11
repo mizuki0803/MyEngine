@@ -1045,7 +1045,7 @@ void Stage02Scene::InitializeEnemy()
 	}
 
 	//到着出発敵
-	ComeGoEnemy::SetAttackMoveSpeed(BaseGameCamera::GetAdvanceSpeed()); //移動スピードをセット
+	ComeGoEnemy::SetAttackMoveSpeed(gameCamera->GetAdvanceSpeed()); //移動スピードをセット
 	ComeGoEnemy::SetModel(modelEnemyFighter.get()); //モデルをセット
 	//破壊時に出すモデルをセット
 	for (int i = 0; i < modelEnemyFighterBreak.size(); i++) {
@@ -1220,8 +1220,8 @@ void Stage02Scene::StageClear()
 		//倒した数カウンターを増やす(大きいボスなので10)
 		const int defeatNum = 10;
 		EnemyDefeatCounter::AddCounter(defeatNum);
-		//ハイスコア更新
-		EnemyDefeatCounter::CheckHighScore(1);
+		//スコア確定
+		EnemyDefeatCounter::ScoreConfirm(1);
 		//宇宙塵エフェクトのスクロール状態を解除
 		SpaceDustEffect::SetIsScrollMode(false);
 	}
@@ -1269,7 +1269,7 @@ void Stage02Scene::StageResultUICreateAndRelease()
 		if (!(gameCamera->GetStageClearModePhase() == Stage02GameCamera::StageClearModePhase::PlayerAround)) { return; }
 
 		//ステージリザルトUI生成
-		stageResultUI.reset(StageResultUI::Create(EnemyDefeatCounter::GetDefeatCount(), false));
+		stageResultUI.reset(StageResultUI::Create(EnemyDefeatCounter::GetDefeatCount(), (int)EnemyDefeatCounter::GetRank()));
 	}
 	//ステージリザルトUIのインスタンスがあるとき
 	else {

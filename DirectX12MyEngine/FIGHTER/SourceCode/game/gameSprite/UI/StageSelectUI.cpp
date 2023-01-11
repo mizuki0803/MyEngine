@@ -13,6 +13,7 @@ void (StageSelectUI::* StageSelectUI::actionFuncTable[])() = {
 const float StageSelectUI::inScreenPosY = 100;
 const float StageSelectUI::outScreenPosY = -100;
 const float StageSelectUI::frameNumberDistanceY = 25;
+const float StageSelectUI::frameRankMedalDistanceY = -26;
 
 StageSelectUI* StageSelectUI::Create()
 {
@@ -43,7 +44,8 @@ bool StageSelectUI::Initialize()
 
 	//ハイスコア枠スプライト生成
 	highScoreFrameSprite.reset(Sprite::Create(SpriteTextureLoader::HighScoreFrame));
-	highScoreFrameSprite->SetPosition({ 1000, outScreenPosY });
+	const Vector2 highScoreFramePos = { 1000, outScreenPosY };
+	highScoreFrameSprite->SetPosition(highScoreFramePos);
 	const Vector2 frameTexSize = { 172, 126 };
 	highScoreFrameSprite->SetTexSize(frameTexSize);
 	highScoreFrameSprite->SetSize(frameTexSize);
@@ -52,18 +54,23 @@ bool StageSelectUI::Initialize()
 	for (int i = 0; i < highScoreDigit; i++) {
 		const Vector2 texSize = { 48, 48 };
 		const Vector2 size = texSize * 0.8f;
-		const Vector2 centerPos = highScoreFrameSprite->GetPosition();
-		const Vector2 firstPos = { centerPos.x + size.x, centerPos.y + frameNumberDistanceY };
+		const Vector2 firstPos = { highScoreFramePos.x + size.x, highScoreFramePos.y + frameNumberDistanceY };
 		const Vector2 pos = { firstPos.x - i * size.x, firstPos.y };
 		numberSprites[i].reset(NumberSprite::Create(SpriteTextureLoader::HitPlusNumber, pos, size, texSize));
 	}
 
+	//ランクメダルスプライト生成
+	rankMedalSprite.reset(Sprite::Create(SpriteTextureLoader::RankMedal));
+	rankMedalSprite->SetPosition({ highScoreFramePos.x, highScoreFramePos.y + frameRankMedalDistanceY });
+	rankMedalSprite->SetTexSize({ 500, 500 });
+	rankMedalSprite->SetSize({ 48, 48 });
+
 	//操作説明スプライト生成
 	howToPlaySprite.reset(Sprite::Create(SpriteTextureLoader::StageSelectHowToPlay));
 	howToPlaySprite->SetPosition({ 640, 550 });
-	const Vector2 howToPLayTexSize = { 200, 64 };
-	howToPlaySprite->SetTexSize(howToPLayTexSize);
-	howToPlaySprite->SetSize(howToPLayTexSize);
+	const Vector2 howToPlayTexSize = { 200, 64 };
+	howToPlaySprite->SetTexSize(howToPlayTexSize);
+	howToPlaySprite->SetSize(howToPlayTexSize);
 
 	return true;
 }
@@ -79,6 +86,7 @@ void StageSelectUI::Update()
 	for (int i = 0; i < highScoreDigit; i++) {
 		numberSprites[i]->Update();
 	}
+	rankMedalSprite->Update();
 	howToPlaySprite->Update();
 }
 
@@ -90,6 +98,7 @@ void StageSelectUI::Draw()
 	for (int i = 0; i < highScoreDigit; i++) {
 		numberSprites[i]->Draw();
 	}
+	rankMedalSprite->Draw();
 
 	//表示状態でなければ抜ける
 	if (!(phase == ActionPhase::InScreen || phase == ActionPhase::Show)) { return; }
@@ -139,6 +148,11 @@ void StageSelectUI::TextInScreenStart(const int stageNum)
 				numberSprites[i]->SetNumber(numberDigit);
 			}
 		}
+
+		//ランクメダルの色を変更
+		const int rankMedal = (int)EnemyDefeatCounter::GetBestRank(highScoreStageNum);
+		const Vector2 rankMedalTexSize = rankMedalSprite->GetTexSize();
+		rankMedalSprite->SetTexLeftTop({ rankMedalTexSize.x * rankMedal, rankMedalTexSize.y });
 	}
 
 	//操作説明スプライトをステージに合わせて変更
@@ -194,6 +208,11 @@ void StageSelectUI::TextInScreen()
 			numberPos.y = framePos.y + frameNumberDistanceY;
 			numberSprites[i]->SetPosition(numberPos);
 		}
+
+		//ランクメダルスプライト
+		Vector2 rankMedalPos = rankMedalSprite->GetPosition();
+		rankMedalPos.y = framePos.y + frameRankMedalDistanceY;
+		rankMedalSprite->SetPosition(rankMedalPos);
 	}
 
 	//タイマーが指定した時間になったら
@@ -227,6 +246,11 @@ void StageSelectUI::TextOutScreen()
 			numberPos.y = framePos.y + frameNumberDistanceY;
 			numberSprites[i]->SetPosition(numberPos);
 		}
+
+		//ランクメダルスプライト
+		Vector2 rankMedalPos = rankMedalSprite->GetPosition();
+		rankMedalPos.y = framePos.y + frameRankMedalDistanceY;
+		rankMedalSprite->SetPosition(rankMedalPos);
 	}
 
 	//タイマーが指定した時間になったら

@@ -81,6 +81,8 @@ private: //静的メンバ変数
 	static const int highScoreDigit = 3;
 	//枠の中心と数字のY座標の距離
 	static const float frameNumberDistanceY;
+	//枠の中心とランクメダルのY座標の距離
+	static const float frameRankMedalDistanceY;
 
 private: //メンバ変数
 	//行動
@@ -91,6 +93,8 @@ private: //メンバ変数
 	std::unique_ptr<Sprite> highScoreFrameSprite;
 	//数字スプライト配列
 	std::array<std::unique_ptr<NumberSprite>, highScoreDigit> numberSprites;
+	//ランクメダルスプライト
+	std::unique_ptr<Sprite> rankMedalSprite;
 	//操作説明スプライト
 	std::unique_ptr<Sprite> howToPlaySprite;
 	//描画するステージUI

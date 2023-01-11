@@ -203,7 +203,7 @@ void GameBuildingManager::ScrollMode()
 	if (!player || !gameCamera) { return; }
 
 	//自機の移動速度状態によってビルをカメラで移動していた速度で動かす
-	float moveSpeed = BaseGameCamera::GetAdvanceSpeed();
+	float moveSpeed = gameCamera->GetAdvanceSpeed();
 	if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::HighSpeed) { moveSpeed *= BaseGameCamera::GetHighSpeedMagnification(); }
 	else if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::SlowSpeed) { moveSpeed *= BaseGameCamera::GetSlowSpeedMagnification(); }
 

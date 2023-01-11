@@ -41,7 +41,7 @@ void SpaceDustEffect::Update()
 	//スクロール状態なら
 	if (isScrollMode) {
 		//自機の移動速度状態によって宇宙塵エフェクトをカメラで移動していた速度で動かす
-		float scrollSpeed = BaseGameCamera::GetAdvanceSpeed();
+		float scrollSpeed = gameCamera->GetAdvanceSpeed();
 		if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::HighSpeed) { scrollSpeed *= BaseGameCamera::GetHighSpeedMagnification(); }
 		else if (player->GetMoveSpeedPhase() == BasePlayer::MoveSpeedPhase::SlowSpeed) { scrollSpeed *= BaseGameCamera::GetSlowSpeedMagnification(); }
 

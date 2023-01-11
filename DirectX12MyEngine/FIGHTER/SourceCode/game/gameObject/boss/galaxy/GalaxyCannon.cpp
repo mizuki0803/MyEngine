@@ -99,7 +99,7 @@ void GalaxyCannon::Damage(int attackPower, const Vector3& collisionPos)
 		model = cannonDeadModel;
 
 		//爆発演出用パーティクル生成
-		const float size = 3.0f;
+		const float size = 5.0f;
 		ParticleEmitter::GetInstance()->Explosion(GetWorldPos(), size);
 	}
 

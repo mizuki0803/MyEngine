@@ -949,7 +949,7 @@ void Stage01Scene::InitializeEnemy()
 	}
 
 	//到着出発敵
-	ComeGoEnemy::SetAttackMoveSpeed(BaseGameCamera::GetAdvanceSpeed()); //移動スピードをセット
+	ComeGoEnemy::SetAttackMoveSpeed(gameCamera->GetAdvanceSpeed()); //移動スピードをセット
 	ComeGoEnemy::SetModel(modelEnemyFighter.get()); //モデルをセット
 	//破壊時に出すモデルをセット
 	for (int i = 0; i < modelEnemyFighterBreak.size(); i++) {
@@ -1076,8 +1076,8 @@ void Stage01Scene::StageClear()
 		player->StageClearModeStart();
 		//カメラをステージクリアの動きに変更
 		gameCamera->StageClearModeStart(boss->GetMainBody());
-		//ハイスコア更新
-		EnemyDefeatCounter::CheckHighScore(0);
+		//スコア確定
+		EnemyDefeatCounter::ScoreConfirm(0);
 	}
 	//ステージクリア後
 	else {
@@ -1146,7 +1146,7 @@ void Stage01Scene::StageResultUICreateAndRelease()
 		if (!(player->GetStageClearModePhase() == Stage01Player::StageClearModePhase::Stay)) { return; }
 
 		//ステージリザルトUI生成
-		stageResultUI.reset(StageResultUI::Create(EnemyDefeatCounter::GetDefeatCount(), false));
+		stageResultUI.reset(StageResultUI::Create(EnemyDefeatCounter::GetDefeatCount(), (int)EnemyDefeatCounter::GetRank()));
 	}
 	//ステージリザルトUIのインスタンスがあるとき
 	else {

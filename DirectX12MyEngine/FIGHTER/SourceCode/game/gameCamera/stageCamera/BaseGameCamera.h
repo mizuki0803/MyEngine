@@ -13,7 +13,6 @@ class BaseGameCamera : public Camera
 {
 public: //静的メンバ関数
 	//getter
-	static float GetAdvanceSpeed() { return BaseGameCamera::advanceSpeed; }
 	static float GetHighSpeedMagnification() { return BaseGameCamera::highSpeedMagnification; }
 	static float GetSlowSpeedMagnification() { return BaseGameCamera::slowSpeedMagnification; }
 
@@ -30,6 +29,7 @@ public: //メンバ関数
 
 	//getter
 	const Vector3& GetPosition() { return position; }
+	float GetAdvanceSpeed() { return advanceSpeed; }
 
 	//setter
 	void SetIsAdvance(const bool isAdvance) { this->isAdvance = isAdvance; }
@@ -93,8 +93,6 @@ protected: //メンバ関数
 
 
 protected: //静的メンバ変数
-	//ステージ内を前進する速さ
-	static const float advanceSpeed;
 	//ハイスピードで移動するときの速度倍率
 	static const float highSpeedMagnification;
 	//遅いスピードで移動するときの速度倍率
@@ -112,6 +110,8 @@ protected: //メンバ変数
 	Vector2 moveLimitMin = {};
 	//前進するか
 	bool isAdvance = true;
+	//前進のスピード
+	float advanceSpeed = 0;
 	//墜落状態か
 	bool isCrash = false;
 	//x軸ゆらゆら回転が上回転か

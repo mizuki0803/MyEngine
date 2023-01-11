@@ -57,7 +57,7 @@ void BossDeadEffect::Explosion()
 	//爆発演出回数更新
 	explosionCount++;
 	//爆発が指定した回数発生したら終了フラグを立てる
-	const int explosionNum = 6;
+	const int explosionNum = 5;
 	if (explosionCount >= explosionNum) {
 		isExplosionEnd = true;
 	}

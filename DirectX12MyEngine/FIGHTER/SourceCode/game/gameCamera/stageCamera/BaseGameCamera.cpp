@@ -1,7 +1,6 @@
 #include "BaseGameCamera.h"
 #include "BasePlayer.h"
 
-const float BaseGameCamera::advanceSpeed = 0.5f;
 const float BaseGameCamera::highSpeedMagnification = 2.8f;
 const float BaseGameCamera::slowSpeedMagnification = 0.2f;
 

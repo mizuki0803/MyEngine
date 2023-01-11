@@ -14,6 +14,7 @@ public: //テクスチャ名
 		BButton,			//Bボタン
 		PlanetName,			//惑星名
 		HighScoreFrame,		//ハイスコア枠
+		RankMedal,			//ランクメダル
 		StageSelectHowToPlay,//ステージ選択シーン用操作説明
 		StageDecision,		//ステージ決定確認
 		HowToPlay,			//遊び方

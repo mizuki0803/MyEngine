@@ -2,7 +2,12 @@
 #include "SpriteTextureLoader.h"
 #include "Easing.h"
 
-StageResultUI* StageResultUI::Create(const int enemyDefeatNum, bool isHighScore)
+void (StageResultUI::* StageResultUI::resultActionPhaseFuncTable[])() = {
+	&StageResultUI::UpdateDisplayNum,
+	&StageResultUI::RankMedalSetAction,
+};
+
+StageResultUI* StageResultUI::Create(const int enemyDefeatNum, const int enemyDefeatRank)
 {
 	//ステージリザルトUIのインスタンスを生成
 	StageResultUI* stageResultUI = new StageResultUI();
@@ -11,7 +16,7 @@ StageResultUI* StageResultUI::Create(const int enemyDefeatNum, bool isHighScore)
 	}
 
 	// 初期化
-	if (!stageResultUI->Initialize(enemyDefeatNum)) {
+	if (!stageResultUI->Initialize(enemyDefeatNum, enemyDefeatRank)) {
 		delete stageResultUI;
 		assert(0);
 		return nullptr;
@@ -20,7 +25,7 @@ StageResultUI* StageResultUI::Create(const int enemyDefeatNum, bool isHighScore)
 	return stageResultUI;
 }
 
-bool StageResultUI::Initialize(const int enemyDefeatNum)
+bool StageResultUI::Initialize(const int enemyDefeatNum, const int enemyDefeatRank)
 {
 	//撃破数取得
 	this->enemyDefeatNum = enemyDefeatNum;
@@ -44,10 +49,20 @@ bool StageResultUI::Initialize(const int enemyDefeatNum)
 	for (int i = 0; i < enemyDefeatNumDigit; i++) {
 		std::unique_ptr<NumberSprite> newNumberSprite;
 		const Vector2 size = { 32, 48 };
-		const Vector2 pos = { framePos.x + 150 - (i * size.x), framePos.y };
+		const Vector2 pos = { framePos.x + 140 - (i * size.x), framePos.y };
 		newNumberSprite.reset(NumberSprite::Create(SpriteTextureLoader::Number, pos, size, size));
 		numberSprites.push_back(std::move(newNumberSprite));
 	}
+
+	//ランクスプライト生成
+	rankMedalSprite.reset(Sprite::Create(SpriteTextureLoader::RankMedal));
+	const Vector2 rankMedalPos = { framePos.x + 202, framePos.y };
+	rankMedalSprite->SetPosition(rankMedalPos);
+	const Vector2 rankMedalTexSize = { 500, 500 };
+	rankMedalSprite->SetTexSize(rankMedalTexSize);
+	const Vector2 rankMedalTexLeftTop = { rankMedalTexSize.x * enemyDefeatRank, 0 };
+	rankMedalSprite->SetTexLeftTop(rankMedalTexLeftTop);
+	rankMedalSprite->SetColor({ 1, 1, 1, 0 });
 
 	//Bボタンスプライト生成
 	bButtonSprite.reset(Sprite::Create(SpriteTextureLoader::BButton));
@@ -63,14 +78,20 @@ bool StageResultUI::Initialize(const int enemyDefeatNum)
 
 void StageResultUI::Update()
 {
-	//表示用撃破数の更新
-	UpdateDisplayNum();
+	//リザルト行動
+	if (!isResultEnd) {
+		(this->*resultActionPhaseFuncTable[static_cast<size_t>(resultActionPhase)])();
+	}
 
 	//枠スプライト更新
 	frameSprite->Update();
 	//表示用撃破数の分数字スプライト更新
 	for (int i = 0; i < enemyDefeatDisplayNumDigit; i++) {
 		numberSprites[i]->Update();
+	}
+	//ランクメダルスプライト更新
+	if (resultActionPhase == ResultActionPhase::RankMedalSet) {
+		rankMedalSprite->Update();
 	}
 	//Bボタンスプライト更新
 	if (isDrawButtonSprite) {
@@ -86,6 +107,10 @@ void StageResultUI::Draw()
 	for (int i = 0; i < enemyDefeatDisplayNumDigit; i++) {
 		numberSprites[i]->Draw();
 	}
+	//ランクメダルスプライト描画
+	if (resultActionPhase == ResultActionPhase::RankMedalSet) {
+		rankMedalSprite->Draw();
+	}
 	//Bボタンスプライト描画
 	if (isDrawButtonSprite) {
 		bButtonSprite->Draw();
@@ -94,21 +119,18 @@ void StageResultUI::Draw()
 
 void StageResultUI::UpdateDisplayNum()
 {
-	//リザルトを表示し終えていたら抜ける
-	if (isResultEnd) { return; }
-
 	//更新開始する時間
 	const int updateStartTime = 30;
 	//タイマー更新
-	updateDisplayNumTimer++;
+	actionTimer++;
 
 	//タイマーが更新開始時間より小さいなら抜ける
-	if (updateDisplayNumTimer < updateStartTime) { return; }
+	if (actionTimer < updateStartTime) { return; }
 
 	//更新する時間
 	const int updateMinTime = 120;
 	const float updateTime = (float)(updateMinTime + (enemyDefeatNum / 10));
-	const float time = (updateDisplayNumTimer - updateStartTime) / updateTime;
+	const float time = (actionTimer - updateStartTime) / updateTime;
 
 	//表示用撃破数を増やしていく
 	enemyDefeatDisplayNum = (int)Easing::LerpFloat(0, (float)enemyDefeatNum, time);
@@ -125,10 +147,13 @@ void StageResultUI::UpdateDisplayNum()
 	//数字スプライト更新
 	UpdateNumberSprite();
 
-	//タイマーが指定した時間になったら抜ける
-	if ((updateDisplayNumTimer - updateStartTime) >= updateTime) {
-		//リザルト表示が完了したことにする
-		isResultEnd = true;
+	//タイマーが指定した時間になったら
+	if ((actionTimer - updateStartTime) >= updateTime) {
+		//次のフェーズへ
+		resultActionPhase = ResultActionPhase::RankMedalSet;
+
+		//タイマーを初期化しておく
+		actionTimer = 0;
 	}
 }
 
@@ -148,5 +173,32 @@ void StageResultUI::UpdateNumberSprite()
 
 		//算出した桁の数字を数字スプライトに割り当てる
 		numberSprites[i]->SetNumber(numberDigit);
+	}
+}
+void StageResultUI::RankMedalSetAction()
+{
+	//メダルセット開始する時間
+	const int medalSetStartTime = 80;
+	//タイマー更新
+	actionTimer++;
+
+	//タイマーがメダルセット開始時間より小さいなら抜ける
+	if (actionTimer < medalSetStartTime) { return; }
+
+	//セットする時間
+	const float setTime = 15;
+	const float time = (actionTimer - medalSetStartTime) / setTime;
+
+	//メダルのサイズを変更してセットしているように見せる
+	float medalSize = Easing::OutQuad(256, 64, time);
+	rankMedalSprite->SetSize({ medalSize, medalSize });
+	//色を濃くしていく
+	float colorAlpha = Easing::OutQuad(0, 1, time);
+	rankMedalSprite->SetColor({ 1, 1, 1, colorAlpha });
+
+	//タイマーが指定した時間になったら
+	if ((actionTimer - medalSetStartTime) >= setTime) {
+		//リザルト表示が完了したことにする
+		isResultEnd = true;
 	}
 }

@@ -6,6 +6,23 @@
 /// </summary>
 class EnemyDefeatCounter
 {
+public: //enum
+	//スコアランク
+	enum class EnemyDefeatRank {
+		Gold,	//金
+		Silver,	//銀
+		Bronze,	//銅
+		None,	//未設定
+	};
+
+public:
+	//ランクのボーダーライン
+	struct RankBorderline {
+		int goldRankLine = 0;	//ランク金のボーダーライン
+		int silverRankLine = 0;	//ランク銀のボーダーライン
+	};
+
+
 public: //静的メンバ関数
 	/// <summary>
 	/// カウントを増やす
@@ -19,17 +36,36 @@ public: //静的メンバ関数
 	static void CounterReset();
 
 	/// <summary>
+	/// スコアを確定させる
+	/// </summary>
+	static void ScoreConfirm(int stageNum);
+
+	//getter
+	static int GetDefeatCount() { return defeatCounter; }
+	static EnemyDefeatRank GetRank() { return scoreRank; }
+	static int GetHighScore(int stageNum) { return highScore[stageNum]; }
+	static EnemyDefeatRank GetBestRank(int stageNum) { return bestScoreRank[stageNum]; }
+
+private: //メンバ関数
+	/// <summary>
 	/// ハイスコア更新か確認
 	/// </summary>
 	static void CheckHighScore(int stageNum);
 
-	//getter
-	static int GetDefeatCount() { return defeatCounter; }
-	static int GetHighScore(int stageNum) { return highScore[stageNum]; }
+	/// <summary>
+	/// どのランクかチェック
+	/// </summary>
+	static void CheckRank(int stageNum, int score);
 
 private: //静的メンバ変数
 	//カウンター
 	static int defeatCounter;
+	//ランク
+	static EnemyDefeatRank scoreRank;
 	//ハイスコア
 	static std::array<int, 2> highScore;
+	//ベストランク
+	static std::array<EnemyDefeatRank, 2> bestScoreRank;
+	//ランクのボーダーライン
+	static std::array<RankBorderline, 2> rankBorderline;
 };

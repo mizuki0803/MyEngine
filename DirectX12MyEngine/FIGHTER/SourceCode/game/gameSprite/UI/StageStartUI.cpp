@@ -3,7 +3,7 @@
 
 StageStartUI* StageStartUI::Create(const int stageNum)
 {
-	//複数撃破UIのインスタンスを生成
+	//ステージ開始UIのインスタンスを生成
 	StageStartUI* stageStartUI = new StageStartUI();
 	if (stageStartUI == nullptr) {
 		return nullptr;
