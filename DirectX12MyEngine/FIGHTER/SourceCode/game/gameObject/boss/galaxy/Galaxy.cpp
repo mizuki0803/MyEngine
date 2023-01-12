@@ -479,4 +479,7 @@ void Galaxy::CheckAllCannonDead()
 
 	//攻撃するパーツを変更する状態にする
 	phase = Phase::AttackPartChange;
+
+	//船首を起きている状態のモデルに変更
+	bow->ChangeModel();
 }

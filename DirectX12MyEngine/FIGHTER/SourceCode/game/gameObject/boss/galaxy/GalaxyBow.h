@@ -30,6 +30,7 @@ public: //静的メンバ関数
 	//setter
 	static void SetStageScene(BaseStageScene* stageScene) { GalaxyBow::stageScene = stageScene; }
 	static void SetBowModel(ObjModel* model) { GalaxyBow::bowModel = model; }
+	static void SetBowSleepModel(ObjModel* model) { GalaxyBow::bowSleepModel = model; }
 	static void SetBowDeadModel(ObjModel* model) { GalaxyBow::bowDeadModel = model; }
 	static void SetBulletModel(ObjModel* model) { GalaxyBow::bulletModel = model; }
 
@@ -59,6 +60,11 @@ public: //メンバ関数
 	/// 攻撃内容:火炎放射
 	/// </summary>
 	void AttackTypeFlamethrower(const Vector3& playerPos);
+
+	/// <summary>
+	/// 寝ている状態のモデルから起きている状態のモデルに変更
+	/// </summary>
+	void ChangeModel();
 
 	//getter	
 	const bool GetIsDead() { return isDead; }
@@ -120,6 +126,8 @@ protected: //静的メンバ変数
 	static const int maxHP = 40;
 	//船首のモデル
 	static ObjModel* bowModel;
+	//船首の寝ている状態のモデル
+	static ObjModel* bowSleepModel;
 	//死亡状態のモデル
 	static ObjModel* bowDeadModel;
 	//敵弾のモデル

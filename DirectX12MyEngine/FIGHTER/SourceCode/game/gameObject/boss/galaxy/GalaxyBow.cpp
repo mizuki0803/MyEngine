@@ -13,6 +13,7 @@ void (GalaxyBow::* GalaxyBow::attackTypeFlamethrowerPhaseFuncTable[])() = {
 
 BaseStageScene* GalaxyBow::stageScene = nullptr;
 ObjModel* GalaxyBow::bowModel = nullptr;
+ObjModel* GalaxyBow::bowSleepModel = nullptr;
 ObjModel* GalaxyBow::bowDeadModel = nullptr;
 ObjModel* GalaxyBow::bulletModel = nullptr;
 const Vector3 GalaxyBow::normalSize = { 0.25f, 0.25f, 0.25f };
@@ -29,8 +30,8 @@ GalaxyBow* GalaxyBow::Create(ObjObject3d* parent, const Vector3& position)
 	}
 
 	//モデルをセット
-	assert(bowModel);
-	galaxyBow->model = bowModel;
+	assert(bowSleepModel);
+	galaxyBow->model = bowSleepModel;
 
 	// 初期化
 	if (!galaxyBow->Initialize()) {
@@ -130,6 +131,12 @@ void GalaxyBow::AttackTypeFlamethrower(const Vector3& playerPos)
 
 	//攻撃内容:火炎放射行動
 	(this->*attackTypeFlamethrowerPhaseFuncTable[static_cast<size_t>(attackTypeFlamethrowerPhase)])();
+}
+
+void GalaxyBow::ChangeModel()
+{
+	//起きている状態のモデルをセット
+	model = bowModel;
 }
 
 void GalaxyBow::Fire(const float scale, const float bulletSpeed)

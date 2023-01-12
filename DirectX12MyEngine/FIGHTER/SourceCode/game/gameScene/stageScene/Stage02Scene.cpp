@@ -75,6 +75,7 @@ void Stage02Scene::Initialize()
 	modelGalaxyCannonBreak[3].reset(ObjModel::LoadFromOBJ("galaxyCannonBreak04"));
 	modelGalaxyCannonBreak[4].reset(ObjModel::LoadFromOBJ("galaxyCannonBreak05"));
 	modelMedamanAvatar.reset(ObjModel::LoadFromOBJ("medamanAvatar", true));
+	modelMedamanAvatarSleep.reset(ObjModel::LoadFromOBJ("medamanAvatarSleep", true));
 	modelMedamanAvatarDead.reset(ObjModel::LoadFromOBJ("medamanAvatarDead", true));
 	modelHealingItem.reset(ObjModel::LoadFromOBJ("healingItem"));
 
@@ -115,6 +116,7 @@ void Stage02Scene::Initialize()
 	GalaxyPropeller::SetPropellerModel(modelGalaxyPropeller.get());
 	GalaxyBow::SetStageScene(this);
 	GalaxyBow::SetBowModel(modelMedamanAvatar.get());
+	GalaxyBow::SetBowSleepModel(modelMedamanAvatarSleep.get());
 	GalaxyBow::SetBowDeadModel(modelMedamanAvatarDead.get());
 	GalaxyBow::SetBulletModel(modelSphere.get());
 	GalaxyCannon::SetStageScene(this);

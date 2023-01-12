@@ -142,6 +142,7 @@ private: //ƒƒ“ƒo•Ï”
 	std::unique_ptr<ObjModel> modelGalaxyCannonDead;
 	std::array<std::unique_ptr<ObjModel>, 5> modelGalaxyCannonBreak;
 	std::unique_ptr<ObjModel> modelMedamanAvatar;
+	std::unique_ptr<ObjModel> modelMedamanAvatarSleep;
 	std::unique_ptr<ObjModel> modelMedamanAvatarDead;
 	std::unique_ptr<ObjModel> modelHealingItem;
 
