@@ -54,12 +54,18 @@ public: //メンバ関数
 	void EnterPlanetStart(const Vector3& selectPlanetPos);
 
 	//getter
+	const Vector3& GetJetPos() { return jetPos; }
 	ActionPhase GetActionPhase() { return actionPhase; }
 	bool GetIsGooutPlanetEnd() { return isGooutPlanetEnd; };
 	bool GetIsStageSelectMove() { return isStageSelectMove; }
 	bool GetIsStageSelectModeEnd() { return isStageSelectModeEnd; }
 
 private: //メンバ関数
+	/// <summary>
+	/// ジェット発射座標を更新
+	/// </summary>
+	void UpdateJetPos();
+
 	/// <summary>
 	/// 惑星から出る行動
 	/// </summary>
@@ -97,6 +103,8 @@ private: //静的メンバ変数
 	static void (StageSelectPlayer::* enterPlanetActionFuncTable[])();
 
 private: //メンバ変数
+	//ジェット発射座標
+	Vector3 jetPos = {};
 	//行動
 	ActionPhase actionPhase = ActionPhase::GooutPlanet;
 	//惑星に入る行動

@@ -121,58 +121,60 @@ void ParticleEmitter::DemoEffect2()
 	}
 }
 
-void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld, const int playerSpeedPhase)
+void ParticleEmitter::PlayerJet(std::function<Vector3()> getTargetPos, const XMMATRIX& playerMatWorld, const int playerSpeedPhase)
 {
-	//自機の中心座標からの距離
-	const Vector3 distancePos = { 0, -0.25f, -1.2f };
-	//パーティクル生成座標を取得
-	const Vector3 pos = LocalTranslation(distancePos, playerMatWorld);
-
 	//パーティクル(小)生成
 	{
 		//色
 		const XMFLOAT4 startColor = { 0.6f, 0.6f, 0.6f, 1.0f }; //濃い白
 		const XMFLOAT4 endColor = { 0.4f, 0.4f, 0.4f, 1.0f }; //薄い白
-		Vector3 vel{};
-		Vector3 acc{};
+		Vector3 pos{};
 		float startScale = 0;
 		float endScale = 0;
+		float randVel = 0;
+		float randAcc = 0;
 
 		//移動速度フェーズごとに調整
 		//通常移動状態
 		if (playerSpeedPhase == 0) {
-			vel.z = (float)rand() / RAND_MAX * -0.1f - 0.1f;
+			randVel = (float)rand() / RAND_MAX * -0.1f - 0.1f;
 			const float mdAcc = 0.005f;
-			acc.z = -(float)rand() / RAND_MAX * mdAcc;
+			randAcc = -(float)rand() / RAND_MAX * mdAcc;
 			startScale = (float)rand() / RAND_MAX * 0.1f + 0.5f;
 		}
 		//加速移動状態
 		else if (playerSpeedPhase == 1) {
-			vel.z = (float)rand() / RAND_MAX * -0.2f - 0.2f;
+			randVel = (float)rand() / RAND_MAX * -0.2f - 0.2f;
 			const float mdAcc = 0.01f;
-			acc.z = -(float)rand() / RAND_MAX * mdAcc;
+			randAcc = -(float)rand() / RAND_MAX * mdAcc;
 			startScale = (float)rand() / RAND_MAX * 0.1f + 1.0f;
 		}
 		//減速移動状態
 		else if (playerSpeedPhase == 2) {
-			vel.z = (float)rand() / RAND_MAX * -0.001f - 0.001f;
+			randVel = (float)rand() / RAND_MAX * -0.001f - 0.001f;
 			const float mdAcc = 0.001f;
-			acc.z = -(float)rand() / RAND_MAX * mdAcc;
+			randAcc = -(float)rand() / RAND_MAX * mdAcc;
 			startScale = (float)rand() / RAND_MAX * 0.05f + 0.25f;
 		}
 		//通常移動に戻す状態
 		else if (playerSpeedPhase == 3) {
-			vel.z = (float)rand() / RAND_MAX * -0.002f - 0.002f;
+			randVel = (float)rand() / RAND_MAX * -0.002f - 0.002f;
 			const float mdAcc = 0.0025f;
-			acc.z = -(float)rand() / RAND_MAX * mdAcc;
+			randAcc = -(float)rand() / RAND_MAX * mdAcc;
 			startScale = (float)rand() / RAND_MAX * 0.05f + 0.3f;
 		}
+		//速度をセット
+		Vector3 vel = { 0, 0, randVel };
+		vel = MatrixTransformDirection(vel, playerMatWorld);
+		//加速度をセット
+		Vector3 acc = { 0, 0, randAcc };
+		acc = MatrixTransformDirection(acc, playerMatWorld);
 
 		//大きさ変更のイージング
 		std::function<float(const float, const float, const float) > lerp =
 			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		//追加
-		circleParticle->Add(5, pos, vel, acc, startScale, endScale, lerp, startColor, endColor);
+		circleParticle->AddTargetFollow(5, getTargetPos, pos, vel, acc, startScale, endScale, lerp, startColor, endColor);
 	}
 
 	//パーティクル(大)生成
@@ -180,56 +182,58 @@ void ParticleEmitter::PlayerJet(const XMMATRIX& playerMatWorld, const int player
 		//色
 		const XMFLOAT4 startColor = { 1.0f, 0.21f, 0.21f, 1.0f }; //薄い赤
 		const XMFLOAT4 endColor = { 0.3f, 0.01f, 0.01f, 1.0f }; //濃い赤
-		Vector3 vel{};
-		Vector3 acc{};
+		Vector3 pos{};
 		float startScale = 0;
 		float endScale = 0;
+		float randVel = 0;
+		float randAcc = 0;
 
 		//移動速度フェーズごとに調整
 		//通常移動状態
 		if (playerSpeedPhase == 0) {
-			vel.z = (float)rand() / RAND_MAX * -0.1f - 0.1f;
+			randVel = (float)rand() / RAND_MAX * -0.1f - 0.1f;
 			const float mdAcc = 0.008f;
-			acc.z = -(float)rand() / RAND_MAX * mdAcc;
+			randAcc = -(float)rand() / RAND_MAX * mdAcc;
 			startScale = (float)rand() / RAND_MAX * 0.2f + 2.0f;
 		}
 		//加速移動状態
 		else if (playerSpeedPhase == 1) {
-			vel.z = (float)rand() / RAND_MAX * -0.2f - 0.2f;
+			randVel = (float)rand() / RAND_MAX * -0.2f - 0.2f;
 			const float mdAcc = 0.0016f;
-			acc.z = -(float)rand() / RAND_MAX * mdAcc;
-			startScale = (float)rand() / RAND_MAX * 0.2f + 4.0f;
+			randAcc = -(float)rand() / RAND_MAX * mdAcc;
+			startScale = (float)rand() / RAND_MAX * 0.2f + 3.4f;
 		}
 		//減速移動状態
 		else if (playerSpeedPhase == 2) {
-			vel.z = (float)rand() / RAND_MAX * -0.04f - 0.04f;
+			randVel = (float)rand() / RAND_MAX * -0.04f - 0.04f;
 			const float mdAcc = 0.004f;
-			acc.z = -(float)rand() / RAND_MAX * mdAcc;
+			randAcc = -(float)rand() / RAND_MAX * mdAcc;
 			startScale = (float)rand() / RAND_MAX * 0.1f + 1.0f;
 		}
 		//通常移動に戻す状態
 		else if (playerSpeedPhase == 3) {
-			vel.z = (float)rand() / RAND_MAX * -0.06f - 0.06f;
+			randVel = (float)rand() / RAND_MAX * -0.06f - 0.06f;
 			const float mdAcc = 0.005f;
-			acc.z = -(float)rand() / RAND_MAX * mdAcc;
+			randAcc = -(float)rand() / RAND_MAX * mdAcc;
 			startScale = (float)rand() / RAND_MAX * 0.15f + 1.2f;
 		}
+		//速度をセット
+		Vector3 vel = { 0, 0, randVel };
+		vel = MatrixTransformDirection(vel, playerMatWorld);
+		//加速度をセット
+		Vector3 acc = { 0, 0, randAcc };
+		acc = MatrixTransformDirection(acc, playerMatWorld);
 
 		//大きさ変更のイージング
 		std::function<float(const float, const float, const float) > lerp =
 			std::bind(&Easing::LerpFloat, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		//追加
-		circleParticle->Add(5, pos, vel, acc, startScale, endScale, lerp, startColor, endColor);
+		circleParticle->AddTargetFollow(5, getTargetPos, pos, vel, acc, startScale, endScale, lerp, startColor, endColor);
 	}
 }
 
-void ParticleEmitter::PlayerBlackSmokeJet(const XMMATRIX& playerMatWorld)
+void ParticleEmitter::PlayerBlackSmokeJet(const Vector3& position)
 {
-	//自機の中心座標からの距離
-	const Vector3 distancePos = { 0, -0.25f, -1.2f };
-	//パーティクル生成座標を取得
-	const Vector3 pos = LocalTranslation(distancePos, playerMatWorld);
-
 	//座標を元に黒煙エフェクトを作成
 	for (int i = 0; i < 2; i++) {
 		//生存時間
@@ -259,7 +263,7 @@ void ParticleEmitter::PlayerBlackSmokeJet(const XMMATRIX& playerMatWorld)
 		const XMFLOAT4 endColor = { 0.01f, 0.01f, 0.01f, 1 }; //うっすい黒
 
 		//追加
-		blackSmokeParticle->Add(life, pos, vel, acc, startScale, endScale, lerpFloat, startColor, endColor);
+		blackSmokeParticle->Add(life, position, vel, acc, startScale, endScale, lerpFloat, startColor, endColor);
 	}
 }
 

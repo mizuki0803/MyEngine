@@ -65,8 +65,11 @@ void TitlePlayer::Sortie()
 	//出撃行動
 	(this->*sortieActionFuncTable[static_cast<size_t>(sortieModePhase)])();
 
+	//ジェット発射座標を更新
+	UpdateJetPos();
 	//自機のジェット噴射演出用パーティクル生成
-	ParticleEmitter::GetInstance()->PlayerJet(matWorld);
+	std::function<Vector3()> getTargetPos = std::bind(&TitlePlayer::GetJetPos, this);
+	ParticleEmitter::GetInstance()->PlayerJet(getTargetPos, matWorld);
 }
 
 void TitlePlayer::SortieStay()
@@ -126,6 +129,15 @@ void TitlePlayer::SortieBoost()
 		const float blurStrength = Easing::OutQuad(blurStrengthMax, blurStrengthMin, time);
 		GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
 	}
+}
+
+void TitlePlayer::UpdateJetPos()
+{
+	//自機の中心座標からの距離
+	const Vector3 distancePos = { 0, -0.25f, -1.2f };
+
+	//ジェット発射座標を取得
+	jetPos = LocalTranslation(distancePos, matWorld);
 }
 
 void TitlePlayer::UpdateWingPos()

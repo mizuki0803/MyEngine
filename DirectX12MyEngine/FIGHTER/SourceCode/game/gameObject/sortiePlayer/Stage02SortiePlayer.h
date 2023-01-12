@@ -45,9 +45,15 @@ public: //メンバ関数
 
 	//getter
 	Stage02SortieActionPhase GetSortieActionPhase() { return sortieActionPhase; }
+	const Vector3& GetJetPos() { return jetPos; }
 	bool GetIsSortieEnd() { return isSortieEnd; }
 
 private: //メンバ関数
+	/// <summary>
+	/// ジェット発射座標を更新
+	/// </summary>
+	void UpdateJetPos();
+
 	/// <summary>
 	/// 弾発射座標を更新
 	/// </summary>
@@ -86,6 +92,8 @@ private: //静的メンバ変数
 private: //メンバ変数
 	//出撃行動
 	Stage02SortieActionPhase sortieActionPhase = Stage02SortieActionPhase::Advance;
+	//ジェット発射座標
+	Vector3 jetPos = {};
 	//弾発射座標
 	Vector3 bulletShotPos;
 	//弾発射タイマー

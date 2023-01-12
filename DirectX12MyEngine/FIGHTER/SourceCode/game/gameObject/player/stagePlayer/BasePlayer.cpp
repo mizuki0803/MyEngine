@@ -79,23 +79,23 @@ void BasePlayer::Update()
 		rollingEffect->Update();
 	}
 
+	//死亡状態でないなら
+	if (!isDead) {
+		//行動
+		Action();
+
+		//オブジェクト更新
+		ObjObject3d::Update();
+
+		//両翼の座標更新
+		if (isVaporCreate) { UpdateWingPos(); }
+
+		//レティクル更新
+		reticles->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
+	}
+
 	//自機のジェット噴射演出用パーティクル生成
 	JetEffectManager();
-
-	//死亡状態なら抜ける
-	if (isDead) { return; }
-
-	//行動
-	Action();
-
-	//オブジェクト更新
-	ObjObject3d::Update();
-
-	//両翼の座標更新
-	if (isVaporCreate) { UpdateWingPos(); }
-
-	//レティクル更新
-	reticles->Update(matWorld, camera->GetMatView(), camera->GetMatProjection());
 }
 
 void BasePlayer::Draw()
@@ -162,6 +162,15 @@ void BasePlayer::OnCollisionHeal()
 	hpUI->ItemGet(HP);
 }
 
+void BasePlayer::UpdateJetPos()
+{
+	//自機の中心座標からの距離
+	const Vector3 distancePos = { 0, -0.25f, -1.2f };
+
+	//ジェット発射座標を取得
+	jetPos = LocalTranslation(distancePos, matWorld);
+}
+
 void BasePlayer::UpdateWingPos()
 {
 	//自機の中心座標からの距離
@@ -221,9 +230,13 @@ void BasePlayer::Action()
 
 void BasePlayer::JetEffectManager()
 {
+	//ジェット発射座標を更新
+	UpdateJetPos();
+
 	//墜落状態以外なら通常ジェット演出
 	if (!isCrash) {
-		ParticleEmitter::GetInstance()->PlayerJet(matWorld, (int)moveSpeedPhase);
+		std::function<Vector3()> getTargetPos = std::bind(&BasePlayer::GetJetPos, this);
+		ParticleEmitter::GetInstance()->PlayerJet(getTargetPos, matWorld, (int)moveSpeedPhase);
 	}
 	//墜落状態なら黒煙をジェットの代わりに出す
 	else {
@@ -247,7 +260,7 @@ void BasePlayer::CrashBlackSmoke()
 	if (blackSmokeTimer % smokeInterval != 0) { return; }
 
 	//黒煙パーティクル生成
-	ParticleEmitter::GetInstance()->PlayerBlackSmokeJet(matWorld);
+	ParticleEmitter::GetInstance()->PlayerBlackSmokeJet(jetPos);
 }
 
 void BasePlayer::Damage()
@@ -554,8 +567,8 @@ void BasePlayer::RollStart()
 
 	//緊急回避演出生成
 	std::unique_ptr<PlayerRollingEffect> newRollingEffect;
-	std::function<Vector3()> getTergetPos = std::bind(&BasePlayer::GetWorldPos, this);
-	newRollingEffect.reset(PlayerRollingEffect::Create(getTergetPos, true));
+	std::function<Vector3()> getTargetPos = std::bind(&BasePlayer::GetWorldPos, this);
+	newRollingEffect.reset(PlayerRollingEffect::Create(getTargetPos, true));
 	rollingEffects.push_back(std::move(newRollingEffect));
 }
 

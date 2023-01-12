@@ -83,6 +83,7 @@ public: //メンバ関数
 	const XMMATRIX& GetMatWorld() { return matWorld; }
 	const int GetHP() { return HP; }
 	const Vector3& GetBasePos() { return basePos; }
+	const Vector3& GetJetPos() { return jetPos; }
 	const bool GetIsDamageKnockback() { return isDamageKnockBack; }
 	const bool GetIsCrash() { return isCrash; }
 	const bool GetIsDead() { return isDead; }
@@ -97,6 +98,11 @@ public: //メンバ関数
 	const bool GetIsStageClearModeCompletion() { return isStageClearModeCompletion; }
 
 protected: //メンバ関数
+	/// <summary>
+	/// ジェット発射座標を更新
+	/// </summary>
+	void UpdateJetPos();
+
 	/// <summary>
 	/// 両翼の座標を更新
 	/// </summary>
@@ -296,6 +302,8 @@ protected: //メンバ変数
 	std::unique_ptr<PlayerHPUI> hpUI;
 	//基準の座標
 	Vector3 basePos = {};
+	//ジェット発射座標
+	Vector3 jetPos = {};
 	//ダメージ演出
 	std::unique_ptr<PlayerDamageEffect> damageEffect;
 	//ダメージフラグ

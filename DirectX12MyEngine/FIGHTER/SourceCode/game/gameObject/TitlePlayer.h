@@ -36,6 +36,7 @@ public: //メンバ関数
 
 	//getter
 	bool GetIsSortie() { return isSortie; }
+	const Vector3& GetJetPos() { return jetPos; }
 
 	//setter
 	void SetIsSortie(bool isSortie) { this->isSortie = isSortie; }
@@ -57,6 +58,11 @@ private: //メンバ関数
 	void SortieBoost();
 
 	/// <summary>
+	/// ジェット発射座標を更新
+	/// </summary>
+	void UpdateJetPos();
+
+	/// <summary>
 	/// 両翼の座標を更新
 	/// </summary>
 	void UpdateWingPos();
@@ -72,6 +78,8 @@ private: //メンバ変数
 	int32_t sortieTimer = 0;
 	//出撃状態の行動
 	SortieModePhase sortieModePhase = SortieModePhase::Stay;
+	//ジェット発射座標
+	Vector3 jetPos = {};
 	//飛行機雲演出
 	std::unique_ptr<PlayerVaporEffect> vaporEffect;
 };

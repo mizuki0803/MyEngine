@@ -36,10 +36,16 @@ public: //メンバ関数
 	void BoostStart();
 
 	//getter
+	const Vector3& GetJetPos() { return jetPos; }
 	Stage01SortieActionPhase GetSortieActionPhase() { return sortieActionPhase; }
 	bool GetIsSortieEnd() { return isSortieEnd; }
 
 private: //メンバ関数
+	/// <summary>
+	/// ジェット発射座標を更新
+	/// </summary>
+	void UpdateJetPos();
+
 	/// <summary>
 	/// 出撃前進
 	/// </summary>
@@ -57,6 +63,8 @@ private: //静的メンバ変数
 	static const float advanceSpeed;
 
 private: //メンバ変数
+	//ジェット発射座標
+	Vector3 jetPos = {};
 	//出撃行動
 	Stage01SortieActionPhase sortieActionPhase = Stage01SortieActionPhase::Advance;
 	//出撃行動が終了したか

@@ -52,15 +52,16 @@ public: //メンバ関数
 	/// <summary>
 	/// 自機のジェット噴射演出
 	/// </summary>
+	/// <param name="getTargetPos">パーティクルが追従する座標取得関数</param>
 	/// <param name="playerMatWorld">自機ワールド行列</param>
 	/// <param name="playerSpeedPhase">自機移動速度フェーズ</param>
-	void PlayerJet(const XMMATRIX& playerMatWorld, const int playerSpeedPhase = 0);
+	void PlayerJet(std::function<Vector3()> getTargetPos, const XMMATRIX& playerMatWorld, const int playerSpeedPhase = 0);
 
 	/// <summary>
 	/// 自機の死亡ジェット黒煙噴射演出
 	/// </summary>
-	/// <param name="playerMatWorld">自機ワールド行列</param>
-	void PlayerBlackSmokeJet(const XMMATRIX& playerMatWorld);
+	/// <param name="position">パーティクル生成座標</param>
+	void PlayerBlackSmokeJet(const Vector3& position);
 
 	/// <summary>
 	/// 自機の翼から出る飛行機雲(ヴェイパー)

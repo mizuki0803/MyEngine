@@ -45,8 +45,11 @@ void Stage01SortiePlayer::Update()
 	//オブジェクト更新
 	ObjObject3d::Update();
 
+	//ジェット発射座標を更新
+	UpdateJetPos();
 	//自機のジェット噴射演出用パーティクル生成
-	ParticleEmitter::GetInstance()->PlayerJet(matWorld, particleJetSizePhaseNum);
+	std::function<Vector3()> getTargetPos = std::bind(&Stage01SortiePlayer::GetJetPos, this);
+	ParticleEmitter::GetInstance()->PlayerJet(getTargetPos, matWorld, particleJetSizePhaseNum);
 }
 
 void Stage01SortiePlayer::BoostStart()
@@ -62,6 +65,15 @@ void Stage01SortiePlayer::BoostStart()
 	GamePostEffect::GetPostEffect()->SetRadialBlur(true);
 	const float blurStrength = 0.8f;
 	GamePostEffect::GetPostEffect()->SetRadialBlurStrength(blurStrength);
+}
+
+void Stage01SortiePlayer::UpdateJetPos()
+{
+	//自機の中心座標からの距離
+	const Vector3 distancePos = { 0, -0.25f, -1.2f };
+
+	//ジェット発射座標を取得
+	jetPos = LocalTranslation(distancePos, matWorld);
 }
 
 void Stage01SortiePlayer::SortieAdvance()

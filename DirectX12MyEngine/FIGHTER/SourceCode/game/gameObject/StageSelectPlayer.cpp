@@ -52,8 +52,11 @@ void StageSelectPlayer::Update()
 	//オブジェクト更新
 	ObjObject3d::Update();
 
-	//パーティクル演出
-	ParticleEmitter::GetInstance()->PlayerJet(matWorld, particleJetSizePhaseNum);
+	//ジェット発射座標を更新
+	UpdateJetPos();
+	//自機のジェット噴射演出用パーティクル生成
+	std::function<Vector3()> getTargetPos = std::bind(&StageSelectPlayer::GetJetPos, this);
+	ParticleEmitter::GetInstance()->PlayerJet(getTargetPos, matWorld, particleJetSizePhaseNum);
 }
 
 void StageSelectPlayer::GooutPlanetStart(const Vector3& targetPos)
@@ -127,6 +130,15 @@ void StageSelectPlayer::EnterPlanetStart(const Vector3& selectPlanetPos)
 
 	//行動タイマーを初期化
 	actionTimer = 0;
+}
+
+void StageSelectPlayer::UpdateJetPos()
+{
+	//自機の中心座標からの距離
+	const Vector3 distancePos = { 0, -0.25f, -1.2f };
+
+	//ジェット発射座標を取得
+	jetPos = LocalTranslation(distancePos, matWorld);
 }
 
 void StageSelectPlayer::GooutPlanet()
