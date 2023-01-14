@@ -89,7 +89,7 @@ void Stage02Scene::Initialize()
 	HomingBullet::SetBulletModel(modelSphere.get()); //ホーミング弾用モデルをセット
 	//自機生成
 	const int maxHP = 101; //最大HP
-	const int startHP = maxHP / 2 + 1; //開始時HP
+	const int startHP =71; //開始時HP
 	player.reset(Stage02Player::Create(modelFighter.get(), startHP, maxHP, false));
 	player->SetIsCameraFollow(true);
 
@@ -1167,7 +1167,7 @@ void Stage02Scene::BossBattleStart()
 	if (player->GetIsCrash()) { return; }
 
 	//ボスバトル開始座標
-	const float bossBattleStartPos = 3200;
+	const float bossBattleStartPos = 2420;
 
 	//警告開始判定
 	if (!bossWarning) {

@@ -122,7 +122,25 @@ Vector2 Enemy::GetScreenPos()
 	return screenPos;
 }
 
-void Enemy::Fire()
+void Enemy::FireLookAngle()
+{
+	//座標が自機より手前なら発射しない
+	if (GetWorldPos().z <= player->GetWorldPos().z) { return; }
+
+	//弾の速度を設定
+	const float bulletSpeed = 1.0f;
+
+	//向いている方向に弾を発射
+	Vector3 velocity = { 0, 0, bulletSpeed };
+	velocity = MatrixTransformDirection(velocity, matWorld);
+
+	//弾を生成
+	std::unique_ptr<EnemyBullet> newBullet;
+	newBullet.reset(EnemyBullet::Create(bulletModel, position, velocity));
+	stageScene->AddEnemyBullet(std::move(newBullet));
+}
+
+void Enemy::FirePlayerAngle()
 {
 	//自機がセットされていなければ抜ける
 	if (!player) { return; }

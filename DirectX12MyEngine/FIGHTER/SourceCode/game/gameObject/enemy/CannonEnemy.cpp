@@ -88,7 +88,7 @@ void CannonEnemy::Attack()
 	--fireTimer;
 	if (fireTimer <= 0) {
 		//弾を発射
-		Fire();
+		FirePlayerAngle();
 		//発射タイマーを初期化
 		fireTimer = fireInterval;
 	}

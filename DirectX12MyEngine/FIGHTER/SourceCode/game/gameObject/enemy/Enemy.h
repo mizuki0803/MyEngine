@@ -61,9 +61,14 @@ public: //メンバ関数
 
 protected: //メンバ関数
 	/// <summary>
-	/// 弾発射
+	/// 向いている方向に弾発射
 	/// </summary>
-	void Fire();
+	void FireLookAngle();
+
+	/// <summary>
+	/// 自機方向に弾発射
+	/// </summary>
+	void FirePlayerAngle();
 
 	/// <summary>
 	/// ダメージ状態の処理

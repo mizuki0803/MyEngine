@@ -80,6 +80,14 @@ void UpDownEnemy::UpBrake()
 	velocity += accel;
 	position += velocity;
 
+	//発射タイマーカウントダウン
+	--fireTimer;
+	if (fireTimer <= 0) {
+		//弾を発射
+		FireLookAngle();
+		//発射タイマーを初期化
+		fireTimer = fireInterval;
+	}
 
 	//指定した速度まで下降状態になったら下降にブレーキをかける
 	const float changePhaseVelY = -0.5f;
@@ -95,6 +103,14 @@ void UpDownEnemy::DownBrake()
 	velocity += accel;
 	position += velocity;
 
+	//発射タイマーカウントダウン
+	--fireTimer;
+	if (fireTimer <= 0) {
+		//弾を発射
+		FireLookAngle();
+		//発射タイマーを初期化
+		fireTimer = fireInterval;
+	}
 
 	//指定した速度まで上昇状態になったら上昇にブレーキをかける
 	const float changePhaseVelY = 0.5f;

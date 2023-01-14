@@ -82,7 +82,7 @@ void Stage01Scene::Initialize()
 	HomingBullet::SetBulletModel(modelSphere.get()); //ホーミング弾用モデルをセット
 	//自機生成
 	const int maxHP = 101; //最大HP
-	const int startHP = maxHP / 2 + 1; //開始時HP
+	const int startHP = 71; //開始時HP
 	player.reset(Stage01Player::Create(modelFighter.get(), startHP, maxHP, true));
 	player->SetIsCameraFollow(true);
 	
