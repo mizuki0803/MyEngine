@@ -124,8 +124,7 @@ void SpriteCommon::CreatePipeline()
 		0,
 		&vsBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -150,8 +149,7 @@ void SpriteCommon::CreatePipeline()
 		0,
 		&psBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());

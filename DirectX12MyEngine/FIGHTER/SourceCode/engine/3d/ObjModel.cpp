@@ -138,16 +138,14 @@ void ObjModel::LoadFromOBJInternal(const std::string& modelname, const bool smoo
 					smoothData[indexPosition].emplace_back((unsigned short)GetVertexCount() - 1);
 				}
 
-				//四角形ポリゴン
-				if (faceCount >= 3)
-				{
+				//四角形ポリゴン対応
+				if (faceCount >= 3) {
 					//インデックスデータの追加
 					indices.emplace_back((unsigned short)indexCountTex - 1);
 					indices.emplace_back((unsigned short)indexCountTex);
 					indices.emplace_back((unsigned short)indexCountTex - 3);
 				}
-				else
-				{
+				else {
 					//インデックスデータの追加
 					indices.emplace_back((unsigned short)indexCountTex);
 
@@ -426,8 +424,7 @@ void ObjModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMater
 	//定数バッファビューをセット(マテリアル)
 	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1->GetGPUVirtualAddress());
 
-	if (material.textureFilename.size() > 0)
-	{
+	if (material.textureFilename.size() > 0) {
 		//シェーダリソースビューをセット
 		DescHeapSRV::SetGraphicsRootDescriptorTable(2, texture.texNumber);
 
@@ -450,12 +447,10 @@ void ObjModel::DrawLightCameraView(ID3D12GraphicsCommandList* cmdList, UINT root
 	//定数バッファビューをセット(マテリアル)
 	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1->GetGPUVirtualAddress());
 
-	if (material.textureFilename.size() > 0)
-	{
+	if (material.textureFilename.size() > 0) {
 		//シェーダリソースビューをセット
 		DescHeapSRV::SetGraphicsRootDescriptorTable(2, texture.texNumber);
 	}
-
 
 	//描画コマンド
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);

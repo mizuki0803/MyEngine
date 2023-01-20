@@ -131,7 +131,8 @@ void Medaman::OnCollisionMainBody(const int damageNum, const Vector3& collisionP
 	//待機状態ならダメージを喰らう
 	const bool isWaitMode = (phase == Phase::Wait);
 	//y軸角度45度以下ならダメージを喰らう
-	const bool isDamageRota = (mainBody->GetRotation().y <= 45.0f);
+	const float damageRota = 45.0f;
+	const bool isDamageRota = (mainBody->GetRotation().y <= damageRota);
 
 	//本体が攻撃状態ならダメージを喰らうを追加し、どれか一つでも項目を達成していなければダメージを受けないで抜ける
 	if (!(isMainBodyAttackMode && isWaitMode && isDamageRota)) { return; }
@@ -152,7 +153,8 @@ void Medaman::OnCollisionAvatar(MedamanAvatar* avatar, const int damageNum, cons
 	//待機状態ならダメージを喰らう
 	const bool isWaitMode = (phase == Phase::Wait);
 	//y軸角度45度以下ならダメージを喰らう
-	const bool isDamageRota = (avatar->GetRotation().y <= 45.0f);
+	const float damageRota = 45.0f;
+	const bool isDamageRota = (avatar->GetRotation().y <= damageRota);
 
 	//どちらか一つでも項目を達成していなければダメージを受けないで抜ける
 	if (!(isWaitMode && isDamageRota)) { return; }
@@ -183,7 +185,8 @@ bool Medaman::AppearModeCount()
 	}
 
 	//指定した時間になったらHPバー生成
-	const float hpUICreateTime = appearModeTime - 100;
+	const float createTimeLimit = 100; //残り何フレームになったら生成を開始するか
+	const float hpUICreateTime = appearModeTime - createTimeLimit;
 	if (appearModeTimer >= hpUICreateTime && !hpUI) {
 		const Vector2 hpUIPosition = { 30, 170 };
 		hpUI.reset(BossHPUI::Create(hpUIPosition, HP));

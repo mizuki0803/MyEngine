@@ -125,7 +125,7 @@ void GalaxyCannon::UpdateBulletShotPos()
 	const Vector3 distancePos = { 0, 0, scale.z * parent->GetScale().z - 1.0f };
 
 	//弾発射座標を取得
-	bulletShotPos = LocalTranslation(distancePos, matWorld);
+	bulletShotPos = Vector3::LocalTranslation(distancePos, matWorld);
 }
 
 void GalaxyCannon::AttackModeStart()
@@ -273,9 +273,8 @@ void GalaxyCannon::AttackTypeRapidFireCharge()
 	const float time = attackTimer / chargeTime;
 
 	//イージングで後ろに引っ張る
-	const float easeStart = basePos.x;
-	const float easeEnd = basePos.x - 0.3f;
-	position.x = Easing::OutQuint(easeStart, easeEnd, time);
+	const float easeEndBasePosDistance = -0.3f;
+	position.x = Easing::OutQuint(basePos.x, basePos.x + easeEndBasePosDistance, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (attackTimer >= chargeTime) {
@@ -295,9 +294,9 @@ void GalaxyCannon::AttackTypeRapidFireShot()
 	const float time = attackTimer / shotModeTime;
 
 	//イージングで一気に押し出す
-	const float easeStart = basePos.x - 0.3f;
-	const float easeEnd = basePos.x + 0.25f;
-	position.x = Easing::OutQuint(easeStart, easeEnd, time);
+	const float easeStartBasePosDistance = -0.3f;
+	const float easeEndBasePosDistance = 0.25f;
+	position.x = Easing::OutQuint(basePos.x + easeStartBasePosDistance, basePos.x + easeEndBasePosDistance, time);
 
 	//発射するタイミングになったら発射
 	const int shotTime = 3;
@@ -329,9 +328,8 @@ void GalaxyCannon::AttackTypeRapidFireReturn()
 	const float time = attackTimer / returnTime;
 
 	//イージングで戻す
-	const float easeStart = basePos.x + 0.25f;
-	const float easeEnd = basePos.x;
-	position.x = Easing::InQuad(easeStart, easeEnd, time);
+	const float easeStartBasePosDistance = 0.25f;
+	position.x = Easing::InQuad(basePos.x + easeStartBasePosDistance, basePos.x, time);
 
 	//タイマーが指定した時間になったら次のフェーズへ
 	if (attackTimer >= returnTime) {

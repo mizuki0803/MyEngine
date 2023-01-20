@@ -146,7 +146,7 @@ void MedamanMainBody::UpdateBulletShotPos()
 	const Vector3 distancePos = { 0, 0, scale.z - 1.0f };
 
 	//弾発射座標を取得
-	bulletShotPos = LocalTranslation(distancePos, matWorld);
+	bulletShotPos = Vector3::LocalTranslation(distancePos, matWorld);
 }
 
 void MedamanMainBody::AttackTypeTracking(const Vector3& playerPosition)
@@ -567,10 +567,11 @@ void MedamanMainBody::AttackTypeRotateShot()
 		attackRotatePhase = AttackTypeRotatePhase::Move;
 
 		//次の移動後の座標をセット
-		if (attackRotateShotCount == 1) { attackRotateMpveAfterPos = { basePos.x + 10, basePos.y + 10, position.z }; }
-		else if (attackRotateShotCount == 2) { attackRotateMpveAfterPos = { basePos.x - 10, basePos.y + 10, position.z }; }
-		else if (attackRotateShotCount == 3) { attackRotateMpveAfterPos = { basePos.x + 10, basePos.y - 10, position.z }; }
-		else if (attackRotateShotCount == 4) { attackRotateMpveAfterPos = { basePos.x - 10, basePos.y - 10, position.z }; }
+		const float distanceBasePos = 10.0f;
+		if (attackRotateShotCount == 1) { attackRotateMpveAfterPos = { basePos.x + distanceBasePos, basePos.y + distanceBasePos, position.z }; }
+		else if (attackRotateShotCount == 2) { attackRotateMpveAfterPos = { basePos.x - distanceBasePos, basePos.y + distanceBasePos, position.z }; }
+		else if (attackRotateShotCount == 3) { attackRotateMpveAfterPos = { basePos.x + distanceBasePos, basePos.y - distanceBasePos, position.z }; }
+		else if (attackRotateShotCount == 4) { attackRotateMpveAfterPos = { basePos.x - distanceBasePos, basePos.y - distanceBasePos, position.z }; }
 		else if (attackRotateShotCount == 5) { attackRotateMpveAfterPos = { basePos.x, basePos.y, position.z }; }
 
 		//現在の座標を移動前座標として記録しておく

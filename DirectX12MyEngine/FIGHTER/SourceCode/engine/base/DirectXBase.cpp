@@ -89,8 +89,7 @@ void DirectXBase::GraphicsCommandRear()
 
 	//コマンドキューの実行を待つ
 	cmdQueue->Signal(fence.Get(), ++fenceVal);
-	if (fence->GetCompletedValue() != fenceVal)
-	{
+	if (fence->GetCompletedValue() != fenceVal) {
 		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
 		fence->SetEventOnCompletion(fenceVal, event);
 		WaitForSingleObject(event, INFINITE);
@@ -114,18 +113,18 @@ void DirectXBase::InitializeDevice()
 {
 	HRESULT result;
 
-//#ifdef _DEBUG
-//
-//	//デバッグレイヤーをオンに
-//	ComPtr<ID3D12Debug1> debugController;
-//	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
-//	{
-//		debugController->EnableDebugLayer();
-//		debugController->SetEnableGPUBasedValidation(TRUE);
-//	}
-//#endif
+	//#ifdef _DEBUG
+	//
+	//	//デバッグレイヤーをオンに
+	//	ComPtr<ID3D12Debug1> debugController;
+	//	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+	//	{
+	//		debugController->EnableDebugLayer();
+	//		debugController->SetEnableGPUBasedValidation(TRUE);
+	//	}
+	//#endif
 
-	//DXGIファクトリーの生成
+		//DXGIファクトリーの生成
 	result = CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
 
 	//アダプターの列挙用
@@ -134,33 +133,26 @@ void DirectXBase::InitializeDevice()
 	//ここに特定の名前を持つアダプターオブジェクトが入る
 	ComPtr<IDXGIAdapter1> tmpAdapter;
 
-	for (int i = 0; dxgiFactory->EnumAdapters1(i, &tmpAdapter) != DXGI_ERROR_NOT_FOUND; i++)
-	{
+	for (int i = 0; dxgiFactory->EnumAdapters1(i, &tmpAdapter) != DXGI_ERROR_NOT_FOUND; i++) {
 		adapters.push_back(tmpAdapter);	//動的配列に追加する
 	}
 
-	for (int i = 0; i < adapters.size(); i++)
-	{
+	for (int i = 0; i < adapters.size(); i++) {
 		DXGI_ADAPTER_DESC1 adesc;
 		adapters[i]->GetDesc1(&adesc);	//アダプターの情報を取得
 
 		//ソフトウェアデバイスを回避
-		if (adesc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
-		{
-			continue;
-		}
+		if (adesc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) { continue; }
 
 		std::wstring strDesc = adesc.Description;	//アダプター名
 		// INtel UHD Graphics (オンボードグラフィックを回避
-		if (strDesc.find(L"Intel") == std::wstring::npos)
-		{
+		if (strDesc.find(L"Intel") == std::wstring::npos) {
 			tmpAdapter = adapters[i].Get();	//採用
 			break;
 		}
 	}
 	//対応レベルの配列
-	D3D_FEATURE_LEVEL levels[] =
-	{
+	D3D_FEATURE_LEVEL levels[] = {
 		D3D_FEATURE_LEVEL_12_1,
 		D3D_FEATURE_LEVEL_12_0,
 		D3D_FEATURE_LEVEL_11_1,
@@ -169,13 +161,11 @@ void DirectXBase::InitializeDevice()
 
 	D3D_FEATURE_LEVEL featureLevel;
 
-	for (int i = 0; i < _countof(levels); i++)
-	{
+	for (int i = 0; i < _countof(levels); i++) {
 		//採用したアダプターでデバイスを生成
 		result = D3D12CreateDevice(tmpAdapter.Get(), levels[i], IID_PPV_ARGS(&dev));
 
-		if (result == S_OK)
-		{
+		if (result == S_OK) {
 			//デバイスを生成できた時点でループを抜ける
 			featureLevel = levels[i];
 			break;
@@ -185,8 +175,7 @@ void DirectXBase::InitializeDevice()
 #ifdef _DEBUG
 
 	ComPtr<ID3D12InfoQueue> infoQueue;
-	if (SUCCEEDED(dev->QueryInterface(IID_PPV_ARGS(&infoQueue))))
-	{
+	if (SUCCEEDED(dev->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
 		infoQueue->GetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION);	//ヤバイエラー時に止まる
 		infoQueue->GetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR);		//エラー時に止まる
 		infoQueue->GetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING);		//警告時に止まる
@@ -257,8 +246,7 @@ void DirectXBase::InitializeRenderTargetView()
 
 	//裏表の2つ分について
 	backBuffers.resize(2);
-	for (int i = 0; i < 2; i++)
-	{
+	for (int i = 0; i < 2; i++) {
 		//スワップチェーンからバッファを取得
 		result = swapchain->GetBuffer(i, IID_PPV_ARGS(&backBuffers[i]));
 

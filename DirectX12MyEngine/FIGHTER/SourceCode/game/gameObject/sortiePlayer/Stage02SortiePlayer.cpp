@@ -83,7 +83,7 @@ void Stage02SortiePlayer::UpdateJetPos()
 	const Vector3 distancePos = { 0, -0.25f, -1.2f };
 
 	//ジェット発射座標を取得
-	jetPos = LocalTranslation(distancePos, matWorld);
+	jetPos = Vector3::LocalTranslation(distancePos, matWorld);
 }
 
 void Stage02SortiePlayer::UpdateBulletShotPos()
@@ -92,7 +92,7 @@ void Stage02SortiePlayer::UpdateBulletShotPos()
 	const Vector3 distancePos = { 0, -0.3f, 5.0f };
 
 	//弾発射座標を取得
-	bulletShotPos = LocalTranslation(distancePos, matWorld);
+	bulletShotPos = Vector3::LocalTranslation(distancePos, matWorld);
 }
 
 void Stage02SortiePlayer::ShotStraightBullet()

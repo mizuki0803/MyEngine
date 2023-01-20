@@ -85,12 +85,7 @@ void StageSelectPlayer::StageSelectMoveStart(const Vector3& targetPos, bool isSt
 	moveAfterPos = afterPos;
 
 	//移動する方向を向く
-	const Vector3 moveVec = moveAfterPos - moveBeforePos;
-	rotation.y = XMConvertToDegrees(std::atan2(moveVec.x, moveVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
-	Vector3 moveVecZ = MatrixTransformDirection(moveVec, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-moveVecZ.y, moveVecZ.z));
+	rotation = Vector3::BetweenPointRotate(moveAfterPos, moveBeforePos);
 	//変更前の角度を記録
 	changeBeforeRota = rotation;
 
@@ -118,12 +113,7 @@ void StageSelectPlayer::EnterPlanetStart(const Vector3& selectPlanetPos)
 	changeBeforeRota = rotation;
 
 	//変更後の角度をセット
-	const Vector3 moveVec = moveAfterPos - moveBeforePos;
-	changeAfterRota.y = XMConvertToDegrees(std::atan2(moveVec.x, moveVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-changeAfterRota.y));
-	Vector3 moveVecZ = MatrixTransformDirection(moveVec, matRot);
-	changeAfterRota.x = XMConvertToDegrees(std::atan2(-moveVecZ.y, moveVecZ.z));
+	changeAfterRota = Vector3::BetweenPointRotate(moveAfterPos, moveBeforePos);
 
 	//惑星に入る状態にする
 	actionPhase = ActionPhase::EnterPlanet;
@@ -138,7 +128,7 @@ void StageSelectPlayer::UpdateJetPos()
 	const Vector3 distancePos = { 0, -0.25f, -1.2f };
 
 	//ジェット発射座標を取得
-	jetPos = LocalTranslation(distancePos, matWorld);
+	jetPos = Vector3::LocalTranslation(distancePos, matWorld);
 }
 
 void StageSelectPlayer::GooutPlanet()
@@ -150,12 +140,7 @@ void StageSelectPlayer::GooutPlanet()
 	const float time = actionTimer / gooutTime;
 
 	//移動する方向を向く
-	const Vector3 moveVec = moveAfterPos - moveBeforePos;
-	rotation.y = XMConvertToDegrees(std::atan2(moveVec.x, moveVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
-	Vector3 moveVecZ = MatrixTransformDirection(moveVec, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-moveVecZ.y, moveVecZ.z));
+	rotation = Vector3::BetweenPointRotate(moveAfterPos, moveBeforePos);
 
 	//イージングで動かす
 	position.x = Easing::OutQuint(moveBeforePos.x, moveAfterPos.x, time);
@@ -276,12 +261,7 @@ void StageSelectPlayer::EnterPlanetBoost()
 	time = min(time, 1);
 
 	//移動する方向を向く
-	const Vector3 moveVec = moveAfterPos - moveBeforePos;
-	rotation.y = XMConvertToDegrees(std::atan2(moveVec.x, moveVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
-	Vector3 moveVecZ = MatrixTransformDirection(moveVec, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-moveVecZ.y, moveVecZ.z));
+	rotation = Vector3::BetweenPointRotate(moveAfterPos, moveBeforePos);
 
 	//イージングで動かす
 	position.x = Easing::OutQuint(moveBeforePos.x, moveAfterPos.x, time);

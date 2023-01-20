@@ -22,7 +22,7 @@ Vector3 Easing::Slerp(const Vector3& v1, const Vector3& v2, float time)
 	Vector3 start = v1, end = v2;
 	start.normalize();
 	end.normalize();
-	
+
 	float angle = acosf(start.dot(end));
 	float sinThita = sinf(angle);
 	float sinThitaFrom = sinf((1 - time) * angle);
@@ -30,7 +30,7 @@ Vector3 Easing::Slerp(const Vector3& v1, const Vector3& v2, float time)
 
 	float lengthLerp = LerpFloat(v1.length(), v2.length(), time);
 	Vector3 slerpVec = (sinThitaFrom * start + sinThitaTo * end) / sinThita;
-	
+
 
 	return slerpVec * lengthLerp;
 }
@@ -74,12 +74,10 @@ float Easing::OutQuad(const float start, const float end, const float time)
 float Easing::InOutQuad(const float start, const float end, const float time)
 {
 	float y;
-	if (time < 0.5f)
-	{
+	if (time < 0.5f) {
 		y = 2 * time * time;
 	}
-	else
-	{
+	else {
 		y = (1 - powf(-2 * time + 2, 2) / 2);
 	}
 
@@ -104,12 +102,10 @@ float Easing::OutCubic(const float start, const float end, const float time)
 float Easing::InOutCubic(const float start, const float end, const float time)
 {
 	float y;
-	if (time < 0.5f)
-	{
+	if (time < 0.5f) {
 		y = 4 * time * time * time;
 	}
-	else
-	{
+	else {
 		y = (1 - powf(-2 * time + 2, 3) / 2);
 	}
 
@@ -134,12 +130,10 @@ float Easing::OutQuart(const float start, const float end, const float time)
 float Easing::InOutQuart(const float start, const float end, const float time)
 {
 	float y;
-	if (time < 0.5f)
-	{
+	if (time < 0.5f) {
 		y = 8 * time * time * time * time;
 	}
-	else
-	{
+	else {
 		y = (1 - powf(-2 * time + 2, 4) / 2);
 	}
 
@@ -164,12 +158,10 @@ float Easing::OutQuint(const float start, const float end, const float time)
 float Easing::InOutQuint(const float start, const float end, const float time)
 {
 	float y;
-	if (time < 0.5f)
-	{
+	if (time < 0.5f) {
 		y = 16 * time * time * time * time * time;
 	}
-	else
-	{
+	else {
 		y = (1 - powf(-2 * time + 2, 5) / 2);
 	}
 
@@ -180,12 +172,10 @@ float Easing::InOutQuint(const float start, const float end, const float time)
 float Easing::InExpo(const float start, const float end, const float time)
 {
 	float y;
-	if (time == 0)
-	{
+	if (time == 0) {
 		y = 0;
 	}
-	else
-	{
+	else {
 		y = powf(2, 10 * time - 10);
 	}
 
@@ -196,12 +186,10 @@ float Easing::InExpo(const float start, const float end, const float time)
 float Easing::OutExpo(const float start, const float end, const float time)
 {
 	float y;
-	if (time == 1)
-	{
+	if (time == 1) {
 		y = 1;
 	}
-	else
-	{
+	else {
 		y = (1 - powf(2, -10 * time));
 	}
 
@@ -212,20 +200,16 @@ float Easing::OutExpo(const float start, const float end, const float time)
 float Easing::InOutExpo(const float start, const float end, const float time)
 {
 	float y;
-	if (time == 0)
-	{
+	if (time == 0) {
 		y = 0;
 	}
-	else if (time == 1)
-	{
+	else if (time == 1) {
 		y = 1;
 	}
-	else if (time < 0.5f)
-	{
+	else if (time < 0.5f) {
 		y = powf(2, 20 * time - 10) / 2;
 	}
-	else
-	{
+	else {
 		y = (2 - powf(2, -20 * time + 10)) / 2;
 	}
 
@@ -250,12 +234,10 @@ float Easing::OutCirc(const float start, const float end, const float time)
 float Easing::InOutCirc(const float start, const float end, const float time)
 {
 	float y;
-	if (time < 0.5f)
-	{
+	if (time < 0.5f) {
 		y = (1 - sqrtf(1 - powf(2 * time, 2))) / 2;
 	}
-	else
-	{
+	else {
 		y = (sqrtf(1 - powf(-2 * time + 2, 2)) + 1) / 2;
 	}
 
@@ -280,12 +262,10 @@ float Easing::OutBack(const float start, const float end, const float time)
 float Easing::InOutBack(const float start, const float end, const float time)
 {
 	float y;
-	if (time < 0.5f)
-	{
+	if (time < 0.5f) {
 		y = (powf(2 * time, 2) * ((1.70158f * 1.525f + 1) * 2 * time - 1.70158f * 1.525f)) / 2;
 	}
-	else
-	{
+	else {
 		y = (powf(2 * time - 2, 2) * ((1.70158f * 1.525f + 1) * (time * 2 - 2) + 1.70158f * 1.525f) + 2) / 2;
 	}
 
@@ -296,16 +276,13 @@ float Easing::InOutBack(const float start, const float end, const float time)
 float Easing::InElastic(const float start, const float end, const float time)
 {
 	float y;
-	if (time == 0)
-	{
+	if (time == 0) {
 		y = 0;
 	}
-	else if (time == 1)
-	{
+	else if (time == 1) {
 		y = 1;
 	}
-	else
-	{
+	else {
 		y = -powf(2, 10 * time - 10) * sinf((time * 10 - 10.75f) * (2 * 3.14159265359f) / 3);
 	}
 
@@ -316,16 +293,13 @@ float Easing::InElastic(const float start, const float end, const float time)
 float Easing::OutElastic(const float start, const float end, const float time)
 {
 	float y;
-	if (time == 0)
-	{
+	if (time == 0) {
 		y = 0;
 	}
-	else if (time == 1)
-	{
+	else if (time == 1) {
 		y = 1;
 	}
-	else
-	{
+	else {
 		y = powf(2, -10 * time) * sinf((time * 10 - 0.75f) * (2 * 3.14159265359f) / 3) + 1;
 	}
 
@@ -336,20 +310,16 @@ float Easing::OutElastic(const float start, const float end, const float time)
 float Easing::InOutElastic(const float start, const float end, const float time)
 {
 	float y;
-	if (time == 0)
-	{
+	if (time == 0) {
 		y = 0;
 	}
-	else if (time == 1)
-	{
+	else if (time == 1) {
 		y = 1;
 	}
-	else if (time < 0.5f)
-	{
+	else if (time < 0.5f) {
 		y = -(powf(2, 20 * time - 10) * sinf((20 * time - 11.125f) * (2 * 3.14159265359f) / 4.5f)) / 2;
 	}
-	else
-	{
+	else {
 		y = (powf(2, -20 * time + 10) * sinf((20 * time - 11.125f) * (2 * 3.14159265359f) / 4.5f)) / 2 + 1;
 	}
 
@@ -374,12 +344,10 @@ float Easing::OutBounce(const float start, const float end, const float time)
 float Easing::InOutBounce(const float start, const float end, const float time)
 {
 	float y;
-	if (time < 0.5f)
-	{
+	if (time < 0.5f) {
 		y = (1 - OutBounceCalculate(1 - 2 * time)) / 2;
 	}
-	else
-	{
+	else {
 		y = (1 + OutBounceCalculate(2 * time - 1)) / 2;
 	}
 
@@ -390,20 +358,16 @@ float Easing::InOutBounce(const float start, const float end, const float time)
 float Easing::OutBounceCalculate(float time)
 {
 	float y;
-	if (time < 1 / 2.75f)
-	{
+	if (time < 1 / 2.75f) {
 		y = 7.5625f * time * time;
 	}
-	else if (time < 2 / 2.75f)
-	{
+	else if (time < 2 / 2.75f) {
 		y = 7.5625f * (time -= 1.5f / 2.75f) * time + 0.75f;
 	}
-	else if (time < 2.5f / 2.75f)
-	{
+	else if (time < 2.5f / 2.75f) {
 		y = 7.5625f * (time -= 2.25f / 2.75f) * time + 0.9375f;
 	}
-	else
-	{
+	else {
 		y = 7.5625f * (time -= 2.625f / 2.75f) * time + 0.984375f;
 	}
 

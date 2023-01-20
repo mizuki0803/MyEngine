@@ -11,10 +11,11 @@ void PlayerVaporEffect::Update(const Vector3& leftWingPos, const Vector3& rightW
 	//右翼の座標を記録しておく
 	rightWingPosList.push_back(rightWingPos);
 	//直近5フレーム分の要素で計算をするので、それより過去の要素を削除
-	if (leftWingPosList.size() > 5) {
+	const int oldFrameMaxSize = 5;
+	if (leftWingPosList.size() > oldFrameMaxSize) {
 		leftWingPosList.erase(leftWingPosList.begin());
 	}
-	if (rightWingPosList.size() > 5) {
+	if (rightWingPosList.size() > oldFrameMaxSize) {
 		rightWingPosList.erase(rightWingPosList.begin());
 	}
 

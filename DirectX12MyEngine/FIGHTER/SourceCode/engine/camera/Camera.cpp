@@ -14,10 +14,8 @@ void Camera::Initialize()
 
 void Camera::Update()
 {
-	if (dirtyAngle || dirtyView)
-	{
-		if (dirtyAngle)
-		{
+	if (dirtyAngle || dirtyView) {
+		if (dirtyAngle) {
 			//カメラアングルの更新
 			UpdateAngle();
 			//フラグを下げる
@@ -30,8 +28,7 @@ void Camera::Update()
 		dirtyView = false;
 	}
 
-	if (dirtyProjection)
-	{
+	if (dirtyProjection) {
 		//透視投影による射影行列の生成
 		UpdateMatProjection();
 		//フラグを下げる

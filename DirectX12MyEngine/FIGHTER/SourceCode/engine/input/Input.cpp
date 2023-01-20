@@ -59,10 +59,8 @@ void Input::Initialize(WindowApp* win)
 	result = dinput->CreateDevice(GUID_Joystick, &devgamepad, NULL);
 
 	//ゲームパッドが接続されていなければここで関数を抜ける
-	if (devgamepad == nullptr)
-	{
-		return;
-	}
+	if (devgamepad == nullptr) { return; }
+
 	//入力データ形式のセット
 	result = devgamepad->SetDataFormat(&c_dfDIJoystick);	//標準形式
 	//排他制御レベルのセット
@@ -135,10 +133,8 @@ void Input::Update()
 	///----------------パッド入力更新----------------///
 
 	//ゲームパッドが接続されていなければここで関数を抜ける
-	if (devgamepad == nullptr)
-	{
-		return;
-	}
+	if (devgamepad == nullptr) { return; }
+
 	//前回のゲームパッド入力を保存
 	padPre = pad;
 	//ゲームパッド情報の取得開始
@@ -228,37 +224,29 @@ float Input::GetMouseWheelVelocity()
 bool Input::PushGamePadButton(const int gamePadButton)
 {
 	//ゲームパッドが接続されていなければfalseを返す
-	if (devgamepad == nullptr)
-	{
-		return false;
-	}
+	if (devgamepad == nullptr) { return false; }
 
 	//十字キーの指定のボタンを押していればtrueを返す
-	if (gamePadButton >= PAD_LEFT && gamePadButton <= PAD_DOWN)
-	{
-		if (gamePadButton == PAD_LEFT)
-		{
+	if (gamePadButton >= PAD_LEFT && gamePadButton <= PAD_DOWN) {
+		if (gamePadButton == PAD_LEFT) {
 			bool inputPadLeft = (pad.rgdwPOV[0] == 22500 || pad.rgdwPOV[0] == 27000 || pad.rgdwPOV[0] == 31500);
 			if (inputPadLeft) {
 				return true;
 			}
 		}
-		else if (gamePadButton == PAD_RIGHT)
-		{
+		else if (gamePadButton == PAD_RIGHT) {
 			bool inputPadRight = (pad.rgdwPOV[0] == 4500 || pad.rgdwPOV[0] == 9000 || pad.rgdwPOV[0] == 13500);
 			if (inputPadRight) {
 				return true;
 			}
 		}
-		else if (gamePadButton == PAD_UP)
-		{
+		else if (gamePadButton == PAD_UP) {
 			bool inputPadUp = (pad.rgdwPOV[0] == 0 || pad.rgdwPOV[0] == 4500 || pad.rgdwPOV[0] == 31500);
 			if (inputPadUp) {
 				return true;
 			}
 		}
-		else if (gamePadButton == PAD_DOWN)
-		{
+		else if (gamePadButton == PAD_DOWN) {
 			bool inputPadDown = (pad.rgdwPOV[0] == 13500 || pad.rgdwPOV[0] == 18000 || pad.rgdwPOV[0] == 22500);
 			if (inputPadDown) {
 				return true;
@@ -266,8 +254,7 @@ bool Input::PushGamePadButton(const int gamePadButton)
 		}
 	}
 	//十字キー以外の指定のボタンを押していればtrueを返す
-	else
-	{
+	else {
 		if (pad.rgbButtons[gamePadButton]) {
 			return true;
 		}
@@ -279,40 +266,32 @@ bool Input::PushGamePadButton(const int gamePadButton)
 bool Input::TriggerGamePadButton(const int gamePadButton)
 {
 	//ゲームパッドが接続されていなければfalseを返す
-	if (devgamepad == nullptr)
-	{
-		return false;
-	}
+	if (devgamepad == nullptr) { return false; }
 
 	//十字キーの指定のボタンを押した瞬間ならtrueを返す
-	if (gamePadButton >= PAD_LEFT && gamePadButton <= PAD_DOWN)
-	{
-		if (gamePadButton == PAD_LEFT)
-		{
+	if (gamePadButton >= PAD_LEFT && gamePadButton <= PAD_DOWN) {
+		if (gamePadButton == PAD_LEFT) {
 			bool inputPadLeft = (pad.rgdwPOV[0] == 22500 || pad.rgdwPOV[0] == 27000 || pad.rgdwPOV[0] == 31500);
 			bool inputPadPreLeft = (padPre.rgdwPOV[0] == 22500 || padPre.rgdwPOV[0] == 27000 || padPre.rgdwPOV[0] == 31500);
 			if (inputPadLeft && !inputPadPreLeft) {
 				return true;
 			}
 		}
-		else if (gamePadButton == PAD_RIGHT)
-		{
+		else if (gamePadButton == PAD_RIGHT) {
 			bool inputPadRight = (pad.rgdwPOV[0] == 4500 || pad.rgdwPOV[0] == 9000 || pad.rgdwPOV[0] == 13500);
 			bool inputPadPreRight = (padPre.rgdwPOV[0] == 4500 || padPre.rgdwPOV[0] == 9000 || padPre.rgdwPOV[0] == 13500);
 			if (inputPadRight && !inputPadPreRight) {
 				return true;
 			}
 		}
-		else if (gamePadButton == PAD_UP)
-		{
+		else if (gamePadButton == PAD_UP) {
 			bool inputPadUp = (pad.rgdwPOV[0] == 0 || pad.rgdwPOV[0] == 4500 || pad.rgdwPOV[0] == 31500);
 			bool inputPadPreUp = (padPre.rgdwPOV[0] == 0 || padPre.rgdwPOV[0] == 4500 || padPre.rgdwPOV[0] == 31500);
 			if (inputPadUp && !inputPadPreUp) {
 				return true;
 			}
 		}
-		else if (gamePadButton == PAD_DOWN)
-		{
+		else if (gamePadButton == PAD_DOWN) {
 			bool inputPadDown = (pad.rgdwPOV[0] == 13500 || pad.rgdwPOV[0] == 18000 || pad.rgdwPOV[0] == 22500);
 			bool inputPadPreDown = (padPre.rgdwPOV[0] == 13500 || padPre.rgdwPOV[0] == 18000 || padPre.rgdwPOV[0] == 22500);
 			if (inputPadDown && !inputPadPreDown) {
@@ -321,8 +300,7 @@ bool Input::TriggerGamePadButton(const int gamePadButton)
 		}
 	}
 	//十字キー以外の指定のボタンを押した瞬間ならtrueを返す
-	else
-	{
+	else {
 		if (pad.rgbButtons[gamePadButton] &&
 			!padPre.rgbButtons[gamePadButton]) {
 			return true;
@@ -335,40 +313,32 @@ bool Input::TriggerGamePadButton(const int gamePadButton)
 bool Input::ReleaseGamePadButton(const int gamePadButton)
 {
 	//ゲームパッドが接続されていなければfalseを返す
-	if (devgamepad == nullptr)
-	{
-		return false;
-	}
+	if (devgamepad == nullptr) { return false; }
 
 	//十字キーの指定のボタンを離した瞬間ならtrueを返す
-	if (gamePadButton >= PAD_LEFT && gamePadButton <= PAD_DOWN)
-	{
-		if (gamePadButton == PAD_LEFT)
-		{
+	if (gamePadButton >= PAD_LEFT && gamePadButton <= PAD_DOWN) {
+		if (gamePadButton == PAD_LEFT) {
 			bool inputPadLeft = (pad.rgdwPOV[0] == 22500 || pad.rgdwPOV[0] == 27000 || pad.rgdwPOV[0] == 31500);
 			bool inputPadPreLeft = (padPre.rgdwPOV[0] == 22500 || padPre.rgdwPOV[0] == 27000 || padPre.rgdwPOV[0] == 31500);
 			if (!inputPadLeft && inputPadPreLeft) {
 				return true;
 			}
 		}
-		else if (gamePadButton == PAD_RIGHT)
-		{
+		else if (gamePadButton == PAD_RIGHT) {
 			bool inputPadRight = (pad.rgdwPOV[0] == 4500 || pad.rgdwPOV[0] == 9000 || pad.rgdwPOV[0] == 13500);
 			bool inputPadPreRight = (padPre.rgdwPOV[0] == 4500 || padPre.rgdwPOV[0] == 9000 || padPre.rgdwPOV[0] == 13500);
 			if (!inputPadRight && inputPadPreRight) {
 				return true;
 			}
 		}
-		else if (gamePadButton == PAD_UP)
-		{
+		else if (gamePadButton == PAD_UP) {
 			bool inputPadUp = (pad.rgdwPOV[0] == 0 || pad.rgdwPOV[0] == 4500 || pad.rgdwPOV[0] == 31500);
 			bool inputPadPreUp = (padPre.rgdwPOV[0] == 0 || padPre.rgdwPOV[0] == 4500 || padPre.rgdwPOV[0] == 31500);
 			if (!inputPadUp && inputPadPreUp) {
 				return true;
 			}
 		}
-		else if (gamePadButton == PAD_DOWN)
-		{
+		else if (gamePadButton == PAD_DOWN) {
 			bool inputPadDown = (pad.rgdwPOV[0] == 13500 || pad.rgdwPOV[0] == 18000 || pad.rgdwPOV[0] == 22500);
 			bool inputPadPreDown = (padPre.rgdwPOV[0] == 13500 || padPre.rgdwPOV[0] == 18000 || padPre.rgdwPOV[0] == 22500);
 			if (!inputPadDown && inputPadPreDown) {
@@ -377,8 +347,7 @@ bool Input::ReleaseGamePadButton(const int gamePadButton)
 		}
 	}
 	//十字キー以外の指定のボタンを離した瞬間ならtrueを返す
-	else
-	{
+	else {
 		if (!pad.rgbButtons[gamePadButton] &&
 			padPre.rgbButtons[gamePadButton]) {
 			return true;
@@ -391,20 +360,16 @@ bool Input::ReleaseGamePadButton(const int gamePadButton)
 bool Input::TiltGamePadLStickX(const float incline)
 {
 	//右に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きければtrueを返す
-		if (pad.lX >= incline)
-		{
+		if (pad.lX >= incline) {
 			return true;
 		}
 	}
 	//左に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さければtrueを返す
-		if (pad.lX <= incline)
-		{
+		if (pad.lX <= incline) {
 			return true;
 		}
 	}
@@ -416,20 +381,16 @@ bool Input::TiltGamePadLStickX(const float incline)
 bool Input::TiltGamePadLStickY(const float incline)
 {
 	//下に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きければtrueを返す
-		if (pad.lY >= incline)
-		{
+		if (pad.lY >= incline) {
 			return true;
 		}
 	}
 	//上に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さければtrueを返す
-		if (pad.lY <= incline)
-		{
+		if (pad.lY <= incline) {
 			return true;
 		}
 	}
@@ -441,20 +402,16 @@ bool Input::TiltGamePadLStickY(const float incline)
 bool Input::TiltGamePadRStickX(const float incline)
 {
 	//右に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きければtrueを返す
-		if (pad.lRx >= incline)
-		{
+		if (pad.lRx >= incline) {
 			return true;
 		}
 	}
 	//左に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さければtrueを返す
-		if (pad.lRx <= incline)
-		{
+		if (pad.lRx <= incline) {
 			return true;
 		}
 	}
@@ -466,20 +423,16 @@ bool Input::TiltGamePadRStickX(const float incline)
 bool Input::TiltGamePadRStickY(const float incline)
 {
 	//下に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きければtrueを返す
-		if (pad.lRy >= incline)
-		{
+		if (pad.lRy >= incline) {
 			return true;
 		}
 	}
 	//上に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さければtrueを返す
-		if (pad.lRy <= incline)
-		{
+		if (pad.lRy <= incline) {
 			return true;
 		}
 	}
@@ -492,20 +445,16 @@ bool Input::PushGamePadTrigger(const float incline)
 {
 
 	//下に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きければtrueを返す
-		if (pad.lZ >= incline)
-		{
+		if (pad.lZ >= incline) {
 			return true;
 		}
 	}
 	//上に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さければtrueを返す
-		if (pad.lZ <= incline)
-		{
+		if (pad.lZ <= incline) {
 			return true;
 		}
 	}
@@ -517,20 +466,16 @@ bool Input::PushGamePadTrigger(const float incline)
 bool Input::TriggerGamePadLStickX(const float incline)
 {
 	//右に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きい瞬間ならtrueを返す
-		if (pad.lX >= incline && !(padPre.lX >= incline))
-		{
+		if (pad.lX >= incline && !(padPre.lX >= incline)) {
 			return true;
 		}
 	}
 	//左に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さい瞬間ならtrueを返す
-		if (pad.lX <= incline && !(padPre.lX <= incline))
-		{
+		if (pad.lX <= incline && !(padPre.lX <= incline)) {
 			return true;
 		}
 	}
@@ -542,20 +487,16 @@ bool Input::TriggerGamePadLStickX(const float incline)
 bool Input::TriggerGamePadLStickY(const float incline)
 {
 	//下に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きい瞬間ならtrueを返す
-		if (pad.lY >= incline && !(padPre.lY >= incline))
-		{
+		if (pad.lY >= incline && !(padPre.lY >= incline)) {
 			return true;
 		}
 	}
 	//上に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さい瞬間ならtrueを返す
-		if (pad.lY <= incline && !(padPre.lY <= incline))
-		{
+		if (pad.lY <= incline && !(padPre.lY <= incline)) {
 			return true;
 		}
 	}
@@ -567,20 +508,16 @@ bool Input::TriggerGamePadLStickY(const float incline)
 bool Input::TriggerGamePadRStickX(const float incline)
 {
 	//右に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きい瞬間ならtrueを返す
-		if (pad.lRx >= incline && !(padPre.lRx >= incline))
-		{
+		if (pad.lRx >= incline && !(padPre.lRx >= incline)) {
 			return true;
 		}
 	}
 	//左に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さい瞬間ならtrueを返す
-		if (pad.lRx <= incline && !(padPre.lRx <= incline))
-		{
+		if (pad.lRx <= incline && !(padPre.lRx <= incline)) {
 			return true;
 		}
 	}
@@ -592,20 +529,16 @@ bool Input::TriggerGamePadRStickX(const float incline)
 bool Input::TriggerGamePadRStickY(const float incline)
 {
 	//下に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きい瞬間ならtrueを返す
-		if (pad.lRy >= incline && !(padPre.lRy >= incline))
-		{
+		if (pad.lRy >= incline && !(padPre.lRy >= incline)) {
 			return true;
 		}
 	}
 	//上に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さい瞬間ならtrueを返す
-		if (pad.lRy <= incline && !(padPre.lRy <= incline))
-		{
+		if (pad.lRy <= incline && !(padPre.lRy <= incline)) {
 			return true;
 		}
 	}
@@ -617,20 +550,16 @@ bool Input::TriggerGamePadRStickY(const float incline)
 bool Input::ReleaseGamePadLStickX(const float incline)
 {
 	//右に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きかったならtrueを返す
-		if (!(pad.lX >= incline) && padPre.lX >= incline)
-		{
+		if (!(pad.lX >= incline) && padPre.lX >= incline) {
 			return true;
 		}
 	}
 	//左に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さかったならtrueを返す
-		if (!(pad.lX <= incline) && padPre.lX <= incline)
-		{
+		if (!(pad.lX <= incline) && padPre.lX <= incline) {
 			return true;
 		}
 	}
@@ -642,20 +571,16 @@ bool Input::ReleaseGamePadLStickX(const float incline)
 bool Input::ReleaseGamePadLStickY(const float incline)
 {
 	//下に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きかったならtrueを返す
-		if (!(pad.lY >= incline) && padPre.lY >= incline)
-		{
+		if (!(pad.lY >= incline) && padPre.lY >= incline) {
 			return true;
 		}
 	}
 	//上に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さかったならtrueを返す
-		if (!(pad.lY <= incline) && padPre.lY <= incline)
-		{
+		if (!(pad.lY <= incline) && padPre.lY <= incline) {
 			return true;
 		}
 	}
@@ -667,20 +592,16 @@ bool Input::ReleaseGamePadLStickY(const float incline)
 bool Input::ReleaseGamePadRStickX(const float incline)
 {
 	//右に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きかったならtrueを返す
-		if (!(pad.lRx >= incline) && padPre.lRx >= incline)
-		{
+		if (!(pad.lRx >= incline) && padPre.lRx >= incline) {
 			return true;
 		}
 	}
 	//左に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さかったならtrueを返す
-		if (!(pad.lRx <= incline) && padPre.lRx <= incline)
-		{
+		if (!(pad.lRx <= incline) && padPre.lRx <= incline) {
 			return true;
 		}
 	}
@@ -692,20 +613,16 @@ bool Input::ReleaseGamePadRStickX(const float incline)
 bool Input::ReleaseGamePadRStickY(const float incline)
 {
 	//下に倒した時の判定
-	if (incline > 0)
-	{
+	if (incline > 0) {
 		//スティックの傾斜が指定した数値より大きかったならtrueを返す
-		if (!(pad.lRy >= incline) && padPre.lRy >= incline)
-		{
+		if (!(pad.lRy >= incline) && padPre.lRy >= incline) {
 			return true;
 		}
 	}
 	//上に倒した時の判定
-	else if (incline < 0)
-	{
+	else if (incline < 0) {
 		//スティックの傾斜が指定した数値より小さかったならtrueを返す
-		if (!(pad.lRy <= incline) && padPre.lRy <= incline)
-		{
+		if (!(pad.lRy <= incline) && padPre.lRy <= incline) {
 			return true;
 		}
 	}
@@ -732,6 +649,7 @@ float Input::GetPadLStickAngle()
 
 	float radian = atan2f(v, h) * 360 / (3.141592f * 2);
 
+	//マイナスだった場合の値を修正
 	if (radian < 0) {
 		radian += 360;
 	}
@@ -747,6 +665,7 @@ float Input::GetPadRStickAngle()
 
 	float radian = atan2f(v, h) * 360 / (3.141592f * 2);
 
+	//マイナスだった場合の値を修正
 	if (radian < 0) {
 		radian += 360;
 	}

@@ -1,13 +1,14 @@
 #include "BaseGameCamera.h"
 #include "BasePlayer.h"
 
+const float BaseGameCamera::moveSpeedPlayerMagnification = 8.0f;
 const float BaseGameCamera::highSpeedMagnification = 2.8f;
 const float BaseGameCamera::slowSpeedMagnification = 0.2f;
 
 void BaseGameCamera::Update()
 {
 	//平行移動行列の計算
-	XMMATRIX matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+	const XMMATRIX matTrans = XMMatrixTranslation(position.x, position.y, position.z);
 	//ワールド行列を更新
 	UpdateMatWorld(matTrans);
 	//ゆらゆらを加算したワールド行列を更新
@@ -116,9 +117,10 @@ void BaseGameCamera::CameraAction(BasePlayer* player)
 void BaseGameCamera::Rotate(const Vector3& playerRotation)
 {
 	//回転(レールカメラに追従している自機の傾きを利用する)
-	rotation.x = playerRotation.x / 5;
-	rotation.y = playerRotation.y / 5;
-	rotation.z = -playerRotation.y / 8;
+	const Vector3 PlayerRotDivNum = { 5, 5, 8 }; //カメラの傾きを算出するための自機の角度から割る値
+	rotation.x = playerRotation.x / PlayerRotDivNum.x;
+	rotation.y = playerRotation.y / PlayerRotDivNum.y;
+	rotation.z = -playerRotation.y / PlayerRotDivNum.z;
 }
 
 void BaseGameCamera::Sway()
@@ -191,7 +193,7 @@ void BaseGameCamera::Move(BasePlayer* player)
 	//移動速度
 	Vector3 velocity;
 	//カメラが傾いている角度に移動させる
-	const float moveSpeed = BasePlayer::GetMoveBaseSpeed() * 8;
+	const float moveSpeed = BasePlayer::GetMoveBaseSpeed() * moveSpeedPlayerMagnification;
 	const Vector2 rotLimit = BasePlayer::GetRotLimit();
 	velocity.x = moveSpeed * (rotation.y / rotLimit.y);
 	velocity.y = moveSpeed * -(rotation.x / rotLimit.x);
@@ -216,7 +218,7 @@ void BaseGameCamera::Move(BasePlayer* player)
 void BaseGameCamera::Knockback(BasePlayer* player)
 {
 	//自機にあわせてカメラをノックバックさせる
-	const float speed = BasePlayer::GetKnockbackBaseSpeed() * 8;
+	const float speed = BasePlayer::GetKnockbackBaseSpeed() * moveSpeedPlayerMagnification;
 	Vector3 velocity = player->GetKnockbackVel();
 	velocity *= speed;
 

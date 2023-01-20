@@ -18,11 +18,9 @@ SceneManager* SceneManager::GetInstance()
 void SceneManager::Update()
 {
 	//シーン切り替えがあるなら
-	if (nextScene)
-	{
+	if (nextScene) {
 		//旧シーンがあるなら
-		if (scene)
-		{
+		if (scene) {
 			//旧シーンの終了
 			delete scene;
 		}

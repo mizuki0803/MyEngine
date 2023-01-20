@@ -62,11 +62,7 @@ void HomingBullet::Update()
 	}
 
 	//進行方向を向くようにする
-	rotation.y = XMConvertToDegrees(std::atan2(velocity.x, velocity.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
-	Vector3 velocityZ = MatrixTransformDirection(velocity, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-velocityZ.y, velocityZ.z));
+	rotation = Vector3::VelocityRotate(velocity);
 
 	//3Dオブジェクトの更新
 	PlayerBullet::Update();

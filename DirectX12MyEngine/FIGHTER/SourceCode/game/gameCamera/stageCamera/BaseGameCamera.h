@@ -93,6 +93,8 @@ protected: //メンバ関数
 
 
 protected: //静的メンバ変数
+	//上下左右移動時の速さ(自機の何倍か)
+	static const float moveSpeedPlayerMagnification;
 	//ハイスピードで移動するときの速度倍率
 	static const float highSpeedMagnification;
 	//遅いスピードで移動するときの速度倍率

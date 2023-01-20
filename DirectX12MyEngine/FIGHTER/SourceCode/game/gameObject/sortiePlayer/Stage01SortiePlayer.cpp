@@ -73,7 +73,7 @@ void Stage01SortiePlayer::UpdateJetPos()
 	const Vector3 distancePos = { 0, -0.25f, -1.2f };
 
 	//ジェット発射座標を取得
-	jetPos = LocalTranslation(distancePos, matWorld);
+	jetPos = Vector3::LocalTranslation(distancePos, matWorld);
 }
 
 void Stage01SortiePlayer::SortieAdvance()

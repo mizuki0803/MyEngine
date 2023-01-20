@@ -15,16 +15,13 @@ void FrameWork::Run()
 	//ゲーム初期化
 	Initialize();
 
-	while (true)	//ゲームループ
-	{
+	//ゲームループ
+	while (true) {
 		//毎フレーム更新
 		Update();
 
 		//終了リクエストが来たらループを抜ける
-		if (GetIsEndRequest())
-		{
-			break;
-		}
+		if (GetIsEndRequest()) { break; }
 
 		//描画
 		Draw();
@@ -118,14 +115,12 @@ void FrameWork::Update()
 {
 	//メッセージ
 	//×ボタンで終了メッセージが来たらゲームループを抜ける
-	if (win->MessageProc())
-	{
+	if (win->MessageProc()) {
 		isEndRequest = true;
 		return;
 	}
 	//エスケープキーでゲームループ終了
-	if (input->PushKey(DIK_ESCAPE))
-	{
+	if (input->PushKey(DIK_ESCAPE)) {
 		isEndRequest = true;
 		return;
 	}

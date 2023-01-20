@@ -24,17 +24,6 @@ Texture ParticleManager::texture[SRVCount];
 std::string ParticleManager::directoryPath;
 Camera* ParticleManager::camera = nullptr;
 
-//XMFLOAT3同士の加算処理
-const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const DirectX::XMFLOAT3 rhs)
-{
-	XMFLOAT3 result;
-	result.x = lhs.x + rhs.x;
-	result.y = lhs.y + rhs.y;
-	result.z = lhs.z + rhs.z;
-
-	return result;
-}
-
 void ParticleManager::ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, const std::string& directoryPath)
 {
 	//nullptrチェック
@@ -69,8 +58,7 @@ void ParticleManager::CreateAddBlendPipeline()
 		0,
 		&vsBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -95,8 +83,7 @@ void ParticleManager::CreateAddBlendPipeline()
 		0,
 		&gsBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -121,8 +108,7 @@ void ParticleManager::CreateAddBlendPipeline()
 		0,
 		&psBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -280,8 +266,7 @@ void ParticleManager::CreateSubBlendPipeline()
 		0,
 		&vsBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -306,8 +291,7 @@ void ParticleManager::CreateSubBlendPipeline()
 		0,
 		&gsBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -332,8 +316,7 @@ void ParticleManager::CreateSubBlendPipeline()
 		0,
 		&psBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());

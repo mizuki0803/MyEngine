@@ -137,7 +137,7 @@ void MedamanAvatar::UpdateBulletShotPos()
 	const Vector3 distancePos = { 0, 0, scale.z * parent->GetScale().z - 1.0f };
 
 	//’e”­ËÀ•W‚ğæ“¾
-	bulletShotPos = LocalTranslation(distancePos, matWorld);
+	bulletShotPos = Vector3::LocalTranslation(distancePos, matWorld);
 }
 
 void MedamanAvatar::AttackTypeAvatarBodyBlow(const Vector3& playerPosition)

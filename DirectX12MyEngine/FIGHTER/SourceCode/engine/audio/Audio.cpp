@@ -33,8 +33,7 @@ void Audio::Finalize()
 
 	//サウンドデータ解放
 	std::map<std::string, SoundData>::iterator it = soundDatas.begin();
-	for (; it != soundDatas.end(); ++it)
-	{
+	for (; it != soundDatas.end(); ++it) {
 		SoundDataUnload(&it->second);
 	}
 	soundDatas.clear();
@@ -44,10 +43,7 @@ void Audio::Finalize()
 void Audio::LoadWave(const std::string& filename)
 {
 	//重複読み込みの場合何もせずに抜ける
-	if (soundDatas.find(filename) != soundDatas.end())
-	{
-		return;
-	}
+	if (soundDatas.find(filename) != soundDatas.end()) { return; }
 
 	//ディレクトリパスとファイル名を連結してフルパスを得る
 	std::string fullPath = directoryPath + filename;
@@ -63,24 +59,15 @@ void Audio::LoadWave(const std::string& filename)
 	RiffHeader riff;
 	file.read((char*)&riff, sizeof(riff));
 	//ファイルがRIFFかチェック
-	if (strncmp(riff.chunk.id, "RIFF", 4) != 0)
-	{
-		assert(0);
-	}
+	if (strncmp(riff.chunk.id, "RIFF", 4) != 0) { assert(0); }
 	//タイプがWAVEかチェック
-	if (strncmp(riff.type, "WAVE", 4) != 0)
-	{
-		assert(0);
-	}
+	if (strncmp(riff.type, "WAVE", 4) != 0) { assert(0); }
 
 	//Formatチャンクの読み込み
 	FormatChunk format = {};
 	//チャンクヘッダーの確認
 	file.read((char*)&format, sizeof(ChunkHeader));
-	if (strncmp(format.chunk.id, "fmt ", 4) != 0)
-	{
-		assert(0);
-	}
+	if (strncmp(format.chunk.id, "fmt ", 4) != 0) { assert(0); }
 
 	//チャンク本体の読み込み
 	assert(format.chunk.size <= sizeof(format.fmt));
@@ -90,8 +77,7 @@ void Audio::LoadWave(const std::string& filename)
 	ChunkHeader data;
 	file.read((char*)&data, sizeof(data));
 	//JUNKチャンクを検出した場合
-	if (strncmp(data.id, "JUNK", 4) == 0 || strncmp(data.id, "LIST", 4) == 0)
-	{
+	if (strncmp(data.id, "JUNK", 4) == 0 || strncmp(data.id, "LIST", 4) == 0) {
 		//読み取り位置をJUNKチャンクの終わりまで進める
 		file.seekg(data.size, std::ios_base::cur);
 		//再読み込み
@@ -99,8 +85,7 @@ void Audio::LoadWave(const std::string& filename)
 	}
 
 	//,wavデータの読み込み
-	if (strncmp(data.id, "data", 4) != 0)
-	{
+	if (strncmp(data.id, "data", 4) != 0) {
 		assert(0);
 	}
 
@@ -153,13 +138,11 @@ void Audio::PlayWave(const std::string& filename, const bool isLoop)
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
 	//ループ再生
-	if (isLoop)
-	{
+	if (isLoop) {
 		buf.LoopCount = XAUDIO2_LOOP_INFINITE;
 	}
 	//ループしない
-	else
-	{
+	else {
 		buf.LoopCount = 0;
 		buf.LoopBegin = 0;
 		buf.LoopLength = 0;
@@ -181,10 +164,7 @@ void Audio::StopWave(const std::string& filename)
 	SoundData& soundData = it->second;
 
 	//soundVoiceがnullptrの場合何もせずに抜ける
-	if (soundData.pSourceVoice == nullptr)
-	{
-		return;
-	}
+	if (soundData.pSourceVoice == nullptr) { return; }
 
 	//停止する波形データの設定
 	XAUDIO2_BUFFER buf{};

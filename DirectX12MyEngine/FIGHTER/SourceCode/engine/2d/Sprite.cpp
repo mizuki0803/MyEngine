@@ -48,8 +48,7 @@ bool Sprite::Initialize(UINT texNumber, const Vector2& anchorpoint, bool isFlipX
 	};
 
 	//指定番号の画像が読み込み済みなら
-	if (spriteCommon->GetTexBuff(texNumber))
-	{
+	if (spriteCommon->GetTexBuff(texNumber)) {
 		//テクスチャ情報取得
 		D3D12_RESOURCE_DESC resDesc = spriteCommon->GetTexBuff(texNumber)->GetDesc();
 		//スプライトの大きさを画像の解像度に合わせる
@@ -117,14 +116,13 @@ void Sprite::TransferVertexBuffer()
 	float top = (0.0f - anchorpoint.y) * size.y;
 	float bottom = (1.0f - anchorpoint.y) * size.y;
 
-	if (isFlipX)
-	{	//左右入れ替え
+	//左右入れ替え
+	if (isFlipX) {
 		left = -left;
 		right = -right;
 	}
-
-	if (isFlipY)
-	{	//上下反転
+	//上下反転
+	if (isFlipY) {
 		top = -top;
 		bottom = -bottom;
 	}
@@ -138,8 +136,7 @@ void Sprite::TransferVertexBuffer()
 	vertices[RT].pos = { right, top,    0.0f };	//右上
 
 	//指定番号の画像が読み込み済みなら
-	if (spriteCommon->GetTexBuff(texNumber))
-	{
+	if (spriteCommon->GetTexBuff(texNumber)) {
 		//テクスチャ情報取得
 		D3D12_RESOURCE_DESC resDesc = spriteCommon->GetTexBuff(texNumber)->GetDesc();
 

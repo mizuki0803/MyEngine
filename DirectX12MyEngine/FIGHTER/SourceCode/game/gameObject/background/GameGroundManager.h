@@ -59,6 +59,8 @@ private: //静的メンバ変数
 	static BasePlayer* player;
 	//ゲームカメラ
 	static BaseGameCamera* gameCamera;
+	//スケールに対する実際のモデルの大きさ
+	static const float modelScaleMagnification;
 
 private: //メンバ変数
 	//地面オブジェクト

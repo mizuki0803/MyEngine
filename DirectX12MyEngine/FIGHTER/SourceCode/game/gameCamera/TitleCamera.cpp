@@ -48,7 +48,7 @@ void TitleCamera::RoundPlayer()
 	//角度を変更し続ける
 	const float rotSpeed = 0.5f;
 	rotAngle += rotSpeed;
-	
+
 	//360を越えないようにする
 	if (rotAngle >= 360) { rotAngle -= 360; }
 
@@ -69,12 +69,15 @@ void TitleCamera::Sortie()
 
 		//自機の周りをカメラ一周させる
 		rotAngle = Easing::OutQuart(beforeRoundRotAngle, 0, time);
-		eyeDistance.y = Easing::OutQuart(8.0f, 1.0f, time);
 		const float radian = XMConvertToRadians(rotAngle);
 		const float distance = eyeDistance.z;
 		eye.z = distance * cosf(radian);
 		eye.x = distance * sinf(radian);
 		eye.y = target.y + eyeDistance.y;
+		//自機と同じ高さにカメラを近づける
+		const float roundStartDistance = 8.0f;
+		const float roundEndDistance = 1.0f;
+		eyeDistance.y = Easing::OutQuart(roundStartDistance, roundEndDistance, time);
 	}
 
 	//自機を注視点に設定し続ける

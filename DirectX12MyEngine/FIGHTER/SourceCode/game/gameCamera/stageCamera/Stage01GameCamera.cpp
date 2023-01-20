@@ -155,16 +155,10 @@ void Stage01GameCamera::StageClearBossLook()
 	}
 
 	//ボスの方向をだんだん向く
-	const Vector3 bossCameraVec = medamanMainBody->GetWorldPos() - position;
-	Vector3 rota = {};
-	rota.y = XMConvertToDegrees(std::atan2(bossCameraVec.x, bossCameraVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rota.y));
-	Vector3 bossCameraVecZ = MatrixTransformDirection(bossCameraVec, matRot);
-	rota.x = XMConvertToDegrees(std::atan2(-bossCameraVecZ.y, bossCameraVecZ.z));
-	rotation.x = Easing::OutCubic(stageClearMoveBeforeRota.x, rota.x, time);
-	rotation.y = Easing::OutCubic(stageClearMoveBeforeRota.y, rota.y, time);
-	rotation.z = Easing::OutCubic(stageClearMoveBeforeRota.z, rota.z, time);
+	Vector3 bossVecRota = Vector3::BetweenPointRotate(medamanMainBody->GetWorldPos(), position);
+	rotation.x = Easing::OutCubic(stageClearMoveBeforeRota.x, bossVecRota.x, time);
+	rotation.y = Easing::OutCubic(stageClearMoveBeforeRota.y, bossVecRota.y, time);
+	rotation.z = Easing::OutCubic(stageClearMoveBeforeRota.z, bossVecRota.z, time);
 }
 
 void Stage01GameCamera::StageClearFrontLook()
@@ -204,16 +198,10 @@ void Stage01GameCamera::StageClearPlayerLook()
 	const float time = stageClearModeTimer / lookChangeTime;
 
 	//自機の方向をだんだん向く
-	const Vector3 playerCameraVec = player->GetWorldPos() - position;
-	Vector3 rota = {};
-	rota.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rota.y));
-	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
-	rota.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
-	rotation.x = Easing::InOutCubic(stageClearMoveBeforeRota.x, rota.x, time);
-	rotation.y = Easing::InOutCubic(stageClearMoveBeforeRota.y, rota.y, time);
-	rotation.z = Easing::InOutCubic(stageClearMoveBeforeRota.z, 0, time);
+	const Vector3 playerVecRota = Vector3::BetweenPointRotate(player->GetWorldPos(), position);
+	rotation.x = Easing::InOutCubic(stageClearMoveBeforeRota.x, playerVecRota.x, time);
+	rotation.y = Easing::InOutCubic(stageClearMoveBeforeRota.y, playerVecRota.y, time);
+	rotation.z = Easing::InOutCubic(stageClearMoveBeforeRota.z, playerVecRota.z, time);
 
 	//自機が停止状態に入ったら次のフェーズへ
 	if (player->GetStageClearModePhase() == Stage01Player::StageClearModePhase::Stay) {
@@ -236,16 +224,8 @@ void Stage01GameCamera::StageClearPlayerZoom()
 
 	//自機の中心座標からの距離
 	const Vector3 distancePos = { 0, 0.5f, -10.0f };
-	//平行移動行列の計算
-	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
-	//自機の後ろワールド行列
-	XMMATRIX playerBackMatWorld;
-	playerBackMatWorld = XMMatrixIdentity();	//変形をリセット
-	playerBackMatWorld *= matTrans;	//ワールド行列に平行移動を反映
-	//自機のワールド行列をかける
-	playerBackMatWorld *= player->GetMatWorld();
 	//自機の後ろ座標を取得
-	Vector3 playerBack = { playerBackMatWorld.r[3].m128_f32[0], playerBackMatWorld.r[3].m128_f32[1], playerBackMatWorld.r[3].m128_f32[2] };
+	const Vector3 playerBack = Vector3::LocalTranslation(distancePos, player->GetMatWorld());
 
 	//自機の後ろにズームする
 	position.x = Easing::InOutQuad(stageClearMoveBeforePos.x, playerBack.x, time);
@@ -253,12 +233,7 @@ void Stage01GameCamera::StageClearPlayerZoom()
 	position.z = Easing::InOutQuad(stageClearMoveBeforePos.z, playerBack.z, time);
 
 	//自機の方向を向く
-	const Vector3 playerCameraVec = player->GetWorldPos() - position;
-	rotation.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
-	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
+	rotation = Vector3::BetweenPointRotate(player->GetWorldPos(), position);
 
 	//指定した時間になったら次のフェーズへ
 	if (stageClearModeTimer >= zoomTime) {
@@ -294,30 +269,18 @@ void Stage01GameCamera::StageClearPlayerSideMove()
 	const float moveTime = 300;
 
 	//自機の方向を向く
-	const Vector3 playerCameraVec = player->GetWorldPos() - position;
-	rotation.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
-	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
+	rotation = Vector3::BetweenPointRotate(player->GetWorldPos(), position);
 
 	//タイマー更新
 	stageClearModeTimer++;
-	float time = stageClearModeTimer / moveTime;
+	const float time = stageClearModeTimer / moveTime;
 
 	//自機の中心座標からの距離
 	const Vector3 distancePos = { 10.0f, 0, -4.0f };
-	//平行移動行列の計算
-	XMMATRIX matTrans = XMMatrixTranslation(distancePos.x, distancePos.y, distancePos.z);
-	//自機横ワールド行列
-	XMMATRIX playerSideMatWorld;
-	playerSideMatWorld = XMMatrixIdentity();	//変形をリセット
-	playerSideMatWorld *= matTrans;	//ワールド行列に平行移動を反映
-	//自機のワールド行列をかける
-	playerSideMatWorld *= player->GetMatWorld();
 	//自機横座標を取得(Y座標は移動前より少し上)
 	const float upNum = 0.5f;
-	Vector3 playerSide = { playerSideMatWorld.r[3].m128_f32[0], stageClearMoveBeforePos.y + upNum, playerSideMatWorld.r[3].m128_f32[2] };
+	Vector3 playerSide = Vector3::LocalTranslation(distancePos, player->GetMatWorld());
+	playerSide.y = stageClearMoveBeforePos.y;
 
 	//自機横に移動する
 	position.x = Easing::OutQuad(stageClearMoveBeforePos.x, playerSide.x, time);
@@ -333,10 +296,5 @@ void Stage01GameCamera::StageClearPlayerSideMove()
 void Stage01GameCamera::StageClearPlayerKeepLook()
 {
 	//自機の方向を向く
-	const Vector3 playerCameraVec = player->GetWorldPos() - position;
-	rotation.y = XMConvertToDegrees(std::atan2(playerCameraVec.x, playerCameraVec.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
-	Vector3 playerCameraVecZ = MatrixTransformDirection(playerCameraVec, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-playerCameraVecZ.y, playerCameraVecZ.z));
+	rotation = Vector3::BetweenPointRotate(player->GetWorldPos(), position);
 }

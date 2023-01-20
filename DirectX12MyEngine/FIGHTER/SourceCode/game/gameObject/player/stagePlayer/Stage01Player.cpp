@@ -248,11 +248,7 @@ void Stage01Player::StageClearReturn()
 	position += stageClearMoveVelocity;
 
 	//進行方向を向くようにする
-	rotation.y = XMConvertToDegrees(std::atan2(stageClearMoveVelocity.x, stageClearMoveVelocity.z));
-	XMMATRIX matRot;
-	matRot = XMMatrixRotationY(XMConvertToRadians(-rotation.y));
-	Vector3 velocityZ = MatrixTransformDirection(stageClearMoveVelocity, matRot);
-	rotation.x = XMConvertToDegrees(std::atan2(-velocityZ.y, velocityZ.z));
+	rotation = Vector3::VelocityRotate(stageClearMoveVelocity);
 
 	//回転角度Zをセット
 	const float downward = 180;

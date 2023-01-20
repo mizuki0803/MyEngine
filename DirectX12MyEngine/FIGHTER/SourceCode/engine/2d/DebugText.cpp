@@ -13,8 +13,7 @@ DebugText* DebugText::GetInstance()
 DebugText::~DebugText()
 {
 	//全てのスプライトデータについて
-	for (int i = 0; i < _countof(sprites); i++)
-	{
+	for (int i = 0; i < _countof(sprites); i++) {
 		delete sprites[i];
 	}
 }
@@ -22,8 +21,7 @@ DebugText::~DebugText()
 void DebugText::Initialize(UINT texnumber)
 {
 	//全てのスプライトデータについて
-	for (int i = 0; i < _countof(sprites); i++)
-	{
+	for (int i = 0; i < _countof(sprites); i++) {
 		//スプライトを生成する(アンカーポイントを{ 0, 0 }に設定)
 		sprites[i] = Sprite::Create(texnumber, { 0, 0 });
 	}
@@ -32,21 +30,17 @@ void DebugText::Initialize(UINT texnumber)
 void DebugText::Print(const std::string& text, float x, float y, float scale)
 {
 	//全ての文字について
-	for (int i = 0; i < text.size(); i++)
-	{
-		//最大文字数超過
-		if (spriteIndex >= maxCharCount)
-		{
-			break;
-		}
+	for (int i = 0; i < text.size(); i++) {
+		//最大文字数を超過していたら抜ける
+		if (spriteIndex >= maxCharCount) { break; }
 
 		//1文字取り出す(※ASCIIコードでしか成り立たない)
 		const unsigned char& character = text[i];
 
 		//ASCIIコードの1段分飛ばした番号を計算
-		int fontIndex = character - 32;
-		if (character >= 0x7f)
-		{
+		const int ASCIISkipNum = 32;
+		int fontIndex = character - ASCIISkipNum;
+		if (character >= 0x7f) {
 			fontIndex = 0;
 		}
 
@@ -69,11 +63,11 @@ void DebugText::Print(const std::string& text, float x, float y, float scale)
 void DebugText::DrawAll()
 {
 	//全ての文字のスプライトについて
-	for (int i = 0; i < spriteIndex; i++)
-	{
+	for (int i = 0; i < spriteIndex; i++) {
 		//スプライト描画
 		sprites[i]->Draw();
 	}
 
+	//文字数をリセットしておく
 	spriteIndex = 0;
 }

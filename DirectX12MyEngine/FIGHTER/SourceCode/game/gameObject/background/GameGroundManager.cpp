@@ -4,6 +4,7 @@
 
 BasePlayer* GameGroundManager::player = nullptr;
 BaseGameCamera* GameGroundManager::gameCamera = nullptr;
+const float GameGroundManager::modelScaleMagnification = 100.0f;
 
 GameGroundManager* GameGroundManager::Create(ObjModel* model)
 {
@@ -33,7 +34,8 @@ bool GameGroundManager::Initialize(ObjModel* model)
 	for (int i = 0; i < 2; i++) {
 		grounds[i].reset(Ground::Create(model));
 	}
-	grounds[1]->SetPosition({ 0, 0, grounds[0]->GetPosition().z + grounds[0]->GetScale().z * 100 });
+	//2–‡–Ú‚Ì’n–Ê‚Íˆê–‡–Ú‚É’n–Ê‚ÌŒã‚ë‚ÉÚ’n
+	grounds[1]->SetPosition({ 0, 0, grounds[0]->GetPosition().z + grounds[0]->GetScale().z * modelScaleMagnification });
 
 	return true;
 }
@@ -68,9 +70,9 @@ void GameGroundManager::SwapGroundPos()
 	const float flontOfScreenDiffence = 50;
 	const float swapPos = gameCamera->GetPosition().z - flontOfScreenDiffence;
 	for (int i = 0; i < 2; i++) {
-		if (grounds[i]->GetPosition().z + grounds[i]->GetScale().z * 100 <= swapPos) {
-			if (i == 0) { grounds[0]->SetPosition({ 0, 0, grounds[1]->GetPosition().z + grounds[1]->GetScale().z * 100 }); }
-			else if (i == 1) { grounds[1]->SetPosition({ 0, 0, grounds[0]->GetPosition().z + grounds[0]->GetScale().z * 100 }); }
+		if (grounds[i]->GetPosition().z + grounds[i]->GetScale().z * modelScaleMagnification <= swapPos) {
+			if (i == 0) { grounds[0]->SetPosition({ 0, 0, grounds[1]->GetPosition().z + grounds[1]->GetScale().z * modelScaleMagnification }); }
+			else if (i == 1) { grounds[1]->SetPosition({ 0, 0, grounds[0]->GetPosition().z + grounds[0]->GetScale().z * modelScaleMagnification }); }
 		}
 	}
 }

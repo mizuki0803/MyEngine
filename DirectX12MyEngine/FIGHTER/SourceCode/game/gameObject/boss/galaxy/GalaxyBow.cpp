@@ -109,7 +109,7 @@ void GalaxyBow::UpdateBulletShotPos()
 	const Vector3 distancePos = { 0, 0, -(scale.z * parent->GetScale().z) / 4 };
 
 	//’e”­ËÀ•W‚ğæ“¾
-	bulletShotPos = LocalTranslation(distancePos, matWorld);
+	bulletShotPos = Vector3::LocalTranslation(distancePos, matWorld);
 }
 
 void GalaxyBow::AttackModeStart()

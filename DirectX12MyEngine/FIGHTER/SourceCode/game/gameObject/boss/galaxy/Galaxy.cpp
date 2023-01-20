@@ -50,7 +50,9 @@ bool Galaxy::Initialize(const Vector3& bornPos, const Vector3& basePos)
 			{ 0, propellerRota, 0 }, propellerRotSpped, propellerSize[i]));
 		propellers.push_back(std::move(newPropeller));
 
-		propellerRota += 120;
+		//次のプロペラを回転させる
+		const float rotNum = 120;
+		propellerRota += rotNum;
 	}
 	//船首生成
 	bow.reset(GalaxyBow::Create(body.get(), { 0, 0.05f, -2.75f }));
@@ -200,7 +202,8 @@ bool Galaxy::AppearUICreate()
 	if (!(phase == Phase::Appear)) { return false; }
 
 	//ボス座標が指定したラインよりこちら側になったらボス名表示UI生成
-	const float bossNameUICreatePos = bornPos.z - 100;
+	const float bossNameUICreateBornPosDistance = 100;
+	const float bossNameUICreatePos = bornPos.z - bossNameUICreateBornPosDistance;
 	if (body->GetPosition().z <= bossNameUICreatePos && !bossNameUI) {
 		bossNameUI.reset(BossNameUI::Create(1));
 	}

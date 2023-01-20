@@ -58,8 +58,7 @@ void ObjObject3d::CreatePipeline()
 		0,
 		&vsBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -84,8 +83,7 @@ void ObjObject3d::CreatePipeline()
 		0,
 		&psBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -242,8 +240,7 @@ void ObjObject3d::CreateLightViewPipeline()
 		0,
 		&vsBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -268,8 +265,7 @@ void ObjObject3d::CreateLightViewPipeline()
 		0,
 		&psBlob, &errorBlob);
 
-	if (FAILED(result))
-	{
+	if (FAILED(result)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -517,15 +513,13 @@ void ObjObject3d::Update()
 	matWorld *= matTrans;	//ワールド行列に平行移動を反映
 
 	//親オブジェクトがあれば
-	if (parent != nullptr)
-	{
+	if (parent != nullptr) {
 		//親オブジェクトのワールド行列をかける
 		matWorld *= parent->matWorld;
 	}
 
 	//カメラに追従する場合
-	if (isCameraFollow)
-	{
+	if (isCameraFollow) {
 		//カメラのワールド行列をかける
 		matWorld *= camera->GetMatWorld();
 	}
@@ -539,8 +533,7 @@ void ObjObject3d::Update()
 
 	//定数バッファへのデータ転送(カメラ視点)
 	ConstBufferDataB0* constMap = nullptr;
-	if (SUCCEEDED(constBuffB0->Map(0, nullptr, (void**)&constMap)))
-	{
+	if (SUCCEEDED(constBuffB0->Map(0, nullptr, (void**)&constMap))) {
 		constMap->color = color;
 		constMap->viewproj = matViewProjection;
 		constMap->world = matWorld;
@@ -553,8 +546,7 @@ void ObjObject3d::Update()
 
 	//定数バッファへのデータ転送(光源カメラ視点)
 	ConstBufferDataLightViewB0* constMapLightView = nullptr;
-	if (SUCCEEDED(constBuffLightViewB0->Map(0, nullptr, (void**)&constMapLightView)))
-	{
+	if (SUCCEEDED(constBuffLightViewB0->Map(0, nullptr, (void**)&constMapLightView))) {
 		constMapLightView->viewproj = matLightViewProjection;
 		constMapLightView->world = matWorld;
 		constMapLightView->cameraPos = lightCameraPos;
@@ -563,8 +555,7 @@ void ObjObject3d::Update()
 
 	//定数バッファへのデータ転送(頭上からの光源カメラ視点)
 	ConstBufferDataTopLightViewB0* constMapTopLightView = nullptr;
-	if (SUCCEEDED(constBuffTopLightViewB0->Map(0, nullptr, (void**)&constMapTopLightView)))
-	{
+	if (SUCCEEDED(constBuffTopLightViewB0->Map(0, nullptr, (void**)&constMapTopLightView))) {
 		constMapTopLightView->viewproj = matTopLightViewProjection;
 		constMapTopLightView->world = matWorld;
 		constMapTopLightView->cameraPos = topLightCameraPos;
@@ -574,8 +565,8 @@ void ObjObject3d::Update()
 
 void ObjObject3d::Draw()
 {
-	//モデルがセットされていなければ描画をスキップ
-	if (model == nullptr) return;
+	//モデルがセットされていなければ描画をスキップして抜ける
+	if (model == nullptr) { return; }
 
 	//定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
@@ -589,8 +580,8 @@ void ObjObject3d::Draw()
 
 void ObjObject3d::DrawLightCameraView()
 {
-	//モデルがセットされていなければ描画をスキップ
-	if (model == nullptr) return;
+	//モデルがセットされていなければ描画をスキップして抜ける
+	if (model == nullptr) { return; }
 
 	//定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffLightViewB0->GetGPUVirtualAddress());
@@ -604,8 +595,8 @@ void ObjObject3d::DrawLightCameraView()
 
 void ObjObject3d::DrawTopLightCameraView()
 {
-	//モデルがセットされていなければ描画をスキップ
-	if (model == nullptr) return;
+	//モデルがセットされていなければ描画をスキップして抜ける
+	if (model == nullptr) { return; }
 
 	//定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffTopLightViewB0->GetGPUVirtualAddress());

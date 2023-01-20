@@ -17,7 +17,8 @@ void Stage02SortieCamera::Initialize()
 	Camera::Initialize();
 
 	//カメラの初期値をセット
-	eye = { 35, 1, 0 };
+	const Vector3 startEyePos = { 35, 1, 0 };
+	eye = startEyePos;
 	moveBeforeEye = eye;
 }
 
@@ -39,8 +40,8 @@ void Stage02SortieCamera::LookPlayer()
 	const float time = cameraActionTimer / lookTime;
 
 	//カメラの注視点を自機方向に移動させる
-	const Vector3 playerPos = player->GetPosition();
 	const Vector3 startTargetPos = { 0, 1, eye.z + 60 };
+	const Vector3 playerPos = player->GetPosition();
 	target.x = Easing::InOutQuad(startTargetPos.x, playerPos.x, time);
 	target.y = Easing::InOutQuad(startTargetPos.y, playerPos.y, time);
 	target.z = Easing::InOutQuad(startTargetPos.z, playerPos.z, time);

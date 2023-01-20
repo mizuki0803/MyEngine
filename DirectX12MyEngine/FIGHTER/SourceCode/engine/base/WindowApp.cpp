@@ -3,8 +3,7 @@
 LRESULT WindowApp::windowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	//メッセージを分岐
-	switch (msg)
-	{
+	switch (msg) {
 	case WM_DESTROY:		//ウインドウが破棄された
 		PostQuitMessage(0);	//OSに対して、アプリの終了を伝える
 		return 0;
@@ -56,15 +55,13 @@ bool WindowApp::MessageProc()
 	MSG msg{};	//メッセージ
 
 	//メッセージがある？
-	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-	{
+	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 		TranslateMessage(&msg);	//キー入力メッセージの処理
 		DispatchMessage(&msg);	//プロシージャにメッセージを送る
 	}
 
 	//×ボタンで終了メッセージが来たらゲームループを抜ける
-	if (msg.message == WM_QUIT)
-	{
+	if (msg.message == WM_QUIT) {
 		return true;
 	}
 

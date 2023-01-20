@@ -137,7 +137,7 @@ void TitlePlayer::UpdateJetPos()
 	const Vector3 distancePos = { 0, -0.25f, -1.2f };
 
 	//ジェット発射座標を取得
-	jetPos = LocalTranslation(distancePos, matWorld);
+	jetPos = Vector3::LocalTranslation(distancePos, matWorld);
 }
 
 void TitlePlayer::UpdateWingPos()
@@ -146,9 +146,9 @@ void TitlePlayer::UpdateWingPos()
 	const Vector3 leftDistancePos = { -2.0f, -0.2f, -0.9f };
 	const Vector3 rightDistancePos = { 2.0f, -0.2f, -0.9f };
 	//左翼座標を取得
-	const Vector3 leftWingPos = LocalTranslation(leftDistancePos, matWorld);
+	const Vector3 leftWingPos = Vector3::LocalTranslation(leftDistancePos, matWorld);
 	//右翼座標を取得
-	const Vector3 rightWingPos = LocalTranslation(rightDistancePos, matWorld);
+	const Vector3 rightWingPos = Vector3::LocalTranslation(rightDistancePos, matWorld);
 
 	vaporEffect->Update(leftWingPos, rightWingPos);
 }

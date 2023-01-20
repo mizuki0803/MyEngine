@@ -114,7 +114,8 @@ void GalaxyBody::Dead()
 	rotation.x += rotSpeed;
 
 	//è≠Çµâ∫Ç…à⁄ìÆ
-	position.y -= 0.05f;
+	const float downSpeed = 0.05f;
+	position.y -= downSpeed;
 }
 
 void GalaxyBody::DamageMode()
