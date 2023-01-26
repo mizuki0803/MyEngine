@@ -37,7 +37,7 @@ bool BossWarning::Initialize()
 
 
 	//左上座標をセット
-	Vector2 leftTop[2] = { {}, {0, 567} };
+	const Vector2 leftTop[2] = { {}, {0, 567} };
 	for (int i = 0; i < 2; i++) {
 		bossWarningSprites[i].reset(BossWarningSprites::Create(leftTop[i]));
 	}
