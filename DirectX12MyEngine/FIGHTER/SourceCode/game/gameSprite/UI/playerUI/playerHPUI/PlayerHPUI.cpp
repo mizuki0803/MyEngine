@@ -23,11 +23,11 @@ bool PlayerHPUI::Initialize(const Vector2& position, const int startHP, const in
 {
 	//HPバー生成
 	const Vector2 hpBarPosition = position;
-	hpBar.reset(PlayerHPBar::Create(SpriteTextureLoader::PlayerHPGaugeIn, hpBarPosition, startHP, maxHP));
+	hpBar.reset(PlayerHPBar::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::PlayerHPGaugeIn), hpBarPosition, startHP, maxHP));
 	//HPバーフレーム生成
 	const float posDiff = 3.0f;	//HPバーの座標との差分
 	const Vector2 hpFramePosition = { hpBarPosition.x - posDiff, hpBarPosition.y - posDiff };
-	hpFrame.reset(PlayerHPFrame::Create(SpriteTextureLoader::PlayerHPGaugeOut, hpFramePosition));
+	hpFrame.reset(PlayerHPFrame::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::PlayerHPGaugeOut), hpFramePosition));
 
     return true;
 }

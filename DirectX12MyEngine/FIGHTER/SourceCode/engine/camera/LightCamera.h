@@ -8,6 +8,8 @@ public: //ƒƒ“ƒoŠÖ”
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
+	/// <param name="eye">‹“_</param>
+	/// <param name="target">’‹“_</param>
 	void Initialize(const Vector3& eye, const Vector3& target = { 0, 0, 0 });
 
 	/// <summary>

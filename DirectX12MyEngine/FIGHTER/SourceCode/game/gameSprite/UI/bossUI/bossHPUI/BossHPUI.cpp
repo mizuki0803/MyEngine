@@ -28,15 +28,15 @@ bool BossHPUI::Initialize(const Vector2& position, const int maxHP)
 {
 	//HPUIロゴ生成
 	const Vector2 hpLogoPosition = position;
-	hpLogo.reset(BossHPLogo::Create(SpriteTextureLoader::BossHPLogo, hpLogoPosition));
+	hpLogo.reset(BossHPLogo::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::BossHPLogo), hpLogoPosition));
 	//HPバーフレーム生成
 	const Vector2 posDiffLogo = { 13.0f, 38.0f };
 	const Vector2 hpFramePosition = { hpLogoPosition.x + posDiffLogo.x, hpLogoPosition.y + posDiffLogo.y };
-	hpFrame.reset(BossHPFrame::Create(SpriteTextureLoader::BossHPGaugeOut, hpFramePosition));
+	hpFrame.reset(BossHPFrame::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::BossHPGaugeOut), hpFramePosition));
 	//HPUIバー生成
 	const float posDiffFrame = 3.0f;	//HP枠の座標との差分
 	const Vector2 hpBarPosition = { hpFramePosition.x + posDiffFrame, hpFramePosition.y + posDiffFrame };
-	hpBar.reset(BossHPBar::Create(SpriteTextureLoader::BossHPGaugeIn, hpBarPosition, maxHP));
+	hpBar.reset(BossHPBar::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::BossHPGaugeIn), hpBarPosition, maxHP));
 
 	return true;
 }

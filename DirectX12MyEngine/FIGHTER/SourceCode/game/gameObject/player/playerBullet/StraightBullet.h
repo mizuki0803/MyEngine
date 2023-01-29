@@ -11,6 +11,9 @@ public: //静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
+	/// <param name="position">座標</param>
+	/// <param name="velocity">速度</param>
+	/// <param name="size">大きさ</param>
 	/// <returns>直進弾</returns>
 	static StraightBullet* Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float size = 1.0f);
 
@@ -22,6 +25,9 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
+	/// <param name="subjectPos">衝突した相手の座標</param>
+	/// <param name="subjectSize">衝突した相手の大きさ</param>
+	/// <param name="isToDamage">ダメージを喰らわせたか</param>
 	void OnCollision(const Vector3& subjectPos, float subjectSize, bool isToDamage) override;
 
 private: //メンバ関数

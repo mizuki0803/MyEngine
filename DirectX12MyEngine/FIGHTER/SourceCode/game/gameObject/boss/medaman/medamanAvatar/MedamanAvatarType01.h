@@ -10,6 +10,8 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="parent">親オブジェクト</param>
+	/// <param name="position">座標</param>
 	/// <returns>メダマーン(分身：タイプ01)</returns>
 	static MedamanAvatarType01* Create(ObjObject3d* parent, const Vector3& position);
 

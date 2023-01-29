@@ -10,15 +10,21 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="showPos">表示座標</param>
+	/// <param name="isMoveRight">右向きに移動するか</param>
 	/// <returns>警告ライン</returns>
-	static WarningLine* Create(UINT texNumber, const Vector2& showPos, const bool isMoveRight);
+	static WarningLine* Create(const Texture& texture, const Vector2& showPos, const bool isMoveRight);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="showPos">表示座標</param>
+	/// <param name="isMoveRight">右向きに移動するか</param>
 	/// <returns>成否</returns>
-	bool Initialize(UINT texNumber, const Vector2& showPos, const bool isMoveRight);
+	bool Initialize(const Texture& texture, const Vector2& showPos, const bool isMoveRight);
 
 	/// <summary>
 	/// 開始時に必要な情報をセット

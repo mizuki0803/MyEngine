@@ -1,6 +1,6 @@
 #include "PlayerFarReticle.h"
 
-PlayerFarReticle* PlayerFarReticle::Create(UINT texNumber, float distance, const Vector2& normalSize, const Vector2& chargeModeSize)
+PlayerFarReticle* PlayerFarReticle::Create(const Texture& texture, float distance, const Vector2& normalSize, const Vector2& chargeModeSize)
 {
 	//自機付属の2Dレティクル(遠)簡易作成クラスのインスタンスを生成
 	PlayerFarReticle* playerFarReticle = new PlayerFarReticle();
@@ -9,7 +9,7 @@ PlayerFarReticle* PlayerFarReticle::Create(UINT texNumber, float distance, const
 	}
 
 	// 初期化
-	if (!playerFarReticle->Initialize(texNumber, distance, normalSize, chargeModeSize)) {
+	if (!playerFarReticle->Initialize(texture, distance, normalSize, chargeModeSize)) {
 		delete playerFarReticle;
 		assert(0);
 		return nullptr;
@@ -18,10 +18,10 @@ PlayerFarReticle* PlayerFarReticle::Create(UINT texNumber, float distance, const
 	return playerFarReticle;
 }
 
-bool PlayerFarReticle::Initialize(UINT texNumber, float distance, const Vector2& normalSize, const Vector2& chargeModeSize)
+bool PlayerFarReticle::Initialize(const Texture& texture, float distance, const Vector2& normalSize, const Vector2& chargeModeSize)
 {
 	reticle3d.reset(Reticle3D::Create(nullptr, distance));
-	reticle2d.reset(PlayerFarReticle2D::Create(texNumber, normalSize, chargeModeSize));
+	reticle2d.reset(PlayerFarReticle2D::Create(texture, normalSize, chargeModeSize));
 
 	return true;
 }

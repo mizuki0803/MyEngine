@@ -25,6 +25,8 @@ public: //メンバ関数
 	/// <summary>
 	/// シェイク開始
 	/// </summary>
+	/// <param name="shakePower">シェイクの強さ</param>
+	/// <param name="shakeTime">シェイクする時間</param>
 	void ShakeStart(const float shakePower = 20, const float shakeTime = 30);
 
 	//getter
@@ -38,12 +40,13 @@ protected: //メンバ関数
 	/// <summary>
 	/// ワールド行列を更新
 	/// </summary>
-	/// <param name="matTrans"></param>
+	/// <param name="matTrans">平行移動行列</param>
 	void UpdateMatWorld(const XMMATRIX& matTrans);
 
 	/// <summary>
 	/// ゆらゆらを加算したワールド行列を更新
 	/// </summary>
+	/// <param name="matTrans">平行移動行列</param>
 	void UpdateSwayMatWorld(const XMMATRIX& matTrans);
 
 	/// <summary>
@@ -54,6 +57,7 @@ protected: //メンバ関数
 	/// <summary>
 	/// カメラ動き
 	/// </summary>
+	/// <param name="player">自機</param>
 	void CameraAction(BasePlayer* player);
 
 	/// <summary>
@@ -64,6 +68,7 @@ protected: //メンバ関数
 	/// <summary>
 	/// 回転
 	/// </summary>
+	/// <param name="playerRotation">自機回転角</param>
 	void Rotate(const Vector3& playerRotation);
 
 	/// <summary>
@@ -74,11 +79,13 @@ protected: //メンバ関数
 	/// <summary>
 	/// 移動
 	/// </summary>
+	/// <param name="player">自機</param>
 	void Move(BasePlayer* player);
 
 	/// <summary>
 	/// プレイヤーに合わせてノックバックする
 	/// </summary>
+	/// <param name="player">自機</param>
 	void Knockback(BasePlayer* player);
 
 	/// <summary>

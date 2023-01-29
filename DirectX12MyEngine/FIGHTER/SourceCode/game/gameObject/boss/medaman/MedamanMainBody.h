@@ -33,6 +33,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="basePos">基準座標</param>
 	/// <returns>メダマーン(本体)</returns>
 	static MedamanMainBody* Create(const Vector3& basePos);
 
@@ -58,6 +59,8 @@ public: //メンバ関数
 	/// ダメージを喰らう
 	/// </summary>
 	/// <param name="attackPower">攻撃力</param>
+	/// <param name="collisionPos">衝突座標</param>
+	/// <param name="subjectVel">衝突した相手とのベクトル</param>
 	void Damage(int attackPower, const Vector3& collisionPos, const Vector3& subjectVel);
 
 	/// <summary>
@@ -79,6 +82,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 攻撃内容:追従
 	/// </summary>
+	/// <param name="playerPosition">自機座標</param>
 	void AttackTypeTracking(const Vector3& playerPosition);
 
 	/// <summary>
@@ -99,6 +103,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 攻撃内容:分身ガトリング砲
 	/// </summary>
+	/// <param name="playerPosition">自機座標</param>
 	void AttackTypeAvatarGatling(const Vector3& playerPosition);
 
 	/// <summary>
@@ -133,6 +138,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 死亡後基準位置に戻る
 	/// </summary>
+	/// <param name="time">イージング用(0～1)の数値</param>
 	void DeadBasePosBack(const float time);
 
 	/// <summary>
@@ -160,11 +166,15 @@ private: //メンバ関数
 	/// <summary>
 	/// 通常弾発射
 	/// </summary>
+	/// <param name="scale">弾の大きさ</param>
+	/// <param name="bulletSpeed">弾の速度</param>
 	void Fire(const float scale, const float bulletSpeed);
 
 	/// <summary>
 	/// チャージ弾発射
 	/// </summary>
+	/// <param name="scale">弾の大きさ</param>
+	/// <param name="bulletSpeed">弾の速度</param>
 	void ChargeBulletFire(const float scale, const float bulletSpeed);
 
 	/// <summary>
@@ -191,6 +201,7 @@ private: //メンバ関数
 	/// <summary>
 	/// ダメージ爆発
 	/// </summary>
+	/// <param name="position">座標</param>
 	void DamageExplosion(const Vector3& position);
 
 	/// <summary>

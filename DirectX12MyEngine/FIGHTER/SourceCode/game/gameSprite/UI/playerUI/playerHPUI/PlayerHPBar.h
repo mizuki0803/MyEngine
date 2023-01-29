@@ -10,15 +10,23 @@ public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="position">座標</param>
+	/// <param name="startHP">開始時のHP</param>
+	/// <param name="maxHP">最大HP</param>
 	/// <returns>プレイヤー用HPバー</returns>
-	static PlayerHPBar* Create(UINT texNumber, const Vector2& position, const int startHP, const int maxHP);
+	static PlayerHPBar* Create(const Texture& texture, const Vector2& position, const int startHP, const int maxHP);
 
 public: //メンバ関数
 	/// <summary>
-	/// 更新
+	/// s初期化
 	/// </summary>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="position">座標</param>
+	/// <param name="startHP">開始時のHP</param>
+	/// <param name="maxHP">最大HP</param>
 	/// <returns>成否</returns>
-	bool Initialize(UINT texNumber, const Vector2& position, const int startHP, const int maxHP);
+	bool Initialize(const Texture& texture, const Vector2& position, const int startHP, const int maxHP);
 
 	/// <summary>
 	/// 更新

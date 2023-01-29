@@ -10,7 +10,7 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 
-Sprite* Sprite::Create(UINT texNumber, const Vector2& anchorpoint, bool isFlipX, bool isFlipY)
+Sprite* Sprite::Create(const Texture& texture, const Vector2& anchorpoint, bool isFlipX, bool isFlipY)
 {
 	//インスタンスを生成
 	Sprite* instance = new Sprite();
@@ -19,7 +19,7 @@ Sprite* Sprite::Create(UINT texNumber, const Vector2& anchorpoint, bool isFlipX,
 	}
 
 	// 初期化
-	if (!instance->Initialize(texNumber, anchorpoint, isFlipX, isFlipY)) {
+	if (!instance->Initialize(texture, anchorpoint, isFlipX, isFlipY)) {
 		delete instance;
 		assert(0);
 		return nullptr;
@@ -28,9 +28,9 @@ Sprite* Sprite::Create(UINT texNumber, const Vector2& anchorpoint, bool isFlipX,
 	return instance;
 }
 
-bool Sprite::Initialize(UINT texNumber, const Vector2& anchorpoint, bool isFlipX, bool isFlipY)
+bool Sprite::Initialize(const Texture& texture, const Vector2& anchorpoint, bool isFlipX, bool isFlipY)
 {
-	this->texNumber = texNumber;
+	this->texture = texture;
 	this->anchorpoint = anchorpoint;
 	this->isFlipX = isFlipX;
 	this->isFlipY = isFlipY;
@@ -48,9 +48,9 @@ bool Sprite::Initialize(UINT texNumber, const Vector2& anchorpoint, bool isFlipX
 	};
 
 	//指定番号の画像が読み込み済みなら
-	if (spriteCommon->GetTexBuff(texNumber)) {
+	if (texture.texBuff.Get()) {
 		//テクスチャ情報取得
-		D3D12_RESOURCE_DESC resDesc = spriteCommon->GetTexBuff(texNumber)->GetDesc();
+		D3D12_RESOURCE_DESC resDesc = texture.texBuff.Get()->GetDesc();
 		//スプライトの大きさを画像の解像度に合わせる
 		size = { (float)resDesc.Width, (float)resDesc.Height };
 		texSize = { (float)resDesc.Width, (float)resDesc.Height };
@@ -136,9 +136,9 @@ void Sprite::TransferVertexBuffer()
 	vertices[RT].pos = { right, top,    0.0f };	//右上
 
 	//指定番号の画像が読み込み済みなら
-	if (spriteCommon->GetTexBuff(texNumber)) {
+	if (texture.texBuff.Get()) {
 		//テクスチャ情報取得
-		D3D12_RESOURCE_DESC resDesc = spriteCommon->GetTexBuff(texNumber)->GetDesc();
+		D3D12_RESOURCE_DESC resDesc = texture.texBuff.Get()->GetDesc();
 
 		float tex_left = texLeftTop.x / resDesc.Width;
 		float tex_right = (texLeftTop.x + texSize.x) / resDesc.Width;
@@ -192,7 +192,7 @@ void Sprite::Draw()
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
 	//シェーダリソースビューをセット
-	DescHeapSRV::SetGraphicsRootDescriptorTable(1, texNumber);
+	DescHeapSRV::SetGraphicsRootDescriptorTable(1, texture.texNumber);
 
 	//ポリゴンの描画(4頂点で四角形)
 	cmdList->DrawInstanced(4, 1, 0, 0);

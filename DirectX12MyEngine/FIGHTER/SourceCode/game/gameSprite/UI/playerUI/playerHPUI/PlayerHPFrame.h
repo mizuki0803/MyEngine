@@ -10,9 +10,10 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="position">座標</param>
 	/// <returns>プレイヤー用HPバーフレーム</returns>
-	static PlayerHPFrame* Create(UINT texNumber, const Vector2& position);
+	static PlayerHPFrame* Create(const Texture& texture, const Vector2& position);
 
 public: //メンバ関数
 	/// <summary>

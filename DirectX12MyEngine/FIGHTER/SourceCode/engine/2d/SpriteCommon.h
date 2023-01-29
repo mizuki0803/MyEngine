@@ -18,10 +18,6 @@ private: //エイリアス
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
-public:
-	//テクスチャの最大枚数
-	static const int spriteSRVCount = 512;
-
 private: //シングルトン化
 	//コンストラクタを隠蔽
 	SpriteCommon() = default;
@@ -48,19 +44,12 @@ public: //メンバ関数
 	/// <param name="window_width">ウインドウ横幅</param>
 	/// <param name="window_height">ウインドウ縦幅</param>
 	/// <param name="directoryPath">ディレクトリパス</param>
-	void Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height, const std::string& directoryPath = "Resources/spriteTexture/");
+	void Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height);
 
 	/// <summary>
 	/// 描画前処理	
 	/// </summary>
 	void DrawPrev();
-
-	/// <summary>
-	/// テクスチャ読み込み
-	/// </summary>
-	/// <param name="texNumber">テクスチャ番号</param>
-	/// <param name="filename">テクスチャファイル名</param>
-	void LoadTexture(UINT texNumber, const std::string& filename);
 
 private: //メンバ関数
 	/// <summary>
@@ -69,13 +58,6 @@ private: //メンバ関数
 	void CreatePipeline();
 
 public: //getter
-	/// <summary>
-	/// テクスチャ取得
-	/// </summary>
-	/// <param name="texNumber">テクスチャ番号</param>
-	/// <returns>テクスチャ</returns>
-	ID3D12Resource* GetTexBuff(int texNumber);
-
 	/// <summary>
 	/// デバイス取得
 	/// </summary>
@@ -109,8 +91,4 @@ private: //メンバ変数
 	PipelineSet pipelineSet;
 	//射影行列
 	XMMATRIX matProjection;
-	//テクスチャの配列
-	Texture texture[spriteSRVCount];
-	//テクスチャ格納ディレクトリ
-	std::string directoryPath;
 };

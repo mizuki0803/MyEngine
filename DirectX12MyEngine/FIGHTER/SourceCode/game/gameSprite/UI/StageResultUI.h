@@ -27,6 +27,8 @@ public: //ƒƒ“ƒoŠÖ”
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
+	/// <param name="enemyDefeatNum">“GŒ‚”j”</param>
+	/// <param name="enemyDefeatRank">ƒ‰ƒ“ƒN</param>
 	/// <returns>¬”Û</returns>
 	bool Initialize(const int enemyDefeatNum, const int enemyDefeatRank);
 

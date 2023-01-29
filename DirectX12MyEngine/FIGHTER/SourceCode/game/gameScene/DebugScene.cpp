@@ -64,11 +64,11 @@ void DebugScene::Initialize()
 
 	//objからモデルデータを読み込む
 	modelMan.reset(ObjModel::LoadFromOBJ("man"));
-	modelSkydome.reset(ObjModel::LoadFromOBJ("skydome"));
+	modelSkydome.reset(ObjModel::LoadFromOBJ("skydomeSpace"));
 	modelGround.reset(ObjModel::LoadFromOBJ("ground"));
 	modelSphere.reset(ObjModel::LoadFromOBJ("sphere", true));
 	modelFighter.reset(ObjModel::LoadFromOBJ("fighter", true));
-	modelBuilding.reset(ObjModel::LoadFromOBJ("mountain"));
+	modelBuilding.reset(ObjModel::LoadFromOBJ("building01"));
 
 	//objオブジェクト生成
 	objMan.reset(ObjObject3d::Create(modelMan.get()));

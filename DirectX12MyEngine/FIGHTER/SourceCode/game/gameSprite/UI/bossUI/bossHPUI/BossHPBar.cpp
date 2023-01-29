@@ -1,7 +1,7 @@
 #include "BossHPBar.h"
 #include "Easing.h"
 
-BossHPBar* BossHPBar::Create(UINT texNumber, const Vector2& position, const int maxHP)
+BossHPBar* BossHPBar::Create(const Texture& texture, const Vector2& position, const int maxHP)
 {
 	//HPバーのインスタンスを生成
 	BossHPBar* bossHPBar = new BossHPBar();
@@ -10,7 +10,7 @@ BossHPBar* BossHPBar::Create(UINT texNumber, const Vector2& position, const int 
 	}
 
 	// 初期化
-	if (!bossHPBar->Initialize(texNumber, { 0.0f, 0.0f }, false, false)) {
+	if (!bossHPBar->Initialize(texture, { 0.0f, 0.0f }, false, false)) {
 		delete bossHPBar;
 		assert(0);
 		return nullptr;

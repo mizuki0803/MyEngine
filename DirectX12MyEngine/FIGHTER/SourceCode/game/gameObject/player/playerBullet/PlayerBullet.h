@@ -28,6 +28,9 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
+	/// <param name="subjectPos">衝突した相手の座標</param>
+	/// <param name="subjectSize">衝突した相手の大きさ</param>
+	/// <param name="isToDamage">ダメージを喰らわせたか</param>
 	virtual void OnCollision(const Vector3& subjectPos, float subjectSize, bool isToDamage = true) = 0;
 
 	//getter

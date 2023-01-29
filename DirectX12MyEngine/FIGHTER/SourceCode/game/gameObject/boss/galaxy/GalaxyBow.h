@@ -21,6 +21,8 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="parent">親オブジェクト</param>
+	/// <param name="position">座標</param>
 	/// <returns>ギャラクシー(船首)</returns>
 	static GalaxyBow* Create(ObjObject3d* parent, const Vector3& position);
 
@@ -44,6 +46,7 @@ public: //メンバ関数
 	/// ダメージを喰らう
 	/// </summary>
 	/// <param name="attackPower">攻撃力</param>
+	/// <param name="collisionPos">衝突座標</param>
 	void Damage(int attackPower, const Vector3& collisionPos);
 
 	/// <summary>
@@ -59,6 +62,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 攻撃内容:火炎放射
 	/// </summary>
+	/// <param name="playerPos">自機座標</param>
 	void AttackTypeFlamethrower(const Vector3& playerPos);
 
 	/// <summary>
@@ -76,11 +80,15 @@ protected: //メンバ関数
 	/// <summary>
 	/// 通常弾発射
 	/// </summary>
+	/// <param name="scale">弾の大きさ</param>
+	/// <param name="bulletSpeed">弾の速度</param>
 	void Fire(const float scale, const float bulletSpeed);
 
 	/// <summary>
 	/// 標的に飛ばす発射
 	/// </summary>
+	/// <param name="scale">弾の大きさ</param>
+	/// <param name="bulletSpeed">弾の速度</param>
 	void RockonFire(const float scale, const float bulletSpeed);
 
 	/// <summary>
@@ -96,6 +104,7 @@ protected: //メンバ関数
 	/// <summary>
 	/// ダメージ爆発
 	/// </summary>
+	/// <param name="collisionPos">衝突座標</param>
 	void DamageExplosion(const Vector3& collisionPos);
 
 	/// <summary>

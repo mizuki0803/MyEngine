@@ -16,6 +16,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="leftTopPos">左上座標</param>
 	/// <returns>ボス登場警告演出1つ分のスプライト群</returns>
 	static BossWarningSprites* Create(const Vector2& leftTopPos);
 
@@ -23,6 +24,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="leftTopPos">左上座標</param>
 	/// <returns>成否</returns>
 	bool Initialize(const Vector2& leftTopPos);
 

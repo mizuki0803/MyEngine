@@ -84,7 +84,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 敵発生コマンドの更新
 	/// </summary>
-	/// <param name="targetPosition">生成座標の対象となる座標</param>
+	/// <param name="targetPosition">生成の対象となる座標</param>
 	void UpdateEnemySetCommands(const Vector3& targetPosition);
 
 protected: //メンバ変数

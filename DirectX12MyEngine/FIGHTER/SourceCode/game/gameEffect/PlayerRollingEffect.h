@@ -61,6 +61,7 @@ private: //メンバ関数
 	/// <summary>
 	/// エフェクトのパラメータ構造体を元にした生成処理
 	/// </summary>
+	/// <param name="effectParams">一度に出すエフェクト1つに必要な情報をまとめたコンテナ</param>
 	void CreateEffects(const std::vector<EffectParam>& effectParams);
 
 private: //静的メンバ変数

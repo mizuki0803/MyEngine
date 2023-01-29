@@ -11,9 +11,11 @@ public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="normalSize">通常時の大きさ</param>
+	/// <param name="chargeModeSize">チャージ状態の大きさ</param>
 	/// <returns>自機付属の2Dレティクル(遠)</returns>
-	static PlayerFarReticle2D* Create(UINT texNumber, const Vector2& normalSize, const Vector2& chargeModeSize);
+	static PlayerFarReticle2D* Create(const Texture& texture, const Vector2 & normalSize, const Vector2& chargeModeSize);
 
 public: //メンバ関数
 	/// <summary>

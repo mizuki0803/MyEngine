@@ -36,14 +36,14 @@ StageSelectUI* StageSelectUI::Create()
 bool StageSelectUI::Initialize()
 {
 	//惑星名スプライト生成
-	planetNameSprite.reset(Sprite::Create(SpriteTextureLoader::PlanetName));
+	planetNameSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::PlanetName)));
 	planetNameSprite->SetPosition({ 640, outScreenPosY });
 	const Vector2 planetNameTexSize = { 500, 140 };
 	planetNameSprite->SetTexSize(planetNameTexSize);
 	planetNameSprite->SetSize(planetNameTexSize);
 
 	//ハイスコア枠スプライト生成
-	highScoreFrameSprite.reset(Sprite::Create(SpriteTextureLoader::HighScoreFrame));
+	highScoreFrameSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::HighScoreFrame)));
 	const Vector2 highScoreFramePos = { 1000, outScreenPosY };
 	highScoreFrameSprite->SetPosition(highScoreFramePos);
 	const Vector2 frameTexSize = { 172, 126 };
@@ -56,17 +56,17 @@ bool StageSelectUI::Initialize()
 		const Vector2 size = texSize * 0.8f;
 		const Vector2 firstPos = { highScoreFramePos.x + size.x, highScoreFramePos.y + frameNumberDistanceY };
 		const Vector2 pos = { firstPos.x - i * size.x, firstPos.y };
-		numberSprites[i].reset(NumberSprite::Create(SpriteTextureLoader::HitPlusNumber, pos, size, texSize));
+		numberSprites[i].reset(NumberSprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::HitPlusNumber), pos, size, texSize));
 	}
 
 	//ランクメダルスプライト生成
-	rankMedalSprite.reset(Sprite::Create(SpriteTextureLoader::RankMedal));
+	rankMedalSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::RankMedal)));
 	rankMedalSprite->SetPosition({ highScoreFramePos.x, highScoreFramePos.y + frameRankMedalDistanceY });
 	rankMedalSprite->SetTexSize({ 500, 500 });
 	rankMedalSprite->SetSize({ 48, 48 });
 
 	//操作説明スプライト生成
-	howToPlaySprite.reset(Sprite::Create(SpriteTextureLoader::StageSelectHowToPlay));
+	howToPlaySprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::StageSelectHowToPlay)));
 	howToPlaySprite->SetPosition({ 640, 550 });
 	const Vector2 howToPlayTexSize = { 200, 64 };
 	howToPlaySprite->SetTexSize(howToPlayTexSize);

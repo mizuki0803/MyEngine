@@ -1,19 +1,17 @@
 #include "ObjModel.h"
 #include "DescHeapSRV.h"
+#include "TextureManager.h"
 #include <cassert>
 #include <string>
 #include <fstream>
 #include <sstream>
-
 #include <vector>
 #include <DirectXTex.h>
-
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
 using namespace std;
-
 
 //静的メンバ変数の実体
 ID3D12Device* ObjModel::dev = nullptr;
@@ -37,7 +35,6 @@ ObjModel* ObjModel::LoadFromOBJ(const std::string& modelname, const bool smoothi
 void ObjModel::LoadFromOBJInternal(const std::string& modelname, const bool smoothing)
 {
 	//objファイルからデータを読み込む
-	//const string modelname = "man";
 	const string filename = modelname + ".obj";
 	const string directoryPath = "Resources/model/" + modelname + "/";
 
@@ -236,71 +233,11 @@ void ObjModel::LoadMaterial(const std::string& directoryPath, const std::string&
 			//テクスチャファイル名読み込み
 			line_stream >> material.textureFilename;
 			//テクスチャ読み込み
-			LoadTexture(directoryPath, material.textureFilename);
+			TextureManager::LoadTexture(texture, directoryPath, material.textureFilename);
 		}
 	}
 	//ファイルを閉じる
 	file.close();
-}
-
-void ObjModel::LoadTexture(const std::string& directoryPath, const std::string& filename)
-{
-	HRESULT result;
-
-	//WICテクスチャのロード
-	TexMetadata metadata{};
-	ScratchImage scratchImg{};
-
-	//ファイルパスを結合
-	string filepath = directoryPath + filename;
-
-	//ユニコード文字列に変換する
-	wchar_t wfilepath[128];
-	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1,
-		wfilepath, _countof(wfilepath));
-
-	result = LoadFromWICFile(
-		wfilepath,	//ファイル名
-		WIC_FLAGS_NONE,
-		&metadata, scratchImg);
-
-	const Image* img = scratchImg.GetImage(0, 0, 0);	//生データ抽出
-
-	//リソース設定
-	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		metadata.format,
-		metadata.width,
-		(UINT)metadata.height,
-		(UINT16)metadata.arraySize,
-		(UINT16)metadata.mipLevels);
-
-	//テクスチャ用バッファの生成
-	result = dev->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
-		D3D12_HEAP_FLAG_NONE,
-		&texresDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&texture.texBuff));
-
-	//テクスチャバッファにデータ転送
-	result = texture.texBuff->WriteToSubresource(
-		0,
-		nullptr,	//全領域コピー
-		img->pixels,	//元データアドレス
-		(UINT)img->rowPitch,	//1ラインサイズ
-		(UINT)img->slicePitch	//1枚サイズ
-	);
-
-	//シェーダリソースビュー設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
-	srvDesc.Format = metadata.format;	//RGBA
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = 1;
-
-	//デスクリプタヒープにSRV作成
-	DescHeapSRV::CreateShaderResourceView(srvDesc, texture);
 }
 
 void ObjModel::CreateBuffers()

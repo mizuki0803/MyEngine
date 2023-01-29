@@ -18,12 +18,12 @@ DebugText::~DebugText()
 	}
 }
 
-void DebugText::Initialize(UINT texnumber)
+void DebugText::Initialize(const Texture& texture)
 {
 	//全てのスプライトデータについて
 	for (int i = 0; i < _countof(sprites); i++) {
 		//スプライトを生成する(アンカーポイントを{ 0, 0 }に設定)
-		sprites[i] = Sprite::Create(texnumber, { 0, 0 });
+		sprites[i] = Sprite::Create(texture, { 0, 0 });
 	}
 }
 

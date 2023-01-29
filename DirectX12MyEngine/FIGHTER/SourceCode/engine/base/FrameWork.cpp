@@ -1,6 +1,7 @@
 #include "FrameWork.h"
 #include "FpsCheck.h"
 #include "DescHeapSRV.h"
+#include "TextureManager.h"
 #include "SpriteTextureLoader.h"
 #include "ObjObject3d.h"
 #include "FbxLoader.h"
@@ -51,6 +52,8 @@ void FrameWork::Initialize()
 
 	//SRV用デスクリプタヒープの初期化
 	DescHeapSRV::Initialize(dxbase->GetDevice(), dxbase->GetCmdList());
+	//テクスチャ管理の初期化
+	TextureManager::SetDevice(dxbase->GetDevice());
 
 	//スプライト共通部分初期化
 	spriteCommon = SpriteCommon::GetInstance();
@@ -60,7 +63,7 @@ void FrameWork::Initialize()
 
 	//デバッグテキスト初期化
 	debugText = DebugText::GetInstance();
-	debugText->Initialize(SpriteTextureLoader::DebugFont);
+	debugText->Initialize(SpriteTextureLoader::GetTexture(SpriteTextureLoader::DebugFont));
 
 	//ポストエフェクト共通初期化処理
 	PostEffect::PostEffectCommon(dxbase->GetDevice(), dxbase->GetCmdList());

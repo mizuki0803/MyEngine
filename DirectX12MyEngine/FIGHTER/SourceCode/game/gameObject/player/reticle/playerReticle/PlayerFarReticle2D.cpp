@@ -3,7 +3,7 @@
 
 const XMFLOAT4 PlayerFarReticle2D::chargeLockonColor = { 0.9f, 0.1f, 0.1f, 1 };
 
-PlayerFarReticle2D* PlayerFarReticle2D::Create(UINT texNumber, const Vector2& normalSize, const Vector2& chargeModeSize)
+PlayerFarReticle2D* PlayerFarReticle2D::Create(const Texture& texture, const Vector2& normalSize, const Vector2& chargeModeSize)
 {
 	//自機付属の2Dレティクル(遠)のインスタンスを生成
 	PlayerFarReticle2D* playerFarReticle2D = new PlayerFarReticle2D();
@@ -12,7 +12,7 @@ PlayerFarReticle2D* PlayerFarReticle2D::Create(UINT texNumber, const Vector2& no
 	}
 
 	// 初期化
-	if (!playerFarReticle2D->Initialize(texNumber, { 0.5f, 0.5f }, false, false)) {
+	if (!playerFarReticle2D->Initialize(texture, { 0.5f, 0.5f }, false, false)) {
 		delete playerFarReticle2D;
 		assert(0);
 		return nullptr;

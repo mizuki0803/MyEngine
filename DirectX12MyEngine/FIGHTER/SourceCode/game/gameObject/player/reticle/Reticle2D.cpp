@@ -3,7 +3,7 @@
 
 const XMFLOAT4 Reticle2D::normalColor = { 0.5f, 0.9f, 0.2f, 1 };
 
-Reticle2D* Reticle2D::Create(UINT texNumber, const Vector2& size)
+Reticle2D* Reticle2D::Create(const Texture& texture, const Vector2& size)
 {
 	//2Dレティクルのインスタンスを生成
 	Reticle2D* reticle2d = new Reticle2D();
@@ -12,7 +12,7 @@ Reticle2D* Reticle2D::Create(UINT texNumber, const Vector2& size)
 	}
 
 	// 初期化
-	if (!reticle2d->Initialize(texNumber, { 0.5f, 0.5f }, false, false)) {
+	if (!reticle2d->Initialize(texture, { 0.5f, 0.5f }, false, false)) {
 		delete reticle2d;
 		assert(0);
 		return nullptr;
@@ -24,9 +24,9 @@ Reticle2D* Reticle2D::Create(UINT texNumber, const Vector2& size)
 	return reticle2d;
 }
 
-bool Reticle2D::Initialize(UINT texNumber, const Vector2& anchorpoint, bool isFlipX, bool isFlipY)
+bool Reticle2D::Initialize(const Texture& texture, const Vector2& anchorpoint, bool isFlipX, bool isFlipY)
 {
-	if (!Sprite::Initialize(texNumber, anchorpoint, isFlipX, isFlipY)) {
+	if (!Sprite::Initialize(texture, anchorpoint, isFlipX, isFlipY)) {
 		return false;
 	}
 

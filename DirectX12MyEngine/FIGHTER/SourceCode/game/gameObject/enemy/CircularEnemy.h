@@ -11,6 +11,10 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="centerPosition">中心座標</param>
+	/// <param name="angle">中心からの角度</param>
+	/// <param name="length">中心からの距離</param>
+	/// <param name="rotSpeed">回転速度</param>
 	/// <returns>円運動敵</returns>
 	static CircularEnemy* Create(const Vector3& centerPosition, const float angle, const float length, const float rotSpeed);
 
@@ -27,6 +31,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
+	/// <param name="damageNum">ダメージ量</param>
 	void OnCollision(const int damageNum) override;
 
 private: //メンバ関数

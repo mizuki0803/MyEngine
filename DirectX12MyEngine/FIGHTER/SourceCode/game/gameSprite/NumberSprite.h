@@ -10,8 +10,12 @@ public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="position">座標</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="texSize">テクスチャサイズ</param>
 	/// <returns>数字スプライト</returns>
-	static NumberSprite* Create(UINT texNumber, const Vector2& position, const Vector2& size, const Vector2& texSize);
+	static NumberSprite* Create(const Texture& texture, const Vector2& position, const Vector2& size, const Vector2& texSize);
 
 public: //メンバ関数
 	/// <summary>

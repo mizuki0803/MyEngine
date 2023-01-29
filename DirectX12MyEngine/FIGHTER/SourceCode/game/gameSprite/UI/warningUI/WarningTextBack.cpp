@@ -1,7 +1,7 @@
 #include "WarningTextBack.h"
 #include "Easing.h"
 
-WarningTextBack* WarningTextBack::Create(UINT texNumber, const Vector2& position, const Vector2 size)
+WarningTextBack* WarningTextBack::Create(const Texture& texture, const Vector2& position, const Vector2 size)
 {
 	//警告テキスト背景のインスタンスを生成
 	WarningTextBack* warningTextBack = new WarningTextBack();
@@ -10,7 +10,7 @@ WarningTextBack* WarningTextBack::Create(UINT texNumber, const Vector2& position
 	}
 
 	// 初期化
-	if (!warningTextBack->Initialize(texNumber, position, size)) {
+	if (!warningTextBack->Initialize(texture, position, size)) {
 		delete warningTextBack;
 		assert(0);
 		return nullptr;
@@ -19,10 +19,10 @@ WarningTextBack* WarningTextBack::Create(UINT texNumber, const Vector2& position
 	return warningTextBack;
 }
 
-bool WarningTextBack::Initialize(UINT texNumber, const Vector2& position, const Vector2 size)
+bool WarningTextBack::Initialize(const Texture& texture, const Vector2& position, const Vector2 size)
 {
 	//スプライト初期化
-	if (!Sprite::Initialize(texNumber, { 0.5f, 0.5f }, false, false)) {
+	if (!Sprite::Initialize(texture, { 0.5f, 0.5f }, false, false)) {
 		return false;
 	}
 

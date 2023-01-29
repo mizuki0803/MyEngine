@@ -22,8 +22,8 @@ PlayerReticles* PlayerReticles::Create()
 bool PlayerReticles::Initialize()
 {
 	//ƒŒƒeƒBƒNƒ‹‚ğ¶¬
-	nearReticle.reset(PlayerNearReticle::Create(SpriteTextureLoader::Reticle, 20.0f, { 100, 100 }));
-	farReticle.reset(PlayerFarReticle::Create(SpriteTextureLoader::Reticle, 50.0f, { 50, 50 }, { 100, 100 }));
+	nearReticle.reset(PlayerNearReticle::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::Reticle), 20.0f, { 100, 100 }));
+	farReticle.reset(PlayerFarReticle::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::Reticle), 50.0f, { 50, 50 }, { 100, 100 }));
 
 	return true;
 }

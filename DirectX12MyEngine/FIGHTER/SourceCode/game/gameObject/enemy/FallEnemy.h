@@ -19,6 +19,8 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="stayPos">停止座標</param>
+	/// <param name="fallNum">降下量</param>
 	/// <returns>降下敵</returns>
 	static FallEnemy* Create(const Vector3& stayPos, const float fallNum);
 
@@ -35,6 +37,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
+	/// <param name="damageNum">ダメージ量</param>
 	void OnCollision(const int damageNum) override;
 
 private: //メンバ関数

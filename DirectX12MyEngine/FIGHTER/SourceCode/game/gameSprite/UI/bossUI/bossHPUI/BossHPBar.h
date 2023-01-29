@@ -10,9 +10,11 @@ public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="position">座標</param>
+	/// <param name="maxHP">最大HP</param>
 	/// <returns>ボス用HPバー</returns>
-	static BossHPBar* Create(UINT texNumber, const Vector2& position, const int maxHP);
+	static BossHPBar* Create(const Texture& texture, const Vector2& position, const int maxHP);
 
 public: //メンバ関数
 	/// <summary>

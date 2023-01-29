@@ -34,7 +34,7 @@ bool MultiHitUI::Initialize(const Vector3& position, BaseGameCamera* camera, con
 	Vector2 hitScreenPos = GetScreenPos(hitWorldPos, camera);
 
 	//枠スプライト生成
-	hitTextSprite.reset(Sprite::Create(SpriteTextureLoader::HitPlusText));
+	hitTextSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::HitPlusText)));
 	const Vector2 hitTextPos = { hitScreenPos.x + 25, hitScreenPos.y };
 	hitTextSprite->SetPosition(hitTextPos);
 	const Vector2 hitTextSize = { 150, 37.5 };
@@ -55,7 +55,7 @@ bool MultiHitUI::Initialize(const Vector3& position, BaseGameCamera* camera, con
 		const Vector2 size = { 36, 36 };
 		const Vector2 texSize = { 48, 48 };
 		const Vector2 pos = { hitTextPos.x + texSize.x + ((hitNumDigit - i) * size.x), hitTextPos.y };
-		newNumberSprite.reset(NumberSprite::Create(SpriteTextureLoader::HitPlusNumber, pos, size, texSize));
+		newNumberSprite.reset(NumberSprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::HitPlusNumber), pos, size, texSize));
 		//割る数
 		int divisionNum = 1;
 		//桁数分10を乗算する(1,10,100,...)

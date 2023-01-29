@@ -23,10 +23,6 @@ private: // エイリアス
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	//テクスチャの最大枚数
-	static const int SRVCount = 512;
-
-public:
 	//頂点データ構造体
 	struct VertexPos
 	{
@@ -86,7 +82,7 @@ public:
 	/// </summary>
 	/// <param name="dev">デバイス</param>
 	/// <param name="cmdList">コマンドリスト</param>
-	static void ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, const std::string& directoryPath = "Resources/particleTexture/");
+	static void ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 
 	/// <summary>
 	/// 加算合成パイプライン生成
@@ -110,15 +106,10 @@ public:
 
 	/// <summary>
 	/// 生成処理
-	/// </summary>
-	/// <returns>ParticleManager</returns>
-	static ParticleManager* Create(UINT texNumber);
-
-	/// <summary>
-	/// 画像読み込み
-	/// </summary>
-	/// <returns>成否</returns>
-	static bool LoadTexture(UINT texNumber, const std::string& filename);
+	/// </summary>	
+	/// <param name="texture">テクスチャ</param>
+	/// <returns>パーティクルマネージャー</returns>
+	static ParticleManager* Create(const Texture& texture);
 
 	/// <summary>
 	/// パーティクルの情報をセット
@@ -160,7 +151,8 @@ public:
 	/// <summary>
 	/// パーティクルの形生成
 	/// </summary>
-	bool CreateModel(UINT texNumber);
+	/// <param name="texture">テクスチャ</param>
+	bool CreateModel(const Texture& texture);
 
 	/// <summary>
 	/// 初期化
@@ -195,10 +187,6 @@ private:
 	static PipelineSet addBlendPipelineSet;
 	//減算合成パイプラインセット
 	static PipelineSet subBlendPipelineSet;
-	//テクスチャリソース(テクスチャバッファ)の配列
-	static Texture texture[SRVCount];
-	//テクスチャ格納ディレクトリ
-	static std::string directoryPath;
 	//頂点数
 	static const int vertexCount = 2048;
 	//頂点データ配列
@@ -213,8 +201,8 @@ private:
 	D3D12_VERTEX_BUFFER_VIEW vbView;
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuff;
-	//テクスチャ番号
-	UINT texNumber = 0;
+	//テクスチャ
+	Texture texture;
 	//パーティクル配列
 	std::forward_list<Particle> particles;
 };

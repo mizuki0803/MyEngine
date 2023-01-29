@@ -18,7 +18,7 @@ SpriteCommon* SpriteCommon::GetInstance()
 	return &instance;
 }
 
-void SpriteCommon::Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height, const std::string& directoryPath)
+void SpriteCommon::Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height)
 {
 	//nullptrチェック
 	assert(dev);
@@ -26,7 +26,6 @@ void SpriteCommon::Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdL
 	//メンバ変数に記録
 	this->dev = dev;
 	this->cmdList = cmdList;
-	this->directoryPath = directoryPath;
 
 	//スプライト用パイプライン生成
 	CreatePipeline();
@@ -44,66 +43,6 @@ void SpriteCommon::DrawPrev()
 	cmdList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
 	//プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-}
-
-void SpriteCommon::LoadTexture(UINT texNumber, const std::string& filename)
-{
-	HRESULT result;
-
-	//WICテクスチャのロード
-	TexMetadata metadata{};
-	ScratchImage scratchImg{};
-
-	//ディレクトリパスとファイル名を連結してフルパスを得る
-	std::string fullPath = directoryPath + filename;
-
-	//ユニコード文字列に変換する
-	wchar_t wfilepath[128];
-	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1,
-		wfilepath, _countof(wfilepath));
-
-	result = LoadFromWICFile(
-		wfilepath,	//ファイル名
-		WIC_FLAGS_NONE,
-		&metadata, scratchImg);
-
-	const Image* img = scratchImg.GetImage(0, 0, 0);	//生データ抽出
-
-	//リソース設定
-	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		metadata.format,
-		metadata.width,
-		(UINT)metadata.height,
-		(UINT16)metadata.arraySize,
-		(UINT16)metadata.mipLevels);
-
-	//テクスチャバッファの生成
-	result = dev->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
-		D3D12_HEAP_FLAG_NONE,
-		&texresDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&texture[texNumber].texBuff));
-
-	//テクスチャバッファにデータ転送
-	result = texture[texNumber].texBuff->WriteToSubresource(
-		0,
-		nullptr,	//全領域コピー
-		img->pixels,	//元データアドレス
-		(UINT)img->rowPitch,	//1ラインサイズ
-		(UINT)img->slicePitch	//1枚サイズ
-	);
-
-	//シェーダリソースビュー設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
-	srvDesc.Format = metadata.format;	//RGBA
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = 1;
-
-	//デスクリプタヒープにSRV作成
-	DescHeapSRV::CreateShaderResourceView(srvDesc, texture[texNumber]);
 }
 
 void SpriteCommon::CreatePipeline()
@@ -274,10 +213,4 @@ void SpriteCommon::CreatePipeline()
 
 	//パイプラインステートの生成
 	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineSet.pipelinestate));
-}
-
-ID3D12Resource* SpriteCommon::GetTexBuff(int texNumber)
-{
-	assert(0 <= texNumber && texNumber < spriteSRVCount);
-	return texture[texNumber].texBuff.Get();
 }

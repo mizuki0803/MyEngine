@@ -26,6 +26,7 @@ public: //静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
+	/// <param name="startPosition">開始座標</param>
 	/// <returns>出撃シーン用自機</returns>
 	static StageSelectPlayer* Create(ObjModel* model, const Vector3& startPosition);
 
@@ -39,12 +40,13 @@ public: //メンバ関数
 	/// 惑星から出てくる行動を開始
 	/// </summary>
 	/// <param name="targetPos">目標座標</param>
-	void GooutPlanetStart(const Vector3& targettPos);
+	void GooutPlanetStart(const Vector3& targetPos);
 
 	/// <summary>
 	/// ステージ選択移動を開始
 	/// </summary>
 	/// <param name="targetPos">目標座標</param>
+	/// <param name="isStageSelectMoveRight">右方向に移動か</param>
 	void StageSelectMoveStart(const Vector3& targetPos, bool isStageSelectMoveRight);
 
 	/// <summary>

@@ -17,11 +17,21 @@ public:
 	//代入演算子を無効化
 	void operator = (const ParticleEmitter& particleEmitter) = delete;
 
+public: //テクスチャ名
+	enum TextureName {
+		Circle,		//丸
+		Fluffy,	//モワモワ
+		Shine,		//キラキラ
+		Curve,		//曲線
+
+		ParticleTextureNum,	//パーティクルテクスチャの枚数
+	};
+
 public: //メンバ関数
 	/// <summary>
 	/// インスタンス取得
 	/// </summary>
-	/// <returns>デバッグテキスト</returns>
+	/// <returns>パーティクルエミッター</returns>
 	static ParticleEmitter* GetInstance();
 
 	/// <summary>
@@ -88,6 +98,7 @@ public: //メンバ関数
 	/// ショット死亡演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">大きさ</param>
 	void ShotDead(const Vector3& position, const float size);
 
 	/// <summary>
@@ -130,18 +141,23 @@ public: //メンバ関数
 	/// ボスチャージショット死亡演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">大きさ</param>
 	void BossChargeShotDead(const Vector3& position, const float size);
 
 	/// <summary>
 	/// 爆発演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="time">生存時間</param>
 	void Explosion(const Vector3& position, const float size = 1, const int time = 10);
 
 	/// <summary>
 	/// ボス死亡専用爆発演出
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="isGround">地面が存在するか</param>
 	void BossDeadExplosion(const Vector3& position, const float size, const bool isGround);
 
 	/// <summary>
@@ -157,7 +173,7 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="position">パーティクル生成座標</param>
 	/// <param name="size">パーティクル大きさ</param>
-	/// <param name="size">一度に出す数</param>
+	/// <param name="num">一度に出す数</param>
 	void ItemShine(const Vector3& position, const float size, const int num);
 
 	/// <summary>
@@ -172,6 +188,8 @@ private: //メンバ関数
 	void LoadTexture();
 
 private: //メンバ変数
+	//テクスチャ
+	Texture textures[ParticleTextureNum];
 	//パーティクルマネージャー(丸)
 	std::unique_ptr<ParticleManager> circleParticle;
 	//パーティクルマネージャー(爆発)

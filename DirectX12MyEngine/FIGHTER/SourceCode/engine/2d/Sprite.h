@@ -6,7 +6,6 @@
 #include "Vector3.h"
 #include "Vector2.h"
 
-
 /// <summary>
 /// スプライト
 /// </summary>
@@ -39,22 +38,22 @@ public: //メンバ関数
 	/// <summary>
 	/// スプライト生成
 	/// </summary>
-	/// <param name="texNumber">テクスチャ番号</param>
+	/// <param name="texture">テクスチャ</param>
 	/// <param name="anchorpoint">アンカーポイント</param>
 	/// <param name="isFlipX">左右反転するか</param>
 	/// <param name="isFlipY">上下反転するか</param>
-	/// <returns>Sprite</returns>
-	static Sprite* Create(UINT texNumber, const Vector2& anchorpoint = { 0.5f, 0.5f }, bool isFlipX = false, bool isFlipY = false);
+	/// <returns>スプライト</returns>
+	static Sprite* Create(const Texture& texture, const Vector2& anchorpoint = { 0.5f, 0.5f }, bool isFlipX = false, bool isFlipY = false);
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="texNumber">テクスチャ番号</param>
+	/// <param name="texture">テクスチャ</param>
 	/// <param name="anchorpoint">アンカーポイント</param>
 	/// <param name="isFlipX">左右反転するか</param>
 	/// <param name="isFlipY">上下反転するか</param>
 	/// <returns>成否</returns>
-	virtual bool Initialize(UINT texNumber, const Vector2& anchorpoint, bool isFlipX, bool isFlipY);
+	virtual bool Initialize(const Texture& texture, const Vector2& anchorpoint, bool isFlipX, bool isFlipY);
 
 	/// <summary>
 	/// 頂点バッファの転送
@@ -71,7 +70,6 @@ public: //メンバ関数
 	/// </summary>
 	void Draw();
 
-
 	//getter
 	const Vector2& GetPosition() { return position; }
 	const float GetRotation() { return rotation; }
@@ -84,7 +82,7 @@ public: //メンバ関数
 	const bool GetIsFlipY() { return isFlipY; }
 
 	//setter
-	void SetTexNumber(UINT texNumber) { this->texNumber = texNumber; }
+	void SetTexture(const Texture& texture) { this->texture = texture; }
 	void SetPosition(const Vector2& position) { this->position = position; }
 	void SetRotation(float rotation) { this->rotation = rotation; }
 	void SetSize(const Vector2& size) { this->size = size; }
@@ -111,8 +109,8 @@ protected: //メンバ変数
 	XMMATRIX matWorld;
 	//色(RGBA)
 	XMFLOAT4 color = { 1, 1, 1, 1 };
-	//テクスチャ番号
-	UINT texNumber = 0;
+	//テクスチャ
+	Texture texture;
 	//大きさ
 	Vector2 size = { 100, 100 };
 	//アンカーポイント

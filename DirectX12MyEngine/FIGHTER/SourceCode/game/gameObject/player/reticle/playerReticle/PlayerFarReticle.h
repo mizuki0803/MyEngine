@@ -11,19 +11,30 @@ public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="texNumber">テクスチャ番号</param>
+	/// <param name="texNumber">テクスチャ</param>
+	/// <param name="distance">発射対象からの距離</param>
+	/// <param name="normalSize">通常時の大きさ</param>
+	/// <param name="chargeModeSize">チャージ状態の大きさ</param>
 	/// <returns>自機付属の2Dレティクル(遠)簡易作成クラス</returns>
-	static PlayerFarReticle* Create(UINT texNumber, float distance, const Vector2& normalSize, const Vector2& chargeModeSize);
+	static PlayerFarReticle* Create(const Texture& texture, float distance, const Vector2& normalSize, const Vector2& chargeModeSize);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	bool Initialize(UINT texNumber, float distance, const Vector2& normalSize, const Vector2& chargeModeSize);
+	/// <param name="texNumber">テクスチャ</param>
+	/// <param name="distance">発射対象からの距離</param>
+	/// <param name="normalSize">通常時の大きさ</param>
+	/// <param name="chargeModeSize">チャージ可能状態の大きさ</param>
+	/// <returns>成否</returns>
+	bool Initialize(const Texture& texture, float distance, const Vector2& normalSize, const Vector2& chargeModeSize);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
+	/// <param name="matWorld">ワールド行列</param>
+	/// <param name="matView">ビュー行列</param>
+	/// <param name="matProjection">プロジェクション行列</param>
 	void Update(const XMMATRIX& matWorld, const XMMATRIX& matView, const XMMATRIX& matProjection);
 
 	/// <summary>

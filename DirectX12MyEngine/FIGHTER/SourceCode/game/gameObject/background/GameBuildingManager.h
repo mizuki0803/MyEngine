@@ -16,6 +16,10 @@ public:  //静的メンバ変数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="centerDistance">中心からの距離</param>
+	/// <param name="objectDistance">オブジェクト同士の距離</param>
+	/// <param name="startNum">開始時にセットする数</param>
+	/// <param name="basePos">基準座標</param>
 	/// <returns>ゲームで使うビル管理</returns>
 	static GameBuildingManager* Create(float centerDistance, float objectDistance, int startNum, const Vector3& basePos);
 
@@ -28,6 +32,11 @@ public: //メンバ変数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="centerDistance">中心からの距離</param>
+	/// <param name="objectDistance">オブジェクト同士の距離</param>
+	/// <param name="startNum">開始時にセットする数</param>
+	/// <param name="basePos">基準座標</param>
+	/// <returns>成否</returns>
 	bool Initialize(float centerDistance, float objectDistance, int startNum, const Vector3& basePos);
 
 	/// <summary>
@@ -62,6 +71,7 @@ private: //メンバ関数
 	/// <summary>
 	/// 次にセットするビルのモデル番号を取得
 	/// </summary>
+	/// <param name="lastSetModelNum">1つ前にセットしたモデル番号</param>
 	/// <returns>次にセットするビルのモデル番号</returns>
 	int NextCreateModelNum(int& lastSetModelNum);
 

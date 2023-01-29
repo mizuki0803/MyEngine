@@ -9,10 +9,11 @@ class BossHPLogo : public Sprite
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
-	/// </summary>
-	/// <param name="model">モデル</param>
+	/// </summary>	
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="position">座標</param>
 	/// <returns>ボス用HPUIロゴ</returns>
-	static BossHPLogo* Create(UINT texNumber, const Vector2& position);
+	static BossHPLogo* Create(const Texture& texture, const Vector2& position);
 
 public: //メンバ関数
 	/// <summary>

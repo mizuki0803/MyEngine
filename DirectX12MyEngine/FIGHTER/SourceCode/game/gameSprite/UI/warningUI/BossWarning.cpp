@@ -29,7 +29,7 @@ BossWarning* BossWarning::Create(int32_t warningTime)
 bool BossWarning::Initialize()
 {
 	//画面赤スプライト生成
-	screenRedSprite.reset(Sprite::Create(SpriteTextureLoader::White, { 0, 0 }));
+	screenRedSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::White), {0, 0}));
 	//大きさをセット
 	screenRedSprite->SetSize({ WindowApp::window_width, WindowApp::window_height });
 	//色をセット

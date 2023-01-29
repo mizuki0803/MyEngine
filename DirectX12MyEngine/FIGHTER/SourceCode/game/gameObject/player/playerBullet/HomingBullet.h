@@ -10,6 +10,10 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="position">座標</param>
+	/// <param name="velocity">速度</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="enemy">ロックオン対象の敵</param>
 	/// <returns>ホーミング弾</returns>
 	static HomingBullet* Create(const Vector3& position, const Vector3& velocity, const float size, Enemy* enemy);
 
@@ -28,6 +32,9 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
+	/// <param name="subjectPos">衝突した相手の座標</param>
+	/// <param name="subjectSize">衝突した相手の大きさ</param>
+	/// <param name="isToDamage">ダメージを喰らわせたか</param>
 	void OnCollision(const Vector3& subjectPos, float subjectSize, bool isToDamage) override;
 
 private: //メンバ関数

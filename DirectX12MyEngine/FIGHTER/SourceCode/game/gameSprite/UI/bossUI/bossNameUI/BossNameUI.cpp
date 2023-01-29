@@ -25,7 +25,7 @@ bool BossNameUI::Initialize(int bossType)
 	this->bossType = bossType;
 
 	//二つ名スプライト生成
-	sprites[0].reset(Sprite::Create(SpriteTextureLoader::BossNickname, { 0, 0 }));
+	sprites[0].reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::BossNickname), { 0, 0 }));
 	const Vector2 pos = { 80, 520 };
 	sprites[0]->SetPosition(pos);
 	const Vector2 texSize = { 300, 40 };
@@ -74,7 +74,7 @@ void BossNameUI::CountDrawTimer()
 	const int nameSpriteCreateTime = 65;
 	if (drawTimer >= nameSpriteCreateTime && !sprites[1]) {
 		//ボス名スプライト生成
-		sprites[1].reset(Sprite::Create(SpriteTextureLoader::BossName, { 0, 0 }));
+		sprites[1].reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::BossName), { 0, 0 }));
 		const Vector2 pos = { 70, 580 };
 		sprites[1]->SetPosition(pos);
 		const Vector2 texSize = { 800, 95 };

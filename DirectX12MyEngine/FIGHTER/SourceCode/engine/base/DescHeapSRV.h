@@ -20,6 +20,8 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 共通初期化設定
 	/// </summary>
+	/// <param name="dev">デバイス</param>
+	/// <param name="cmdList">コマンドリスト</param>
 	static void Initialize(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList);
 
 	/// <summary>
@@ -35,7 +37,6 @@ public: //静的メンバ関数
 	/// <summary>
 	/// SRV共通SetDescriptorHeaps
 	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
 	static void SetDescriptorHeaps();
 
 	/// <summary>

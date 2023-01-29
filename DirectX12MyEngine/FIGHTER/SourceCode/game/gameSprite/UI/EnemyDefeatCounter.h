@@ -38,6 +38,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// スコアを確定させる
 	/// </summary>
+	/// <param name="stageNum">ステージ番号</param>
 	static void ScoreConfirm(int stageNum);
 
 	//getter
@@ -50,11 +51,14 @@ private: //メンバ関数
 	/// <summary>
 	/// ハイスコア更新か確認
 	/// </summary>
+	/// <param name="stageNum">ステージ番号</param>
 	static void CheckHighScore(int stageNum);
 
 	/// <summary>
 	/// どのランクかチェック
 	/// </summary>
+	/// <param name="stageNum">ステージ番号</param>
+	/// <param name="score">撃破スコア</param>
 	static void CheckRank(int stageNum, int score);
 
 private: //静的メンバ変数

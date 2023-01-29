@@ -14,6 +14,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="galaxy">ギャラクシー</param>
 	/// <returns>ギャラクシーの行動遷移ビヘイビアツリー</returns>
 	static GalaxyBehaviorTree* Create(Galaxy* galaxy);
 
@@ -21,6 +22,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="galaxy">ギャラクシー</param>
 	/// <returns>成否</returns>
 	bool Initialize(Galaxy* galaxy);
 

@@ -635,6 +635,9 @@
     <ClCompile Include="SourceCode\game\gameObject\boss\galaxy\GalaxyPropeller.cpp">
       <Filter>ソース ファイル\game\gameObject\boss\galaxy</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\engine\base\TextureManager.cpp">
+      <Filter>ソース ファイル\engine\base\texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -1132,6 +1135,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\game\gameObject\boss\galaxy\GalaxyPropeller.h">
       <Filter>ソース ファイル\game\gameObject\boss\galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\base\TextureManager.h">
+      <Filter>ソース ファイル\engine\base\texture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

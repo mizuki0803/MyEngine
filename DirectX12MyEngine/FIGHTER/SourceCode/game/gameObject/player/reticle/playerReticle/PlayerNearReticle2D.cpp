@@ -2,7 +2,7 @@
 
 const XMFLOAT4 PlayerNearReticle2D::chargeColor = { 0.9f, 0.9f, 0.1f, 1 };
 
-PlayerNearReticle2D* PlayerNearReticle2D::Create(UINT texNumber, const Vector2& size)
+PlayerNearReticle2D* PlayerNearReticle2D::Create(const Texture& texture, const Vector2& size)
 {
 	//自機付属の2Dレティクル(近)のインスタンスを生成
 	PlayerNearReticle2D* playerNearReticle2D = new PlayerNearReticle2D();
@@ -11,7 +11,7 @@ PlayerNearReticle2D* PlayerNearReticle2D::Create(UINT texNumber, const Vector2& 
 	}
 
 	// 初期化
-	if (!playerNearReticle2D->Initialize(texNumber, { 0.5f, 0.5f }, false, false)) {
+	if (!playerNearReticle2D->Initialize(texture, { 0.5f, 0.5f }, false, false)) {
 		delete playerNearReticle2D;
 		assert(0);
 		return nullptr;

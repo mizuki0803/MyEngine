@@ -17,9 +17,13 @@ public:
 public:
 	/// <summary>
 	/// 生成処理
-	/// </summary>
+	/// </summary>	
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="texSize">テクスチャサイズ</param>
+	/// <param name="leftTop">左上座標</param>
 	/// <returns>遊び方スプライト</returns>
-	static HowToPlaySprite* Create(UINT texNumber, const Vector2& size, const Vector2& texSize, const Vector2& leftTop);
+	static HowToPlaySprite* Create(const Texture& texture, const Vector2& size, const Vector2& texSize, const Vector2& leftTop);
 
 public: //メンバ変数
 	/// <summary>

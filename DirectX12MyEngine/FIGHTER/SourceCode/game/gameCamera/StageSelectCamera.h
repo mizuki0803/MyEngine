@@ -29,6 +29,8 @@ public: //メンバ関数
 	/// <summary>
 	/// 惑星から出てくる自機を見るの動き開始
 	/// </summary>
+	/// <param name="gooutPlanetPos">自機が出てくる惑星</param>
+	/// <param name="selectFieldPos">自機が出てくる惑星のフィールド</param>
 	void GooutPlayerLookActionStart(const Vector3& gooutPlanetPos, const Vector3& selectFieldPos);
 
 	/// <summary>

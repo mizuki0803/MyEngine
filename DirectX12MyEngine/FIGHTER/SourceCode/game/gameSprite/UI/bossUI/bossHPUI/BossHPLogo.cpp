@@ -1,7 +1,7 @@
 #include "BossHPLogo.h"
 #include "Easing.h"
 
-BossHPLogo* BossHPLogo::Create(UINT texNumber, const Vector2& position)
+BossHPLogo* BossHPLogo::Create(const Texture& texture, const Vector2& position)
 {
 	//HPUIロゴのインスタンスを生成
 	BossHPLogo* bossHPLogo = new BossHPLogo();
@@ -10,7 +10,7 @@ BossHPLogo* BossHPLogo::Create(UINT texNumber, const Vector2& position)
 	}
 
 	// 初期化
-	if (!bossHPLogo->Initialize(texNumber, { 0.0f, 0.0f }, false, false)) {
+	if (!bossHPLogo->Initialize(texture, { 0.0f, 0.0f }, false, false)) {
 		delete bossHPLogo;
 		assert(0);
 		return nullptr;

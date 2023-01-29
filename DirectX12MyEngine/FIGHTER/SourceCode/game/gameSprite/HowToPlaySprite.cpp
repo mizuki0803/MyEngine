@@ -10,7 +10,7 @@ void (HowToPlaySprite::* HowToPlaySprite::actionFuncTable[])() = {
 const Vector2 HowToPlaySprite::stayPos = { 640, 600 };
 const Vector2 HowToPlaySprite::outScreenPos = { 640, 900 };
 
-HowToPlaySprite* HowToPlaySprite::Create(UINT texNumber, const Vector2& size, const Vector2& texSize, const Vector2& leftTop)
+HowToPlaySprite* HowToPlaySprite::Create(const Texture& texture, const Vector2& size, const Vector2& texSize, const Vector2& leftTop)
 {
 	//複数撃破UIのインスタンスを生成
 	HowToPlaySprite* howToPlaySprite = new HowToPlaySprite();
@@ -19,7 +19,7 @@ HowToPlaySprite* HowToPlaySprite::Create(UINT texNumber, const Vector2& size, co
 	}
 
 	// 初期化
-	if (!howToPlaySprite->Initialize(texNumber, { 0.5f, 0.5f }, false, false)) {
+	if (!howToPlaySprite->Initialize(texture, { 0.5f, 0.5f }, false, false)) {
 		delete howToPlaySprite;
 		assert(0);
 		return nullptr;

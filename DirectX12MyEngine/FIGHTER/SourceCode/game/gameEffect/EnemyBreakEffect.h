@@ -12,6 +12,10 @@ public: // 静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
+	/// <param name="position">座標</param>
+	/// <param name="velocity">速度</param>
+	/// <param name="rotSpeed">回転速度</param>
+	/// <param name="scale">大きさ</param>
 	/// <returns>敵破壊用エフェクト</returns>
 	static EnemyBreakEffect* Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const Vector3& rotSpeed, const Vector3& scale);
 

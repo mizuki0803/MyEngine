@@ -79,11 +79,15 @@ protected: //メンバ関数
 	/// <summary>
 	/// 通常弾発射
 	/// </summary>
+	/// <param name="scale">弾の大きさ</param>
+	/// <param name="bulletSpeed">弾の速度</param>
 	void Fire(const float scale, const float bulletSpeed);
 
 	/// <summary>
 	/// チャージ弾発射
 	/// </summary>
+	/// <param name="scale">弾の大きさ</param>
+	/// <param name="bulletSpeed">弾の速度</param>
 	void ChargeBulletFire(const float scale, const float bulletSpeed);
 
 	/// <summary>
@@ -99,6 +103,7 @@ protected: //メンバ関数
 	/// <summary>
 	/// ダメージ爆発
 	/// </summary>
+	/// <param name="collisionPos">衝突座標</param>
 	void DamageExplosion(const Vector3& collisionPos);
 
 	/// <summary>

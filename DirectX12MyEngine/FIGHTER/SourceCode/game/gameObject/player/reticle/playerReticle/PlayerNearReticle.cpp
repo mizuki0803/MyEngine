@@ -1,6 +1,6 @@
 #include "PlayerNearReticle.h"
 
-PlayerNearReticle* PlayerNearReticle::Create(UINT texNumber, float distance, const Vector2& size)
+PlayerNearReticle* PlayerNearReticle::Create(const Texture& texture, float distance, const Vector2& size)
 {
 	//自機付属の2Dレティクル(近)簡易作成クラスのインスタンスを生成
 	PlayerNearReticle* playerNearReticle = new PlayerNearReticle();
@@ -9,7 +9,7 @@ PlayerNearReticle* PlayerNearReticle::Create(UINT texNumber, float distance, con
 	}
 
 	// 初期化
-	if (!playerNearReticle->Initialize(texNumber, distance, size)) {
+	if (!playerNearReticle->Initialize(texture, distance, size)) {
 		delete playerNearReticle;
 		assert(0);
 		return nullptr;
@@ -18,10 +18,10 @@ PlayerNearReticle* PlayerNearReticle::Create(UINT texNumber, float distance, con
 	return playerNearReticle;
 }
 
-bool PlayerNearReticle::Initialize(UINT texNumber, float distance, const Vector2& size)
+bool PlayerNearReticle::Initialize(const Texture& texture, float distance, const Vector2& size)
 {
 	reticle3d.reset(Reticle3D::Create(nullptr, distance));
-	reticle2d.reset(PlayerNearReticle2D::Create(texNumber, size));
+	reticle2d.reset(PlayerNearReticle2D::Create(texture, size));
 
 	return true;
 }

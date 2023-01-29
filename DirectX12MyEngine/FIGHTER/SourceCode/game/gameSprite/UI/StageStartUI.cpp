@@ -22,7 +22,7 @@ StageStartUI* StageStartUI::Create(const int stageNum)
 bool StageStartUI::Initialize(const int stageNum)
 {
 	//枠スプライト生成
-	stageInfoSprite.reset(Sprite::Create(SpriteTextureLoader::White));
+	stageInfoSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::White)));
 	stageInfoSprite->SetPosition({ 640, 360 });
 	const Vector2 size = { 500, 200 };
 	const Vector2 texSize = { 1, 1 };

@@ -3,7 +3,7 @@
 const DirectX::XMFLOAT4 PlayerHPFrame::normalColor = { 0.57f, 0.56f, 0.5f, 1 };
 const DirectX::XMFLOAT4 PlayerHPFrame::itemGetColor = { 0.95f, 0.95f, 0.1f, 1 };
 
-PlayerHPFrame* PlayerHPFrame::Create(UINT texNumber, const Vector2& position)
+PlayerHPFrame* PlayerHPFrame::Create(const Texture& texture, const Vector2& position)
 {
 	//HPバーフレームのインスタンスを生成
 	PlayerHPFrame* playerHPFrame = new PlayerHPFrame();
@@ -12,7 +12,7 @@ PlayerHPFrame* PlayerHPFrame::Create(UINT texNumber, const Vector2& position)
 	}
 
 	// 初期化
-	if (!playerHPFrame->Initialize(texNumber, { 0.0f, 0.0f }, false, false)) {
+	if (!playerHPFrame->Initialize(texture, { 0.0f, 0.0f }, false, false)) {
 		delete playerHPFrame;
 		assert(0);
 		return nullptr;

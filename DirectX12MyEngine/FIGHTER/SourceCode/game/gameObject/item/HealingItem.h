@@ -14,6 +14,8 @@ public: //静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
+	/// <param name="position">座標</param>
+	/// <param name="size">大きさ</param>
 	/// <returns>回復アイテム</returns>
 	static HealingItem* Create(ObjModel* model, const Vector3& position, const float size);
 

@@ -37,6 +37,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="position">座標</param>
 	/// <returns>メダマーン</returns>
 	static Medaman* Create(const Vector3& position);
 
@@ -47,6 +48,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="position">座標</param>
 	/// <returns>成否</returns>
 	bool Initialize(const Vector3& position);
 
@@ -79,6 +81,8 @@ public: //メンバ関数
 	/// 衝突時コールバック関数(本体)
 	/// </summary>
 	/// <param name="damageNum">ダメージ量</param>
+	/// <param name="collisionPos">衝突座標</param>
+	/// <param name="subjectVel">衝突した相手とのベクトル</param>
 	void OnCollisionMainBody(const int damageNum, const Vector3& collisionPos, const Vector3& subjectVel);
 
 	/// <summary>
@@ -86,6 +90,8 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="avatars">衝突した分身</param>
 	/// <param name="damageNum">ダメージ量</param>
+	/// <param name="collisionPos">衝突座標</param>
+	/// <param name="subjectVel">衝突した相手とのベクトル</param>
 	void OnCollisionAvatar(MedamanAvatar* avatar, const int damageNum, const Vector3& collisionPos, const Vector3& subjectVel);
 
 	/// <summary>

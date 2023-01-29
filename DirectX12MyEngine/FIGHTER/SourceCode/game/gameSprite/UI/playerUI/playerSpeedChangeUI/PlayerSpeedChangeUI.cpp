@@ -23,11 +23,11 @@ bool PlayerSpeedChangeUI::Initialize(const Vector2& position, const float maxGau
 {
 	//速度変更UIバー生成
 	const Vector2 barPosition = position;
-	speedChangeBar.reset(PlayerSpeedChangeBar::Create(SpriteTextureLoader::SpeedChangeGaugeIn, barPosition, maxGaugeNum));
+	speedChangeBar.reset(PlayerSpeedChangeBar::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::SpeedChangeGaugeIn), barPosition, maxGaugeNum));
 	//速度変更UIバーフレーム生成
 	const float posDiff = 2.0f;	//HPバーの座標との差分
 	const Vector2 hpFramePosition = { barPosition.x - posDiff, barPosition.y - posDiff };
-	speedChangeFrame.reset(Sprite::Create(SpriteTextureLoader::SpeedChangeGaugeOut, { 0, 0 }));
+	speedChangeFrame.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::SpeedChangeGaugeOut), { 0, 0 }));
 	speedChangeFrame->SetPosition(hpFramePosition);
 
 	return true;

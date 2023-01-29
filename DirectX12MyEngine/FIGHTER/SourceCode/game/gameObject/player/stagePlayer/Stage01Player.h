@@ -31,6 +31,10 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="model">モデル</param>
+	/// <param name="startHP">開始時HP</param>
+	/// <param name="maxHP">最大HP</param>
+	/// <param name="isVaporCreate">飛行機雲演出を生成するか</param>
 	/// <returns>成否</returns>
 	bool Initialize(ObjModel* model, const int startHP, const int maxHP, const bool isVaporCreate) override;
 

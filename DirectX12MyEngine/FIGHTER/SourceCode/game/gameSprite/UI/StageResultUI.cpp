@@ -31,7 +31,7 @@ bool StageResultUI::Initialize(const int enemyDefeatNum, const int enemyDefeatRa
 	this->enemyDefeatNum = enemyDefeatNum;
 
 	//枠スプライト生成
-	frameSprite.reset(Sprite::Create(SpriteTextureLoader::DefeatNumText));
+	frameSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::DefeatNumText)));
 	const Vector2 framePos = { 640, 360 };
 	frameSprite->SetPosition(framePos);
 	const Vector2 frameSize = { 508, 108 };
@@ -50,12 +50,12 @@ bool StageResultUI::Initialize(const int enemyDefeatNum, const int enemyDefeatRa
 		std::unique_ptr<NumberSprite> newNumberSprite;
 		const Vector2 size = { 32, 48 };
 		const Vector2 pos = { framePos.x + 140 - (i * size.x), framePos.y };
-		newNumberSprite.reset(NumberSprite::Create(SpriteTextureLoader::Number, pos, size, size));
+		newNumberSprite.reset(NumberSprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::Number), pos, size, size));
 		numberSprites.push_back(std::move(newNumberSprite));
 	}
 
 	//ランクスプライト生成
-	rankMedalSprite.reset(Sprite::Create(SpriteTextureLoader::RankMedal));
+	rankMedalSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::RankMedal)));
 	const Vector2 rankMedalPos = { framePos.x + 202, framePos.y };
 	rankMedalSprite->SetPosition(rankMedalPos);
 	const Vector2 rankMedalTexSize = { 500, 500 };
@@ -65,7 +65,7 @@ bool StageResultUI::Initialize(const int enemyDefeatNum, const int enemyDefeatRa
 	rankMedalSprite->SetColor({ 1, 1, 1, 0 });
 
 	//Bボタンスプライト生成
-	bButtonSprite.reset(Sprite::Create(SpriteTextureLoader::BButton));
+	bButtonSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::BButton)));
 	const Vector2 bButtonPos = { framePos.x, framePos.y + 90 };
 	bButtonSprite->SetPosition(bButtonPos);
 	const Vector2 bButtonSize = { 48, 48 };

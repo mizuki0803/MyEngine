@@ -1,7 +1,7 @@
 #include "WarningLineBack.h"
 #include "Easing.h"
 
-WarningLineBack* WarningLineBack::Create(UINT texNumber, const Vector2& showPos, const Vector2 showSize)
+WarningLineBack* WarningLineBack::Create(const Texture& texture, const Vector2& showPos, const Vector2 showSize)
 {
 	//警告ライン背景のインスタンスを生成
 	WarningLineBack* warningLineBack = new WarningLineBack();
@@ -10,7 +10,7 @@ WarningLineBack* WarningLineBack::Create(UINT texNumber, const Vector2& showPos,
 	}
 
 	// 初期化
-	if (!warningLineBack->Initialize(texNumber, showPos, showSize)) {
+	if (!warningLineBack->Initialize(texture, showPos, showSize)) {
 		delete warningLineBack;
 		assert(0);
 		return nullptr;
@@ -19,10 +19,10 @@ WarningLineBack* WarningLineBack::Create(UINT texNumber, const Vector2& showPos,
 	return warningLineBack;
 }
 
-bool WarningLineBack::Initialize(UINT texNumber, const Vector2& showPos, const Vector2 showSize)
+bool WarningLineBack::Initialize(const Texture& texture, const Vector2& showPos, const Vector2 showSize)
 {
 	//スプライト初期化
-	if (!Sprite::Initialize(texNumber, { 0.5f, 0.5f }, false, false)) {
+	if (!Sprite::Initialize(texture, { 0.5f, 0.5f }, false, false)) {
 		return false;
 	}
 

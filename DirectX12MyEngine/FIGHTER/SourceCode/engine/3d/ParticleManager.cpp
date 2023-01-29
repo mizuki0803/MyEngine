@@ -20,11 +20,9 @@ ID3D12Device* ParticleManager::dev = nullptr;
 ID3D12GraphicsCommandList* ParticleManager::cmdList = nullptr;
 PipelineSet ParticleManager::addBlendPipelineSet;
 PipelineSet ParticleManager::subBlendPipelineSet;
-Texture ParticleManager::texture[SRVCount];
-std::string ParticleManager::directoryPath;
 Camera* ParticleManager::camera = nullptr;
 
-void ParticleManager::ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList, const std::string& directoryPath)
+void ParticleManager::ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCommandList* cmdList)
 {
 	//nullptrチェック
 	assert(dev);
@@ -32,7 +30,6 @@ void ParticleManager::ParticleManagerCommon(ID3D12Device* dev, ID3D12GraphicsCom
 
 	ParticleManager::dev = dev;
 	ParticleManager::cmdList = cmdList;
-	ParticleManager::directoryPath = directoryPath;
 
 	//パイプライン初期化
 	CreateAddBlendPipeline();
@@ -477,7 +474,7 @@ void ParticleManager::DrawPrevSubBlend()
 	cmdList->SetGraphicsRootSignature(subBlendPipelineSet.rootsignature.Get());
 }
 
-ParticleManager* ParticleManager::Create(UINT texNumber)
+ParticleManager* ParticleManager::Create(const Texture& texture)
 {
 	//インスタンスを生成
 	ParticleManager* object3d = new ParticleManager();
@@ -486,7 +483,7 @@ ParticleManager* ParticleManager::Create(UINT texNumber)
 	}
 
 	// 初期化
-	if (!object3d->CreateModel(texNumber)) {
+	if (!object3d->CreateModel(texture)) {
 		delete object3d;
 		assert(0);
 		return nullptr;
@@ -500,68 +497,6 @@ ParticleManager* ParticleManager::Create(UINT texNumber)
 	}
 
 	return object3d;
-}
-
-bool ParticleManager::LoadTexture(UINT texNumber, const std::string& filename)
-{
-	HRESULT result;
-
-	//WICテクスチャのロード
-	TexMetadata metadata{};
-	ScratchImage scratchImg{};
-
-	//ディレクトリパスとファイル名を連結してフルパスを得る
-	std::string fullPath = directoryPath + filename;
-
-	//ユニコード文字列に変換する
-	wchar_t wfilepath[128];
-	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1,
-		wfilepath, _countof(wfilepath));
-
-	result = LoadFromWICFile(
-		wfilepath,	//ファイル名
-		WIC_FLAGS_NONE,
-		&metadata, scratchImg);
-
-	const Image* img = scratchImg.GetImage(0, 0, 0);	//生データ抽出
-
-	//リソース設定
-	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		metadata.format,
-		metadata.width,
-		(UINT)metadata.height,
-		(UINT16)metadata.arraySize,
-		(UINT16)metadata.mipLevels);
-
-	//テクスチャ用バッファの生成
-	result = dev->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
-		D3D12_HEAP_FLAG_NONE,
-		&texresDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&texture[texNumber].texBuff));
-
-	//テクスチャバッファにデータ転送
-	result = texture[texNumber].texBuff->WriteToSubresource(
-		0,
-		nullptr,	//全領域コピー
-		img->pixels,	//元データアドレス
-		(UINT)img->rowPitch,	//1ラインサイズ
-		(UINT)img->slicePitch	//1枚サイズ
-	);
-
-	//シェーダリソースビュー設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
-	srvDesc.Format = metadata.format;
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = 1;
-
-	//デスクリプタヒープにSRV作成
-	DescHeapSRV::CreateShaderResourceView(srvDesc, texture[texNumber]);
-
-	return true;
 }
 
 void ParticleManager::Add(const int life, const Vector3& position, const Vector3& velocity, const Vector3& accel,
@@ -623,12 +558,12 @@ void ParticleManager::AddTargetFollow(const int life, std::function<Vector3()> g
 	p.rotSpeed = rotSpeed;
 }
 
-bool ParticleManager::CreateModel(UINT texNumber)
+bool ParticleManager::CreateModel(const Texture& texture)
 {
 	HRESULT result;
 
-	//テクスチャ番号をセット
-	this->texNumber = texNumber;
+	//テクスチャをセット
+	this->texture = texture;
 
 	// 頂点バッファ生成
 	result = dev->CreateCommittedResource(
@@ -796,7 +731,7 @@ void ParticleManager::Draw()
 	//定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 	//シェーダリソースビューをセット
-	DescHeapSRV::SetGraphicsRootDescriptorTable(1, texture[texNumber].texNumber);
+	DescHeapSRV::SetGraphicsRootDescriptorTable(1, texture.texNumber);
 
 	//パーティクルの要素数を取得
 	UINT particleNum = (UINT)std::distance(particles.begin(), particles.end());

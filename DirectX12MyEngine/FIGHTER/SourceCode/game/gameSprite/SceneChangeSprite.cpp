@@ -18,7 +18,7 @@ SceneChangeSprite* SceneChangeSprite::Create(const XMFLOAT4& color, int32_t deep
 	}
 
 	// 初期化
-	if (!sceneChangeSprite->Initialize(SpriteTextureLoader::White, { 0, 0 }, false, false)) {
+	if (!sceneChangeSprite->Initialize(SpriteTextureLoader::GetTexture(SpriteTextureLoader::White), {0, 0}, false, false)) {
 		delete sceneChangeSprite;
 		assert(0);
 		return nullptr;
@@ -35,10 +35,10 @@ SceneChangeSprite* SceneChangeSprite::Create(const XMFLOAT4& color, int32_t deep
 	return sceneChangeSprite;
 }
 
-bool SceneChangeSprite::Initialize(UINT texNumber, const Vector2& anchorpoint, bool isFlipX, bool isFlipY)
+bool SceneChangeSprite::Initialize(const Texture& texture, const Vector2& anchorpoint, bool isFlipX, bool isFlipY)
 {
 	//スプライト初期化
-	if (!Sprite::Initialize(texNumber, anchorpoint, isFlipX, isFlipY)) {
+	if (!Sprite::Initialize(texture, anchorpoint, isFlipX, isFlipY)) {
 		return false;
 	}
 

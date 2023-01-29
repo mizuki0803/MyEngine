@@ -1,7 +1,7 @@
 #include "WarningLine.h"
 #include "Easing.h"
 
-WarningLine* WarningLine::Create(UINT texNumber, const Vector2& showPos, const bool isMoveRight)
+WarningLine* WarningLine::Create(const Texture& texture, const Vector2& showPos, const bool isMoveRight)
 {
 	//警告ラインのインスタンスを生成
 	WarningLine* warningLine = new WarningLine();
@@ -10,7 +10,7 @@ WarningLine* WarningLine::Create(UINT texNumber, const Vector2& showPos, const b
 	}
 
 	// 初期化
-	if (!warningLine->Initialize(texNumber, showPos, isMoveRight)) {
+	if (!warningLine->Initialize(texture, showPos, isMoveRight)) {
 		delete warningLine;
 		assert(0);
 		return nullptr;
@@ -19,10 +19,10 @@ WarningLine* WarningLine::Create(UINT texNumber, const Vector2& showPos, const b
 	return warningLine;
 }
 
-bool WarningLine::Initialize(UINT texNumber, const Vector2& showPos, const bool isMoveRight)
+bool WarningLine::Initialize(const Texture& texture, const Vector2& showPos, const bool isMoveRight)
 {
 	//スプライト初期化
-	if (!Sprite::Initialize(texNumber, { 0.5f, 0.5f }, false, false)) {
+	if (!Sprite::Initialize(texture, { 0.5f, 0.5f }, false, false)) {
 		return false;
 	}
 

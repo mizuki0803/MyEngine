@@ -10,15 +10,19 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="position">座標</param>
 	/// <returns>警告テキスト「WARNING」</returns>
-	static WarningText* Create(UINT texNumber, const Vector2& position);
+	static WarningText* Create(const Texture& texture, const Vector2& position);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="position">座標</param>
 	/// <returns>成否</returns>
-	bool Initialize(UINT texNumber, const Vector2& position);
+	bool Initialize(const Texture& texture, const Vector2& position);
 
 	/// <summary>
 	/// 警告開始処理

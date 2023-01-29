@@ -40,7 +40,7 @@ void HowToPlayUI::CreateUI(DrawUI drawUI, DrawUI nextDrawUI)
 	const Vector2 texSize = { 740, 100 };
 	const Vector2 size = texSize * 0.8f;
 	const Vector2 leftTop = { 0, texSize.y * (float)drawUI };
-	newHowToPlaySprite.reset(HowToPlaySprite::Create(SpriteTextureLoader::HowToPlay, size, texSize, leftTop));
+	newHowToPlaySprite.reset(HowToPlaySprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::HowToPlay), size, texSize, leftTop));
 	howToPlaySprites.push_back(std::move(newHowToPlaySprite));
 
 	//éüÇ…ï`âÊÇ∑ÇÈUIÇê›íË

@@ -14,6 +14,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="medaman">メダマーン</param>
 	/// <returns>メダマーンの行動遷移ビヘイビアツリー</returns>
 	static MedamanBehaviorTree* Create(Medaman* medaman);
 
@@ -21,7 +22,8 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <returns></returns>
+	/// <param name="medaman">メダマーン</param>
+	/// <returns>成否</returns>
 	bool Initialize(Medaman* medaman);
 
 	/// <summary>

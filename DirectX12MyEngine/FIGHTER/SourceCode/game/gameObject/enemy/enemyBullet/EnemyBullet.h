@@ -11,6 +11,9 @@ public: // 静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
+	/// <param name="position">座標</param>
+	/// <param name="velocity">速度</param>
+	/// <param name="scale">大きさ</param>
 	/// <returns>敵弾</returns>
 	static EnemyBullet* Create(ObjModel* model, const Vector3& position, const Vector3& velocity, const float scale = 0.8f);
 

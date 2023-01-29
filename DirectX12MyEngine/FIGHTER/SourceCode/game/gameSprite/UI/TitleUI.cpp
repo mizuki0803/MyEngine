@@ -23,7 +23,7 @@ TitleUI* TitleUI::Create()
 bool TitleUI::Initialize()
 {
 	//タイトルロゴスプライト生成
-	titleSprite.reset(Sprite::Create(SpriteTextureLoader::TitleLogo));
+	titleSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::TitleLogo)));
 	const Vector2 titlePos = { 640, 100 };
 	titleSprite->SetPosition(titlePos);
 	const Vector2 titleTexSize = { 500, 100 };
@@ -32,7 +32,7 @@ bool TitleUI::Initialize()
 	titleSprite->SetSize(titleSize);
 
 	//Bボタンスプライト生成	
-	bButtonSprite.reset(Sprite::Create(SpriteTextureLoader::BButton));
+	bButtonSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::BButton)));
 	const Vector2 bButtonPos = { 640, 630 };
 	bButtonSprite->SetPosition(bButtonPos);
 	const Vector2 bButtonSize = { 64, 64 };

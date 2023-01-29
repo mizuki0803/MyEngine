@@ -54,6 +54,7 @@ public: //メンバ関数
 	/// <summary>
 	/// ステージ決定するかを変更可能
 	/// </summary>
+	/// <param name="isStageDecision">ステージを決定するか</param>
 	void ChangeStageDecision(bool isStageDecision);
 
 	//getter

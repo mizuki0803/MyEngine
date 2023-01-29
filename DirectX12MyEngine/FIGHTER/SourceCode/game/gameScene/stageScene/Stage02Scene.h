@@ -77,6 +77,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 背景用隕石発生コマンドの更新
 	/// </summary>
+	/// <param name="targetPosition">生成対象の座標</param>
 	void UpdateMeteoriteSetCommands(const Vector3& targetPosition);
 
 	/// <summary>

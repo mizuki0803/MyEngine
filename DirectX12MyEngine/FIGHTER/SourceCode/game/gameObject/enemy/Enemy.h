@@ -50,6 +50,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
+	/// <param name="damageNum">ダメージ量</param>
 	virtual void OnCollision(const int damageNum);
 
 	//getter

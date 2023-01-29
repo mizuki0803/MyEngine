@@ -18,7 +18,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
+	/// <param name="position">座標</param>
 	/// <returns>大砲敵</returns>
 	static CannonEnemy* Create(const Vector3& position);
 
@@ -35,6 +35,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
+	/// <param name="damageNum">ダメージ量</param>
 	void OnCollision(const int damageNum) override;
 
 private: //メンバ関数

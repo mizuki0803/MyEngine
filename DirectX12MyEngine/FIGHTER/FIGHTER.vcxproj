@@ -115,6 +115,7 @@
     <ClCompile Include="SourceCode\engine\base\DirectXBase.cpp" />
     <ClCompile Include="SourceCode\engine\base\FpsCheck.cpp" />
     <ClCompile Include="SourceCode\engine\base\FrameWork.cpp" />
+    <ClCompile Include="SourceCode\engine\base\TextureManager.cpp" />
     <ClCompile Include="SourceCode\engine\base\WindowApp.cpp" />
     <ClCompile Include="SourceCode\engine\behaviorTree\Selector.cpp" />
     <ClCompile Include="SourceCode\engine\behaviorTree\Sequencer.cpp" />
@@ -346,6 +347,7 @@
     <ClInclude Include="SourceCode\engine\base\FrameWork.h" />
     <ClInclude Include="SourceCode\engine\base\PipelineSet.h" />
     <ClInclude Include="SourceCode\engine\base\Texture.h" />
+    <ClInclude Include="SourceCode\engine\base\TextureManager.h" />
     <ClInclude Include="SourceCode\engine\base\WindowApp.h" />
     <ClInclude Include="SourceCode\engine\behaviorTree\Selector.h" />
     <ClInclude Include="SourceCode\engine\behaviorTree\Sequencer.h" />

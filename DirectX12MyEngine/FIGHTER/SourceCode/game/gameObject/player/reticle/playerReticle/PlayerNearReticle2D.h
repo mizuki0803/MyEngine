@@ -10,9 +10,10 @@ public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="size">大きさ</param>
 	/// <returns>自機付属の2Dレティクル(近)</returns>
-	static PlayerNearReticle2D* Create(UINT texNumber, const Vector2& size);
+	static PlayerNearReticle2D* Create(const Texture& texture, const Vector2& size);
 
 public: //メンバ関数
 	/// <summary>

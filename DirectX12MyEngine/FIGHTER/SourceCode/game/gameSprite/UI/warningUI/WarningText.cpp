@@ -4,7 +4,7 @@
 const DirectX::XMFLOAT4 WarningText::warningTextColorMax = { 0.9f, 0.01f, 0.07f, 1.0f };
 const DirectX::XMFLOAT4 WarningText::warningTextColorMin = { 0.7f, 0.15f, 0.1f, 1.0f };
 
-WarningText* WarningText::Create(UINT texNumber, const Vector2& position)
+WarningText* WarningText::Create(const Texture& texture, const Vector2& position)
 {
 	//警告テキストのインスタンスを生成
 	WarningText* warningText = new WarningText();
@@ -13,7 +13,7 @@ WarningText* WarningText::Create(UINT texNumber, const Vector2& position)
 	}
 
 	// 初期化
-	if (!warningText->Initialize(texNumber, position)) {
+	if (!warningText->Initialize(texture, position)) {
 		delete warningText;
 		assert(0);
 		return nullptr;
@@ -22,10 +22,10 @@ WarningText* WarningText::Create(UINT texNumber, const Vector2& position)
 	return warningText;
 }
 
-bool WarningText::Initialize(UINT texNumber, const Vector2& position)
+bool WarningText::Initialize(const Texture& texture, const Vector2& position)
 {
 	//スプライト初期化
-	if (!Sprite::Initialize(texNumber, { 0.5f, 0.5f }, false, false)) {
+	if (!Sprite::Initialize(texture, { 0.5f, 0.5f }, false, false)) {
 		return false;
 	}
 

@@ -33,7 +33,7 @@ StageDecisionUI* StageDecisionUI::Create()
 bool StageDecisionUI::Initialize()
 {
 	//スプライト生成
-	stageDecisionSprite.reset(Sprite::Create(SpriteTextureLoader::StageDecision));
+	stageDecisionSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::StageDecision)));
 	stageDecisionSprite->SetPosition(outScreenPos);
 	const Vector2 texSize = { 400, 300 };
 	stageDecisionSprite->SetTexSize(texSize);

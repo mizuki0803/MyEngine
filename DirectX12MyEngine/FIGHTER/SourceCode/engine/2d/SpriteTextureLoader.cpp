@@ -1,37 +1,39 @@
 #include "SpriteTextureLoader.h"
-#include "SpriteCommon.h"
+#include "TextureManager.h"
+
+Texture SpriteTextureLoader::textures[SpriteTextureLoader::SpriteTextureNum];
 
 void SpriteTextureLoader::TextureLoad()
 {
-	//スプライト共通部分のインスタンスを取得
-	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+	//スプライトテクスチャ用ディレクトリパス
+	const std::string directoryPath = "Resources/spriteTexture/";
 
 	//スプライト用テクスチャ読み込み
-	spriteCommon->LoadTexture(TextureName::DebugFont, "debugFont.png");
-	spriteCommon->LoadTexture(TextureName::White, "white1x1.png");
-	spriteCommon->LoadTexture(TextureName::Number, "number.png");
-	spriteCommon->LoadTexture(TextureName::TitleLogo, "titleLogo.png");
-	spriteCommon->LoadTexture(TextureName::BButton, "bButton.png");
-	spriteCommon->LoadTexture(TextureName::PlanetName, "planetName.png");
-	spriteCommon->LoadTexture(TextureName::HighScoreFrame, "highScoreFrame.png");
-	spriteCommon->LoadTexture(TextureName::RankMedal, "rankMedal.png");
-	spriteCommon->LoadTexture(TextureName::StageSelectHowToPlay, "stageSelectHowToPlay.png");
-	spriteCommon->LoadTexture(TextureName::StageDecision, "stageDecision.png");
-	spriteCommon->LoadTexture(TextureName::HowToPlay, "howToPlay.png");
-	spriteCommon->LoadTexture(TextureName::Reticle, "reticle.png");
-	spriteCommon->LoadTexture(TextureName::PlayerHPGaugeIn, "HPGaugeIn.png");
-	spriteCommon->LoadTexture(TextureName::PlayerHPGaugeOut, "HPGaugeOut.png");
-	spriteCommon->LoadTexture(TextureName::SpeedChangeGaugeIn, "speedChangeGaugeIn.png");
-	spriteCommon->LoadTexture(TextureName::SpeedChangeGaugeOut, "speedChangeGaugeOut.png");
-	spriteCommon->LoadTexture(TextureName::WarningText, "warningText.png");
-	spriteCommon->LoadTexture(TextureName::WarningLine, "warningLine.png");
-	spriteCommon->LoadTexture(TextureName::BossHPLogo, "bossHPGaugeLogo.png");
-	spriteCommon->LoadTexture(TextureName::BossHPGaugeIn, "bossHPGaugeIn.png");
-	spriteCommon->LoadTexture(TextureName::BossHPGaugeOut, "bossHPGaugeOut.png");
-	spriteCommon->LoadTexture(TextureName::BossName, "bossName.png");
-	spriteCommon->LoadTexture(TextureName::BossNickname, "bossNickname.png");
-	spriteCommon->LoadTexture(TextureName::HitPlusText, "hitPlus.png");
-	spriteCommon->LoadTexture(TextureName::HitPlusNumber, "hitPlusNumber.png");
-	spriteCommon->LoadTexture(TextureName::StageClearText, "stageClearText.png");
-	spriteCommon->LoadTexture(TextureName::DefeatNumText, "defeatNumText.png");
+	TextureManager::LoadTexture(textures[DebugFont], directoryPath, "debugFont.png");
+	TextureManager::LoadTexture(textures[White], directoryPath, "white1x1.png");
+	TextureManager::LoadTexture(textures[Number], directoryPath, "number.png");
+	TextureManager::LoadTexture(textures[TitleLogo], directoryPath, "titleLogo.png");
+	TextureManager::LoadTexture(textures[BButton], directoryPath, "bButton.png");
+	TextureManager::LoadTexture(textures[PlanetName], directoryPath, "planetName.png");
+	TextureManager::LoadTexture(textures[HighScoreFrame], directoryPath, "highScoreFrame.png");
+	TextureManager::LoadTexture(textures[RankMedal], directoryPath, "rankMedal.png");
+	TextureManager::LoadTexture(textures[StageSelectHowToPlay], directoryPath, "stageSelectHowToPlay.png");
+	TextureManager::LoadTexture(textures[StageDecision], directoryPath, "stageDecision.png");
+	TextureManager::LoadTexture(textures[HowToPlay], directoryPath, "howToPlay.png");
+	TextureManager::LoadTexture(textures[Reticle], directoryPath, "reticle.png");
+	TextureManager::LoadTexture(textures[PlayerHPGaugeIn], directoryPath, "HPGaugeIn.png");
+	TextureManager::LoadTexture(textures[PlayerHPGaugeOut], directoryPath, "HPGaugeOut.png");
+	TextureManager::LoadTexture(textures[SpeedChangeGaugeIn], directoryPath, "speedChangeGaugeIn.png");
+	TextureManager::LoadTexture(textures[SpeedChangeGaugeOut], directoryPath, "speedChangeGaugeOut.png");
+	TextureManager::LoadTexture(textures[WarningText], directoryPath, "warningText.png");
+	TextureManager::LoadTexture(textures[WarningLine], directoryPath, "warningLine.png");
+	TextureManager::LoadTexture(textures[BossHPLogo], directoryPath, "bossHPGaugeLogo.png");
+	TextureManager::LoadTexture(textures[BossHPGaugeIn], directoryPath, "bossHPGaugeIn.png");
+	TextureManager::LoadTexture(textures[BossHPGaugeOut], directoryPath, "bossHPGaugeOut.png");
+	TextureManager::LoadTexture(textures[BossName], directoryPath, "bossName.png");
+	TextureManager::LoadTexture(textures[BossNickname], directoryPath, "bossNickname.png");
+	TextureManager::LoadTexture(textures[HitPlusText], directoryPath, "hitPlus.png");
+	TextureManager::LoadTexture(textures[HitPlusNumber], directoryPath, "hitPlusNumber.png");
+	TextureManager::LoadTexture(textures[StageClearText], directoryPath, "stageClearText.png");
+	TextureManager::LoadTexture(textures[DefeatNumText], directoryPath, "defeatNumText.png");
 }

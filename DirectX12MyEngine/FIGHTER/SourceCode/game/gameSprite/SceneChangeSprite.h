@@ -18,6 +18,10 @@ public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="color">画面を覆う色</param>
+	/// <param name="deepenTime">色を濃くしていく時間</param>
+	/// <param name="waitTime">色を濃くしたまま待機する時間</param>
+	/// <param name="returnTime">色を薄くしていく時間</param>
 	/// <returns>シーン変更演出用スプライト</returns>
 	static SceneChangeSprite* Create(const XMFLOAT4& color, int32_t deepenTime, int32_t waitTime, int32_t returnTime);
 
@@ -25,12 +29,12 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="texNumber">テクスチャ番号</param>
+	/// <param name="texture">テクスチャ</param>
 	/// <param name="anchorpoint">アンカーポイント</param>
 	/// <param name="isFlipX">左右反転するか</param>
 	/// <param name="isFlipY">上下反転するか</param>
 	/// <returns>成否</returns>
-	bool Initialize(UINT texNumber, const Vector2& anchorpoint, bool isFlipX, bool isFlipY) override;
+	bool Initialize(const Texture& texture, const Vector2& anchorpoint, bool isFlipX, bool isFlipY) override;
 
 	/// <summary>
 	/// 更新

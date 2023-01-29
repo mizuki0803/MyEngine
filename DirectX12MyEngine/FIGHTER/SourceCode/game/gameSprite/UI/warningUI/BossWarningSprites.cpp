@@ -35,12 +35,12 @@ bool BossWarningSprites::Initialize(const Vector2& leftTopPos)
 			const float distanceLineToLine = 124.0f;
 			showPos.y += distanceLineToLine;
 		}
-		warningLineBack[i].reset(WarningLineBack::Create(SpriteTextureLoader::White, showPos, backSize));
+		warningLineBack[i].reset(WarningLineBack::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::White), showPos, backSize));
 
 		//ラインを右方向に動かすか
 		bool isMoveRight = true;
 		if (i == 1) { isMoveRight = false; }
-		warningLine[i].reset(WarningLine::Create(SpriteTextureLoader::WarningLine, showPos, isMoveRight));
+		warningLine[i].reset(WarningLine::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::WarningLine), showPos, isMoveRight));
 	}
 
 	//文字背景用スプライト生成
@@ -48,11 +48,11 @@ bool BossWarningSprites::Initialize(const Vector2& leftTopPos)
 	const Vector2 warningTextBackSize = { WindowApp::window_width, 98 };
 	//座標
 	Vector2 textBackPos = { WindowApp::window_width / 2, warningLineBack[0]->GetShowPos().y + warningLineBack[0]->GetShowSize().y / 2 + warningTextBackSize.y / 2 };
-	warningTextBack.reset(WarningTextBack::Create(SpriteTextureLoader::White, textBackPos, warningTextBackSize));
+	warningTextBack.reset(WarningTextBack::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::White), textBackPos, warningTextBackSize));
 
 	//警告テキスト生成
 	Vector2 textPos = { WindowApp::window_width / 2, warningTextBack->GetPosition().y + warningTextBack->GetSize().y / 2 };
-	warningText.reset(WarningText::Create(SpriteTextureLoader::WarningText, textPos));
+	warningText.reset(WarningText::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::WarningText), textPos));
 
 	for (int i = 0; i < 2; i++) {
 		//生成座標をセット

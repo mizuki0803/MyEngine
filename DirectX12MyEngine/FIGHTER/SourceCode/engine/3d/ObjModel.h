@@ -63,7 +63,7 @@ public: //静的メンバ関数
 	/// </summary>
 	/// <param name="modelname">モデル名</param>
 	/// <param name="smoothing">スムージングをかけるか</param>
-	/// <returns></returns>
+	/// <returns>objモデル</returns>
 	static ObjModel* LoadFromOBJ(const std::string& modelname, const bool smoothing = false);
 
 	//setter
@@ -93,13 +93,6 @@ private: //非公開のメンバ関数
 	/// <param name="directoryPath">パス</param>
 	/// <param name="filename">ファイル名</param>
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
-
-	/// <summary>
-	/// テクスチャ読み込み
-	/// </summary>
-	/// <param name="directoryPath">パス</param>
-	/// <param name="filename">ファイル名</param>
-	void LoadTexture(const std::string& directoryPath, const std::string& filename);
 
 	/// <summary>
 	/// 各種バッファ生成

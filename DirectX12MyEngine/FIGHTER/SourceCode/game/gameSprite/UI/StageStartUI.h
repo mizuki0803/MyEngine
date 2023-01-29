@@ -11,6 +11,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="stageNum">ステージ番号</param>
 	/// <returns>ステージ開始UI</returns>
 	static StageStartUI* Create(const int stageNum);
 
@@ -18,6 +19,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// /// <param name="stageNum">ステージ番号</param>
 	/// <returns>成否</returns>
 	bool Initialize(const int stageNum);
 

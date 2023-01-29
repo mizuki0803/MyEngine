@@ -18,6 +18,7 @@ public: //静的メンバ関数
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
+	/// <param name="startPosition">開始座標</param>
 	/// <returns>ステージ01出撃シーン用自機</returns>
 	static Stage01SortiePlayer* Create(ObjModel* model, const Vector3& startPosition);
 

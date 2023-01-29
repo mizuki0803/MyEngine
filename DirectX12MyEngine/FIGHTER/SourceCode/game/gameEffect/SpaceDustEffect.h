@@ -12,7 +12,8 @@ public: // 静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
+	/// <param name="position">座標</param>
+	/// <param name="rotation">回転角</param>
 	/// <returns>宇宙塵エフェクト</returns>
 	static SpaceDustEffect* Create(const Vector3& position, const Vector3& rotation);
 

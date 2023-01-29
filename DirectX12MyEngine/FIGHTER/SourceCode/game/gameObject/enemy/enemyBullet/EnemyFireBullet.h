@@ -9,7 +9,10 @@ class EnemyFireBullet : public EnemyBullet
 public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
-	/// </summary>
+	/// </summary>	
+	/// <param name="position">座標</param>
+	/// <param name="velocity">速度</param>
+	/// <param name="size">大きさ</param>
 	/// <returns>敵火炎弾</returns>
 	static EnemyFireBullet* Create(const Vector3& position, const Vector3& velocity, const float size);
 

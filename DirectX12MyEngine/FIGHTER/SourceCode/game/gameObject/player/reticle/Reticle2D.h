@@ -12,15 +12,21 @@ public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="size">大きさ</param>
 	/// <returns>レティクル2D</returns>
-	static Reticle2D* Create(UINT texNumber, const Vector2& size);
+	static Reticle2D* Create(const Texture& texture, const Vector2& size);
 
 public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	bool Initialize(UINT texNumber, const Vector2& anchorpoint, bool isFlipX, bool isFlipY) override;
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="anchorpoint">アンカーポイント</param>
+	/// <param name="isFlipX">左右判定するか</param>
+	/// <param name="isFlipY">上下反転するか</param>
+	/// <returns>成否</returns>
+	bool Initialize(const Texture& texture, const Vector2& anchorpoint, bool isFlipX, bool isFlipY) override;
 
 	/// <summary>
 	/// 更新

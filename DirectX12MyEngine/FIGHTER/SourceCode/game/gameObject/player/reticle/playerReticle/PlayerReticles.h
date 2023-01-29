@@ -18,11 +18,15 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <returns>成否</returns>
 	bool Initialize();
 
 	/// <summary>
 	/// 更新
 	/// </summary>
+	/// <param name="matWorld">ワールド行列</param>
+	/// <param name="matView">ビュー行列</param>
+	/// <param name="matProjection">プロジェクション行列</param>
 	void Update(const XMMATRIX& matWorld, const XMMATRIX& matView, const XMMATRIX& matProjection);
 
 	/// <summary>

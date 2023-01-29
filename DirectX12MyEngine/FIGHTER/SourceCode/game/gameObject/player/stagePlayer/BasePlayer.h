@@ -72,6 +72,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 衝突時コールバック関数(敵などダメージを喰らう)
 	/// </summary>
+	/// <param name="subjectPos">衝突した相手の座標</param>
 	virtual void OnCollisionDamage(const Vector3& subjectPos);
 
 	/// <summary>

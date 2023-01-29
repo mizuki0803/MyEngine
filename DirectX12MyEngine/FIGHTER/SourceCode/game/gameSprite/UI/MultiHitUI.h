@@ -13,6 +13,9 @@ public: //静的メンバ関数
 	/// <summary>
 	/// 生成処理
 	/// </summary>
+	/// <param name="position">座標</param>
+	/// <param name="camera">カメラ</param>
+	/// <param name="enemyHitNum">撃破数</param>
 	/// <returns>複数撃破UI</returns>
 	static MultiHitUI* Create(const Vector3& position, BaseGameCamera* camera, const int enemyHitNum);
 
@@ -20,6 +23,9 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="position">座標</param>
+	/// <param name="camera">カメラ</param>
+	/// <param name="enemyHitNum">撃破数</param>
 	/// <returns>成否</returns>
 	bool Initialize(const Vector3& position, BaseGameCamera* camera, const int enemyHitNum);
 
@@ -40,6 +46,9 @@ private: //メンバ関数
 	/// <summary>
 	/// スクリーン座標取得
 	/// </summary>
+	/// <param name="position">座標</param>
+	/// <param name="camera">カメラ</param>
+	/// <returns>撃破数を表示するスクリーン座標</returns>
 	Vector2 GetScreenPos(const Vector3& position, BaseGameCamera* camera);
 
 	/// <summary>

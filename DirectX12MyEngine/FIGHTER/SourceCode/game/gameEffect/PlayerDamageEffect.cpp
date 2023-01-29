@@ -24,7 +24,7 @@ PlayerDamageEffect* PlayerDamageEffect::Create()
 bool PlayerDamageEffect::Initialize()
 {
 	//演出用スプライト生成
-	effectSprite.reset(Sprite::Create(SpriteTextureLoader::White, { 0, 0 }));
+	effectSprite.reset(Sprite::Create(SpriteTextureLoader::GetTexture(SpriteTextureLoader::White), { 0, 0 }));
 	effectSprite->SetSize({ WindowApp::window_width, WindowApp::window_height });
 	effectSprite->SetTexSize({ 1, 1 });
 	effectSprite->SetColor({ 1, 0, 0, 0 });

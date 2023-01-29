@@ -1,6 +1,6 @@
 #include "PlayerSpeedChangeBar.h"
 
-PlayerSpeedChangeBar* PlayerSpeedChangeBar::Create(UINT texNumber, const Vector2& position, const float maxGaugeNum)
+PlayerSpeedChangeBar* PlayerSpeedChangeBar::Create(const Texture& texture, const Vector2& position, const float maxGaugeNum)
 {
 	//プレイヤー速度変更UIバーのインスタンスを生成
 	PlayerSpeedChangeBar* playerSpeedChangeBar = new PlayerSpeedChangeBar();
@@ -9,7 +9,7 @@ PlayerSpeedChangeBar* PlayerSpeedChangeBar::Create(UINT texNumber, const Vector2
 	}
 
 	// 初期化
-	if (!playerSpeedChangeBar->Initialize(texNumber, { 0.0f, 0.0f }, false, false)) {
+	if (!playerSpeedChangeBar->Initialize(texture, { 0.0f, 0.0f }, false, false)) {
 		delete playerSpeedChangeBar;
 		assert(0);
 		return nullptr;

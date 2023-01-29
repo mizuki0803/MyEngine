@@ -1,4 +1,5 @@
 #pragma once
+#include "Texture.h"
 
 /// <summary>
 /// スプライトテクスチャ読み込みクラス
@@ -34,6 +35,8 @@ public: //テクスチャ名
 		HitPlusNumber,		//HIT+数字
 		StageClearText,		//ステージクリアテキスト(攻略完了)
 		DefeatNumText,		//撃破数のテキストと枠
+
+		SpriteTextureNum,	//スプライトテクスチャの枚数
 	};
 
 
@@ -42,4 +45,11 @@ public: //静的メンバ関数
 	/// テクスチャ全読み込み
 	/// </summary>
 	static void TextureLoad();
+
+	//getter
+	static Texture GetTexture(const TextureName textureName) { return textures[textureName]; };
+
+private: //静的メンバ変数
+	//テクスチャ
+	static Texture textures[SpriteTextureNum];
 };

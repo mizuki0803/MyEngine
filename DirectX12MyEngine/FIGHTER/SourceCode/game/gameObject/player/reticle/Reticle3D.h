@@ -11,6 +11,7 @@ public:
 	/// 生成処理
 	/// </summary>
 	/// <param name="model">モデル</param>
+	/// <param name="distance">発射対象からの距離</param>
 	/// <returns>3Dレティクル</returns>
 	static Reticle3D* Create(ObjModel* model, float distance);
 

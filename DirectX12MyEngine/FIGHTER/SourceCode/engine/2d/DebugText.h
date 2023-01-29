@@ -35,8 +35,8 @@ public: //メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="texnumber">テクスチャ番号</param>
-	void Initialize(UINT texnumber);
+	/// <param name="texture">テクスチャ</param>
+	void Initialize(const Texture& texture);
 
 	/// <summary>
 	/// テキスト文字入力

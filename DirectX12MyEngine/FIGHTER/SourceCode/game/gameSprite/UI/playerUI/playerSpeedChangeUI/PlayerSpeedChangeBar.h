@@ -10,9 +10,11 @@ public:
 	/// <summary>
 	/// 生成処理
 	/// </summary>
-	/// <param name="model">モデル</param>
+	/// <param name="texture">テクスチャ</param>
+	/// <param name="position">座標</param>
+	/// <param name="maxGaugeNum">最大ゲージ量</param>
 	/// <returns>プレイヤー速度変更UIバー</returns>
-	static PlayerSpeedChangeBar* Create(UINT texNumber, const Vector2& position, const float maxGaugeNum);
+	static PlayerSpeedChangeBar* Create(const Texture& texture, const Vector2& position, const float maxGaugeNum);
 
 public: //メンバ関数
 	/// <summary>

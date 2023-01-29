@@ -41,7 +41,7 @@ public: //静的メンバ関数
 	/// <summary>
 	/// ポストエフェクト生成
 	/// </summary>
-	/// <returns>Sprite</returns>
+	/// <returns>ポストエフェクト</returns>
 	static PostEffect* Create();
 
 	/// <summary>

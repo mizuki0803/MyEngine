@@ -19,6 +19,7 @@ public: //Ã“Iƒƒ“ƒoŠÖ”
 	/// <summary>
 	/// ¶¬ˆ—
 	/// </summary>
+	/// <param name="position">À•W</param>
 	/// <returns>ã‰ºˆÚ“®“G</returns>
 	static UpDownEnemy* Create(const Vector3& position);
 

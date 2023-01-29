@@ -1,5 +1,6 @@
 #include "ParticleEmitter.h"
 #include "Easing.h"
+#include "TextureManager.h"
 #include <functional>
 #include <d3dx12.h>
 
@@ -16,11 +17,11 @@ void ParticleEmitter::Initialize()
 	LoadTexture();
 
 	//パーティクルマネージャー生成
-	circleParticle.reset(ParticleManager::Create(1));
-	explosionParticle.reset(ParticleManager::Create(2));
-	blackSmokeParticle.reset(ParticleManager::Create(2));
-	shineParticle.reset(ParticleManager::Create(3));
-	curveParticle.reset(ParticleManager::Create(4));
+	circleParticle.reset(ParticleManager::Create(textures[Circle]));
+	explosionParticle.reset(ParticleManager::Create(textures[Fluffy]));
+	blackSmokeParticle.reset(ParticleManager::Create(textures[Fluffy]));
+	shineParticle.reset(ParticleManager::Create(textures[Shine]));
+	curveParticle.reset(ParticleManager::Create(textures[Curve]));
 }
 
 void ParticleEmitter::Update()
@@ -747,9 +748,12 @@ void ParticleEmitter::AllDelete()
 
 void ParticleEmitter::LoadTexture()
 {
-	//テクスチャ全読み込み
-	ParticleManager::LoadTexture(1, "effect1.png");
-	ParticleManager::LoadTexture(2, "effect2.png");
-	ParticleManager::LoadTexture(3, "effect3.png");
-	ParticleManager::LoadTexture(4, "effect4.png");
+	//パーティクルテクスチャ用ディレクトリパス
+	const std::string directoryPath = "Resources/particleTexture/";
+
+	//パーティクル用テクスチャ読み込み
+	TextureManager::LoadTexture(textures[Circle], directoryPath, "effect1.png");
+	TextureManager::LoadTexture(textures[Fluffy], directoryPath, "effect2.png");
+	TextureManager::LoadTexture(textures[Shine], directoryPath, "effect3.png");
+	TextureManager::LoadTexture(textures[Curve], directoryPath, "effect4.png");
 }

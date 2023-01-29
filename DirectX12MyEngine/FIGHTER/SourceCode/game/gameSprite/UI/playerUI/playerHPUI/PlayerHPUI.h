@@ -47,6 +47,7 @@ public: //メンバ関数
 	/// <summary>
 	/// 回復アイテム獲得状態を開始
 	/// </summary>
+	/// <param name="HP">プレイヤーのHP</param>
 	void ItemGet(const int HP);
 
 private: //メンバ変数
