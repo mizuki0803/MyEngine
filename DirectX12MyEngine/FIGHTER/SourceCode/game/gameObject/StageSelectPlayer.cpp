@@ -148,9 +148,11 @@ void StageSelectPlayer::GooutPlanet()
 	position.z = Easing::OutQuint(moveBeforePos.z, moveAfterPos.z, time);
 
 	//大きさを変える
-	scale.x = Easing::InQuint(0.1f, 1.5f, time);
-	scale.y = Easing::InQuint(0.1f, 1.5f, time);
-	scale.z = Easing::InQuint(0.1f, 1.5f, time);
+	const float beforeSize = 0.1f;
+	const float afterSize = 1.5f;
+	scale.x = Easing::InQuint(beforeSize, afterSize, time);
+	scale.y = Easing::InQuint(beforeSize, afterSize, time);
+	scale.z = Easing::InQuint(beforeSize, afterSize, time);
 
 	//タイマーが指定した時間になったら
 	if (actionTimer >= gooutTime) {
@@ -183,7 +185,8 @@ void StageSelectPlayer::StageSelectMove()
 	if (actionTimer >= moveTime - rotChangeTime) {
 		const float rotTime = (actionTimer - (moveTime - rotChangeTime)) / rotChangeTime;
 		//イージングで動かす
-		rotation.y = Easing::OutCubic(changeBeforeRota.y, 180, rotTime);
+		const float changeAfterRota = 180;
+		rotation.y = Easing::OutCubic(changeBeforeRota.y, changeAfterRota, rotTime);
 	}
 
 	//タイマーが指定した時間になったら
@@ -269,9 +272,11 @@ void StageSelectPlayer::EnterPlanetBoost()
 	position.z = Easing::OutQuint(moveBeforePos.z, moveAfterPos.z, time);
 
 	//大きさを変える
-	scale.x = Easing::OutQuint(1.5f, 0.2f, time);
-	scale.y = Easing::OutQuint(1.5f, 0.2f, time);
-	scale.z = Easing::OutQuint(1.5f, 0.2f, time);
+	const float beforeSize = 1.5f;
+	const float afterSize = 0.2f;
+	scale.x = Easing::OutQuint(beforeSize, afterSize, time);
+	scale.y = Easing::OutQuint(beforeSize, afterSize, time);
+	scale.z = Easing::OutQuint(beforeSize, afterSize, time);
 
 	//タイマーが惑星に入るのを終える時間になったら
 	const int endTime = 120;

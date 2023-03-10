@@ -394,9 +394,7 @@ void BasePlayer::Heal()
 	HP += healNum;
 
 	//HPは最大HP以上にならない
-	if (HP >= maxHP) {
-		HP = maxHP;
-	}
+	HP = min(HP, maxHP);
 }
 
 void BasePlayer::Rotate()
@@ -740,43 +738,41 @@ void BasePlayer::SpeedChangeModeEnd()
 
 void BasePlayer::SpeedChangeHighSpeed()
 {
-	//加速時に移動する最大限界座標
-	const float highSpeedMaxPosZ = 25.0f;
-
 	//速度変更時間
 	const int speedChangeTime = 30;
 	float timeRatio = ((float)speedChangeTimer / (float)speedChangeTime);
 	timeRatio = min(timeRatio, 1);
 	//タイマーの値から移動速度に緩急をつける
 	float speedRatio = 1 - timeRatio;
-	speedRatio = max(speedRatio, 0.2f);
+	const float speedRatioMin = 0.2f; //前進する最低の速さ
+	speedRatio = max(speedRatio, speedRatioMin);
 
 	//前に移動させる
 	const float moveSpeed = 0.4f;
 	position.z += moveSpeed * speedRatio;
 
 	//最大限界座標を越えないようにする
+	const float highSpeedMaxPosZ = 25.0f; //加速時に移動する最大限界座標
 	position.z = min(position.z, highSpeedMaxPosZ);
 }
 
 void BasePlayer::SpeedChangeSlowSpeed()
 {
-	//減速時に移動する最小限界座標
-	const float slowSpeedMinPosZ = 10.0f;
-
 	//速度変更時間
 	const int speedChangeTime = 30;
 	float timeRatio = ((float)speedChangeTimer / (float)speedChangeTime);
 	timeRatio = min(timeRatio, 1);
 	//タイマーの値から移動速度に緩急をつける
 	float speedRatio = 1 - timeRatio;
-	speedRatio = max(speedRatio, 0.15f);
+	const float speedRatioMin = 0.15f; //後退する最低の速さ
+	speedRatio = max(speedRatio, speedRatioMin);
 
 	//後ろに移動させる
 	const float moveSpeed = 0.2f;
 	position.z -= moveSpeed * speedRatio;
 
 	//最小限界座標を越えないようにする
+	const float slowSpeedMinPosZ = 10.0f; //減速時に移動する最小限界座標
 	position.z = max(position.z, slowSpeedMinPosZ);
 }
 
@@ -908,7 +904,7 @@ void BasePlayer::PushAttackButton()
 		float sizeRatio = (float)(chargeTimer - changeModeTime) / maxRatioFrame;
 		//最大比率1.0を越えない
 		const float maxRatio = 1.0f;
-		if (sizeRatio >= maxRatio) { sizeRatio = maxRatio; }
+		sizeRatio = min(sizeRatio, maxRatio);
 		const float particleSize = homingBulletSize * sizeRatio;
 
 		//チャージショット演出用パーティクル生成

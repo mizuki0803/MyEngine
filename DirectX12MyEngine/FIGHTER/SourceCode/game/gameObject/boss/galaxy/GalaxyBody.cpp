@@ -230,7 +230,8 @@ void GalaxyBody::AppaerRotation()
 	rotation.y += rotSpeed;
 
 	//右を完全に向いていなければ抜ける
-	if (rotation.y <= 90) { return; }
+	const float rightLookRot = 90;
+	if (rotation.y <= rightLookRot) { return; }
 
 	//登場行動終了
 	isAppear = false;

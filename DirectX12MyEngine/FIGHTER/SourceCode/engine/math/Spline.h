@@ -3,7 +3,7 @@
 #include <vector>
 
 /// <summary>
-/// スプライト補間
+/// スプライン補間
 /// </summary>
 class Spline
 {
